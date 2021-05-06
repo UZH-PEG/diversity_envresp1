@@ -1,0 +1,160 @@
+---
+title: Evolution, functional diversity, regime shifts, hysteresis, and nonlinearity; ecosystem responses to environmental change.
+subtitle: Predictions of a model of an oxic-anoxic microbial ecosystem 
+authors:
+  - name: Owen L Petchey
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: owen.petchey@ieu.uzh.ch
+  - name: Rainer Krug
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: rainer.krug@ieu.uzh.ch
+  - name: Marcel Suleiman
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: marcel.suleiman@ieu.uzh.ch
+
+abstract: |
+  To be completed
+keywords:
+  - Biodiversity
+  - Evolution
+  - Hysteresis
+  - Alternate stable states
+  - Environmental change
+  - Regime shift
+  - Threshold
+  - Ecosystem
+  - Cyanobacteria
+  - Sulphur bacteria
+bibliography: references.bib
+biblio-style: unsrt
+output: 
+  rticles::arxiv_article:
+    keep_tex: true
+---
+
+```{r}
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("simulations/r functions/various_useful_functions.r"))
+```
+
+
+# Introduction
+
+Types of ecosystem responses to environmental change. What and why. Importance of non-linearity and hysteresis. Feedbacks, diversity / evolution. Includes graphical hypotheses. What is the relative importance of feedbacks (composition) and diversity / evolution.
+
+Ceulemans, R., Wojcik, L.A. & Gaedke, U. (2021). Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs. *bioRxiv*, 2021.03.22.436420.
+
+[@dakos2019]
+
+Anoxic-oxic ecosystem shifts as a case study. Contemporary relevance. Intermediate complexity of system... diagram of system, including some panels of subsystems showing some of the positive feedbacks. Central role of inhibition / tolerance. Also showing responses to changes in oxygen diffusivity (justify from Bush et al this as a key environmental driver).
+
+Empirical evidence of variation in organismal tolerance. Across species and evolution experiments. [@schoeffler2019]
+
+Recent experimental evolution studies have demonstrated considerable increases in tolerance. For example, the sulphur bacteria *Desulfovibrio vulgaris* evolved a 32-fold increase in oxygen tolerance [@schoeffler2019] . Furthermore, the evolved strains were capable of oxygen respiration that permits growth. Genome re-sequencing revealed that few mutations were involved. Additionally, the cyanobacterium *Microcystis aeruginosa* evolved a four-fold higher sulphide tolerance via rare spontaneous mutations [@martínclemente2019]. In that study, populations with higher genetic variation and those experiencing slower environmental change (an increase in sulphide concentration) were more likely to persist at high sulphide concentration.
+
+[@rolfe1978] - Factors related to the oxygen tolerance of anaerobic bacteria. [@ramel2015] - "they were able to grow but the final biomasses and the growth yield were lower than that obtained under anaerobic conditions", "Determination of the molar growth yields on lactate suggested that a part of the energy gained from lactate oxidation was derived toward cells protection/repairing against oxidative conditions rather than biosynthesis" [@hamilton2018] - "Cyanobacterial photosynthesis under sulfidic conditions: insights from the isolate Leptolyngbya sp. strain hensonii"
+
+Physiological tolerances to environmental conditions, including interspecific variation in tolerance and evolution of tolerance, are a key component of the engineering of ecosystem for determining their stability (Minervini *et al.* 2014)(Gómez‐Gras *et al.* 2019)(Cuenca Cambronero *et al.* 2018)(Vos *et al.* 2017)(Evans & Wallenstein 2014)(Rolfe *et al.* 1978)(Knoll & Bauld 1989)(Girvan *et al.* 2005).
+
+Questions: - How does variation organismal tolerances affect response
+
+Approach: - Modelling the system with ODEs. - Diversity manipulation (can be considered selection among strains, or selection among species). - Do not include mutation.
+
+# Methods
+
+## The model
+
+Bush et al (2017) contains an excellent description of the model of the ecosystem. Here we only describe the extensions needed for modelling multiple strains/taxa per functional group.
+
+## Measurement of non-linearity and hysteresis
+
+Take from Garnier et al.
+
+Rate-independent hysteresis, because we are considering only stable states, and not rate-dependent hysteresis, which can occur when a lag in the system response to an environmental response causes a difference between the observed system state at time $t$ and the stable state for the environmental conditions present at time $t$.
+
+## Implementation
+
+R package.
+
+# Results
+
+
+## Figure: Stable states with and without variation.
+
+```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_2.RDS"))
+ss_novar <- ss_sim_data[22,]
+p1  <- plot_ss_result1(ss_novar$ss_res[[1]],
+                ss_novar$CB_var_gmax_s,
+                ss_novar$CB_var_h_s,
+                ss_novar$SB_var_gmax_s,
+                ss_novar$SB_var_h_s,
+                ss_novar$PB_var_gmax_s,
+                ss_novar$PB_var_h_s,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p1
+
+```
+
+
+`
+```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+#ss_sim_data <- readRDS("working/sim data/ss_res_2.RDS")
+ss_var <- ss_sim_data[43,]
+p2  <- plot_ss_result1(ss_var$ss_res[[1]],
+                ss_var$CB_var_gmax_s,
+                ss_var$CB_var_h_s,
+                ss_var$SB_var_gmax_s,
+                ss_var$SB_var_h_s,
+                ss_var$PB_var_gmax_s,
+                ss_var$PB_var_h_s,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p2
+
+```
+
+
+## Figure: hysteresis, shift point, nonlinearity, as var increases.
+
+```{r}
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_3.RDS"))
+
+ss_sim_data <- ss_sim_data %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s) %>%
+  do(stability_measures = get_stability_measures(.$ss_res[[1]]))
+results <- unnest(ss_sim_data, cols = c(stability_measures))
+
+results %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = CB_var_gmax_s, y = hyst_range)) +
+  geom_point()
+
+```
+
+## Figure: Temporal switches
+
+To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
+
+# Discussion
+
+<https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R>
+
+
+# Acknowledgements
+
+SNF
+URPP
+
