@@ -40,46 +40,6 @@ nonlinearity; ecosystem responses to environmental change.}
   \texttt{\href{mailto:marcel.suleiman@ieu.uzh.ch}{\nolinkurl{marcel.suleiman@ieu.uzh.ch}}} \\
   }
 
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
 % Pandoc citation processing
 \newlength{\csllabelwidth}
@@ -141,47 +101,6 @@ To be completed
    \and
     Sulphur bacteria
   }
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(tidyverse)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-\end{verbatim}
-
-\begin{verbatim}
-## v ggplot2 3.3.3     v purrr   0.3.4
-## v tibble  3.1.0     v dplyr   1.0.5
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.0
-\end{verbatim}
-
-\begin{verbatim}
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(microxanox)}
-\FunctionTok{library}\NormalTok{(patchwork)}
-\FunctionTok{library}\NormalTok{(here)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## here() starts at /Users/owenpetchey/Desktop/microxanox/diversity_envresp1
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{source}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"simulations/r functions/various\_useful\_functions.r"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
@@ -298,29 +217,27 @@ variation.}\label{figure-stable-states-with-and-without-variation.}}
 \caption{your caption}\label{fig:ss_var}
 \end{figure}
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/ss_var2-1} 
+
+}
+
+\caption{your caption}\label{fig:ss_var2}
+\end{figure}
+
 \hypertarget{figure-hysteresis-shift-point-nonlinearity-as-var-increases.}{%
 \subsection{Figure: hysteresis, shift point, nonlinearity, as var
 increases.}\label{figure-hysteresis-shift-point-nonlinearity-as-var-increases.}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ss\_sim\_data }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"simulations/sim data/ss\_res\_3.RDS"}\NormalTok{))}
+\begin{figure}
 
-\NormalTok{ss\_sim\_data }\OtherTok{\textless{}{-}}\NormalTok{ ss\_sim\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(CB\_var\_gmax\_s, CB\_var\_h\_s,}
-\NormalTok{           SB\_var\_gmax\_s, SB\_var\_h\_s,}
-\NormalTok{           PB\_var\_gmax\_s, PB\_var\_h\_s) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{do}\NormalTok{(}\AttributeTok{stability\_measures =} \FunctionTok{get\_stability\_measures}\NormalTok{(.}\SpecialCharTok{$}\NormalTok{ss\_res[[}\DecValTok{1}\NormalTok{]]))}
-\NormalTok{results }\OtherTok{\textless{}{-}} \FunctionTok{unnest}\NormalTok{(ss\_sim\_data, }\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(stability\_measures))}
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/ss_var3-1} 
 
-\NormalTok{results }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Species }\SpecialCharTok{==} \StringTok{"O"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ CB\_var\_gmax\_s, }\AttributeTok{y =}\NormalTok{ hyst\_range)) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+}
 
-\includegraphics{article_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{your caption}\label{fig:ss_var3}
+\end{figure}
 
 \hypertarget{figure-temporal-switches}{%
 \subsection{Figure: Temporal switches}\label{figure-temporal-switches}}
@@ -331,6 +248,8 @@ To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
 \section{Discussion}\label{discussion}}
 
 \url{https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R}
+
+\url{https://onlinelibrary.wiley.com/doi/10.1111/ele.13760?af=R}
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}

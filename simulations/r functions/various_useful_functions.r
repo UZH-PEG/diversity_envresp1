@@ -185,8 +185,7 @@ plot_ss_result2 <- function(ss_result1,
     ggplot(aes(x=log10(a), y=log10_total_quantity, group=direction)) +
     geom_path(col = species_colours[fg_oi]) +
     ylab('log10(quantity [cells])') +
-    xlab('a') +
-    scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+    xlab('a')  +
     guides(colour = guide_legend(ncol = 3)) +
     geom_path(data = dplyr::filter(temp2, functional_group == fg_oi),
               linetype = "dashed",

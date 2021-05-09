@@ -38,6 +38,13 @@ output:
     keep_tex: true
 ---
 
+```{r include = FALSE}
+knitr::opts_chunk$set(include = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
 ```{r}
 library(tidyverse)
 library(microxanox)
@@ -125,7 +132,7 @@ p2
 ```
 
 
-```{r}
+```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
 ss_sim_data <- readRDS(here("simulations/sim data/ss_res_2.RDS"))
 ss_novar <- ss_sim_data[22,]
 
@@ -145,7 +152,7 @@ p_overlay
 
 ## Figure: hysteresis, shift point, nonlinearity, as var increases.
 
-```{r}
+```{r ss_var3, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
 ss_sim_data <- readRDS(here("simulations/sim data/ss_res_3.RDS"))
 
 ss_sim_data <- ss_sim_data %>%
