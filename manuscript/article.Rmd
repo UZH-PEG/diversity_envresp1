@@ -109,8 +109,8 @@ p1
 
 `
 ```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
-#ss_sim_data <- readRDS("working/sim data/ss_res_2.RDS")
-ss_var <- ss_sim_data[43,]
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_3.RDS"))
+ss_var <- ss_sim_data[20,]
 p2  <- plot_ss_result1(ss_var$ss_res[[1]],
                 ss_var$CB_var_gmax_s,
                 ss_var$CB_var_h_s,
@@ -122,6 +122,24 @@ p2  <- plot_ss_result1(ss_var$ss_res[[1]],
                 save_image_file = FALSE)
 p2
 
+```
+
+
+```{r}
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_2.RDS"))
+ss_novar <- ss_sim_data[22,]
+
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_3.RDS"))
+ss_var <- ss_sim_data[20,]
+
+ss_result1 <- ss_novar$ss_res[[1]]
+ss_result2 <- ss_var$ss_res[[1]]
+
+p_overlay <- plot_ss_result2(ss_novar$ss_res[[1]],
+                             ss_var$ss_res[[1]],
+                             xlims = c(-3, -2.25))
+
+p_overlay
 ```
 
 
@@ -152,6 +170,7 @@ To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
 
 <https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R>
 
+https://onlinelibrary.wiley.com/doi/10.1111/ele.13760?af=R
 
 # Acknowledgements
 
