@@ -20,6 +20,7 @@ authors:
 
 abstract: |
   To be completed
+  
 keywords:
   - Biodiversity
   - Evolution
@@ -60,7 +61,7 @@ In this context, a directly relevant aspect of biodiversity is variation in func
 
 There is a considerable amount of theory predicting, and evidence supporting, that greater functional diversity leads to lower temporal variability in ecosystem states variables (such as total biomass) (citations). The mechanism by which this occurs is that greater functional response diversity causes a weaker relationship between an environmental driver gradient and the ecosystem state (figure 1a), due to the functional turnover along the environmental driver gradient that results from variation in organisms' responses to the environmental driver gradient .
 
-There is less theory about effects of functional diversity on the linearity (figure 1b) and the hysteresis (figure 1c) of ecosystem responses to environmental change. @dakos2019b, in their article "Ecosystem tipping points in an evolving world" asked how changes in functional trait distributions (including evolutionary changes) affect the occurrence of tipping points. They predict that:
+There is less theory about effects of functional diversity on the linearity (figure 1b) and the hysteresis (figure 1c) of ecosystem responses to environmental change. @dakos2019b, in their article *Ecosystem tipping points in an evolving world* asked how changes in functional trait distributions (including evolutionary changes) affect the occurrence of tipping points. They explain that:
 
 -   In general, greater functional response diversity may decrease the likelihood of a catastrophic ecosystem response (Figure 2a in @dakos2019b). Here, we interpret this prediction to be that greater functional response diversity decreases the non-linearity of ecosystem response to environmental driver change, including the extreme non-linearity that can occur when an ecosystem "flips" from one state to another one.
 
@@ -70,18 +71,11 @@ There is less theory about effects of functional diversity on the linearity (fig
 
 -   Finally, the amount of functional diversity may affect the "recovery trajectory", i.e. the relationship between ecosystem state and the environmental driver when the driver change is reversed @dakos2019b. Put another way, functional diversity may increase or decrease the amount of hysteresis, and may even result in a recovery with lower non-linearity / no tipping-point (Figure 3 in @dakos2019b).
 
-One reason why these predictions are often indeterminate is that trait distributions can be affected by, and effect, organismal abundances and environmental conditions. These numerous resulting feedbacks make predictions from verbal argumentation rather difficult. **Discuss Ceulemans, R., Wojcik, L.A. & Gaedke, U. (2021). Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs. *bioRxiv*, 2021.03.22.436420.**
+These explanations/predictions were based on the verbal/graphical argumentation @dakos2019b. There were no mathematical models of ecosystem responses to environmetnal change behind the explanations/predictions. @ceulemans2021, in their article *Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs*, did employ a such a mathematical model.
 
 What of the empirical evidence? Hillebrand...
 
-
-
-
-
-
 ## Scope of our investigation
-
-
 
 Questions: - How does variation organismal tolerances affect response
 
@@ -267,15 +261,22 @@ To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
 
 # Discussion
 
+One reason why the explanations of Dakos et al are often indeterminate is that trait distributions can be affected by, and effect, organismal abundances and environmental conditions. These numerous resulting feedbacks may limit the determinancy of explanations based on the verbal/graphical argumentation employed by @dakos2019b. They may also make for context dependent effects of functional diversity. I.e. functional diversity may delay a tipping point in one context (e.g. ecosystem type and/or particular parameterisation of a specific system) but delay it in another. **Based on our findings, (1) can we make determinate predictions, and (2) what level of generality do our preditions have?** [Possible text: The answers are (1) no, we cannot make determinate predictions: we found sign varying effects of functional trait diversity on the nature of ecosystem responses to environmental change. And (2) our predictions have very limited generality. This is because we did not aim for general predictions: we investigate a single parameterisation of a single model, with many explicit and implicit assumptions. This is why we need more investigations, both theoretical and empirical, of effects of functional trait diversity on environmental responses to environmental change.]
+
+What are the priorities for follow-on modelling studies?
+
+1)  Multifarious environmental driver changes.
+2)  More process based approach to variation in biodiversity: mutation, genetics,
+
 What does this study tell us about effects of functional diversity on ecosystem stability?
 
 What does this study tell us about the effects of evolution on ecosystem stability?
 
-Need a more process based approach to variation in biodiversity: mutation, genetics,
+## What are the priorities for subsequent research?
 
-As mentioned in the Introduction, the numerous feedacks among trait distributions, organismal abundances, and environmental conditions,  resulting feedbacks make predictions from verbal argumentation rather difficult. They may also make for context dependent effects of functional diversity. I.e. functional diversity may delay a tipping point in one context (e.g. ecosystem type) but delay it in another. This is why we need more investigations, both theoretical and empirical, of effects of functional trait diversity on environmental responses to environmental change.
+A research programme that integrates [text from ERC application]. E.g. Global Change Microbiology -- with quote.
 
-
+Then replicated across numerous ecosystems and taxa. That is, we imagine a blue-print / template for proposals that aim to establish such an integrative research programme. This template would contain mandatory workpackages and experiments, and sufficient standardisation to allow for rigorous and quantitative across programme meta-analyses
 
 <https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R>
 
@@ -284,3 +285,5 @@ As mentioned in the Introduction, the numerous feedacks among trait distribution
 # Acknowledgements
 
 SNF URPP
+
+## Bibliography
