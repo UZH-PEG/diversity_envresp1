@@ -1,5 +1,37 @@
-
 add_strain_var <- function(x,
+                               CB_var_gmax=0, CB_var_h=0,
+                               SB_var_gmax=0, SB_var_h=0,
+                               PB_var_gmax=0, PB_var_h=0) {
+  
+  new_x <- x
+  new_x$CB$g_max_CB <- x$CB$g_max_CB * 2^(seq(-CB_var_gmax, CB_var_gmax, length=length(new_x$CB$g_max_CB)))
+  new_x$CB$h_SR_CB <- x$CB$h_SR_CB * 2^(seq(-CB_var_h, CB_var_h, length=length(new_x$CB$h_SR_CB)))
+  new_x$SB$g_max_SB <- x$SB$g_max_SB * 2^(seq(-SB_var_gmax, SB_var_gmax, length=length(new_x$SB$g_max_SB)))
+  new_x$SB$h_O_SB <- x$SB$h_O_SB * 2^(seq(-SB_var_h, SB_var_h, length=length(new_x$SB$h_O_SB)))
+  new_x$PB$g_max_PB <- x$PB$g_max_PB * 2^(seq(-PB_var_gmax, PB_var_gmax, length=length(new_x$PB$g_max_PB)))
+  new_x$PB$h_O_PB <- x$PB$h_O_PB * 2^(seq(-PB_var_h, PB_var_h, length=length(new_x$PB$h_O_PB)))
+  new_x
+}
+
+
+plot_and_save <- function(CB_var_gmax, CB_var_h,
+                          SB_var_gmax, SB_var_h,
+                          PB_var_gmax, PB_var_h,
+                          sim_res,
+                          file_path_and_prefix) {
+  plot_dynamics(sim_res)
+  ggsave(paste0(file_path_and_prefix,
+                "-CB_", round(CB_var_gmax,3), "_", round(CB_var_h,3),
+                "-SB_", round(SB_var_gmax,3), "_", round(SB_var_h,3),
+                "-PB_", round(PB_var_gmax,3), "_", round(PB_var_h,3),
+                ".pdf"),
+         width = 10)
+  NULL
+}
+
+
+
+add_strain_var_old <- function(x,
                            CB_var_gmax=0, CB_var_h=0,
                            SB_var_gmax=0, SB_var_h=0,
                            PB_var_gmax=0, PB_var_h=0) {
@@ -45,7 +77,9 @@ plot_ss_result1 <- function(ss_result,
   temp <- ss_result %>%
     select(-initial_N_CB, -a_O) %>%
     mutate(a = 10^a) %>%
-    gather(species, quantity, 2:ncol(.)) %>% 
+    arrange(a) %>%
+    mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+    gather(species, quantity, 2:(ncol(.)-1)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -64,7 +98,7 @@ plot_ss_result1 <- function(ss_result,
   
   p1 <- temp %>%
     dplyr::filter(functional_group == "CB") %>%
-    ggplot(aes(x=log10(a), y=log10_quantity, col=species)) +
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
     geom_path() +
     ylab('log10(quantity [cells])') +
     xlab('a') +
@@ -74,7 +108,7 @@ plot_ss_result1 <- function(ss_result,
   
   p2 <- temp %>%
     dplyr::filter(functional_group == "SB") %>%
-    ggplot(aes(x=log10(a), y=log10_quantity, col=species)) +
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
     geom_path() +
     ylab('log10(quantity [cells])') +
     xlab('a') +
@@ -83,7 +117,7 @@ plot_ss_result1 <- function(ss_result,
   
   p3 <- temp %>%
     dplyr::filter(functional_group == "PB") %>%
-    ggplot(aes(x=log10(a), y=log10_quantity, col=species)) +
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
     geom_path() +
     ylab('log10(quantity [cells])') +
     xlab('a') +
@@ -92,7 +126,7 @@ plot_ss_result1 <- function(ss_result,
   
   p4 <- temp %>%
     dplyr::filter(var_type == "Substrate") %>%
-    ggplot(aes(x=log10(a), y=log10_quantity, col=species)) +
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
     geom_path() +
     ylab('log10(quantity [cells])') +
     xlab('a') 

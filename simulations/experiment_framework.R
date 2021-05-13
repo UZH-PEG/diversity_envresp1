@@ -21,9 +21,9 @@ default_event_definition <- event_definition_1
 ## no default parameter values
 default_event_interval <- 100
 default_noise_sigma <- 0
-default_minimum_abundances <- rep(100, 3)
+default_minimum_abundances <- rep(0, 3)
 names(default_minimum_abundances) <- c("CB", "PB", "SB") 
-default_sim_duration <- 50000
+default_sim_duration <- 100000
 default_sim_sample_interval <- 10
 ## note that next line (log10a_series is over-ridden with getting stable states)
 #default_log10a_series <- c(-2, -2, -2, -2, -10, -10, -10, -10, -10)
@@ -33,21 +33,21 @@ num_PB_strains <- 9
 default_9strain <- new_starter(n_CB = num_CB_strains,
                              n_SB = num_SB_strains,
                              n_PB = num_PB_strains,
-                             values_initial_state = "bush_anoxic")
+                             values_initial_state = "bush_ssfig3")
 
 
 ## Initialise general steady state finding setting ----
 ssfind_minimum_abundances <- rep(0, 3)
 names(ssfind_minimum_abundances) <- c("CB", "PB", "SB") 
-ssfind_simulation_duration <- 100000
+ssfind_simulation_duration <- default_sim_duration
 ssfind_simulation_sampling_interval <- ssfind_simulation_duration
 ssfind_event_interval <- ssfind_simulation_duration
-grid_num_a <- 100 ## number of a_0 values
-a_Os <- 10^seq(-4.5, -1.5, length=grid_num_a) ## sequence of a_0 values
+grid_num_a <- 1000 ## number of a_0 values
+a_Os <- 10^seq(-7, -1, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
-initial_CBs <- 10^seq(0, 8, length=grid_num_N) ## sequence of N values
-initial_PBs <- 1e5 ## not varied
-initial_SBs <- 1e5 ## not varied
+initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
+initial_PBs <- 1e8 ## not varied
+initial_SBs <- 1e8 ## not varied
 ## next line creates all possible combinations
 ss_expt <- expand.grid(N_CB = initial_CBs,
                        N_PB = initial_PBs,
@@ -84,7 +84,7 @@ var_expt <- var_expt %>%
                            SB_var_h = .$SB_var_h_s,
                            PB_var_gmax = .$PB_var_gmax_s,
                            PB_var_h = .$PB_var_h_s))
-var_expt$pars[[1]]$CB
+var_expt$pars[[38]]$CB
 var_expt$pars[[1]]$SB
 var_expt$pars[[1]]$PB
 
@@ -158,12 +158,22 @@ var_expt %>%
 
 
 ## Gradient CB, SB, PB variation  experiment ----
-CB_var_gmax_s <- seq(0, 0.1, length=20)
-CB_var_h_s = seq(0, -0.5, length=20)
-SB_var_gmax_s <- seq(0, 0.1, length=20)
-SB_var_h_s = seq(0, -0.5, length=20)
-PB_var_gmax_s <- seq(0, 0.1, length=20)
-PB_var_h_s = seq(0, -0.5, length=20)
+var_length <- 20
+CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
+CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
+SB_var_gmax_s <- seq(0, 0.1, length=var_length)
+SB_var_h_s = seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- seq(0, 0.1, length=var_length)
+PB_var_h_s = seq(0, -0.5, length=var_length)
+
+# var_length <- 2
+# CB_var_gmax_s <- seq(0, 0.1, length=var_length) 
+# CB_var_h_s = seq(0, -0.5, length=var_length) 
+# SB_var_gmax_s <- seq(0, 0.1, length=var_length) 
+# SB_var_h_s = seq(0, -0.5, length=var_length) 
+# PB_var_gmax_s <- seq(0, 0.1, length=var_length) 
+# PB_var_h_s = seq(0, -0.5, length=var_length) 
+
 
 var_expt <- tibble(CB_var_gmax_s,
                      CB_var_h_s,
@@ -177,16 +187,23 @@ var_expt <- var_expt %>%
            SB_var_gmax_s, SB_var_h_s,
            PB_var_gmax_s, PB_var_h_s,
   ) %>%
-  do(pars = add_strain_var(default_9strain,
+  do(pars = add_strain_var_old(default_9strain,
                            CB_var_gmax = .$CB_var_gmax_s,
                            CB_var_h = .$CB_var_h_s,
                            SB_var_gmax = .$SB_var_gmax_s,
                            SB_var_h = .$SB_var_h_s,
                            PB_var_gmax = .$PB_var_gmax_s,
                            PB_var_h = .$PB_var_h_s))
-var_expt$pars[[10]]$CB
-var_expt$pars[[10]]$SB
-var_expt$pars[[10]]$PB
+var_expt$pars[[1]]$CB
+var_expt$pars[[2]]$CB
+var_expt$pars[[1]]$PB
+var_expt$pars[[2]]$PB
+
+#var_expt <- var_expt[2,]
+
+ggplot(var_expt$pars[[1]]$CB) +
+  geom_point(aes(x = g_max_CB, y = h_SR_CB))
+
 
 ## Next chunck of code:
 ## For each line of var_expt, add strain variation, and get stable states.
@@ -204,11 +221,12 @@ var_expt <- var_expt %>%
      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
   )
 ## save results to file
-#saveRDS(var_expt, here("simulations/sim data/ss_res_3.RDS"))
+saveRDS(var_expt, here("simulations/sim data/ss_res_grad_newXXX.RDS"))
 
-var_expt <- readRDS(here("simulations/sim data/ss_res_3.RDS"))
+#var_expt <- readRDS(here("simulations/sim data/ss_res_grad1.RDS"))
 
-number <- 1
+number <- 2
+
 plot_ss_result1(var_expt$ss_res[[number]],
                 var_expt$CB_var_gmax_s[number],
                 var_expt$CB_var_h_s[number],
@@ -217,6 +235,7 @@ plot_ss_result1(var_expt$ss_res[[number]],
                 var_expt$PB_var_gmax_s[number],
                 var_expt$PB_var_h_s[number],
                 filename_prefix = here("simulations/figures/ssres_CBSBPB_var"))
+
 
 getwd()
 

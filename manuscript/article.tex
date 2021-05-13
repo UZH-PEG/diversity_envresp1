@@ -99,22 +99,109 @@ To be completed
    \and
     Cyanobacteria
    \and
-    Sulphur bacteria
+    Sulfur bacteria
   }
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-Types of ecosystem responses to environmental change. What and why.
-Importance of non-linearity and hysteresis. Feedbacks, diversity /
-evolution. Includes graphical hypotheses. What is the relative
-importance of feedbacks (composition) and diversity / evolution.
+When thinking about ecosystem stability, a key question is how
+biodiversity influences ecosystem responses to environmental change
+(figure 1: panel a shows linear response with different gradients, large
+being with low diversity; panel b shows a linear and a non-linear
+response starting and ending at the same place; panel c shows a
+hysteretic response, with greater or less range of hysteresis).
 
+In this context, a directly relevant aspect of biodiversity is variation
+in functional traits, i.e.~the traits that determine organismal
+responses to environmental conditions and that determine the effects of
+organisms on their environment (citation). Variation in functional
+traits is often termed ``functional diversity.''
+
+There is a considerable amount of theory predicting, and evidence
+supporting, that greater functional diversity leads to lower temporal
+variability in ecosystem states variables (such as total biomass)
+(citations). The mechanism by which this occurs is that greater
+functional response diversity causes a weaker relationship between an
+environmental driver gradient and the ecosystem state (figure 1a), due
+to the functional turnover along the environmental driver gradient that
+results from variation in organisms' responses to the environmental
+driver gradient .
+
+There is less theory about effects of functional diversity on the
+linearity (figure 1b) and the hysteresis (figure 1c) of ecosystem
+responses to environmental change. Dakos et al. (2019), in their article
+``Ecosystem tipping points in an evolving world'' asked how changes in
+functional trait distributions (including evolutionary changes) affect
+the occurrence of tipping points. They predict that:
+
+\begin{itemize}
+\item
+  In general, greater functional response diversity may decrease the
+  likelihood of a catastrophic ecosystem response (Figure 2a in Dakos et
+  al. (2019)). Here, we interpret this prediction to be that greater
+  functional response diversity decreases the non-linearity of ecosystem
+  response to environmental driver change, including the extreme
+  non-linearity that can occur when an ecosystem ``flips'' from one
+  state to another one.
+\item
+  Greater functional trait diversity can make a tipping point occur only
+  with greater change in an environmental driver (Figure 2a in Dakos et
+  al. (2019)). I.e. functional trait diversity can increase
+  resilience--the extent of environmental change required to push the
+  ecosystem into another state (Holling (1973)). This could occur if
+  greater functional diversity equates to the presence of organisms with
+  greater tolerance to the environmental driver Dakos et al. (2019).
+\item
+  On the other hand, the opposite could occur: greater functional
+  diversity could make a tipping point occur with less change in an
+  environmental driver (i.e.~may cause lower resilience) (Figure 2c in
+  @dakos2019b). This could occur if there is selection for greater
+  tolerance is causes, incidentally, selection for lower growth rate,
+  perhaps due to a tradeoff between the two traits.
+\item
+  Finally, the amount of functional diversity may affect the ``recovery
+  trajectory,'' i.e.~the relationship between ecosystem state and the
+  environmental driver when the driver change is reversed Dakos et al.
+  (2019). Put another way, functional diversity may increase or decrease
+  the amount of hysteresis, and may even result in a recovery with lower
+  non-linearity / no tipping-point (Figure 3 in Dakos et al. (2019)).
+\end{itemize}
+
+One reason why these predictions are often indeterminate is that trait
+distributions can be affected by, and effect, organismal abundances and
+environmental conditions. These numerous resulting feedbacks make
+predictions from verbal argumentation rather difficult. \textbf{Discuss
 Ceulemans, R., Wojcik, L.A. \& Gaedke, U. (2021). Functional diversity
 alters the effects of a pulse perturbation on the dynamics of tritrophic
-food webs. \emph{bioRxiv}, 2021.03.22.436420.
+food webs. \emph{bioRxiv}, 2021.03.22.436420.}
 
-(Dakos et al. 2019)
+What of the empirical evidence? Hillebrand\ldots{}
+
+\hypertarget{scope-of-our-investigation}{%
+\subsection{Scope of our
+investigation}\label{scope-of-our-investigation}}
+
+Questions: - How does variation organismal tolerances affect response
+
+Approach: - Modelling the system with ODEs. - Diversity manipulation
+(can be considered selection among strains, or selection among species).
+- Do not include mutation.
+
+According the the questions (in the Introduction) this is what we did:
+
+Variation in amount of among strain variation, no variation in number of
+strains, no variation in strength or shape of the of the tradeoff
+
+Effect of among strain variation on how the steady state(s) of the
+system varies with in different environmental conditions, and on the
+dynamical response of system to gradual environmental change.
+
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
+
+\hypertarget{the-study-ecosystem}{%
+\subsection{The study ecosystem}\label{the-study-ecosystem}}
 
 Anoxic-oxic ecosystem shifts as a case study. Contemporary relevance.
 Intermediate complexity of system\ldots{} diagram of system, including
@@ -123,21 +210,64 @@ Central role of inhibition / tolerance. Also showing responses to
 changes in oxygen diffusivity (justify from Bush et al this as a key
 environmental driver).
 
-Empirical evidence of variation in organismal tolerance. Across species
-and evolution experiments. (Schoeffler et al. 2019)
+\begin{figure}
 
-Recent experimental evolution studies have demonstrated considerable
-increases in tolerance. For example, the sulphur bacteria
-\emph{Desulfovibrio vulgaris} evolved a 32-fold increase in oxygen
-tolerance (Schoeffler et al. 2019) . Furthermore, the evolved strains
-were capable of oxygen respiration that permits growth. Genome
-re-sequencing revealed that few mutations were involved. Additionally,
-the cyanobacterium \emph{Microcystis aeruginosa} evolved a four-fold
-higher sulphide tolerance via rare spontaneous mutations
-(Martín-Clemente et al. 2019). In that study, populations with higher
-genetic variation and those experiencing slower environmental change (an
-increase in sulphide concentration) were more likely to persist at high
-sulphide concentration.
+{\centering \includegraphics[width=1\linewidth]{/Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/ecosystem_network} 
+
+}
+
+\caption{your caption}\label{fig:ecosys_network}
+\end{figure}
+
+The model ecosystem contains three types (functional groups) of organism
+(Figure \ref(fig:ecosys\_network)): cyanobacteria (\(CB\)),
+sulfate-reducing bacteria (\(SB\)), and phototrophic sulfur bacteria
+(\(PB\)), four chemical substrates (oxygen \(O\), phosphorous \(P\),
+reduced sulfur \(SR\), and oxidised sulfur \(SO\)), and four types of
+flow/interaction (production, consumption, inhibition, and diffusion).
+Particularly important among these interactions are that the
+cyanobacteria produce oxygen which inhibits the growth of both types of
+sulfur bacteria. And the sulfate-reducing bacteria produce reduced
+sulfur, such as hydrogen sulphide, which inhibit the growth of
+cyanobacteria. This mutual inhibition (a positive feedback) creates the
+potential for an oxic cyanobacteria dominated state and an anoxic sulfur
+bacteria dominated state to be alternate stable states.
+
+Simulation of this ecosystem as a set of ordinary differential equations
+demonstrated that the presence of alternate stable states depended on
+the rate at which oxygen diffuses into (or out of) the system (Bush et
+al. 2017). Low levels of oxygen diffusivity result in only the anoxic
+state being stable. High levels result in only the oxic state.
+Intermediate oxygen diffusivity allowed alternate stable states, with
+the occurring state depending on historical conditions. Historical
+dominance of cyanobacteria caused the oxic state to occur, which
+historical dominance of the sulfur bacteria caused the anoxic state to
+occur. All this was thoroughly and elegantly presented in Bush et al.
+(2017).
+
+As mentioned above, critical for the presence of alternate stable states
+in this ecosystem is the mutual inhibition between cyanobacteria and
+sulfur bacteria. This mutual inhibition is created by their intolerance
+of the chemical substrates that the other produces. Recent experimental
+evolution studies have demonstrated considerable increases in tolerance.
+For example, the sulfur bacteria \emph{Desulfovibrio vulgaris} evolved a
+32-fold increase in oxygen tolerance, via relatively few mutations
+(Schoeffler et al. 2019). And the cyanobacterium \emph{Microcystis
+aeruginosa} evolved a four-fold higher sulfide tolerance via rare
+spontaneous mutations (Martín-Clemente et al. 2019). In that study,
+populations with higher genetic variation and those experiencing slower
+environmental change (an increase in sulfide concentration) were more
+likely to persist at high sulfide concentration. Furthemore, there is
+considerable interspecific variation in tolerances (Schoeffler et al.
+2019)
+
+Physiological tolerances to environmental conditions, including
+interspecific variation in tolerance and evolution of tolerance, are a
+key component of the engineering of ecosystem for determining their
+stability (Minervini \emph{et al.} 2014)(Gómez‐Gras \emph{et al.}
+2019)(Cuenca Cambronero \emph{et al.} 2018)(Vos \emph{et al.}
+2017)(Evans \& Wallenstein 2014)(Rolfe \emph{et al.} 1978)(Knoll \&
+Bauld 1989)(Girvan \emph{et al.} 2005).
 
 (Rolfe et al. 1978) - Factors related to the oxygen tolerance of
 anaerobic bacteria. (Ramel et al. 2015) - ``they were able to grow but
@@ -149,33 +279,87 @@ oxidative conditions rather than biosynthesis'' (Hamilton et al. 2018) -
 ``Cyanobacterial photosynthesis under sulfidic conditions: insights from
 the isolate Leptolyngbya sp. strain hensonii''
 
-Physiological tolerances to environmental conditions, including
-interspecific variation in tolerance and evolution of tolerance, are a
-key component of the engineering of ecosystem for determining their
-stability (Minervini \emph{et al.} 2014)(Gómez‐Gras \emph{et al.}
-2019)(Cuenca Cambronero \emph{et al.} 2018)(Vos \emph{et al.}
-2017)(Evans \& Wallenstein 2014)(Rolfe \emph{et al.} 1978)(Knoll \&
-Bauld 1989)(Girvan \emph{et al.} 2005).
-
-Questions: - How does variation organismal tolerances affect response
-
-Approach: - Modelling the system with ODEs. - Diversity manipulation
-(can be considered selection among strains, or selection among species).
-- Do not include mutation.
-
-\hypertarget{methods}{%
-\section{Methods}\label{methods}}
-
 \hypertarget{the-model}{%
 \subsection{The model}\label{the-model}}
 
-Bush et al (2017) contains an excellent description of the model of the
-ecosystem. Here we only describe the extensions needed for modelling
-multiple strains/taxa per functional group.
+Bush et al (2017) contains an accessible and complete description of the
+model of the ecosystem, including rate equations, parameter values, and
+initial conditions. These features are also represented and documented
+in the \texttt{microxanox} R package (\textbf{cite the package}).
+Therefore, here we only describe the relatively straightforward
+extension we used to model multiple strains per functional group.
+
+Each of the strains within each functional groups has its own parameter
+set and state variable. Thus a system with nine strains within each
+functional group has 27 state variables, plus another four (one for each
+of the four chemical substrates). Other than having potentially
+different parameter values (e.g.~maximum growth rate and tolerance
+parameter) the dynamics of the strains in a functional were described by
+the same equations. Hence, when parameterised with multiple strains per
+functional group, but no variation among strains (within functional
+groups), the system behaves identically to when there is only one strain
+per functional group (see the \texttt{microxanox} R package \emph{User
+Guide} for a demonstration).
+
+The only other necessary modification was to include summation terms in
+each of the four ordinary differential equations describing the rates of
+change of the four chemical substrates. This was required in order to
+appropriately account for the production and consumption of these
+substrates by multiple strains.
+
+\hypertarget{creating-within-functional-group-diversity}{%
+\subsection{Creating within functional group
+diversity}\label{creating-within-functional-group-diversity}}
+
+In this section we describe how we created variability among the
+multiple strains within functional groups. Since the process was the
+same for each functional group, we usually do not in this description
+subscript parameter names by functional group (though there were
+functional group specific parameters in all simulations). The
+descriptions in this section gradually become more mathematical; the
+next paragraph alone should provide the information required to
+understand all other elements of this report.
+
+We introduced among-strain variability in maximum growth rate (parameter
+\(G_{max}\)) and in the tolerance to the relevant inhibiting chemical
+substrate (parameter \(h\)). Among-strain variability was created such
+that there was a tradeoff between maximum growth rate and tolerance
+(i.e.~high tolerance coinciding with low maximum growth rate)
+(e.g.~Figure @ref(fig:tradeoff). Our implementation of the variation and
+tradeoff contain the assumption of a linear tradeoff of log-log
+transformed among-strain variation.
+
+For further understanding, please consider a reference maximum growth
+rate parameter \(G_{max}\) and reference tolerance parameter \(h\).
+Furthermore, consider the meta-parameters \(Div_{G_{max}}\) and
+\(Div_{h}\), which determine the amount of variation among \(n\)-strains
+in the growth rate and tolerance parameters. To create a tradeoff, the
+two meta-parameters were always of different sign.
+
+The among strain variation was calculated such that the growth rate of
+strain \(i = 1\) was a factor \(1/(2^{Div_{G_{max}}})\) of the reference
+growth rate, and the growth rate of the \(i = n\) strain was a factor
+\(2^{Div_{G_{max}}}\) of the reference growth rate. The growth rate of
+the \(i = \{2,...n-1\}\) other strains was the reference growth rate
+multiplied by a factor that was equally distributed between the factor
+of the \(i = 1\) and \(i = n\) strain.
+
+Hence, for example, with the reference growth rate \(G_{max} =\) 0.05,
+among strain variation of \(Div_{G_{max}} =\) 1, and nine strains
+(\(n =\) 9), then the growth rates of the nine strains are 0.025, 0.03,
+0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1 (Figure @ref(fig:tradeoff).
+
+(Put another way, the growth rate parameter of the i-th of the \(n\)
+strains in a functional group was calculated as
+\(G_{max, i} = D_i * G_{max}\) where D\_i is the i-th element of the set
+\(D = \{2^{f(x)Div_{G_{max}}} | x \in \mathbb{N}, x \leq n\}\), where
+\(f(x) = (x-(n+1)/2) / (( n-1)/2)\).)
 
 \hypertarget{measurement-of-non-linearity-and-hysteresis}{%
 \subsection{Measurement of non-linearity and
 hysteresis}\label{measurement-of-non-linearity-and-hysteresis}}
+
+Requires an environmental change\ldots{} as in Bush, oxygen diffusivity.
 
 Take from Garnier et al.
 
@@ -188,14 +372,20 @@ the environmental conditions present at time \(t\).
 \hypertarget{implementation}{%
 \subsection{Implementation}\label{implementation}}
 
-R package.
+We implemented the model in the \texttt{microxanox} package
+(\textbf{cite the package}) of the R programming language (**cite R Core
+Team\emph{). The package contains functions for initialising, running,
+visualising, and analysing simulations of the system described above.
+Please refer to the \texttt{microxanox} package} User Guide* and
+\emph{Partial reproduction of Bush et al (2017)} vignettes for further
+information about it.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-\hypertarget{figure-stable-states-with-and-without-variation.}{%
-\subsection{Figure: Stable states with and without
-variation.}\label{figure-stable-states-with-and-without-variation.}}
+\hypertarget{figure-stable-states-without-variation}{%
+\subsection{Figure: Stable states without
+variation}\label{figure-stable-states-without-variation}}
 
 \begin{figure}
 
@@ -206,7 +396,11 @@ variation.}\label{figure-stable-states-with-and-without-variation.}}
 \caption{your caption}\label{fig:ss_novar}
 \end{figure}
 
-`
+X-axis must be labelled log10(a).
+
+\hypertarget{figure-stable-states-with-variation-and-tradeoff}{%
+\subsection{Figure: Stable states with variation and
+tradeoff}\label{figure-stable-states-with-variation-and-tradeoff}}
 
 \begin{figure}
 
@@ -217,6 +411,8 @@ variation.}\label{figure-stable-states-with-and-without-variation.}}
 \caption{your caption}\label{fig:ss_var}
 \end{figure}
 
+X-axis must be labelled log10(a).
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/ss_var2-1} 
@@ -226,9 +422,15 @@ variation.}\label{figure-stable-states-with-and-without-variation.}}
 \caption{your caption}\label{fig:ss_var2}
 \end{figure}
 
+X-axis must be labelled log10(a).
+
 \hypertarget{figure-hysteresis-shift-point-nonlinearity-as-var-increases.}{%
 \subsection{Figure: hysteresis, shift point, nonlinearity, as var
 increases.}\label{figure-hysteresis-shift-point-nonlinearity-as-var-increases.}}
+
+Resolution of a\_grid with 100 steps is about 0.03 units, which is about
+the resolution of the y axis here. Hysteresis range is measures in
+log10(a) units.
 
 \begin{figure}
 
@@ -247,6 +449,25 @@ To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
+What does this study tell us about effects of functional diversity on
+ecosystem stability?
+
+What does this study tell us about the effects of evolution on ecosystem
+stability?
+
+Need a more process based approach to variation in biodiversity:
+mutation, genetics,
+
+As mentioned in the Introduction, the numerous feedacks among trait
+distributions, organismal abundances, and environmental conditions,
+resulting feedbacks make predictions from verbal argumentation rather
+difficult. They may also make for context dependent effects of
+functional diversity. I.e. functional diversity may delay a tipping
+point in one context (e.g.~ecosystem type) but delay it in another. This
+is why we need more investigations, both theoretical and empirical, of
+effects of functional trait diversity on environmental responses to
+environmental change.
+
 \url{https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R}
 
 \url{https://onlinelibrary.wiley.com/doi/10.1111/ele.13760?af=R}
@@ -258,7 +479,14 @@ SNF URPP
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
-\leavevmode\hypertarget{ref-dakos2019}{}%
+\leavevmode\hypertarget{ref-bush2017}{}%
+Bush, Timothy, Muhe Diao, Rosalind J. Allen, Ruben Sinnige, Gerard
+Muyzer, and Jef Huisman. 2017. {``Oxic-Anoxic Regime Shifts Mediated by
+Feedbacks Between Biogeochemical Processes and Microbial Community
+Dynamics.''} \emph{Nature Communications} 8 (1): 789.
+\url{https://doi.org/10.1038/s41467-017-00912-x}.
+
+\leavevmode\hypertarget{ref-dakos2019b}{}%
 Dakos, Vasilis, Blake Matthews, Andrew P. Hendry, Jonathan Levine,
 Nicolas Loeuille, Jon Norberg, Patrik Nosil, Marten Scheffer, and Luc De
 Meester. 2019. {``Ecosystem Tipping Points in an Evolving World.''}
@@ -271,6 +499,11 @@ Macalady. 2018. {``Cyanobacterial Photosynthesis Under Sulfidic
 Conditions: Insights from the Isolate Leptolyngbya Sp. Strain
 Hensonii.''} \emph{The ISME Journal} 12 (2): 568--84.
 \url{https://doi.org/10.1038/ismej.2017.193}.
+
+\leavevmode\hypertarget{ref-holling1973}{}%
+Holling, C S. 1973. {``Resilience and Stability of Ecological
+Systems.''} \emph{Annual Review of Ecology and Systematics} 4 (1):
+1--23. \url{https://doi.org/10.1146/annurev.es.04.110173.000245}.
 
 \leavevmode\hypertarget{ref-martuxednclemente2019}{}%
 Martín-Clemente, Elena, Ignacio J. Melero-Jiménez, Elena Bañares-España,
