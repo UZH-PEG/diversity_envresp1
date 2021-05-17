@@ -55,11 +55,9 @@ source(here("simulations/r functions/various_useful_functions.r"))
 
 # Introduction
 
-When thinking about ecosystem stability, a key question is how biodiversity influences ecosystem responses to environmental change (figure 1: panel a shows linear response with different gradients, large being with low diversity; panel b shows a linear and a non-linear response starting and ending at the same place; panel c shows a hysteretic response, with greater or less range of hysteresis).
+This report concerns how biodiversity influences the strength and nature of ecosystem responses to environmental change (figure 1: panel a shows linear response with different gradients, large being with low diversity; panel b shows a linear and a non-linear response starting and ending at the same place; panel c shows a hysteretic response, with greater or less range of hysteresis). Strong responses of ecosystems to environmental change imply high *sensitivity* and lack of resistance to environmental change, and higher temporal variability in the face of varying environmental conditions. Greater *non-linearity* in ecosystem responses increases the potential for surprises, such as when an ecosystem that was resistant to an environmental change becomes unexpectedly sensitive to further change. The presence and extent of *hysteresis* in ecosystem responses to environmental driver gradients concerns how readily are ecosystem responses reversed when environmental change is reversed.
 
-In this context, a directly relevant aspect of biodiversity is variation in functional traits, i.e. the traits that determine organismal responses to environmental conditions and that determine the effects of organisms on their environment (citation). Variation in functional traits is often termed "functional diversity".
-
-There is a considerable amount of theory predicting, and evidence supporting, that greater functional diversity leads to lower temporal variability in ecosystem states variables (such as total biomass) (citations). The mechanism by which this occurs is that greater functional response diversity causes a weaker relationship between an environmental driver gradient and the ecosystem state (figure 1a), due to the functional turnover along the environmental driver gradient that results from variation in organisms' responses to the environmental driver gradient .
+In this context, a directly relevant aspect of biodiversity is variation in functional traits, i.e. the traits that determine organismal responses to environmental conditions and that determine the effects of organisms on their environment (citation). Variation in functional traits is often termed "functional diversity". There is a considerable amount of theory predicting, and evidence supporting, that greater functional diversity leads to lower temporal variability in ecosystem states variables (such as total biomass) (citations) (Leary, Pennekamp). The mechanism by which this occurs is that greater functional response diversity causes a weaker relationship between an environmental driver gradient and the ecosystem state (figure 1a), due to the functional turnover along the environmental driver gradient that results from variation in organisms' responses to the environmental driver gradient .
 
 There is less theory about effects of functional diversity on the linearity (figure 1b) and the hysteresis (figure 1c) of ecosystem responses to environmental change. @dakos2019b, in their article *Ecosystem tipping points in an evolving world* asked how changes in functional trait distributions (including evolutionary changes) affect the occurrence of tipping points. They explain that:
 
@@ -71,9 +69,11 @@ There is less theory about effects of functional diversity on the linearity (fig
 
 -   Finally, the amount of functional diversity may affect the "recovery trajectory", i.e. the relationship between ecosystem state and the environmental driver when the driver change is reversed @dakos2019b. Put another way, functional diversity may increase or decrease the amount of hysteresis, and may even result in a recovery with lower non-linearity / no tipping-point (Figure 3 in @dakos2019b).
 
-These explanations/predictions were based on the verbal/graphical argumentation @dakos2019b. There were no mathematical models of ecosystem responses to environmetnal change behind the explanations/predictions. @ceulemans2021, in their article *Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs*, did employ a such a mathematical model.
+These explanations/predictions were based on the verbal/graphical argumentation @dakos2019b. There were no mathematical models of ecosystem responses to environmental change behind the explanations/predictions. @ceulemans2021, in their article *Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs*, did employ a such a mathematical model.
 
-What of the empirical evidence? Hillebrand...
+We discuss empirical studies in the Discussion section (spoiler--there are few, if any, directly relevant ones).
+
+
 
 ## Scope of our investigation
 
@@ -262,6 +262,8 @@ To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
 # Discussion
 
 One reason why the explanations of Dakos et al are often indeterminate is that trait distributions can be affected by, and effect, organismal abundances and environmental conditions. These numerous resulting feedbacks may limit the determinancy of explanations based on the verbal/graphical argumentation employed by @dakos2019b. They may also make for context dependent effects of functional diversity. I.e. functional diversity may delay a tipping point in one context (e.g. ecosystem type and/or particular parameterisation of a specific system) but delay it in another. **Based on our findings, (1) can we make determinate predictions, and (2) what level of generality do our preditions have?** [Possible text: The answers are (1) no, we cannot make determinate predictions: we found sign varying effects of functional trait diversity on the nature of ecosystem responses to environmental change. And (2) our predictions have very limited generality. This is because we did not aim for general predictions: we investigate a single parameterisation of a single model, with many explicit and implicit assumptions. This is why we need more investigations, both theoretical and empirical, of effects of functional trait diversity on environmental responses to environmental change.]
+
+What of the empirical evidence? Hillebrand...
 
 What are the priorities for follow-on modelling studies?
 

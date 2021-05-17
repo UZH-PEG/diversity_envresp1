@@ -166,15 +166,6 @@ SB_var_h_s = seq(0, -0.5, length=var_length)
 PB_var_gmax_s <- seq(0, 0.1, length=var_length)
 PB_var_h_s = seq(0, -0.5, length=var_length)
 
-# var_length <- 2
-# CB_var_gmax_s <- seq(0, 0.1, length=var_length) 
-# CB_var_h_s = seq(0, -0.5, length=var_length) 
-# SB_var_gmax_s <- seq(0, 0.1, length=var_length) 
-# SB_var_h_s = seq(0, -0.5, length=var_length) 
-# PB_var_gmax_s <- seq(0, 0.1, length=var_length) 
-# PB_var_h_s = seq(0, -0.5, length=var_length) 
-
-
 var_expt <- tibble(CB_var_gmax_s,
                      CB_var_h_s,
                      SB_var_gmax_s,
@@ -187,7 +178,7 @@ var_expt <- var_expt %>%
            SB_var_gmax_s, SB_var_h_s,
            PB_var_gmax_s, PB_var_h_s,
   ) %>%
-  do(pars = add_strain_var_old(default_9strain,
+  do(pars = add_strain_var(default_9strain,
                            CB_var_gmax = .$CB_var_gmax_s,
                            CB_var_h = .$CB_var_h_s,
                            SB_var_gmax = .$SB_var_gmax_s,
@@ -201,9 +192,12 @@ var_expt$pars[[2]]$PB
 
 #var_expt <- var_expt[2,]
 
-ggplot(var_expt$pars[[1]]$CB) +
-  geom_point(aes(x = g_max_CB, y = h_SR_CB))
-
+# ggplot(var_expt$pars[[20]]$CB,
+#        aes(x = g_max_CB, y = h_SR_CB)) +
+#   geom_point()
+# m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+# par(mfrow = c(2,2))
+# plot(m1)
 
 ## Next chunck of code:
 ## For each line of var_expt, add strain variation, and get stable states.
@@ -491,4 +485,51 @@ ggsave(paste0("various_stuff/working/figures/9strain_CBvar-",
        width = 10)
 
 
+
+
+
+## ------
+
+
+
+## Gradient CB, SB, PB variation  experiment ----
+var_length <- 5
+CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
+CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
+SB_var_gmax_s <- seq(0, 0.1, length=var_length)
+SB_var_h_s = seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- seq(0, 0.1, length=var_length)
+PB_var_h_s = seq(0, -0.5, length=var_length)
+
+# var_length <- 2
+# CB_var_gmax_s <- seq(0, 0.1, length=var_length) 
+# CB_var_h_s = seq(0, -0.5, length=var_length) 
+# SB_var_gmax_s <- seq(0, 0.1, length=var_length) 
+# SB_var_h_s = seq(0, -0.5, length=var_length) 
+# PB_var_gmax_s <- seq(0, 0.1, length=var_length) 
+# PB_var_h_s = seq(0, -0.5, length=var_length) 
+
+
+var_expt <- tibble(CB_var_gmax_s,
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
+
+var_expt <- var_expt %>%
+  nest_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s) %>%
+  mutate(pars = list(add_strain_var(default_9strain,
+                               CB_var_gmax = CB_var_gmax_s,
+                               CB_var_h = CB_var_h_s,
+                               SB_var_gmax = SB_var_gmax_s,
+                               SB_var_h = SB_var_h_s,
+                               PB_var_gmax = PB_var_gmax_s,
+                               PB_var_h = PB_var_h_s)))
+var_expt$pars[[1]]$CB
+var_expt$pars[[2]]$CB
+var_expt$pars[[1]]$PB
+var_expt$pars[[2]]$PB
 
