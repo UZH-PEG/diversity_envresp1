@@ -284,6 +284,13 @@ Then replicated across numerous ecosystems and taxa. That is, we imagine a blue-
 
 ## Relaxing the biological assumptions of the model
 
+Microbial performances are highly species-dependent towards abiotic factors, specially when comparing different functional groups of microorganisms like in this study. Assumptions of our models could be made much more detailed, resulting in highly complex networks. One of the issues that should be discussed is the inhibition role of reduced sulfide compounds to Cyanobacteria. While some studies were discussing these inhibition events due to attacking fotosystem (10.1016/0005-2728(79)90045-8; doi.org/10.1128/AEM.70.2.736-744.2004), other studies reported an even strengthen fotosynthesis effect with specific concentration of H2S ( https://doi.org/10.1111/1462-2920.12791). In addition, some Cyanobacteria like Leptolyngba are even in need of specific sulfur compounds in order to grow (doi.org/10.1038/ismej.2017.193) and are able to even perform anoxygenic photosynthesis. Therefore, the role of H2S seem to be more complicated than our model assumes. 
+
+
+Also the role of light can be discussed, since the functional groups of this study differ in their preferred light intensities (and even wavelength). Future assumptions could include gradient of light intensities, in which Cyanobacteria grow faster with high light intensities (10.1074/jbc.R100003200) and phototrophic sulfur bacteria with very low intensities( 10.4319/lo.1992.37.1.0150). 
+
+
+
 
 
 <https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R>
