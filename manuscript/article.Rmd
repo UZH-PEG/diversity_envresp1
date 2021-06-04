@@ -282,6 +282,10 @@ A research programme that integrates [text from ERC application]. E.g. Global Ch
 
 Then replicated across numerous ecosystems and taxa. That is, we imagine a blue-print / template for proposals that aim to establish such an integrative research programme. This template would contain mandatory workpackages and experiments, and sufficient standardisation to allow for rigorous and quantitative across programme meta-analyses
 
+## Relaxing the biological assumptions of the model
+
+
+
 <https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R>
 
 <https://onlinelibrary.wiley.com/doi/10.1111/ele.13760?af=R>
