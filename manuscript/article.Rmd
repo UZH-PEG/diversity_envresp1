@@ -12,6 +12,11 @@ authors:
     affiliation: University of Zurich
     location: Zurich 8057, Switzerland
     email: rainer.krug@ieu.uzh.ch
+  - name: Any Others
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: any.others@ieu.uzh.ch
   - name: Marcel Suleiman
     department: Department of Evolutionary Biology and Environmental Studies
     affiliation: University of Zurich
@@ -42,7 +47,8 @@ output:
 ```{r include = FALSE}
 knitr::opts_chunk$set(include = FALSE,
                       warning = FALSE,
-                      message = FALSE)
+                      message = FALSE,
+                      cache = TRUE)
 ```
 
 ```{r}
@@ -55,37 +61,37 @@ source(here("simulations/r functions/various_useful_functions.r"))
 
 # Introduction
 
-This report concerns how biodiversity influences the strength and nature of ecosystem responses to environmental change (figure 1: panel a shows linear response with different gradients, large being with low diversity; panel b shows a linear and a non-linear response starting and ending at the same place; panel c shows a hysteretic response, with greater or less range of hysteresis). Strong responses of ecosystems to environmental change imply high *sensitivity* and lack of resistance to environmental change, and higher temporal variability in the face of varying environmental conditions. Greater *non-linearity* in ecosystem responses increases the potential for surprises, such as when an ecosystem that was resistant to an environmental change becomes unexpectedly sensitive to further change. The presence and extent of *hysteresis* in ecosystem responses to environmental driver gradients concerns how readily are ecosystem responses reversed when environmental change is reversed.
+This report concerns how biodiversity influences the strength and nature of ecosystem responses to environmental change (figure 1; panel(a) three ovals, environment oval with arrow to ecosystem property oval, with biodiversity oval pointing the arrow between environment and ecosystem property; panel (b) shows linear response with different gradients, large being with low diversity; panel (c) shows a linear and a non-linear response starting and ending at the same place; panel (d) shows a hysteretic response, with greater or less range of hysteresis). Strong responses of ecosystems to environmental change imply high *sensitivity* and lack of resistance to environmental change, and higher temporal variability in the face of varying environmental conditions. Greater *non-linearity* in ecosystem responses increases the potential for surprises, such as when an ecosystem that was resistant to an environmental change becomes unexpectedly sensitive to further change. The presence and extent of *hysteresis* in ecosystem responses to environmental driver gradients concerns how readily are ecosystem responses reversed when environmental change is reversed.
 
-In this context, a directly relevant aspect of biodiversity is variation in functional traits, i.e. the traits that determine organismal responses to environmental conditions and that determine the effects of organisms on their environment (citation). Variation in functional traits is often termed "functional diversity". There is a considerable amount of theory predicting, and evidence supporting, that greater functional diversity leads to lower temporal variability in ecosystem states variables (such as total biomass) (citations) (Leary, Pennekamp). The mechanism by which this occurs is that greater functional response diversity causes a weaker relationship between an environmental driver gradient and the ecosystem state (figure 1a), due to the functional turnover along the environmental driver gradient that results from variation in organisms' responses to the environmental driver gradient .
+In this context, a directly relevant aspect of biodiversity is variation in functional traits, i.e. the traits that determine organismal responses to environmental conditions and that determine the effects of organisms on their environment (citation). Variation in functional traits is often termed "functional diversity". There is a considerable amount of theory predicting, and evidence supporting, that greater functional diversity leads to lower temporal variability in ecosystem states variables (such as total biomass) (citations) (Leary, Pennekamp). The mechanism by which this occurs is that greater functional response diversity causes a weaker relationship between an environmental driver gradient and the ecosystem state (figure 1a/b), due to the functional turnover along the environmental driver gradient that results from variation in organisms' responses to the environmental driver gradient (citation).
 
-There is less theory about effects of functional diversity on the linearity (figure 1b) and the hysteresis (figure 1c) of ecosystem responses to environmental change. @dakos2019b, in their article *Ecosystem tipping points in an evolving world* asked how changes in functional trait distributions (including evolutionary changes) affect the occurrence of tipping points. They explain that:
+There is less theory about effects of functional diversity on the linearity (figure 1c) and the hysteresis (figure 1d) of ecosystem responses to environmental change. @dakos2019b, in their article *Ecosystem tipping points in an evolving world* asked how changes in functional trait distributions (including evolutionary changes) affect the occurrence of tipping points. They explain that:
 
 -   In general, greater functional response diversity may decrease the likelihood of a catastrophic ecosystem response (Figure 2a in @dakos2019b). Here, we interpret this prediction to be that greater functional response diversity decreases the non-linearity of ecosystem response to environmental driver change, including the extreme non-linearity that can occur when an ecosystem "flips" from one state to another one.
 
 -   Greater functional trait diversity can make a tipping point occur only with greater change in an environmental driver (Figure 2a in @dakos2019b). I.e. functional trait diversity can increase resilience--the extent of environmental change required to push the ecosystem into another state (@holling1973). This could occur if greater functional diversity equates to the presence of organisms with greater tolerance to the environmental driver @dakos2019b.
 
--   On the other hand, the opposite could occur: greater functional diversity could make a tipping point occur with less change in an environmental driver (i.e. may cause lower resilience) (Figure 2c in \@dakos2019b). This could occur if there is selection for greater tolerance is causes, incidentally, selection for lower growth rate, perhaps due to a tradeoff between the two traits.
+-   On the other hand, the opposite could occur: greater functional diversity could make a tipping point occur with less change in an environmental driver (i.e. may cause lower resilience) (Figure 2c in \@dakos2019b). This could occur if there is selection for greater tolerance that causes, incidentally, selection for lower growth rate, perhaps due to a tradeoff between the two traits.
 
 -   Finally, the amount of functional diversity may affect the "recovery trajectory", i.e. the relationship between ecosystem state and the environmental driver when the driver change is reversed @dakos2019b. Put another way, functional diversity may increase or decrease the amount of hysteresis, and may even result in a recovery with lower non-linearity / no tipping-point (Figure 3 in @dakos2019b).
 
-These explanations/predictions were based on the verbal/graphical argumentation @dakos2019b. There were no mathematical models of ecosystem responses to environmental change behind the explanations/predictions. @ceulemans2021, in their article *Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs*, did employ a such a mathematical model.
+These explanations/predictions were based on the verbal/graphical argumentation @dakos2019b. There were no mathematical models of ecosystem responses to environmental change behind the explanations/predictions. @ceulemans2021, in their article *Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs*, did employ a such a mathematical model [to be developed].
 
 We discuss empirical studies in the Discussion section (spoiler--there are few, if any, directly relevant ones).
 
+## Aim and scope of our investigation
 
+Aim:
 
-## Scope of our investigation
+* To provide an answer to the question of how trait variation affects the non-linearity, resilience and hysteresis of ecosystem response to an environmental change.
 
-Questions: - How does variation organismal tolerances affect response
+Scope:
 
-Approach: - Modelling the system with ODEs. - Diversity manipulation (can be considered selection among strains, or selection among species). - Do not include mutation.
+* Mathematical modelling of a microbrial ecosystem. Trait diversity manipulation (can be considered selection among strains, or selection among species). (Do not include mutation or recomination).
 
-According the the questions (in the Introduction) this is what we did:
+* Variation in amount of among strain variation, no variation in number of strains, no variation in strength or shape of the of the tradeoff.
 
-Variation in amount of among strain variation, no variation in number of strains, no variation in strength or shape of the of the tradeoff
-
-Effect of among strain variation on how the steady state(s) of the system varies with in different environmental conditions, and on the dynamical response of system to gradual environmental change.
+* Measurement of the effect on how the steady state(s) of the system varies with in different environmental conditions, and on the dynamical response of system to gradual environmental change.
 
 # Methods
 
@@ -102,6 +108,8 @@ The model ecosystem contains three types (functional groups) of organism (Figure
 Simulation of this ecosystem as a set of ordinary differential equations demonstrated that the presence of alternate stable states depended on the rate at which oxygen diffuses into (or out of) the system [@bush2017]. Low levels of oxygen diffusivity result in only the anoxic state being stable. High levels result in only the oxic state. Intermediate oxygen diffusivity allowed alternate stable states, with the occurring state depending on historical conditions. Historical dominance of cyanobacteria caused the oxic state to occur, which historical dominance of the sulfur bacteria caused the anoxic state to occur. All this was thoroughly and elegantly presented in @bush2017.
 
 As mentioned above, critical for the presence of alternate stable states in this ecosystem is the mutual inhibition between cyanobacteria and sulfur bacteria. This mutual inhibition is created by their intolerance of the chemical substrates that the other produces. Recent experimental evolution studies have demonstrated considerable increases in tolerance. For example, the sulfur bacteria *Desulfovibrio vulgaris* evolved a 32-fold increase in oxygen tolerance, via relatively few mutations [@schoeffler2019]. And the cyanobacterium *Microcystis aeruginosa* evolved a four-fold higher sulfide tolerance via rare spontaneous mutations [@martínclemente2019]. In that study, populations with higher genetic variation and those experiencing slower environmental change (an increase in sulfide concentration) were more likely to persist at high sulfide concentration. Furthemore, there is considerable interspecific variation in tolerances [@schoeffler2019]
+
+"Variation in Sulfide Tolerance of Photosystem II in Phylogenetically Diverse Cyanobacteria from Sulfidic Habitats", by Miller and Bebout (2004) [https://aem.asm.org/content/70/2/736.short]
 
 Physiological tolerances to environmental conditions, including interspecific variation in tolerance and evolution of tolerance, are a key component of the engineering of ecosystem for determining their stability (Minervini *et al.* 2014)(Gómez‐Gras *et al.* 2019)(Cuenca Cambronero *et al.* 2018)(Vos *et al.* 2017)(Evans & Wallenstein 2014)(Rolfe *et al.* 1978)(Knoll & Bauld 1989)(Girvan *et al.* 2005).
 
@@ -150,7 +158,7 @@ In this section we describe how we created variability among the multiple strain
 
 We introduced among-strain variability in maximum growth rate (parameter $G_{max}$) and in the tolerance to the relevant inhibiting chemical substrate (parameter $h$). Among-strain variability was created such that there was a tradeoff between maximum growth rate and tolerance (i.e. high tolerance coinciding with low maximum growth rate) (e.g. Figure \@ref(fig:tradeoff). Our implementation of the variation and tradeoff contain the assumption of a linear tradeoff of log-log transformed among-strain variation.
 
-```{r tradeoff, out.width="0.5\\linewidth", fig.align="center", fig.cap=c("An example of among-strain variation in growth rate and tolerance, and the tradeoff in the variation."), echo = FALSE}
+```{r tradeoff, include = TRUE, echo = FALSE, out.width="0.5\\linewidth", fig.align="center", fig.cap=c("An example of among-strain variation in growth rate and tolerance, and the tradeoff in the variation.")}
 ggplot() +
   geom_point(aes(x = G_max_i, y = h_i)) +
   xlab("Maximum growth rate") +
@@ -273,6 +281,11 @@ What are the priorities for follow-on modelling studies?
 What does this study tell us about effects of functional diversity on ecosystem stability?
 
 What does this study tell us about the effects of evolution on ecosystem stability?
+
+## Further relaxing the assumptions
+
+Deterministic -> stochastic : www.pnas.org/cgi/doi/10.1073/pnas.1414708112
+
 
 ## What are the priorities for subsequent research?
 
