@@ -192,7 +192,7 @@ We implemented the model in the `microxanox` package (**cite the package**) of t
 
 ```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
 #ss_sim_data <- readRDS(here("simulations/sim data/ss_res_grad1_old_strain_var.RDS"))
-ss_sim_data <- readRDS(here("simulations/sim data/ss_res_grad_new2.RDS"))
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_CBSBPB_var.RDS"))
 ss_novar <- ss_sim_data[1,]
 p1  <- plot_ss_result1(ss_novar$ss_res[[1]],
                 ss_novar$CB_var_gmax_s,

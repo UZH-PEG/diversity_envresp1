@@ -58,80 +58,190 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 
 ## Factorial CB, SB, PB variation experiment ----
-CB_var_gmax_s <- seq(0, 0.1, length=2)
-CB_var_h_s = seq(0, -0.5, length=2)
-SB_var_gmax_s <- seq(0, 0.1, length=2)
-SB_var_h_s = seq(0, -0.5, length=2)
-PB_var_gmax_s <- seq(0, 0.1, length=2)
-PB_var_h_s = seq(0, -0.5, length=2)
+# CB_var_gmax_s <- seq(0, 0.1, length=2)
+# CB_var_h_s = seq(0, -0.5, length=2)
+# SB_var_gmax_s <- seq(0, 0.1, length=2)
+# SB_var_h_s = seq(0, -0.5, length=2)
+# PB_var_gmax_s <- seq(0, 0.1, length=2)
+# PB_var_h_s = seq(0, -0.5, length=2)
+# 
+# var_expt <- crossing(CB_var_gmax_s,
+#                      CB_var_h_s,
+#                      SB_var_gmax_s,
+#                      SB_var_h_s,
+#                      PB_var_gmax_s,
+#                      PB_var_h_s)
+# 
+# var_expt <- var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s,
+#   ) %>%
+#   do(pars = add_strain_var(default_9strain,
+#                            CB_var_gmax = .$CB_var_gmax_s,
+#                            CB_var_h = .$CB_var_h_s,
+#                            SB_var_gmax = .$SB_var_gmax_s,
+#                            SB_var_h = .$SB_var_h_s,
+#                            PB_var_gmax = .$PB_var_gmax_s,
+#                            PB_var_h = .$PB_var_h_s))
+# var_expt$pars[[38]]$CB
+# var_expt$pars[[1]]$SB
+# var_expt$pars[[1]]$PB
+# 
+# #var_expt <- var_expt[1,]
+# 
+# ## Next chunck of code:
+# ## For each line of var_expt, add strain variation, and get stable states.
+# var_expt <- var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s) %>%
+#   do(pars = add_strain_var(default_9strain,
+#                            CB_var_gmax = .$CB_var_gmax_s,
+#                            CB_var_h = .$CB_var_h_s,
+#                            SB_var_gmax = .$SB_var_gmax_s,
+#                            SB_var_h = .$SB_var_h_s,
+#                            PB_var_gmax = .$PB_var_gmax_s,
+#                            PB_var_h = .$PB_var_h_s),
+#      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+#   )
+# ## save results to file
+# #saveRDS(var_expt, here("simulations/sim data/ss_res_2.RDS"))
+# 
+# var_expt <- readRDS(here("simulations/sim data/ss_res_2.RDS"))
+# 
+# number <- 1
+# plot_ss_result1(var_expt$ss_res[[number]],
+#                 var_expt$CB_var_gmax_s[number],
+#                 var_expt$CB_var_h_s[number],
+#                 var_expt$SB_var_gmax_s[number],
+#                 var_expt$SB_var_h_s[number],
+#                 var_expt$PB_var_gmax_s[number],
+#                 var_expt$PB_var_h_s[number],
+#                 filename_prefix = here("simulations/figures/ssres_CBSBPB_var"))
+# 
+# var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s) %>%
+#   do(null = plot_ss_result1(.$ss_res[[1]],
+#                             .$CB_var_gmax_s,
+#                             .$CB_var_h_s,
+#                             .$SB_var_gmax_s,
+#                             .$SB_var_h_s,
+#                             .$PB_var_gmax_s,
+#                             .$PB_var_h_s,
+#                             filename_prefix = "ssres_CBSBPB_var"))
+# 
+# # ss_res_oi <- var_expt$ss_res[[1]]
+# # xxx <- ss_res_oi %>%
+# #   select(-initial_N_CB, -a_O) %>%
+# #   mutate(a = 10^a,
+# #          direction = c(rep("up", grid_num_a),
+# #                        rep("down", grid_num_a))) %>%
+# #   gather(species, quantity, 2:(ncol(.)-1)) %>% 
+# #   mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
+# #          functional_group = case_when(str_detect(species, "CB_") ~ "CB",
+# #                                       str_detect(species, "SB_") ~ "SB",
+# #                                       str_detect(species, "PB_") ~ "PB")) %>%
+# #   group_by(direction, a, functional_group) %>%
+# #   summarise(total_quantity = sum(quantity)) %>%
+# #   mutate(log10_total_quantity = log10(total_quantity+1))
+# # xxx %>%
+# #   dplyr::filter(functional_group == "CB") %>%
+# #   ggplot(aes(x = log10(a), y = log10_total_quantity)) +
+# #     geom_path()
 
-var_expt <- crossing(CB_var_gmax_s,
-                     CB_var_h_s,
-                     SB_var_gmax_s,
-                     SB_var_h_s,
-                     PB_var_gmax_s,
-                     PB_var_h_s)
 
-var_expt <- var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s,
-  ) %>%
-  do(pars = add_strain_var(default_9strain,
-                           CB_var_gmax = .$CB_var_gmax_s,
-                           CB_var_h = .$CB_var_h_s,
-                           SB_var_gmax = .$SB_var_gmax_s,
-                           SB_var_h = .$SB_var_h_s,
-                           PB_var_gmax = .$PB_var_gmax_s,
-                           PB_var_h = .$PB_var_h_s))
-var_expt$pars[[38]]$CB
-var_expt$pars[[1]]$SB
-var_expt$pars[[1]]$PB
 
-#var_expt <- var_expt[1,]
 
-## Next chunck of code:
-## For each line of var_expt, add strain variation, and get stable states.
-var_expt <- var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s) %>%
-  do(pars = add_strain_var(default_9strain,
-                           CB_var_gmax = .$CB_var_gmax_s,
-                           CB_var_h = .$CB_var_h_s,
-                           SB_var_gmax = .$SB_var_gmax_s,
-                           SB_var_h = .$SB_var_h_s,
-                           PB_var_gmax = .$PB_var_gmax_s,
-                           PB_var_h = .$PB_var_h_s),
-     ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
-  )
+
+
+## Gradient CB, SB, PB variation  experiment ----
+# var_length <- 20
+# CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
+# CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
+# SB_var_gmax_s <- seq(0, 0.1, length=var_length)
+# SB_var_h_s = seq(0, -0.5, length=var_length)
+# PB_var_gmax_s <- seq(0, 0.1, length=var_length)
+# PB_var_h_s = seq(0, -0.5, length=var_length)
+# 
+# var_expt <- tibble(CB_var_gmax_s,
+#                      CB_var_h_s,
+#                      SB_var_gmax_s,
+#                      SB_var_h_s,
+#                      PB_var_gmax_s,
+#                      PB_var_h_s)
+# 
+# var_expt <- var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s,
+#   ) %>%
+#   do(pars = add_strain_var(default_9strain,
+#                            CB_var_gmax = .$CB_var_gmax_s,
+#                            CB_var_h = .$CB_var_h_s,
+#                            SB_var_gmax = .$SB_var_gmax_s,
+#                            SB_var_h = .$SB_var_h_s,
+#                            PB_var_gmax = .$PB_var_gmax_s,
+#                            PB_var_h = .$PB_var_h_s))
+# var_expt$pars[[1]]$CB
+# var_expt$pars[[2]]$CB
+# var_expt$pars[[1]]$PB
+# var_expt$pars[[2]]$PB
+# 
+# #var_expt <- var_expt[2,]
+# 
+# # ggplot(var_expt$pars[[20]]$CB,
+# #        aes(x = g_max_CB, y = h_SR_CB)) +
+# #   geom_point()
+# # m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+# # par(mfrow = c(2,2))
+# # plot(m1)
+# 
+# ## Next chunck of code:
+# ## For each line of var_expt, add strain variation, and get stable states.
+# var_expt <- var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s) %>%
+#   do(pars = add_strain_var(default_9strain,
+#                            CB_var_gmax = .$CB_var_gmax_s,
+#                            CB_var_h = .$CB_var_h_s,
+#                            SB_var_gmax = .$SB_var_gmax_s,
+#                            SB_var_h = .$SB_var_h_s,
+#                            PB_var_gmax = .$PB_var_gmax_s,
+#                            PB_var_h = .$PB_var_h_s),
+#      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+#   )
 ## save results to file
-#saveRDS(var_expt, here("simulations/sim data/ss_res_2.RDS"))
+##saveRDS(var_expt, here("simulations/sim data/ss_res_CBSBPB_var.RDS"))
 
-var_expt <- readRDS(here("simulations/sim data/ss_res_2.RDS"))
+#var_expt <- readRDS(here("simulations/sim data/ss_res_CBSBPB_var.RDS"))
 
-number <- 1
-plot_ss_result1(var_expt$ss_res[[number]],
-                var_expt$CB_var_gmax_s[number],
-                var_expt$CB_var_h_s[number],
-                var_expt$SB_var_gmax_s[number],
-                var_expt$SB_var_h_s[number],
-                var_expt$PB_var_gmax_s[number],
-                var_expt$PB_var_h_s[number],
-                filename_prefix = here("simulations/figures/ssres_CBSBPB_var"))
-
-var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s) %>%
-  do(null = plot_ss_result1(.$ss_res[[1]],
-                            .$CB_var_gmax_s,
-                            .$CB_var_h_s,
-                            .$SB_var_gmax_s,
-                            .$SB_var_h_s,
-                            .$PB_var_gmax_s,
-                            .$PB_var_h_s,
-                            filename_prefix = "ssres_CBSBPB_var"))
+# number <- 2
+# 
+# plot_ss_result1(var_expt$ss_res[[number]],
+#                 var_expt$CB_var_gmax_s[number],
+#                 var_expt$CB_var_h_s[number],
+#                 var_expt$SB_var_gmax_s[number],
+#                 var_expt$SB_var_h_s[number],
+#                 var_expt$PB_var_gmax_s[number],
+#                 var_expt$PB_var_h_s[number],
+#                 filename_prefix = here("simulations/figures/ssres_CBSBPB_var"))
+# 
+# var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s) %>%
+#   do(null = plot_ss_result1(.$ss_res[[1]],
+#                             .$CB_var_gmax_s,
+#                             .$CB_var_h_s,
+#                             .$SB_var_gmax_s,
+#                             .$SB_var_h_s,
+#                             .$PB_var_gmax_s,
+#                             .$PB_var_h_s,
+#                             filename_prefix = here("simulations/figures/ssres_CBSBPB_var")))
 
 # ss_res_oi <- var_expt$ss_res[[1]]
 # xxx <- ss_res_oi %>%
@@ -155,23 +265,21 @@ var_expt %>%
 
 
 
-
-
-## Gradient CB, SB, PB variation  experiment ----
+## Gradient CB variation  experiment ----
 var_length <- 20
 CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
-CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
-SB_var_gmax_s <- seq(0, 0.1, length=var_length)
-SB_var_h_s = seq(0, -0.5, length=var_length)
-PB_var_gmax_s <- seq(0, 0.1, length=var_length)
-PB_var_h_s = seq(0, -0.5, length=var_length)
+CB_var_h_s <- seq(0, -0.5, length=var_length) * 0.15789474
+SB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
+SB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
+PB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
 
 var_expt <- tibble(CB_var_gmax_s,
-                     CB_var_h_s,
-                     SB_var_gmax_s,
-                     SB_var_h_s,
-                     PB_var_gmax_s,
-                     PB_var_h_s)
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
 
 var_expt <- var_expt %>%
   group_by(CB_var_gmax_s, CB_var_h_s,
@@ -215,36 +323,33 @@ var_expt <- var_expt %>%
      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
   )
 ## save results to file
-saveRDS(var_expt, here("simulations/sim data/ss_res_grad_newXXX.RDS"))
+saveRDS(var_expt, here("simulations/sim data/ss_res_CBvar.RDS"))
 
-#var_expt <- readRDS(here("simulations/sim data/ss_res_grad1.RDS"))
+#var_expt <- readRDS(here("simulations/sim data/ss_res_CBvar.RDS"))
 
-number <- 2
-
-plot_ss_result1(var_expt$ss_res[[number]],
-                var_expt$CB_var_gmax_s[number],
-                var_expt$CB_var_h_s[number],
-                var_expt$SB_var_gmax_s[number],
-                var_expt$SB_var_h_s[number],
-                var_expt$PB_var_gmax_s[number],
-                var_expt$PB_var_h_s[number],
-                filename_prefix = here("simulations/figures/ssres_CBSBPB_var"))
-
-
-getwd()
-
-var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s) %>%
-  do(null = plot_ss_result1(.$ss_res[[1]],
-                            .$CB_var_gmax_s,
-                            .$CB_var_h_s,
-                            .$SB_var_gmax_s,
-                            .$SB_var_h_s,
-                            .$PB_var_gmax_s,
-                            .$PB_var_h_s,
-                            filename_prefix = here("simulations/figures/ssres_CBSBPB_var")))
+# number <- 2
+# 
+# plot_ss_result1(var_expt$ss_res[[number]],
+#                 var_expt$CB_var_gmax_s[number],
+#                 var_expt$CB_var_h_s[number],
+#                 var_expt$SB_var_gmax_s[number],
+#                 var_expt$SB_var_h_s[number],
+#                 var_expt$PB_var_gmax_s[number],
+#                 var_expt$PB_var_h_s[number],
+#                 filename_prefix = here("simulations/figures/ssres_CBSBPB_var"))
+# 
+# var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s) %>%
+#   do(null = plot_ss_result1(.$ss_res[[1]],
+#                             .$CB_var_gmax_s,
+#                             .$CB_var_h_s,
+#                             .$SB_var_gmax_s,
+#                             .$SB_var_h_s,
+#                             .$PB_var_gmax_s,
+#                             .$PB_var_h_s,
+#                             filename_prefix = here("simulations/figures/ssres_CBSBPB_var")))
 
 # ss_res_oi <- var_expt$ss_res[[1]]
 # xxx <- ss_res_oi %>%
@@ -264,6 +369,195 @@ var_expt %>%
 #   dplyr::filter(functional_group == "CB") %>%
 #   ggplot(aes(x = log10(a), y = log10_total_quantity)) +
 #     geom_path()
+
+
+
+## Gradient SB variation  experiment ----
+var_length <- 20
+CB_var_gmax_s <- 0 ##seq(0, 0.1, length=var_length) * 0.15789474
+CB_var_h_s <- 0 ##seq(0, -0.5, length=var_length) * 0.15789474
+SB_var_gmax_s <- seq(0, 0.1, length=var_length)
+SB_var_h_s <- seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
+PB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
+
+var_expt <- tibble(CB_var_gmax_s,
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
+
+var_expt <- var_expt %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s,
+  ) %>%
+  do(pars = add_strain_var(default_9strain,
+                           CB_var_gmax = .$CB_var_gmax_s,
+                           CB_var_h = .$CB_var_h_s,
+                           SB_var_gmax = .$SB_var_gmax_s,
+                           SB_var_h = .$SB_var_h_s,
+                           PB_var_gmax = .$PB_var_gmax_s,
+                           PB_var_h = .$PB_var_h_s))
+var_expt$pars[[1]]$CB
+var_expt$pars[[2]]$CB
+var_expt$pars[[1]]$PB
+var_expt$pars[[2]]$PB
+
+#var_expt <- var_expt[2,]
+
+# ggplot(var_expt$pars[[20]]$CB,
+#        aes(x = g_max_CB, y = h_SR_CB)) +
+#   geom_point()
+# m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+# par(mfrow = c(2,2))
+# plot(m1)
+
+## Next chunck of code:
+## For each line of var_expt, add strain variation, and get stable states.
+var_expt <- var_expt %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s) %>%
+  do(pars = add_strain_var(default_9strain,
+                           CB_var_gmax = .$CB_var_gmax_s,
+                           CB_var_h = .$CB_var_h_s,
+                           SB_var_gmax = .$SB_var_gmax_s,
+                           SB_var_h = .$SB_var_h_s,
+                           PB_var_gmax = .$PB_var_gmax_s,
+                           PB_var_h = .$PB_var_h_s),
+     ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+  )
+## save results to file
+saveRDS(var_expt, here("simulations/sim data/ss_res_SBvar.RDS"))
+
+
+
+
+
+
+## Gradient PB variation  experiment ----
+var_length <- 20
+CB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length) * 0.15789474
+CB_var_h_s <- 0 ## seq(0, -0.5, length=var_length) * 0.15789474
+SB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
+SB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- seq(0, 0.1, length=var_length)
+PB_var_h_s <- seq(0, -0.5, length=var_length)
+
+var_expt <- tibble(CB_var_gmax_s,
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
+
+var_expt <- var_expt %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s,
+  ) %>%
+  do(pars = add_strain_var(default_9strain,
+                           CB_var_gmax = .$CB_var_gmax_s,
+                           CB_var_h = .$CB_var_h_s,
+                           SB_var_gmax = .$SB_var_gmax_s,
+                           SB_var_h = .$SB_var_h_s,
+                           PB_var_gmax = .$PB_var_gmax_s,
+                           PB_var_h = .$PB_var_h_s))
+var_expt$pars[[1]]$CB
+var_expt$pars[[2]]$CB
+var_expt$pars[[1]]$PB
+var_expt$pars[[2]]$PB
+
+#var_expt <- var_expt[2,]
+
+# ggplot(var_expt$pars[[20]]$CB,
+#        aes(x = g_max_CB, y = h_SR_CB)) +
+#   geom_point()
+# m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+# par(mfrow = c(2,2))
+# plot(m1)
+
+## Next chunck of code:
+## For each line of var_expt, add strain variation, and get stable states.
+var_expt <- var_expt %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s) %>%
+  do(pars = add_strain_var(default_9strain,
+                           CB_var_gmax = .$CB_var_gmax_s,
+                           CB_var_h = .$CB_var_h_s,
+                           SB_var_gmax = .$SB_var_gmax_s,
+                           SB_var_h = .$SB_var_h_s,
+                           PB_var_gmax = .$PB_var_gmax_s,
+                           PB_var_h = .$PB_var_h_s),
+     ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+  )
+## save results to file
+saveRDS(var_expt, here("simulations/sim data/ss_res_PBvar.RDS"))
+
+
+## Gradient SBPB variation  experiment ----
+var_length <- 20
+CB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length) * 0.15789474
+CB_var_h_s <- 0 ## seq(0, -0.5, length=var_length) * 0.15789474
+SB_var_gmax_s <- seq(0, 0.1, length=var_length)
+SB_var_h_s <- seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- seq(0, 0.1, length=var_length)
+PB_var_h_s <- seq(0, -0.5, length=var_length)
+
+var_expt <- tibble(CB_var_gmax_s,
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
+
+var_expt <- var_expt %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s,
+  ) %>%
+  do(pars = add_strain_var(default_9strain,
+                           CB_var_gmax = .$CB_var_gmax_s,
+                           CB_var_h = .$CB_var_h_s,
+                           SB_var_gmax = .$SB_var_gmax_s,
+                           SB_var_h = .$SB_var_h_s,
+                           PB_var_gmax = .$PB_var_gmax_s,
+                           PB_var_h = .$PB_var_h_s))
+var_expt$pars[[1]]$CB
+var_expt$pars[[2]]$CB
+var_expt$pars[[1]]$PB
+var_expt$pars[[2]]$PB
+
+#var_expt <- var_expt[2,]
+
+# ggplot(var_expt$pars[[20]]$CB,
+#        aes(x = g_max_CB, y = h_SR_CB)) +
+#   geom_point()
+# m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+# par(mfrow = c(2,2))
+# plot(m1)
+
+## Next chunck of code:
+## For each line of var_expt, add strain variation, and get stable states.
+var_expt <- var_expt %>%
+  group_by(CB_var_gmax_s, CB_var_h_s,
+           SB_var_gmax_s, SB_var_h_s,
+           PB_var_gmax_s, PB_var_h_s) %>%
+  do(pars = add_strain_var(default_9strain,
+                           CB_var_gmax = .$CB_var_gmax_s,
+                           CB_var_h = .$CB_var_h_s,
+                           SB_var_gmax = .$SB_var_gmax_s,
+                           SB_var_h = .$SB_var_h_s,
+                           PB_var_gmax = .$PB_var_gmax_s,
+                           PB_var_h = .$PB_var_h_s),
+     ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+  )
+## save results to file
+saveRDS(var_expt, here("simulations/sim data/ss_res_SBPBvar.RDS"))
+
 
 
 
