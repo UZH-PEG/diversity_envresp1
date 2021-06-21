@@ -2,11 +2,11 @@
 
 rm(list = ls())
 
-# devtools::install_github("opetchey/microxanox",
-#                          ref="main",
-#                          auth_token = "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",
-#                          build_vignettes = TRUE,
-#                          force = TRUE)
+devtools::install_github("opetchey/microxanox",
+                          ref="main",
+                          auth_token = "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",
+                          build_vignettes = FALSE,
+                          force = TRUE)
 
 library(tidyverse)
 library(microxanox)
@@ -215,7 +215,7 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 #      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
 #   )
 ## save results to file
-##saveRDS(var_expt, here("simulations/sim data/ss_res_CBSBPB_var.RDS"))
+##saveRDS(var_expt, here("simulations/sim data/ss_res_grad_CBSBPB_var.RDS"))
 
 #var_expt <- readRDS(here("simulations/sim data/ss_res_CBSBPB_var.RDS"))
 
@@ -323,7 +323,7 @@ var_expt <- var_expt %>%
      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
   )
 ## save results to file
-saveRDS(var_expt, here("simulations/sim data/ss_res_CBvar.RDS"))
+#saveRDS(var_expt, here("simulations/sim data/ss_res_grad_CB_var.RDS"))
 
 #var_expt <- readRDS(here("simulations/sim data/ss_res_CBvar.RDS"))
 
@@ -430,7 +430,7 @@ var_expt <- var_expt %>%
      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
   )
 ## save results to file
-saveRDS(var_expt, here("simulations/sim data/ss_res_SBvar.RDS"))
+#saveRDS(var_expt, here("simulations/sim data/ss_res_grad_SB_var.RDS"))
 
 
 
@@ -446,56 +446,9 @@ SB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
 PB_var_gmax_s <- seq(0, 0.1, length=var_length)
 PB_var_h_s <- seq(0, -0.5, length=var_length)
 
-var_expt <- tibble(CB_var_gmax_s,
-                   CB_var_h_s,
-                   SB_var_gmax_s,
-                   SB_var_h_s,
-                   PB_var_gmax_s,
-                   PB_var_h_s)
-
-var_expt <- var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s,
-  ) %>%
-  do(pars = add_strain_var(default_9strain,
-                           CB_var_gmax = .$CB_var_gmax_s,
-                           CB_var_h = .$CB_var_h_s,
-                           SB_var_gmax = .$SB_var_gmax_s,
-                           SB_var_h = .$SB_var_h_s,
-                           PB_var_gmax = .$PB_var_gmax_s,
-                           PB_var_h = .$PB_var_h_s))
-var_expt$pars[[1]]$CB
-var_expt$pars[[2]]$CB
-var_expt$pars[[1]]$PB
-var_expt$pars[[2]]$PB
-
-#var_expt <- var_expt[2,]
-
-# ggplot(var_expt$pars[[20]]$CB,
-#        aes(x = g_max_CB, y = h_SR_CB)) +
-#   geom_point()
-# m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
-# par(mfrow = c(2,2))
-# plot(m1)
-
-## Next chunck of code:
-## For each line of var_expt, add strain variation, and get stable states.
-var_expt <- var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s) %>%
-  do(pars = add_strain_var(default_9strain,
-                           CB_var_gmax = .$CB_var_gmax_s,
-                           CB_var_h = .$CB_var_h_s,
-                           SB_var_gmax = .$SB_var_gmax_s,
-                           SB_var_h = .$SB_var_h_s,
-                           PB_var_gmax = .$PB_var_gmax_s,
-                           PB_var_h = .$PB_var_h_s),
-     ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
-  )
+var_expt <- run_ss_var_experiment()
 ## save results to file
-saveRDS(var_expt, here("simulations/sim data/ss_res_PBvar.RDS"))
+saveRDS(var_expt, here("simulations/sim data/ss_res_grad_PB_var.RDS"))
 
 
 ## Gradient SBPB variation  experiment ----
@@ -507,57 +460,62 @@ SB_var_h_s <- seq(0, -0.5, length=var_length)
 PB_var_gmax_s <- seq(0, 0.1, length=var_length)
 PB_var_h_s <- seq(0, -0.5, length=var_length)
 
-var_expt <- tibble(CB_var_gmax_s,
-                   CB_var_h_s,
-                   SB_var_gmax_s,
-                   SB_var_h_s,
-                   PB_var_gmax_s,
-                   PB_var_h_s)
-
-var_expt <- var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s,
-  ) %>%
-  do(pars = add_strain_var(default_9strain,
-                           CB_var_gmax = .$CB_var_gmax_s,
-                           CB_var_h = .$CB_var_h_s,
-                           SB_var_gmax = .$SB_var_gmax_s,
-                           SB_var_h = .$SB_var_h_s,
-                           PB_var_gmax = .$PB_var_gmax_s,
-                           PB_var_h = .$PB_var_h_s))
-var_expt$pars[[1]]$CB
-var_expt$pars[[2]]$CB
-var_expt$pars[[1]]$PB
-var_expt$pars[[2]]$PB
-
-#var_expt <- var_expt[2,]
-
-# ggplot(var_expt$pars[[20]]$CB,
-#        aes(x = g_max_CB, y = h_SR_CB)) +
-#   geom_point()
-# m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
-# par(mfrow = c(2,2))
-# plot(m1)
-
-## Next chunck of code:
-## For each line of var_expt, add strain variation, and get stable states.
-var_expt <- var_expt %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s) %>%
-  do(pars = add_strain_var(default_9strain,
-                           CB_var_gmax = .$CB_var_gmax_s,
-                           CB_var_h = .$CB_var_h_s,
-                           SB_var_gmax = .$SB_var_gmax_s,
-                           SB_var_h = .$SB_var_h_s,
-                           PB_var_gmax = .$PB_var_gmax_s,
-                           PB_var_h = .$PB_var_h_s),
-     ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
-  )
+var_expt <- run_ss_var_experiment()
 ## save results to file
-saveRDS(var_expt, here("simulations/sim data/ss_res_SBPBvar.RDS"))
+saveRDS(var_expt, here("simulations/sim data/ss_res_grad_SBPB_var.RDS"))
 
+# 
+# var_expt <- tibble(CB_var_gmax_s,
+#                    CB_var_h_s,
+#                    SB_var_gmax_s,
+#                    SB_var_h_s,
+#                    PB_var_gmax_s,
+#                    PB_var_h_s)
+# 
+# var_expt <- var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s,
+#   ) %>%
+#   do(pars = add_strain_var(default_9strain,
+#                            CB_var_gmax = .$CB_var_gmax_s,
+#                            CB_var_h = .$CB_var_h_s,
+#                            SB_var_gmax = .$SB_var_gmax_s,
+#                            SB_var_h = .$SB_var_h_s,
+#                            PB_var_gmax = .$PB_var_gmax_s,
+#                            PB_var_h = .$PB_var_h_s))
+# var_expt$pars[[1]]$CB
+# var_expt$pars[[2]]$CB
+# var_expt$pars[[1]]$PB
+# var_expt$pars[[2]]$PB
+# 
+# #var_expt <- var_expt[2,]
+# 
+# # ggplot(var_expt$pars[[20]]$CB,
+# #        aes(x = g_max_CB, y = h_SR_CB)) +
+# #   geom_point()
+# # m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+# # par(mfrow = c(2,2))
+# # plot(m1)
+# 
+# ## Next chunck of code:
+# ## For each line of var_expt, add strain variation, and get stable states.
+# var_expt <- var_expt %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s) %>%
+#   do(pars = add_strain_var(default_9strain,
+#                            CB_var_gmax = .$CB_var_gmax_s,
+#                            CB_var_h = .$CB_var_h_s,
+#                            SB_var_gmax = .$SB_var_gmax_s,
+#                            SB_var_h = .$SB_var_h_s,
+#                            PB_var_gmax = .$PB_var_gmax_s,
+#                            PB_var_h = .$PB_var_h_s),
+#      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+#   )
+# ## save results to file
+# saveRDS(var_expt, here("simulations/sim data/ss_res_grad_SBPB_var.RDS"))
+# 
 
 
 

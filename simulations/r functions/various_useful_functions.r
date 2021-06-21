@@ -30,6 +30,61 @@ plot_and_save <- function(CB_var_gmax, CB_var_h,
 }
 
 
+run_ss_var_experiment <- function() {
+  
+  var_expt <- tibble(CB_var_gmax_s,
+                     CB_var_h_s,
+                     SB_var_gmax_s,
+                     SB_var_h_s,
+                     PB_var_gmax_s,
+                     PB_var_h_s)
+  
+  var_expt <- var_expt %>%
+    group_by(CB_var_gmax_s, CB_var_h_s,
+             SB_var_gmax_s, SB_var_h_s,
+             PB_var_gmax_s, PB_var_h_s,
+    ) %>%
+    do(pars = add_strain_var(default_9strain,
+                             CB_var_gmax = .$CB_var_gmax_s,
+                             CB_var_h = .$CB_var_h_s,
+                             SB_var_gmax = .$SB_var_gmax_s,
+                             SB_var_h = .$SB_var_h_s,
+                             PB_var_gmax = .$PB_var_gmax_s,
+                             PB_var_h = .$PB_var_h_s))
+  #var_expt$pars[[1]]$CB
+  #var_expt$pars[[2]]$CB
+  #var_expt$pars[[1]]$PB
+  #var_expt$pars[[2]]$PB
+  
+  #var_expt <- var_expt[2,]
+  
+  # ggplot(var_expt$pars[[20]]$CB,
+  #        aes(x = g_max_CB, y = h_SR_CB)) +
+  #   geom_point()
+  # m1 <- lm(h_SR_CB ~ g_max_CB, data = var_expt$pars[[20]]$CB)
+  # par(mfrow = c(2,2))
+  # plot(m1)
+  
+  ## Next chunck of code:
+  ## For each line of var_expt, add strain variation, and get stable states.
+  var_expt <- var_expt %>%
+    group_by(CB_var_gmax_s, CB_var_h_s,
+             SB_var_gmax_s, SB_var_h_s,
+             PB_var_gmax_s, PB_var_h_s) %>%
+    do(pars = add_strain_var(default_9strain,
+                             CB_var_gmax = .$CB_var_gmax_s,
+                             CB_var_h = .$CB_var_h_s,
+                             SB_var_gmax = .$SB_var_gmax_s,
+                             SB_var_h = .$SB_var_h_s,
+                             PB_var_gmax = .$PB_var_gmax_s,
+                             PB_var_h = .$PB_var_h_s),
+       ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+    )
+  var_expt
+}
+
+
+
 
 add_strain_var_old <- function(x,
                            CB_var_gmax=0, CB_var_h=0,
