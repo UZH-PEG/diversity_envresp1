@@ -71,7 +71,7 @@ There is less theory about effects of functional diversity on the linearity (fig
 
 -   Greater functional trait diversity can make a tipping point occur only with greater change in an environmental driver (Figure 2a in @dakos2019b). I.e. functional trait diversity can increase resilience--the extent of environmental change required to push the ecosystem into another state (@holling1973). This could occur if greater functional diversity equates to the presence of organisms with greater tolerance to the environmental driver @dakos2019b.
 
--   On the other hand, the opposite could occur: greater functional diversity could make a tipping point occur with less change in an environmental driver (i.e. may cause lower resilience) (Figure 2c in \@dakos2019b). This could occur if there is selection for greater tolerance that causes, incidentally, selection for lower growth rate, perhaps due to a tradeoff between the two traits.
+-   On the other hand, the opposite could occur: greater functional diversity could make a tipping point occur with less change in an environmental driver (i.e. may cause lower resilience) (Figure 2c in @dakos2019b). This could occur if there is selection for greater tolerance that causes, incidentally, selection for lower growth rate, perhaps due to a tradeoff between the two traits.
 
 -   Finally, the amount of functional diversity may affect the "recovery trajectory", i.e. the relationship between ecosystem state and the environmental driver when the driver change is reversed @dakos2019b. Put another way, functional diversity may increase or decrease the amount of hysteresis, and may even result in a recovery with lower non-linearity / no tipping-point (Figure 3 in @dakos2019b).
 
@@ -89,7 +89,7 @@ Scope:
 
 * Mathematical modelling of a microbrial ecosystem. Trait diversity manipulation (can be considered selection among strains, or selection among species). (Do not include mutation or recomination).
 
-* Variation in amount of among strain variation, no variation in number of strains, no variation in strength or shape of the of the tradeoff.
+* Variation in amount of among strain variation, no variation in number of strains, no variation in strength or shape of the of any tradeoff.
 
 * Measurement of the effect on how the steady state(s) of the system varies with in different environmental conditions, and on the dynamical response of system to gradual environmental change.
 
@@ -119,7 +119,7 @@ Physiological tolerances to environmental conditions, including interspecific va
 
 Bush et al (2017) contains an accessible and complete description of the model of the ecosystem, including rate equations, parameter values, and initial conditions. These features are also represented and documented in the `microxanox` R package (**cite the package**). Therefore, here we only describe the relatively straightforward extension we used to model multiple strains per functional group.
 
-Each of the strains within each functional groups has its own parameter set and state variable. Thus a system with nine strains within each functional group has 27 state variables, plus another four (one for each of the four chemical substrates). Other than having potentially different parameter values (e.g. maximum growth rate and tolerance parameter) the dynamics of the strains in a functional were described by the same equations. Hence, when parameterised with multiple strains per functional group, but no variation among strains (within functional groups), the system behaves identically to when there is only one strain per functional group (see the `microxanox` R package *User Guide* for a demonstration).
+Each of the strains within each functional groups has its own parameter set and state variable. Thus a system with nine strains within each functional group has 27 state variables, plus another four (one for each of the four chemical substrates). Other than having potentially different parameter values (e.g. maximum growth rate and tolerance parameters) the dynamics of the strains in a functional were described by the same equations. Hence, when parameterised with multiple strains per functional group, but no variation among strains (within functional groups), the system behaves identically to when there is only one strain per functional group (see the `microxanox` R package *User Guide* for a demonstration).
 
 The only other necessary modification was to include summation terms in each of the four ordinary differential equations describing the rates of change of the four chemical substrates. This was required in order to appropriately account for the production and consumption of these substrates by multiple strains.
 
@@ -192,7 +192,7 @@ We implemented the model in the `microxanox` package (**cite the package**) of t
 
 ```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
 #ss_sim_data <- readRDS(here("simulations/sim data/ss_res_grad1_old_strain_var.RDS"))
-ss_sim_data <- readRDS(here("simulations/sim data/ss_res_CBSBPB_var.RDS"))
+ss_sim_data <- readRDS(here("simulations/sim data/ss_res_CBvar.RDS"))
 ss_novar <- ss_sim_data[1,]
 p1  <- plot_ss_result1(ss_novar$ss_res[[1]],
                 ss_novar$CB_var_gmax_s,
