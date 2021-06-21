@@ -191,16 +191,13 @@ We implemented the model in the `microxanox` package (**cite the package**) of t
 ## Figure: Stable states without variation
 
 ```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
-#ss_sim_data <- readRDS(here("simulations/sim data/ss_res_grad1_old_strain_var.RDS"))
-ss_sim_data <- readRDS(here("simulations/sim data/ss_res_CBvar.RDS"))
-ss_novar <- ss_sim_data[1,]
-p1  <- plot_ss_result1(ss_novar$ss_res[[1]],
-                ss_novar$CB_var_gmax_s,
-                ss_novar$CB_var_h_s,
-                ss_novar$SB_var_gmax_s,
-                ss_novar$SB_var_h_s,
-                ss_novar$PB_var_gmax_s,
-                ss_novar$PB_var_h_s,
+CBSBPB_data <- readRDS(here("simulations/sim data/ss_res_grad_CBSBPB_var.RDS"))
+
+ss_exp_result <- CBSBPB_data
+result_index <- 1
+
+p1  <- plot_ss_result1(CBSBPB_data,
+                result_index = 1,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1
@@ -209,17 +206,16 @@ p1
 
 X-axis must be labelled log10(a).
 
-## Figure: Stable states with variation and tradeoff
+## Figure: CBSBPB Stable states with variation and tradeoff
 
 ```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
-ss_var <- ss_sim_data[20,]
-p2  <- plot_ss_result1(ss_var$ss_res[[1]],
-                ss_var$CB_var_gmax_s,
-                ss_var$CB_var_h_s,
-                ss_var$SB_var_gmax_s,
-                ss_var$SB_var_h_s,
-                ss_var$PB_var_gmax_s,
-                ss_var$PB_var_h_s,
+p2  <- plot_ss_result1(tmp2$ss_res[[1]],
+                tmp2$CB_var_gmax_s,
+                tmp2$CB_var_h_s,
+                tmp2$SB_var_gmax_s,
+                tmp2$SB_var_h_s,
+                tmp2$PB_var_gmax_s,
+                tmp2$PB_var_h_s,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p2
@@ -228,19 +224,95 @@ p2
 
 X-axis must be labelled log10(a).
 
-```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("CBSBPB var"), echo=FALSE}
 
 #ss_result1 <- ss_novar$ss_res[[1]]
 #ss_result2 <- ss_var$ss_res[[1]]
 
-p_overlay <- plot_ss_result2(ss_novar$ss_res[[1]],
-                             ss_var$ss_res[[1]],
+p_overlay <- plot_ss_result2(tmp1$ss_res[[1]],
+                             tmp2$ss_res[[1]],
                              xlims = c(-7, -1))
 
 p_overlay
 ```
 
 X-axis must be labelled log10(a).
+
+
+
+## Figure: CB Stable states with variation and tradeoff
+
+```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+CB_data <- readRDS(here("simulations/sim data/ss_res_grad_CB_var.RDS"))
+tmp3 <- CB_data[20,]
+
+p2  <- plot_ss_result1(tmp3$ss_res[[1]],
+                tmp3$CB_var_gmax_s,
+                tmp3$CB_var_h_s,
+                tmp3$SB_var_gmax_s,
+                tmp3$SB_var_h_s,
+                tmp3$PB_var_gmax_s,
+                tmp3$PB_var_h_s,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p2
+
+```
+
+X-axis must be labelled log10(a).
+
+```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("CBSBPB var"), echo=FALSE}
+
+#ss_result1 <- ss_novar$ss_res[[1]]
+#ss_result2 <- ss_var$ss_res[[1]]
+
+p_overlay <- plot_ss_result2(tmp1$ss_res[[1]],
+                             tmp3$ss_res[[1]],
+                             xlims = c(-7, -1))
+
+p_overlay
+```
+
+X-axis must be labelled log10(a).
+
+
+## Figure: SB Stable states with variation and tradeoff
+
+```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+SB_data <- readRDS(here("simulations/sim data/ss_res_grad_SB_var.RDS"))
+tmp4 <- SB_data[20,]
+
+p2  <- plot_ss_result1(tmp4$ss_res[[1]],
+                tmp4$CB_var_gmax_s,
+                tmp4$CB_var_h_s,
+                tmp4$SB_var_gmax_s,
+                tmp4$SB_var_h_s,
+                tmp4$PB_var_gmax_s,
+                tmp4$PB_var_h_s,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p2
+
+```
+
+X-axis must be labelled log10(a).
+
+```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("CBSBPB var"), echo=FALSE}
+
+#ss_result1 <- ss_novar$ss_res[[1]]
+#ss_result2 <- ss_var$ss_res[[1]]
+
+p_overlay <- plot_ss_result2(tmp1$ss_res[[1]],
+                             tmp4$ss_res[[1]],
+                             xlims = c(-7, -1))
+
+p_overlay
+```
+
+X-axis must be labelled log10(a).
+
+
+
 
 ## Figure: hysteresis, shift point, nonlinearity, as var increases.
 
@@ -249,23 +321,26 @@ Resolution of a_grid with 100 steps is about 0.03 units, which is about the reso
 ```{r ss_var3, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
 #ss_sim_data <- readRDS(here("simulations/sim data/ss_res_3.RDS"))
 
-ss_sim_data <- ss_sim_data %>%
+CBSBPB_data <- CBSBPB_data %>%
   group_by(CB_var_gmax_s, CB_var_h_s,
            SB_var_gmax_s, SB_var_h_s,
            PB_var_gmax_s, PB_var_h_s) %>%
   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
-results <- unnest(ss_sim_data, cols = c(stability_measures))
+results <- unnest(CBSBPB_data, cols = c(stability_measures))
 
 results %>%
   filter(Species == "O") %>%
   ggplot(aes(x = CB_var_gmax_s, y = hyst_range)) +
   geom_point()
 
+
+
+
 ```
 
 ## Figure: Temporal switches
 
-To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
+Maybe... to be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
 
 # Discussion
 

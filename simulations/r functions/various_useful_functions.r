@@ -118,10 +118,8 @@ plot_and_save <- function(CB_var_gmax, CB_var_h,
 }
 
 
-plot_ss_result1 <- function(ss_result,
-                            CB_var_gmax, CB_var_h,
-                            SB_var_gmax, SB_var_h,
-                            PB_var_gmax, PB_var_h,
+plot_ss_result1 <- function(ss_exp_result,
+                            result_index,
                             filename_prefix,
                             save_image_file = TRUE) {
   
@@ -129,12 +127,15 @@ plot_ss_result1 <- function(ss_result,
   colfunc_SB <- colorRampPalette(c("#FCBEB3", "#7D1402"))
   colfunc_PB <- colorRampPalette(c("#F9AEFC", "#6E0172"))
   
+  ss_result <- ss_exp_result[result_index,]$ss_res[[1]]
+  
   temp <- ss_result %>%
-    select(-initial_N_CB, -a_O) %>%
     mutate(a = 10^a) %>%
-    arrange(a) %>%
-    mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-    gather(species, quantity, 2:(ncol(.)-1)) %>% 
+    #arrange(a) %>%
+    #mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+    mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+    #select(-initial_N_CB, -a_O) %>%
+    gather(species, quantity, 1:(ncol(.)-4)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -159,7 +160,7 @@ plot_ss_result1 <- function(ss_result,
     xlab('a') +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3))
-  p1
+  #p1
   
   p2 <- temp %>%
     dplyr::filter(functional_group == "SB") %>%
@@ -186,17 +187,17 @@ plot_ss_result1 <- function(ss_result,
     ylab('log10(quantity [cells])') +
     xlab('a') 
   
-  patchwork <- p1 / p2 / p3 / p4
+  patchwork <- p1 / p2 / p3 / p4 +
+    plot_annotation(
+    title = paste0("CB_gmax_var = ", as.numeric(ss_exp_result[result_index,"CB_var_gmax_s"]),
+                   " CB_h_var =", as.numeric(ss_exp_result[result_index,"CB_var_h_s"]),
+                   "\nSB_gmax_var = ", as.numeric(ss_exp_result[result_index,"SB_var_gmax_s"]),
+                   " SB_h_var =", as.numeric(ss_exp_result[result_index,"SB_var_h_s"]),
+                   "\nPB_gmax_var = ", as.numeric(ss_exp_result[result_index,"PB_var_gmax_s"]),
+                   " PB_h_var =", as.numeric(ss_exp_result[result_index,"PB_var_h_s"])))
   
   if(save_image_file) {
     
-    patchwork + plot_annotation(
-      title = paste0("CB_gmax_var = ", CB_var_gmax,
-                     " CB_h_var =", CB_var_h,
-                     "\nSB_gmax_var = ", SB_var_gmax,
-                     " SB_h_var =", SB_var_h,
-                     "\nPB_gmax_var = ", PB_var_gmax,
-                     " PB_h_var =", PB_var_h))
     
     ggsave(paste0(filename_prefix,
                   "-CB_", round(CB_var_gmax,3), "_", round(CB_var_h,3),
@@ -207,18 +208,8 @@ plot_ss_result1 <- function(ss_result,
   }
   
   if(!save_image_file)
-    return(
+    return(patchwork)
       
-      patchwork + plot_annotation(
-        title = paste0("CB_gmax_var = ", CB_var_gmax,
-                       " CB_h_var =", CB_var_h,
-                       "\nSB_gmax_var = ", SB_var_gmax,
-                       " SB_h_var =", SB_var_h,
-                       "\nPB_gmax_var = ", PB_var_gmax,
-                       " PB_h_var =", PB_var_h))
-      
-      
-    )
   
 }
 
