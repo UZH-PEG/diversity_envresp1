@@ -135,7 +135,7 @@ plot_ss_result1 <- function(ss_exp_result,
     #mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
     mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
     #select(-initial_N_CB, -a_O) %>%
-    gather(species, quantity, 1:(ncol(.)-4)) %>% 
+    gather(species, quantity, 1:(ncol(.)-6)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -225,11 +225,9 @@ plot_ss_result2 <- function(ss_result1,
   #colfunc_PB <- colorRampPalette(c("#F9AEFC", "#6E0172"))
   
   temp1 <- ss_result1 %>%
-    arrange(a) %>%
-    select(-initial_N_CB, -a_O) %>%
-    mutate(a = 10^a,
-           direction = rep(c("up", "down"), nrow(ss_result1)/2)) %>%
-    gather(species, quantity, 2:(ncol(.)-1)) %>% 
+    mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),
+           a = 10^a) %>%
+    gather(species, quantity, 2:(ncol(.)-6)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -238,12 +236,11 @@ plot_ss_result2 <- function(ss_result1,
     group_by(a, direction, var_type, functional_group) %>%
     summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
     mutate(log10_total_quantity = log10(total_quantity+1))
+  
   temp2 <- ss_result2 %>%
-    arrange(a) %>%
-    select(-initial_N_CB, -a_O) %>%
-    mutate(a = 10^a,
-           direction = rep(c("up", "down"), nrow(ss_result2)/2)) %>%
-    gather(species, quantity, 2:(ncol(.)-1)) %>% 
+    mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),
+           a = 10^a) %>%
+    gather(species, quantity, 2:(ncol(.)-6)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -252,6 +249,7 @@ plot_ss_result2 <- function(ss_result1,
     group_by(a, direction, var_type, functional_group) %>%
     summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
     mutate(log10_total_quantity = log10(total_quantity+1))
+  
   
   num_CB_strains <- 1
   num_SB_strains <- 1

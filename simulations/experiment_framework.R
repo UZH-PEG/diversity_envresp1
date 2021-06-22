@@ -14,7 +14,7 @@ library(patchwork)
 library(here)
 source(here("simulations/r functions/various_useful_functions.r"))
 
-options(mc.cores = 16)
+options(mc.cores = 8)
 
 ## Initialise general simulation conditions ----
 default_dynamic_model <- bushplus_dynamic_model
@@ -43,7 +43,7 @@ names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
 ssfind_simulation_sampling_interval <- ssfind_simulation_duration
 ssfind_event_interval <- ssfind_simulation_duration
-grid_num_a <- 1000 ## number of a_0 values
+grid_num_a <- 20 ## number of a_0 values
 a_Os <- 10^seq(-7, -1, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
@@ -58,7 +58,7 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 
 ## Gradient CB, SB, PB variation  experiment ----
-var_length <- 20
+var_length <- 2
 CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- seq(0, 0.1, length=var_length)
@@ -70,7 +70,7 @@ saveRDS(var_expt, here("simulations/sim data/ss_res_grad_CBSBPB_var.RDS"))
 
 
 ## Gradient CB variation  experiment ----
-var_length <- 20
+#var_length <- 20
 CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
@@ -82,7 +82,7 @@ saveRDS(var_expt, here("simulations/sim data/ss_res_grad_CB_var.RDS"))
 
 
 ## Gradient SB variation  experiment ----
-var_length <- 20
+#var_length <- 20
 CB_var_gmax_s <- 0 ##seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- 0 ##seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- seq(0, 0.1, length=var_length)
@@ -94,7 +94,7 @@ saveRDS(var_expt, here("simulations/sim data/ss_res_grad_SB_var.RDS"))
 
 
 ## Gradient PB variation  experiment ----
-var_length <- 20
+#var_length <- 20
 CB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- 0 ## seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
@@ -106,7 +106,7 @@ saveRDS(var_expt, here("simulations/sim data/ss_res_grad_PB_var.RDS"))
 
 
 ## Gradient SBPB variation  experiment ----
-var_length <- 20
+#var_length <- 20
 CB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- 0 ## seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- seq(0, 0.1, length=var_length)
