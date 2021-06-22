@@ -3,10 +3,10 @@
 rm(list = ls())
 
 # devtools::install_github("opetchey/microxanox",
-#                           ref="main",
-#                           auth_token = "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",
-#                           build_vignettes = FALSE,
-#                           force = TRUE)
+#                              ref="main",
+#                              auth_token = "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",
+#                              build_vignettes = FALSE,
+#                              force = TRUE)
 
 library(tidyverse)
 library(microxanox)
@@ -14,6 +14,7 @@ library(patchwork)
 library(here)
 source(here("simulations/r functions/various_useful_functions.r"))
 
+options(mc.cores = 16)
 
 ## Initialise general simulation conditions ----
 default_dynamic_model <- bushplus_dynamic_model
@@ -57,7 +58,7 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 
 ## Gradient CB, SB, PB variation  experiment ----
-var_length <- 2
+var_length <- 20
 CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- seq(0, 0.1, length=var_length)
