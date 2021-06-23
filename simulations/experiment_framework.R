@@ -43,7 +43,7 @@ names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
 ssfind_simulation_sampling_interval <- ssfind_simulation_duration
 ssfind_event_interval <- ssfind_simulation_duration
-grid_num_a <- 20 ## number of a_0 values
+grid_num_a <- 1000 ## number of a_0 values
 a_Os <- 10^seq(-7, -1, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
@@ -58,15 +58,33 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 
 ## Gradient CB, SB, PB variation  experiment ----
-var_length <- 2
+var_length <- 20
 CB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s = seq(0, -0.5, length=var_length) * 0.15789474
-SB_var_gmax_s <- seq(0, 0.1, length=var_length)
-SB_var_h_s = seq(0, -0.5, length=var_length)
-PB_var_gmax_s <- seq(0, 0.1, length=var_length)
-PB_var_h_s = seq(0, -0.5, length=var_length)
+SB_var_gmax_s <- seq(0, 0.1, length=var_length) * 0.15789474
+SB_var_h_s = seq(0, -0.5, length=var_length) *  0.15789474
+PB_var_gmax_s <- seq(0, 0.1, length=var_length) *  0.15789474
+PB_var_h_s = seq(0, -0.5, length=var_length) *  0.15789474
 var_expt <- run_ss_var_experiment()
 saveRDS(var_expt, here("simulations/sim data/ss_res_grad_CBSBPB_var.RDS"))
+
+# CBSBPB_data <- readRDS(here("simulations/sim data/ss_res_grad_CBSBPB_var.RDS"))
+# result_index1 <- 1
+# p1  <- plot_ss_result1(CBSBPB_data,
+#                        result_index = result_index1,
+#                        filename_prefix = NULL,
+#                        save_image_file = FALSE)
+# p1
+# result_index2 <- 2
+# p2  <- plot_ss_result1(CBSBPB_data,
+#                        result_index = result_index2,
+#                        filename_prefix = NULL,
+#                        save_image_file = FALSE)
+# p2
+# p_overlay <- plot_ss_result2(CBSBPB_data[result_index1,]$ss_res[[1]],
+#                              CBSBPB_data[result_index2,]$ss_res[[1]],
+#                              xlims = c(-7, -1))
+# p_overlay
 
 
 ## Gradient CB variation  experiment ----
@@ -85,8 +103,8 @@ saveRDS(var_expt, here("simulations/sim data/ss_res_grad_CB_var.RDS"))
 #var_length <- 20
 CB_var_gmax_s <- 0 ##seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- 0 ##seq(0, -0.5, length=var_length) * 0.15789474
-SB_var_gmax_s <- seq(0, 0.1, length=var_length)
-SB_var_h_s <- seq(0, -0.5, length=var_length)
+SB_var_gmax_s <- seq(0, 0.1, length=var_length) *  0.15789474
+SB_var_h_s <- seq(0, -0.5, length=var_length) *  0.15789474
 PB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
 PB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
 var_expt <- run_ss_var_experiment()
@@ -99,8 +117,8 @@ CB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- 0 ## seq(0, -0.5, length=var_length) * 0.15789474
 SB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length)
 SB_var_h_s <- 0 ## seq(0, -0.5, length=var_length)
-PB_var_gmax_s <- seq(0, 0.1, length=var_length)
-PB_var_h_s <- seq(0, -0.5, length=var_length)
+PB_var_gmax_s <- seq(0, 0.1, length=var_length) *  0.15789474
+PB_var_h_s <- seq(0, -0.5, length=var_length) *  0.15789474
 var_expt <- run_ss_var_experiment()
 saveRDS(var_expt, here("simulations/sim data/ss_res_grad_PB_var.RDS"))
 
@@ -109,10 +127,10 @@ saveRDS(var_expt, here("simulations/sim data/ss_res_grad_PB_var.RDS"))
 #var_length <- 20
 CB_var_gmax_s <- 0 ## seq(0, 0.1, length=var_length) * 0.15789474
 CB_var_h_s <- 0 ## seq(0, -0.5, length=var_length) * 0.15789474
-SB_var_gmax_s <- seq(0, 0.1, length=var_length)
-SB_var_h_s <- seq(0, -0.5, length=var_length)
-PB_var_gmax_s <- seq(0, 0.1, length=var_length)
-PB_var_h_s <- seq(0, -0.5, length=var_length)
+SB_var_gmax_s <- seq(0, 0.1, length=var_length) *  0.15789474
+SB_var_h_s <- seq(0, -0.5, length=var_length) *  0.15789474
+PB_var_gmax_s <- seq(0, 0.1, length=var_length) *  0.15789474
+PB_var_h_s <- seq(0, -0.5, length=var_length) *  0.15789474
 
 var_expt <- run_ss_var_experiment()
 ## save results to file

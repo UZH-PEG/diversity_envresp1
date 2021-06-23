@@ -206,7 +206,7 @@ X-axis must be labelled log10(a).
 ## Figure: CBSBPB Stable states with variation and tradeoff
 
 ```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
-result_index2 <- 2
+result_index2 <- 20
 p2  <- plot_ss_result1(CBSBPB_data,
                 result_index = result_index2,
                 filename_prefix = NULL,
