@@ -58,7 +58,7 @@ nonlinearity; ecosystem responses to environmental change.}
   {}%
   {\par}
 % For Pandoc 2.11+
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+\newenvironment{CSLReferences}[3] % #1 hanging-ident, #2 entry spacing
  {% don't indent paragraphs
   \setlength{\parindent}{0pt}
   % turn on hanging indent if param 1 is 1
@@ -72,7 +72,7 @@ nonlinearity; ecosystem responses to environmental change.}
 \usepackage{calc} % for calculating minipage widths
 \newcommand{\CSLBlock}[1]{#1\hfill\break}
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 
@@ -174,9 +174,9 @@ affect the occurrence of tipping points. They explain that:
   On the other hand, the opposite could occur: greater functional
   diversity could make a tipping point occur with less change in an
   environmental driver (i.e.~may cause lower resilience) (Figure 2c in
-  @dakos2019b). This could occur if there is selection for greater
-  tolerance that causes, incidentally, selection for lower growth rate,
-  perhaps due to a tradeoff between the two traits.
+  Dakos et al. (2019)). This could occur if there is selection for
+  greater tolerance that causes, incidentally, selection for lower
+  growth rate, perhaps due to a tradeoff between the two traits.
 \item
   Finally, the amount of functional diversity may affect the ``recovery
   trajectory,'' i.e.~the relationship between ecosystem state and the
@@ -220,7 +220,7 @@ Scope:
   among species). (Do not include mutation or recomination).
 \item
   Variation in amount of among strain variation, no variation in number
-  of strains, no variation in strength or shape of the of the tradeoff.
+  of strains, no variation in strength or shape of the of any tradeoff.
 \item
   Measurement of the effect on how the steady state(s) of the system
   varies with in different environmental conditions, and on the
@@ -328,9 +328,9 @@ set and state variable. Thus a system with nine strains within each
 functional group has 27 state variables, plus another four (one for each
 of the four chemical substrates). Other than having potentially
 different parameter values (e.g.~maximum growth rate and tolerance
-parameter) the dynamics of the strains in a functional were described by
-the same equations. Hence, when parameterised with multiple strains per
-functional group, but no variation among strains (within functional
+parameters) the dynamics of the strains in a functional were described
+by the same equations. Hence, when parameterised with multiple strains
+per functional group, but no variation among strains (within functional
 groups), the system behaves identically to when there is only one strain
 per functional group (see the \texttt{microxanox} R package \emph{User
 Guide} for a demonstration).
@@ -451,14 +451,14 @@ variation}\label{figure-stable-states-without-variation}}
 
 }
 
-\caption{your caption}\label{fig:ss_novar}
+\caption{No diversity}\label{fig:ss_novar}
 \end{figure}
 
 X-axis must be labelled log10(a).
 
-\hypertarget{figure-stable-states-with-variation-and-tradeoff}{%
-\subsection{Figure: Stable states with variation and
-tradeoff}\label{figure-stable-states-with-variation-and-tradeoff}}
+\hypertarget{figure-cbsbpb-stable-states-with-variation-and-tradeoff}{%
+\subsection{Figure: CBSBPB Stable states with variation and
+tradeoff}\label{figure-cbsbpb-stable-states-with-variation-and-tradeoff}}
 
 \begin{figure}
 
@@ -466,7 +466,7 @@ tradeoff}\label{figure-stable-states-with-variation-and-tradeoff}}
 
 }
 
-\caption{your caption}\label{fig:ss_var}
+\caption{Diversity in all functional groups}\label{fig:ss_var}
 \end{figure}
 
 X-axis must be labelled log10(a).
@@ -477,10 +477,98 @@ X-axis must be labelled log10(a).
 
 }
 
-\caption{your caption}\label{fig:ss_var2}
+\caption{Diversity in none (solid) and all functional groups.}\label{fig:ss_var2}
 \end{figure}
 
 X-axis must be labelled log10(a).
+
+\hypertarget{figure-cb-stable-states-with-variation-and-tradeoff}{%
+\subsection{Figure: CB Stable states with variation and
+tradeoff}\label{figure-cb-stable-states-with-variation-and-tradeoff}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/CB_var1-1} 
+
+}
+
+\caption{Diversity in CB functional group.}\label{fig:CB_var1}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/CB_var2-1} 
+
+}
+
+\caption{Diversity in none (solid) and CB functional groups.}\label{fig:CB_var2}
+\end{figure}
+
+\hypertarget{figure-sb-stable-states-with-variation-and-tradeoff}{%
+\subsection{Figure: SB Stable states with variation and
+tradeoff}\label{figure-sb-stable-states-with-variation-and-tradeoff}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/SB_var1-1} 
+
+}
+
+\caption{Diversity in SB functional group.}\label{fig:SB_var1}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/SB_var2-1} 
+
+}
+
+\caption{Diversity in none (solid) and SB functional group.}\label{fig:SB_var2}
+\end{figure}
+
+\hypertarget{figure-pb-stable-states-with-variation-and-tradeoff}{%
+\subsection{Figure: PB Stable states with variation and
+tradeoff}\label{figure-pb-stable-states-with-variation-and-tradeoff}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/PB_var1-1} 
+
+}
+
+\caption{Diversity in PB functional group.}\label{fig:PB_var1}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/PB_var2-1} 
+
+}
+
+\caption{Diversity in none (solid) and PB functional group.}\label{fig:PB_var2}
+\end{figure}
+
+\hypertarget{figure-sbpb-stable-states-with-variation-and-tradeoff}{%
+\subsection{Figure: SBPB Stable states with variation and
+tradeoff}\label{figure-sbpb-stable-states-with-variation-and-tradeoff}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/SBPB_var1-1} 
+
+}
+
+\caption{Diversity in SB and PB functional groups.}\label{fig:SBPB_var1}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/SBPB_var2-1} 
+
+}
+
+\caption{Diversity in none (solid) and SB and PB functional groups.}\label{fig:SBPB_var2}
+\end{figure}
 
 \hypertarget{figure-hysteresis-shift-point-nonlinearity-as-var-increases.}{%
 \subsection{Figure: hysteresis, shift point, nonlinearity, as var
@@ -499,10 +587,20 @@ log10(a) units.
 \caption{your caption}\label{fig:ss_var3}
 \end{figure}
 
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/ss_var4-1} 
+
+}
+
+\caption{your caption}\label{fig:ss_var4}
+\end{figure}
+
 \hypertarget{figure-temporal-switches}{%
 \subsection{Figure: Temporal switches}\label{figure-temporal-switches}}
 
-To be added. Need to go both ways (oxic to anoxic, and anoxic to oxic).
+Maybe\ldots{} to be added. Need to go both ways (oxic to anoxic, and
+anoxic to oxic).
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
@@ -546,6 +644,13 @@ ecosystem stability?
 
 What does this study tell us about the effects of evolution on ecosystem
 stability?
+
+\hypertarget{further-relaxing-the-assumptions}{%
+\subsection{Further relaxing the
+assumptions}\label{further-relaxing-the-assumptions}}
+
+Deterministic -\textgreater{} stochastic :
+www.pnas.org/cgi/doi/10.1073/pnas.1414708112
 
 \hypertarget{what-are-the-priorities-for-subsequent-research}{%
 \subsection{What are the priorities for subsequent
