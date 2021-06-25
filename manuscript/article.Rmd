@@ -117,11 +117,9 @@ Physiological tolerances to environmental conditions, including interspecific va
 
 ## The model
 
-Bush et al (2017) contains an accessible and complete description of the model of the ecosystem, including rate equations, parameter values, and initial conditions. These features are also represented and documented in the `microxanox` R package (**cite the package**). Therefore, here we only describe the relatively straightforward extension we used to model multiple strains per functional group.
+Bush et al (2017) contains an accessible and complete description of the model of the ecosystem, including rate equations, parameter values, and initial conditions. These features are also represented and documented in the `microxanox` R package (**cite the package**). Therefore, here we only describe the extension we used to model multiple strains per functional group.
 
-Each of the strains within each functional groups has its own parameter set and state variable. Thus a system with nine strains within each functional group has 27 state variables, plus another four (one for each of the four chemical substrates). Other than having potentially different parameter values (e.g. maximum growth rate and tolerance parameters) the dynamics of the strains in a functional were described by the same equations. Hence, when parameterised with multiple strains per functional group, but no variation among strains (within functional groups), the system behaves identically to when there is only one strain per functional group (see the `microxanox` R package *User Guide* for a demonstration).
-
-The only other necessary modification was to include summation terms in each of the four ordinary differential equations describing the rates of change of the four chemical substrates. This was required in order to appropriately account for the production and consumption of these substrates by multiple strains.
+Each of the strains within each functional groups has its own parameter set and state variable. Thus a system with nine strains within each functional group has 27 state variables, plus another four (one for each of the four chemical substrates). Other than having potentially different parameter values (e.g. maximum growth rate and tolerance parameters) the dynamics of the strains in a functional were described by the same equations. Hence, when parameterised with multiple strains per functional group, but no variation among strains (within functional groups), the system behaves identically to when there is only one strain per functional group (see the `microxanox` R package *User Guide* for a demonstration). The only other necessary modification was to include summation terms in each of the four ordinary differential equations describing the rates of change of the four chemical substrates. This was required in order to appropriately account for the production and consumption of these substrates by multiple strains.
 
 ## Model dimensions
 
@@ -154,7 +152,23 @@ ggplot() +
   geom_point(aes(x = g_max_CB, y = h_SR_CB))
 ```
 
-In this section we describe how we created variability among the multiple strains within functional groups. Since the process was the same for each functional group, we usually do not in this description subscript parameter names by functional group (though there were functional group specific parameters in all simulations). The descriptions in this section gradually become more mathematical; the next paragraph alone should provide the information required to understand all other elements of this report.
+In this section we describe how we created variability among the multiple strains within functional groups. Introducing variation among multiple strains within a functional group required a number of decisions:
+
+* **The number of strains.** The symbol for this is $n$ subscripted with the functional group code (CB = cyanobacteria, SP = sulphate reducing bacteria, and PB = phototrophic sulphur bacteria). E.g. $n_{CB}$ is the number of strains of cyanobacteria. [add why we only ever had 9].
+* **Which traits to introduce variation in.** We chose the maximum growth rate and the tolerance of growth to an inhibiting substrate. E.g. maximum growth rate of the cyanobacteria $G_{max,CB}$, and the tolerance of cyanobacterial growth to reduced sulphur $h_{SR,CB}$.
+* **The amount of among strain variation.** The symbol for this is $Div$ (from *Div*ersity) subscripted by the trait/parameter and the functional group. E.g. * $Div_{G_{max,CB}}$  is the amount of among strain variation in the maximum growth rate $G_{max}$ of the cyanobacteria $CB$. 
+* **The correlation between variation in different traits.** This was always negative, so there was a tradeoff. Our implementation of the variation and tradeoff contain the assumption of a linear tradeoff of log-log transformed among-strain variation.
+* **The relative amount of among strain variation in different functional groups.** E.g. were strains of cyanobacteria very variable compared to strains of the other functional groups. We performed several numerical experiments, varying which functional groups had more or less among strain variation.
+
+* $n_{CB}$ - number of strains of cyanobacteria.
+* $n_{SB}$ - number of strains of sulphate reducing bacteria.
+* $n_{PB}$ - number of strains of phototrophic sulphur bacteria.
+* $Div_{G_{max},CB}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the cyanobacteria $CB$. 
+* $Div_{h,CB}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the cyanobacteria $CB$. 
+* $Div_{G_{max},SB}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the sulphate reducing bacteria $SB$. 
+* $Div_{h,SB}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the sulphate reducing bacteria $SB$. 
+* $Div_{G_{max},PB}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the phototrophic sulphur bacteria $PB$. 
+* $Div_{h,PB}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the phototrophic sulphur bacteria $PB$. 
 
 We introduced among-strain variability in maximum growth rate (parameter $G_{max}$) and in the tolerance to the relevant inhibiting chemical substrate (parameter $h$). Among-strain variability was created such that there was a tradeoff between maximum growth rate and tolerance (i.e. high tolerance coinciding with low maximum growth rate) (e.g. Figure \@ref(fig:tradeoff). Our implementation of the variation and tradeoff contain the assumption of a linear tradeoff of log-log transformed among-strain variation.
 
@@ -191,7 +205,7 @@ We implemented the model in the `microxanox` package (**cite the package**) of t
 ## Figure: Stable states without variation
 
 ```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("No diversity"), echo=FALSE}
-CBSBPB_data <- readRDS(here("simulations/expt1/data/ss_res_grad_CBSBPB_var.RDS"))
+CBSBPB_data <- readRDS(here("simulations/expt2/data/ss_res_grad_CBSBPB_var.RDS"))
 result_index1 <- 1
 p1  <- plot_ss_result1(CBSBPB_data,
                 result_index = result_index1,
