@@ -227,7 +227,7 @@ plot_ss_result2 <- function(ss_result1,
   temp1 <- ss_result1 %>%
     mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),
            a = 10^a) %>%
-    gather(species, quantity, 2:(ncol(.)-6)) %>% 
+    gather(species, quantity, 1:(ncol(.)-6)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -240,7 +240,7 @@ plot_ss_result2 <- function(ss_result1,
   temp2 <- ss_result2 %>%
     mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),
            a = 10^a) %>%
-    gather(species, quantity, 2:(ncol(.)-6)) %>% 
+    gather(species, quantity, 1:(ncol(.)-6)) %>% 
     mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
            functional_group = case_when(str_detect(species, "CB_") ~ "CB",
                                         str_detect(species, "SB_") ~ "SB",
@@ -248,7 +248,8 @@ plot_ss_result2 <- function(ss_result1,
            functional_group = ifelse(is.na(functional_group), species, functional_group)) %>%
     group_by(a, direction, var_type, functional_group) %>%
     summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
-    mutate(log10_total_quantity = log10(total_quantity+1))
+    mutate(log10_total_quantity = log10(total_quantity+1),
+           log1 = log10(a))
   
   
   num_CB_strains <- 1
@@ -266,7 +267,7 @@ plot_ss_result2 <- function(ss_result1,
     xlab('a')  +
     guides(colour = guide_legend(ncol = 3)) +
     geom_path(data = dplyr::filter(temp2, functional_group == fg_oi),
-              linetype = "dashed",
+              linetype = "dashed", lwd=1.5,
               col = species_colours[fg_oi]) 
   }
   p_CB <- plot_fg_oi(temp1, temp2, "CB") + xlim(xlims[1], xlims[2])
@@ -285,12 +286,85 @@ plot_ss_result2 <- function(ss_result1,
     ylab('log10(quantity [cells])') +
     xlab('a') +
     geom_path(data = dplyr::filter(temp2, var_type == "Substrate"),
-              linetype = "dashed") +
+              linetype = "dashed", lwd = 1.5) +
     xlim(xlims[1], xlims[2])
   #p4
   patchwork_graph <- p_CB / p_SB / p_PB / p_Substrate
   
   patchwork_graph 
+  
+}
+
+
+display_diversity <- function() {
+  
+  colfunc_CB <- colorRampPalette(rev(c("#B5FFC9", "#024F17")))
+  colfunc_SB <- colorRampPalette(rev(c("#FCBEB3", "#7D1402")))
+  colfunc_PB <- colorRampPalette(rev(c("#F9AEFC", "#6E0172")))
+  
+  CBtraits <- var_expt$pars[[num_div_treatment_levels]]$CB
+  P <- 1 #10^seq(-5, 5, 0.1)
+  SR <- 10^seq(0, 3, 0.1)
+  gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
+  gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
+  
+  CB_TO1 <- ggplot(CBtraits) +
+    geom_point(aes(x = h_SR_CB, y = g_max_CB, col = strain_name)) +
+    xlab("Tolerance\n(cyanobacteria to reduced sulphur)") +
+    ylab("Maximum growth rate\n(cyanobacteria)") +
+    scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+    theme(legend.position="none")
+  CB_TO2 <- ggplot() +
+    geom_line(aes( x = log10(SR), y = gr_rateCB1), col = colfunc_CB(num_CB_strains)[1]) +
+    geom_line(aes( x = log10(SR), y = gr_rateCB9), col = colfunc_CB(num_CB_strains)[9]) +
+    xlab("Reduced sulphur concentration\nin the environment\n(log10 uM per litre)") +
+    ylab("Realised growth rate\n(cyanobacteria)")
+  
+  
+  
+  SBtraits <- var_expt$pars[[num_div_treatment_levels]]$SB
+  P <- 1 #10^seq(-5, 5, 0.1)
+  SO <- 1
+  O <- 10^seq(-2.5, 2.5, 0.1)
+  gr_rateSB1 <- growth2(P, SO, SBtraits$g_max_SB[1], SBtraits$k_SB_P[1], SBtraits$k_SB_SO[1]) *
+    inhibition(O, SBtraits$h_O_SB[1])
+  gr_rateSB9 <- growth2(P, SO, SBtraits$g_max_SB[9], SBtraits$k_SB_P[9], SBtraits$k_SB_SO[9]) *
+    inhibition(O, SBtraits$h_O_SB[9])
+  
+  SB_TO1 <- ggplot(SBtraits) +
+    geom_point(aes(x = h_O_SB, y = g_max_SB, col = strain_name))+
+    xlab("Tolerance\n(sulphate reducing bacteria to oxygen)") +
+    ylab("Maximum growth rate\n(sulphate reducing bacteria)") +
+    scale_colour_manual(values = colfunc_SB(num_SB_strains))+
+    theme(legend.position="none")
+  SB_TO2 <- ggplot() +
+    geom_line(aes( x = log10(O), y = gr_rateSB1), col = colfunc_SB(num_SB_strains)[1]) +
+    geom_line(aes( x = log10(O), y = gr_rateSB9), col = colfunc_SB(num_SB_strains)[9])+
+    xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
+    ylab("Realised growth rate\n(sulphate reducing bacteria)")
+  
+  PBtraits <- var_expt$pars[[num_div_treatment_levels]]$PB
+  P <- 1 #10^seq(-5, 5, 0.1)
+  SO <- 1
+  O <- 10^seq(-2.5, 2.5, 0.1)
+  gr_ratePB1 <- growth2(P, SO, PBtraits$g_max_PB[1], PBtraits$k_PB_P[1], PBtraits$k_PB_SR[1]) *
+    inhibition(O, PBtraits$h_O_PB[1])
+  gr_ratePB9 <- growth2(P, SO, PBtraits$g_max_PB[9], PBtraits$k_PB_P[9], PBtraits$k_PB_SR[9]) *
+    inhibition(O, PBtraits$h_O_PB[9])
+  
+  PB_TO1 <- ggplot(PBtraits) +
+    geom_point(aes(x = h_O_PB, y = g_max_PB, col = strain_name))+
+    xlab("Tolerance\n(phototrophic sulphur bacteria to oxygen)") +
+    ylab("Maximum growth rate\n(phototrophic sulphur bacteria") +
+    scale_colour_manual(values = colfunc_PB(num_PB_strains))+
+    theme(legend.position="none")
+  PB_TO2 <- ggplot() +
+    geom_line(aes( x = log10(O), y = gr_ratePB1), col = colfunc_PB(num_SB_strains)[1]) +
+    geom_line(aes( x = log10(O), y = gr_ratePB9), col = colfunc_PB(num_SB_strains)[9])+
+    xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
+    ylab("Realised growth rate\n(phototrophic sulphur bacteria)")
+  
+  (CB_TO1 + SB_TO1 + PB_TO1) / (CB_TO2 + SB_TO2 + PB_TO2)
   
 }
 

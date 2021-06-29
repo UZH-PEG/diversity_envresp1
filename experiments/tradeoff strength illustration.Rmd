@@ -1,0 +1,205 @@
+---
+title: "Experiment 1"
+author: "Owen Petchey"
+date: "6/25/2021"
+output: html_document
+---
+
+
+# Setup
+
+## R
+
+```{r}
+
+
+rm(list = ls())
+
+knitr::opts_knit$set(progress = TRUE, verbose = TRUE, cache = TRUE)
+
+# devtools::install_github("opetchey/microxanox",
+#                              ref="main",
+#                              auth_token = "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",
+#                              build_vignettes = FALSE,
+#                              force = TRUE)
+
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("experiments/r functions/various_useful_functions.r"))
+zero <- 0 ## don't change
+unity <- 1 ## don't change!!!
+options(mc.cores = 8)
+
+colfunc_CB <- colorRampPalette(c("#B5FFC9", "#024F17"))
+colfunc_SB <- colorRampPalette(c("#FCBEB3", "#7D1402"))
+colfunc_PB <- colorRampPalette(c("#F9AEFC", "#6E0172"))
+ 
+```
+
+## General simulation conditions
+
+```{r}
+default_dynamic_model <- bushplus_dynamic_model
+default_event_definition <- event_definition_1
+default_event_interval <- 100
+default_noise_sigma <- 0
+default_minimum_abundances <- rep(1, 3)
+names(default_minimum_abundances) <- c("CB", "PB", "SB") 
+default_sim_duration <- 80000
+default_sim_sample_interval <- 100
+initial_pars_from <- "bush_ssfig3"
+## note that next line (log10a_series is over-ridden with getting stable states)
+#default_log10a_series <- c(-2, -2, -2, -2, -10, -10, -10, -10, -10)
+```
+
+
+## Define diversity
+
+```{r}
+num_CB_strains <- 9
+num_SB_strains <- 9
+num_PB_strains <- 9
+CB_var_range <- 0.015789474
+CB_var_TO <- -20
+SB_var_range <- 0.1
+SB_var_TO <- -20
+PB_var_range <- 0.1
+PB_var_TO <- -20
+
+num_div_treatment_levels <- 10
+```
+
+## Create diversity
+
+```{r}
+default_9strain <- new_starter(n_CB = num_CB_strains,
+                             n_SB = num_SB_strains,
+                             n_PB = num_PB_strains,
+                             values_initial_state = initial_pars_from)
+CB_var_gmax_s <- seq(zero, unity*CB_var_TO, length=num_div_treatment_levels) * CB_var_range
+CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
+SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
+SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
+PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
+PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
+var_expt <- tibble(CB_var_gmax_s,
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
+var_expt <- var_expt %>%
+  nest_by(CB_var_gmax_s, CB_var_h_s,
+          SB_var_gmax_s, SB_var_h_s,
+          PB_var_gmax_s, PB_var_h_s) %>%
+  mutate(pars = list(add_strain_var(default_9strain,
+                                    CB_var_gmax = CB_var_gmax_s,
+                                    CB_var_h = CB_var_h_s,
+                                    SB_var_gmax = SB_var_gmax_s,
+                                    SB_var_h = SB_var_h_s,
+                                    PB_var_gmax = PB_var_gmax_s,
+                                    PB_var_h = PB_var_h_s)))
+```
+
+## Display diversity
+
+```{r}
+
+
+CBtraits <- tibble(var_expt$pars[[10]]$CB,
+                     Diversity = "None",
+                   Strength = "Strong")
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[6]]$CB,
+                     Diversity = "Medium",
+                     Strength = "Strong"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[1]]$CB,
+                     Diversity = "High",
+                     Strength = "Strong"))
+
+
+
+
+
+
+````
+
+
+## Define diversity
+
+```{r}
+num_CB_strains <- 9
+num_SB_strains <- 9
+num_PB_strains <- 9
+CB_var_range <- 0.015789474
+CB_var_TO <- -2
+SB_var_range <- 0.1
+SB_var_TO <- -20
+PB_var_range <- 0.1
+PB_var_TO <- -20
+
+num_div_treatment_levels <- 10
+```
+
+## Create diversity
+
+```{r}
+default_9strain <- new_starter(n_CB = num_CB_strains,
+                             n_SB = num_SB_strains,
+                             n_PB = num_PB_strains,
+                             values_initial_state = initial_pars_from)
+CB_var_gmax_s <- seq(zero, unity*CB_var_TO, length=num_div_treatment_levels) * CB_var_range
+CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
+SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
+SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
+PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
+PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
+var_expt <- tibble(CB_var_gmax_s,
+                   CB_var_h_s,
+                   SB_var_gmax_s,
+                   SB_var_h_s,
+                   PB_var_gmax_s,
+                   PB_var_h_s)
+var_expt <- var_expt %>%
+  nest_by(CB_var_gmax_s, CB_var_h_s,
+          SB_var_gmax_s, SB_var_h_s,
+          PB_var_gmax_s, PB_var_h_s) %>%
+  mutate(pars = list(add_strain_var(default_9strain,
+                                    CB_var_gmax = CB_var_gmax_s,
+                                    CB_var_h = CB_var_h_s,
+                                    SB_var_gmax = SB_var_gmax_s,
+                                    SB_var_h = SB_var_h_s,
+                                    PB_var_gmax = PB_var_gmax_s,
+                                    PB_var_h = PB_var_h_s)))
+```
+
+
+```{r}
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[10]]$CB,
+                     Diversity = "None",
+                     Strength = "Weak"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[6]]$CB,
+                     Diversity = "Medium",
+                     Strength = "Weak"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[1]]$CB,
+                     Diversity = "High",
+                     Strength = "Weak"))
+
+
+ggplot(CBtraits) +
+  geom_point(aes(x = h_SR_CB, y = g_max_CB)) +
+  facet_grid(Strength ~ Diversity) +
+  xlab("Tolerance trait") +
+  ylab("Maximum growth rate")
+
+
+
+```
+
+

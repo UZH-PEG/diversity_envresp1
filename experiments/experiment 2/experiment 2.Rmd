@@ -1,8 +1,10 @@
 ---
-title: "Experiment 1"
+title: "Experiment 2"
 author: "Owen Petchey"
 date: "6/25/2021"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 
@@ -58,9 +60,9 @@ num_SB_strains <- 9
 num_PB_strains <- 9
 CB_var_range <- 0.015789474
 CB_var_TO <- -5
-SB_var_range <- 0.010
+SB_var_range <- 0.0015789474
 SB_var_TO <- -20.5
-PB_var_range <- 0.010
+PB_var_range <- 0.0015789474
 PB_var_TO <- -20.5
 
 num_div_treatment_levels <- 2
@@ -101,53 +103,7 @@ var_expt <- var_expt %>%
 ## Display diversity
 
 ```{r}
-
-
-
-CBtraits <- var_expt$pars[[num_div_treatment_levels]]$CB
-P <- 1 #10^seq(-5, 5, 0.1)
-SR <- 10^seq(0, 3, 0.1)
-gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
-gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
-
-CB_TO1 <- ggplot() +
-  geom_point(aes(x = CBtraits$h_SR_CB, y = CBtraits$g_max_CB))
-CB_TO2 <- ggplot() +
-  geom_line(aes( x = log10(SR), y = gr_rateCB1)) +
-  geom_line(aes( x = log10(SR), y = gr_rateCB9), col = "blue")
-
-
-SBtraits <- var_expt$pars[[num_div_treatment_levels]]$SB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_rateSB1 <- growth2(P, SO, SBtraits$g_max_SB[1], SBtraits$k_SB_P[1], SBtraits$k_SB_SO[1]) *
-  inhibition(O, SBtraits$h_O_SB[1])
-gr_rateSB9 <- growth2(P, SO, SBtraits$g_max_SB[9], SBtraits$k_SB_P[9], SBtraits$k_SB_SO[9]) *
-  inhibition(O, SBtraits$h_O_SB[9])
-
-SB_TO1 <- ggplot() +
-  geom_point(aes(x = SBtraits$h_O_SB, y = SBtraits$g_max_SB))
-SB_TO2 <- ggplot() +
-  geom_line(aes( x = log10(O), y = gr_rateSB1)) +
-  geom_line(aes( x = log10(O), y = gr_rateSB9), col = "blue")
-
-PBtraits <- var_expt$pars[[num_div_treatment_levels]]$PB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_ratePB1 <- growth2(P, SO, PBtraits$g_max_PB[1], PBtraits$k_PB_P[1], PBtraits$k_PB_SR[1]) *
-  inhibition(O, PBtraits$h_O_PB[1])
-gr_ratePB9 <- growth2(P, SO, PBtraits$g_max_PB[9], PBtraits$k_PB_P[9], PBtraits$k_PB_SR[9]) *
-  inhibition(O, PBtraits$h_O_PB[9])
-
-PB_TO1 <- ggplot() +
-  geom_point(aes(x = PBtraits$h_O_PB, y = PBtraits$g_max_PB))
-PB_TO2 <- ggplot() +
-  geom_line(aes( x = log10(O), y = gr_ratePB1)) +
-  geom_line(aes( x = log10(O), y = gr_ratePB9), col = "blue")
-
-(CB_TO1 + SB_TO1 + PB_TO1) / (CB_TO2 + SB_TO2 + PB_TO2)
+display_diversity()
 ```
 
 
@@ -226,36 +182,36 @@ plot_dynamics(sim_res_highvar)
 ### No diversity
 
 ```{r}
-default_sim_duration <- 100000
+default_sim_duration <- 1000000
 ```
 
 ```{r}
-default_minimum_abundances <- rep(1000, 3)
+default_minimum_abundances <- rep(100, 3)
 names(default_minimum_abundances) <- c("CB", "PB", "SB") 
 ```
 
 ```{r}
-sim_number <- 1
-default_log10a_series <- c(-1, -6, -1)
+sim_number1 <- 1
+default_log10a_series <- c(-1, -8, -1)
 initial_state <- new_initial_state(num_CB_strains,
                                    num_PB_strains,
                                    num_SB_strains,
                                    values = "bush_ssfig3")
 initial_state[grep("CB_", names(initial_state))] <- 10/num_CB_strains
-sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
+sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number1]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_novar)
-#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+##ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
 ```{r}
-sim_number <- 2
-sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
+sim_number2 <- 2
+sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number2]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
-#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+##ggsave(here("expteriment 2/figures/switching_highvar.pdf"), width = 10)
 
 ```
 
@@ -298,7 +254,7 @@ ggplot() +
             aes(x=a, y = log10(Total_quantity), group = direction),
             linetype = "dashed", lwd=2, col="red") +
   ggtitle("Solid line is with no intraspecific diversity.\nDashed line is with intraspecific diversity")
-##ggsave(here("simulations/figures/switching_comparison.pdf"), width = 5, height = 4)
+##ggsave(here("experiment 2/figures/switching_comparison.pdf"), width = 8, height = 10)
 
 
 ```
@@ -337,6 +293,7 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 ```{r}
 var_expt <- run_ss_var_experiment()
+saveRDS(var_expt, here("experiments/experiment 2/data/ss_data.RDS"))
 ```
 
 ```{r}
@@ -364,5 +321,8 @@ p_overlay <- plot_ss_result2(var_expt[result_index1,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay
 
+ss_result1 <- var_expt[result_index1,]$ss_res[[1]]
+ss_result2 <- var_expt[result_index2,]$ss_res[[1]]
+xlims = c(-7, -1)
 ```
 
