@@ -18,63 +18,12 @@ rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = TRUE, cache = TRUE)
 
-devtools::install_github("opetchey/microxanox",
-                             ref="main",
-                             auth_token = "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",
-                             build_vignettes = FALSE,
-                             force = TRUE)
-```
+# devtools::install_github("opetchey/microxanox",
+#                              ref="main",
+#                              auth_token = "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",
+#                              build_vignettes = FALSE,
+#                              force = TRUE)
 
-```
-## Downloading GitHub repo opetchey/microxanox@main
-```
-
-```
-## colorspace (2.0-1 -> 2.0-2) [CRAN]
-## ggplot2    (3.3.4 -> 3.3.5) [CRAN]
-## spam       (2.6-0 -> 2.7-0) [CRAN]
-## curl       (4.3.1 -> 4.3.2) [CRAN]
-## cpp11      (0.2.7 -> 0.3.1) [CRAN]
-## dplyr      (1.0.6 -> 1.0.7) [CRAN]
-## fields     (12.3  -> 12.5 ) [CRAN]
-```
-
-```
-## Installing 7 packages: colorspace, ggplot2, spam, curl, cpp11, dplyr, fields
-```
-
-```
-## 
-## The downloaded binary packages are in
-## 	/var/folders/9j/xjtwhfj57dz_0cg1891k_p5c0000gr/T//RtmpOOHoXL/downloaded_packages
-##   
-   checking for file ‘/private/var/folders/9j/xjtwhfj57dz_0cg1891k_p5c0000gr/T/RtmpOOHoXL/remotes158732d340c3a/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’ ...
-  
-✓  checking for file ‘/private/var/folders/9j/xjtwhfj57dz_0cg1891k_p5c0000gr/T/RtmpOOHoXL/remotes158732d340c3a/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’
-## 
-  
-─  preparing ‘microxanox’:
-## 
-  
-   checking DESCRIPTION meta-information ...
-  
-✓  checking DESCRIPTION meta-information
-## 
-  
-─  checking for LF line-endings in source and make files and shell scripts
-## 
-  
-─  checking for empty or unneeded directories
-## 
-  
-─  building ‘microxanox_0.2.tar.gz’
-## 
-  
-   
-## 
-```
-
-```r
 library(tidyverse)
 ```
 
@@ -83,7 +32,7 @@ library(tidyverse)
 ```
 
 ```
-## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ ggplot2 3.3.4     ✓ purrr   0.3.4
 ## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
 ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
 ## ✓ readr   1.4.0     ✓ forcats 0.5.1
@@ -102,7 +51,7 @@ library(here)
 ```
 
 ```
-## here() starts at /Users/Owen/Desktop/GitHub/diversity_envresp1
+## here() starts at /Users/owenpetchey/Desktop/microxanox/diversity_envresp1
 ```
 
 ```r
@@ -151,33 +100,7 @@ num_div_treatment_levels <- 2
 
 
 ```r
-default_9strain <- new_starter(n_CB = num_CB_strains,
-                             n_SB = num_SB_strains,
-                             n_PB = num_PB_strains,
-                             values_initial_state = initial_pars_from)
-CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_gmax_div
-CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_h_div
-SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_gmax_div
-SB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * SB_h_div
-PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_gmax_div
-PB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * PB_h_div
-var_expt <- tibble(CB_var_gmax_s,
-                   CB_var_h_s,
-                   SB_var_gmax_s,
-                   SB_var_h_s,
-                   PB_var_gmax_s,
-                   PB_var_h_s)
-var_expt <- var_expt %>%
-  nest_by(CB_var_gmax_s, CB_var_h_s,
-          SB_var_gmax_s, SB_var_h_s,
-          PB_var_gmax_s, PB_var_h_s) %>%
-  mutate(pars = list(add_strain_var(default_9strain,
-                                    CB_var_gmax = CB_var_gmax_s,
-                                    CB_var_h = CB_var_h_s,
-                                    SB_var_gmax = SB_var_gmax_s,
-                                    SB_var_h = SB_var_h_s,
-                                    PB_var_gmax = PB_var_gmax_s,
-                                    PB_var_h = PB_var_h_s)))
+var_expt <- create_diversity()
 ```
 
 ## Display diversity
@@ -339,61 +262,15 @@ plot_dynamics(sim_res_highvar)
 
 
 ```r
-tmp_novar <- sim_res_novar$result %>%
-  filter(time != 0) %>%
-  select(-time) %>%
-  mutate(direction = rep(c("down", "up"), each = n()/2)) %>%
-  pivot_longer(1:(num_CB_strains+num_SB_strains+num_PB_strains+4),
-               names_to = "Species", values_to = "Quantity") %>%
-  mutate(var_type=ifelse(grepl("B_", Species), "Organism", "Substrate"),
-         functional_group = case_when(str_detect(Species, "CB_") ~ "CB",
-                                      str_detect(Species, "SB_") ~ "SB",
-                                      str_detect(Species, "PB_") ~ "PB"),
-         functional_group = ifelse(is.na(functional_group), Species, functional_group)) %>%
-  group_by(functional_group, a, var_type, direction) %>%
-  summarise(Total_quantity = sum(Quantity))
+visualise_temporal_env_eco()
 ```
 
 ```
 ## `summarise()` has grouped output by 'functional_group', 'a', 'var_type'. You can override using the `.groups` argument.
-```
-
-```r
-tmp_highvar <- sim_res_highvar$result %>%
-  filter(time != 0) %>%
-  select(-time) %>%
-  mutate(direction = rep(c("down", "up"), each = n()/2)) %>%
-  pivot_longer(1:(num_CB_strains+num_SB_strains+num_PB_strains+4),
-               names_to = "Species", values_to = "Quantity") %>%
-  mutate(var_type=ifelse(grepl("B_", Species), "Organism", "Substrate"),
-         functional_group = case_when(str_detect(Species, "CB_") ~ "CB",
-                                      str_detect(Species, "SB_") ~ "SB",
-                                      str_detect(Species, "PB_") ~ "PB"),
-         functional_group = ifelse(is.na(functional_group), Species, functional_group)) %>%
-  group_by(functional_group, a, var_type, direction) %>%
-  summarise(Total_quantity = sum(Quantity))
-```
-
-```
 ## `summarise()` has grouped output by 'functional_group', 'a', 'var_type'. You can override using the `.groups` argument.
-```
-
-```r
-soi <- "O"
-ggplot() +
-  geom_path(data = filter(tmp_novar,functional_group == soi),
-            aes(x=a, y = log10(Total_quantity), group = direction)) +
-  geom_path(data = filter(tmp_highvar,functional_group == soi),
-            aes(x=a, y = log10(Total_quantity), group = direction),
-            linetype = "dashed", lwd=2, col="red") +
-  ggtitle("Solid line is with no intraspecific diversity.\nDashed line is with intraspecific diversity")
 ```
 
 ![](experiment-2_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
-
-```r
-##ggsave(here("simulations/figures/switching_comparison.pdf"), width = 5, height = 4)
-```
 
 
 
@@ -429,12 +306,15 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 
 ```r
-var_expt <- run_ss_var_experiment()
-saveRDS(var_expt, here("experiments/experiment 2/data/ss_data.RDS"))
+#var_expt <- run_ss_var_experiment()
+#saveRDS(var_expt, here("experiments/experiment 2/data/ss_data.RDS"))
 ```
 
 
 ```r
+var_expt <- readRDS(here("experiments/experiment 2/data/ss_data.RDS"))
+
+
 result_index1 <- 1
 p1  <- plot_ss_result1(var_expt,
                 result_index = result_index1,
