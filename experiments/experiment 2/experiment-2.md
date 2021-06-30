@@ -18,12 +18,63 @@ rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = TRUE, cache = TRUE)
 
-# devtools::install_github("opetchey/microxanox",
-#                              ref="main",
-#                              auth_token = "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",
-#                              build_vignettes = FALSE,
-#                              force = TRUE)
+devtools::install_github("opetchey/microxanox",
+                             ref="main",
+                             auth_token = "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",
+                             build_vignettes = FALSE,
+                             force = TRUE)
+```
 
+```
+## Downloading GitHub repo opetchey/microxanox@main
+```
+
+```
+## colorspace (2.0-1 -> 2.0-2) [CRAN]
+## ggplot2    (3.3.4 -> 3.3.5) [CRAN]
+## spam       (2.6-0 -> 2.7-0) [CRAN]
+## curl       (4.3.1 -> 4.3.2) [CRAN]
+## cpp11      (0.2.7 -> 0.3.1) [CRAN]
+## dplyr      (1.0.6 -> 1.0.7) [CRAN]
+## fields     (12.3  -> 12.5 ) [CRAN]
+```
+
+```
+## Installing 7 packages: colorspace, ggplot2, spam, curl, cpp11, dplyr, fields
+```
+
+```
+## 
+## The downloaded binary packages are in
+## 	/var/folders/9j/xjtwhfj57dz_0cg1891k_p5c0000gr/T//RtmpOOHoXL/downloaded_packages
+##   
+   checking for file ‘/private/var/folders/9j/xjtwhfj57dz_0cg1891k_p5c0000gr/T/RtmpOOHoXL/remotes158732d340c3a/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’ ...
+  
+✓  checking for file ‘/private/var/folders/9j/xjtwhfj57dz_0cg1891k_p5c0000gr/T/RtmpOOHoXL/remotes158732d340c3a/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’
+## 
+  
+─  preparing ‘microxanox’:
+## 
+  
+   checking DESCRIPTION meta-information ...
+  
+✓  checking DESCRIPTION meta-information
+## 
+  
+─  checking for LF line-endings in source and make files and shell scripts
+## 
+  
+─  checking for empty or unneeded directories
+## 
+  
+─  building ‘microxanox_0.2.tar.gz’
+## 
+  
+   
+## 
+```
+
+```r
 library(tidyverse)
 ```
 
@@ -32,7 +83,7 @@ library(tidyverse)
 ```
 
 ```
-## ✓ ggplot2 3.3.4     ✓ purrr   0.3.4
+## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
 ## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
 ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
 ## ✓ readr   1.4.0     ✓ forcats 0.5.1
@@ -51,7 +102,7 @@ library(here)
 ```
 
 ```
-## here() starts at /Users/owenpetchey/Desktop/microxanox/diversity_envresp1
+## here() starts at /Users/Owen/Desktop/GitHub/diversity_envresp1
 ```
 
 ```r
@@ -352,7 +403,7 @@ ggplot() +
 
 
 ```r
-options(mc.cores = 8)
+options(mc.cores = 6)
 ```
 
 
@@ -363,7 +414,7 @@ names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
 ssfind_simulation_sampling_interval <- ssfind_simulation_duration
 ssfind_event_interval <- ssfind_simulation_duration
-grid_num_a <- 20 ## number of a_0 values
+grid_num_a <- 1000 ## number of a_0 values
 a_Os <- 10^seq(-7, -1, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
@@ -389,6 +440,13 @@ p1  <- plot_ss_result1(var_expt,
                 result_index = result_index1,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
+```
+
+```
+## Warning in mask$eval_all_mutate(quo): NaNs produced
+```
+
+```r
 p1
 ```
 
@@ -415,6 +473,15 @@ p_overlay <- plot_ss_result2(var_expt[result_index1,]$ss_res[[1]],
 
 ```
 ## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+```
+
+```
+## Warning in mask$eval_all_mutate(quo): NaNs produced
+
+## Warning in mask$eval_all_mutate(quo): NaNs produced
+```
+
+```
 ## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
 ```
 

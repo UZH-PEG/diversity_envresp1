@@ -32,7 +32,7 @@ library(here)
 source(here("experiments/r functions/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
-options(mc.cores = 8)
+#options(mc.cores = 8)
 ```
 
 ## General simulation conditions
@@ -266,7 +266,7 @@ ggplot() +
 ## Setup
 
 ```{r}
-options(mc.cores = 8)
+options(mc.cores = 6)
 ```
 
 
@@ -276,7 +276,7 @@ names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
 ssfind_simulation_sampling_interval <- ssfind_simulation_duration
 ssfind_event_interval <- ssfind_simulation_duration
-grid_num_a <- 20 ## number of a_0 values
+grid_num_a <- 1000 ## number of a_0 values
 a_Os <- 10^seq(-7, -1, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values

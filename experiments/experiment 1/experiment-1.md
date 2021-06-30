@@ -16,7 +16,7 @@ output:
 ```r
 rm(list = ls())
 
-knitr::opts_knit$set(progress = TRUE, verbose = TRUE, cache = TRUE)
+knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
 
 # devtools::install_github("opetchey/microxanox",
 #                              ref="main",
@@ -33,7 +33,7 @@ library(tidyverse)
 
 ```
 ## ✓ ggplot2 3.3.4     ✓ purrr   0.3.4
-## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
+## ✓ tibble  3.1.2     ✓ dplyr   1.0.6
 ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
 ## ✓ readr   1.4.0     ✓ forcats 0.5.1
 ```
@@ -51,14 +51,14 @@ library(here)
 ```
 
 ```
-## here() starts at /Users/owenpetchey/Desktop/microxanox/diversity_envresp1
+## here() starts at /Users/Owen/Desktop/GitHub/diversity_envresp1
 ```
 
 ```r
 source(here("experiments/r functions/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
-options(mc.cores = 8)
+#options(mc.cores = 8)
 ```
 
 ## General simulation conditions
@@ -352,7 +352,7 @@ ggplot() +
 
 
 ```r
-options(mc.cores = 8)
+options(mc.cores = 6)
 ```
 
 
@@ -363,7 +363,7 @@ names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
 ssfind_simulation_sampling_interval <- ssfind_simulation_duration
 ssfind_event_interval <- ssfind_simulation_duration
-grid_num_a <- 20 ## number of a_0 values
+grid_num_a <- 1000 ## number of a_0 values
 a_Os <- 10^seq(-7, -1, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
@@ -389,6 +389,13 @@ p1  <- plot_ss_result1(var_expt,
                 result_index = result_index1,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
+```
+
+```
+## Warning in mask$eval_all_mutate(quo): NaNs produced
+```
+
+```r
 p1
 ```
 
@@ -415,6 +422,15 @@ p_overlay <- plot_ss_result2(var_expt[result_index1,]$ss_res[[1]],
 
 ```
 ## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+```
+
+```
+## Warning in mask$eval_all_mutate(quo): NaNs produced
+
+## Warning in mask$eval_all_mutate(quo): NaNs produced
+```
+
+```
 ## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
 ```
 
