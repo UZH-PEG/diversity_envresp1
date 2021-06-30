@@ -61,6 +61,14 @@ initial_pars_from <- "bush_ssfig3"
 num_CB_strains <- 9
 num_SB_strains <- 9
 num_PB_strains <- 9
+CB_gmax_div <- 0.015789474
+CB_h_div <- -0.08
+SB_gmax_div <- 0.015789474
+SB_h_div <- -0.323
+PB_gmax_div <- 0.015789474
+PB_h_div <- -0.323
+
+
 CB_var_range <- 0.015789474
 CB_var_TO <- -20
 SB_var_range <- 0.1
@@ -78,13 +86,13 @@ default_9strain <- new_starter(n_CB = num_CB_strains,
                              n_SB = num_SB_strains,
                              n_PB = num_PB_strains,
                              values_initial_state = initial_pars_from)
-CB_var_gmax_s <- seq(zero, unity*CB_var_TO, length=num_div_treatment_levels) * CB_var_range
-CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
-SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
-SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
-PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
-PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
-var_expt <- tibble(CB_var_gmax_s,
+CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_gmax_div
+CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_h_div
+SB_var_gmax_s <- 1#seq(zero, unity, length=num_div_treatment_levels) * SB_gmax_div
+SB_var_h_s = 1#seq(zero, unity, length=num_div_treatment_levels) * SB_h_div
+PB_var_gmax_s <- 1#seq(zero, unity, length=num_div_treatment_levels) * PB_gmax_div
+PB_var_h_s = 1#seq(zero, unity, length=num_div_treatment_levels) * PB_h_div
+var_expt <- crossing(CB_var_gmax_s,
                    CB_var_h_s,
                    SB_var_gmax_s,
                    SB_var_h_s,
@@ -107,94 +115,125 @@ var_expt <- var_expt %>%
 
 ```{r}
 
+med_gmax <- 0.007017544
+med_h <- -0.035555556
+high_gmax <- 0.015789474
+high_h <- -0.080
 
-CBtraits <- tibble(var_expt$pars[[10]]$CB,
-                     Diversity = "None",
-                   Strength = "Strong")
+
+CBtraits <- tibble(var_expt$pars[[which(var_expt$CB_var_gmax_s == 0 &
+                                          var_expt$CB_var_h_s == 0)]]$CB,
+                     Div_gmax = "None",
+                   Div_h = "None")
 CBtraits <- bind_rows(CBtraits,
-                      tibble(var_expt$pars[[6]]$CB,
-                     Diversity = "Medium",
-                     Strength = "Strong"))
+                      tibble(var_expt$pars[[which(var_expt$CB_var_gmax_s == 0 & abs(var_expt$CB_var_h_s - med_h)<0.0001)]]$CB,
+                     Div_gmax = "None",
+                   Div_h = "Medium"))
 CBtraits <- bind_rows(CBtraits,
-                      tibble(var_expt$pars[[1]]$CB,
-                     Diversity = "High",
-                     Strength = "Strong"))
+                      tibble(var_expt$pars[[which(var_expt$CB_var_gmax_s == 0 & abs(var_expt$CB_var_h_s - high_h)<0.0001)]]$CB,
+                     Div_gmax = "None",
+                   Div_h = "High"))
+
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[which(abs(var_expt$CB_var_gmax_s - med_gmax)<0.0001 & abs(var_expt$CB_var_h_s - 0)<0.0001)]]$CB,
+                     Div_gmax = "Medium",
+                   Div_h = "None"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[which(abs(var_expt$CB_var_gmax_s - med_gmax)<0.0001 & abs(var_expt$CB_var_h_s - med_h)<0.0001)]]$CB,
+                     Div_gmax = "Medium",
+                   Div_h = "Medium"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[which(abs(var_expt$CB_var_gmax_s - med_gmax)<0.0001 & abs(var_expt$CB_var_h_s - high_h)<0.0001)]]$CB,
+                     Div_gmax = "Medium",
+                   Div_h = "High"))
+
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[which(abs(var_expt$CB_var_gmax_s - high_gmax)<0.0001 & abs(var_expt$CB_var_h_s - 0)<0.0001)]]$CB,
+                     Div_gmax = "High",
+                   Div_h = "None"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[which(abs(var_expt$CB_var_gmax_s - high_gmax)<0.0001 & abs(var_expt$CB_var_h_s - med_h)<0.0001)]]$CB,
+                     Div_gmax = "High",
+                   Div_h = "Medium"))
+CBtraits <- bind_rows(CBtraits,
+                      tibble(var_expt$pars[[which(abs(var_expt$CB_var_gmax_s - high_gmax)<0.0001 & abs(var_expt$CB_var_h_s - high_h)<0.0001)]]$CB,
+                     Div_gmax = "High",
+                   Div_h = "High"))
 
 
 
 
 
-
-````
+```
 
 
 ## Define diversity
 
 ```{r}
-num_CB_strains <- 9
-num_SB_strains <- 9
-num_PB_strains <- 9
-CB_var_range <- 0.015789474
-CB_var_TO <- -2
-SB_var_range <- 0.1
-SB_var_TO <- -20
-PB_var_range <- 0.1
-PB_var_TO <- -20
-
-num_div_treatment_levels <- 10
+# num_CB_strains <- 9
+# num_SB_strains <- 9
+# num_PB_strains <- 9
+# CB_var_range <- 0.015789474
+# CB_var_TO <- -2
+# SB_var_range <- 0.1
+# SB_var_TO <- -20
+# PB_var_range <- 0.1
+# PB_var_TO <- -20
+# 
+# num_div_treatment_levels <- 10
 ```
 
 ## Create diversity
 
 ```{r}
-default_9strain <- new_starter(n_CB = num_CB_strains,
-                             n_SB = num_SB_strains,
-                             n_PB = num_PB_strains,
-                             values_initial_state = initial_pars_from)
-CB_var_gmax_s <- seq(zero, unity*CB_var_TO, length=num_div_treatment_levels) * CB_var_range
-CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
-SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
-SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
-PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
-PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
-var_expt <- tibble(CB_var_gmax_s,
-                   CB_var_h_s,
-                   SB_var_gmax_s,
-                   SB_var_h_s,
-                   PB_var_gmax_s,
-                   PB_var_h_s)
-var_expt <- var_expt %>%
-  nest_by(CB_var_gmax_s, CB_var_h_s,
-          SB_var_gmax_s, SB_var_h_s,
-          PB_var_gmax_s, PB_var_h_s) %>%
-  mutate(pars = list(add_strain_var(default_9strain,
-                                    CB_var_gmax = CB_var_gmax_s,
-                                    CB_var_h = CB_var_h_s,
-                                    SB_var_gmax = SB_var_gmax_s,
-                                    SB_var_h = SB_var_h_s,
-                                    PB_var_gmax = PB_var_gmax_s,
-                                    PB_var_h = PB_var_h_s)))
+# default_9strain <- new_starter(n_CB = num_CB_strains,
+#                              n_SB = num_SB_strains,
+#                              n_PB = num_PB_strains,
+#                              values_initial_state = initial_pars_from)
+# CB_var_gmax_s <- seq(zero, unity*CB_var_TO, length=num_div_treatment_levels) * CB_var_range
+# CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
+# SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
+# SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
+# PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
+# PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
+# var_expt <- tibble(CB_var_gmax_s,
+#                    CB_var_h_s,
+#                    SB_var_gmax_s,
+#                    SB_var_h_s,
+#                    PB_var_gmax_s,
+#                    PB_var_h_s)
+# var_expt <- var_expt %>%
+#   nest_by(CB_var_gmax_s, CB_var_h_s,
+#           SB_var_gmax_s, SB_var_h_s,
+#           PB_var_gmax_s, PB_var_h_s) %>%
+#   mutate(pars = list(add_strain_var(default_9strain,
+#                                     CB_var_gmax = CB_var_gmax_s,
+#                                     CB_var_h = CB_var_h_s,
+#                                     SB_var_gmax = SB_var_gmax_s,
+#                                     SB_var_h = SB_var_h_s,
+#                                     PB_var_gmax = PB_var_gmax_s,
+#                                     PB_var_h = PB_var_h_s)))
 ```
 
 
 ```{r}
-CBtraits <- bind_rows(CBtraits,
-                      tibble(var_expt$pars[[10]]$CB,
-                     Diversity = "None",
-                     Strength = "Weak"))
-CBtraits <- bind_rows(CBtraits,
-                      tibble(var_expt$pars[[6]]$CB,
-                     Diversity = "Medium",
-                     Strength = "Weak"))
-CBtraits <- bind_rows(CBtraits,
-                      tibble(var_expt$pars[[1]]$CB,
-                     Diversity = "High",
-                     Strength = "Weak"))
+# CBtraits <- bind_rows(CBtraits,
+#                       tibble(var_expt$pars[[10]]$CB,
+#                      Diversity = "None",
+#                      Strength = "Weak"))
+# CBtraits <- bind_rows(CBtraits,
+#                       tibble(var_expt$pars[[6]]$CB,
+#                      Diversity = "Medium",
+#                      Strength = "Weak"))
+# CBtraits <- bind_rows(CBtraits,
+#                       tibble(var_expt$pars[[1]]$CB,
+#                      Diversity = "High",
+#                      Strength = "Weak"))
 
 
 ggplot(CBtraits) +
   geom_point(aes(x = h_SR_CB, y = g_max_CB)) +
-  facet_grid(Strength ~ Diversity) +
+  facet_grid(Div_gmax ~ Div_h) +
   xlab("Tolerance trait") +
   ylab("Maximum growth rate")
 

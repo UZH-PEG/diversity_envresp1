@@ -86,12 +86,12 @@ initial_pars_from <- "bush_ssfig3"
 num_CB_strains <- 9
 num_SB_strains <- 9
 num_PB_strains <- 9
-CB_var_range <- 0.015789474
-CB_var_TO <- -5
-SB_var_range <- 0.0015789474
-SB_var_TO <- -20.5
-PB_var_range <- 0.0015789474
-PB_var_TO <- -20.5
+CB_gmax_div <- 0.015789474
+CB_h_div <- -0.08
+SB_gmax_div <- 0.015789474 * 0.5
+SB_h_div <- -0.323 * 0.5
+PB_gmax_div <- 0.015789474 * 0.5
+PB_h_div <- -0.323 * 0.5
 
 num_div_treatment_levels <- 2
 ```
@@ -104,12 +104,12 @@ default_9strain <- new_starter(n_CB = num_CB_strains,
                              n_SB = num_SB_strains,
                              n_PB = num_PB_strains,
                              values_initial_state = initial_pars_from)
-CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
-CB_var_h_s = seq(zero, CB_var_TO, length=num_div_treatment_levels) * CB_var_range
-SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
-SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
-PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
-PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
+CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_gmax_div
+CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_h_div
+SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_gmax_div
+SB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * SB_h_div
+PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_gmax_div
+PB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * PB_h_div
 var_expt <- tibble(CB_var_gmax_s,
                    CB_var_h_s,
                    SB_var_gmax_s,
@@ -133,50 +133,7 @@ var_expt <- var_expt %>%
 
 
 ```r
-CBtraits <- var_expt$pars[[num_div_treatment_levels]]$CB
-P <- 1 #10^seq(-5, 5, 0.1)
-SR <- 10^seq(0, 3, 0.1)
-gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
-gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
-
-CB_TO1 <- ggplot() +
-  geom_point(aes(x = CBtraits$h_SR_CB, y = CBtraits$g_max_CB))
-CB_TO2 <- ggplot() +
-  geom_line(aes( x = log10(SR), y = gr_rateCB1)) +
-  geom_line(aes( x = log10(SR), y = gr_rateCB9), col = "blue")
-
-
-SBtraits <- var_expt$pars[[num_div_treatment_levels]]$SB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_rateSB1 <- growth2(P, SO, SBtraits$g_max_SB[1], SBtraits$k_SB_P[1], SBtraits$k_SB_SO[1]) *
-  inhibition(O, SBtraits$h_O_SB[1])
-gr_rateSB9 <- growth2(P, SO, SBtraits$g_max_SB[9], SBtraits$k_SB_P[9], SBtraits$k_SB_SO[9]) *
-  inhibition(O, SBtraits$h_O_SB[9])
-
-SB_TO1 <- ggplot() +
-  geom_point(aes(x = SBtraits$h_O_SB, y = SBtraits$g_max_SB))
-SB_TO2 <- ggplot() +
-  geom_line(aes( x = log10(O), y = gr_rateSB1)) +
-  geom_line(aes( x = log10(O), y = gr_rateSB9), col = "blue")
-
-PBtraits <- var_expt$pars[[num_div_treatment_levels]]$PB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_ratePB1 <- growth2(P, SO, PBtraits$g_max_PB[1], PBtraits$k_PB_P[1], PBtraits$k_PB_SR[1]) *
-  inhibition(O, PBtraits$h_O_PB[1])
-gr_ratePB9 <- growth2(P, SO, PBtraits$g_max_PB[9], PBtraits$k_PB_P[9], PBtraits$k_PB_SR[9]) *
-  inhibition(O, PBtraits$h_O_PB[9])
-
-PB_TO1 <- ggplot() +
-  geom_point(aes(x = PBtraits$h_O_PB, y = PBtraits$g_max_PB))
-PB_TO2 <- ggplot() +
-  geom_line(aes( x = log10(O), y = gr_ratePB1)) +
-  geom_line(aes( x = log10(O), y = gr_ratePB9), col = "blue")
-
-(CB_TO1 + SB_TO1 + PB_TO1) / (CB_TO2 + SB_TO2 + PB_TO2)
+display_diversity()
 ```
 
 ![](experiment-2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
@@ -308,7 +265,7 @@ plot_dynamics(sim_res_novar)
 ![](experiment-2_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 ```r
-##ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
@@ -324,7 +281,7 @@ plot_dynamics(sim_res_highvar)
 ![](experiment-2_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 ```r
-##ggsave(here("expteriment 2/figures/switching_highvar.pdf"), width = 10)
+#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 ```
 
 ### Visualise
@@ -384,7 +341,7 @@ ggplot() +
 ![](experiment-2_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 ```r
-##ggsave(here("experiment 2/figures/switching_comparison.pdf"), width = 8, height = 10)
+##ggsave(here("simulations/figures/switching_comparison.pdf"), width = 5, height = 4)
 ```
 
 

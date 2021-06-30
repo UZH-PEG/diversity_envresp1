@@ -302,6 +302,9 @@ display_diversity <- function() {
   colfunc_SB <- colorRampPalette(rev(c("#FCBEB3", "#7D1402")))
   colfunc_PB <- colorRampPalette(rev(c("#F9AEFC", "#6E0172")))
   
+  linewd <- 1.5
+  ptsize <- 2
+  
   CBtraits <- var_expt$pars[[num_div_treatment_levels]]$CB
   P <- 1 #10^seq(-5, 5, 0.1)
   SR <- 10^seq(0, 3, 0.1)
@@ -309,14 +312,14 @@ display_diversity <- function() {
   gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
   
   CB_TO1 <- ggplot(CBtraits) +
-    geom_point(aes(x = h_SR_CB, y = g_max_CB, col = strain_name)) +
+    geom_point(aes(x = h_SR_CB, y = g_max_CB, col = strain_name), size = ptsize) +
     xlab("Tolerance\n(cyanobacteria to reduced sulphur)") +
     ylab("Maximum growth rate\n(cyanobacteria)") +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     theme(legend.position="none")
   CB_TO2 <- ggplot() +
-    geom_line(aes( x = log10(SR), y = gr_rateCB1), col = colfunc_CB(num_CB_strains)[1]) +
-    geom_line(aes( x = log10(SR), y = gr_rateCB9), col = colfunc_CB(num_CB_strains)[9]) +
+    geom_line(aes( x = log10(SR), y = gr_rateCB1), col = colfunc_CB(num_CB_strains)[1], size = linewd) +
+    geom_line(aes( x = log10(SR), y = gr_rateCB9), col = colfunc_CB(num_CB_strains)[9], size = linewd) +
     xlab("Reduced sulphur concentration\nin the environment\n(log10 uM per litre)") +
     ylab("Realised growth rate\n(cyanobacteria)")
   
@@ -332,14 +335,14 @@ display_diversity <- function() {
     inhibition(O, SBtraits$h_O_SB[9])
   
   SB_TO1 <- ggplot(SBtraits) +
-    geom_point(aes(x = h_O_SB, y = g_max_SB, col = strain_name))+
+    geom_point(aes(x = h_O_SB, y = g_max_SB, col = strain_name), size = ptsize)+
     xlab("Tolerance\n(sulphate reducing bacteria to oxygen)") +
     ylab("Maximum growth rate\n(sulphate reducing bacteria)") +
     scale_colour_manual(values = colfunc_SB(num_SB_strains))+
     theme(legend.position="none")
   SB_TO2 <- ggplot() +
-    geom_line(aes( x = log10(O), y = gr_rateSB1), col = colfunc_SB(num_SB_strains)[1]) +
-    geom_line(aes( x = log10(O), y = gr_rateSB9), col = colfunc_SB(num_SB_strains)[9])+
+    geom_line(aes( x = log10(O), y = gr_rateSB1), col = colfunc_SB(num_SB_strains)[1], size = linewd) +
+    geom_line(aes( x = log10(O), y = gr_rateSB9), col = colfunc_SB(num_SB_strains)[9], size = linewd)+
     xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
     ylab("Realised growth rate\n(sulphate reducing bacteria)")
   
@@ -353,14 +356,14 @@ display_diversity <- function() {
     inhibition(O, PBtraits$h_O_PB[9])
   
   PB_TO1 <- ggplot(PBtraits) +
-    geom_point(aes(x = h_O_PB, y = g_max_PB, col = strain_name))+
+    geom_point(aes(x = h_O_PB, y = g_max_PB, col = strain_name), size = ptsize)+
     xlab("Tolerance\n(phototrophic sulphur bacteria to oxygen)") +
     ylab("Maximum growth rate\n(phototrophic sulphur bacteria") +
     scale_colour_manual(values = colfunc_PB(num_PB_strains))+
     theme(legend.position="none")
   PB_TO2 <- ggplot() +
-    geom_line(aes( x = log10(O), y = gr_ratePB1), col = colfunc_PB(num_SB_strains)[1]) +
-    geom_line(aes( x = log10(O), y = gr_ratePB9), col = colfunc_PB(num_SB_strains)[9])+
+    geom_line(aes( x = log10(O), y = gr_ratePB1), col = colfunc_PB(num_SB_strains)[1], size = linewd) +
+    geom_line(aes( x = log10(O), y = gr_ratePB9), col = colfunc_PB(num_SB_strains)[9], size = linewd)+
     xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
     ylab("Realised growth rate\n(phototrophic sulphur bacteria)")
   

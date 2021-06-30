@@ -1,5 +1,5 @@
 ---
-title: "Experiment 1"
+title: "Experiment 2"
 author: "Owen Petchey"
 date: "6/25/2021"
 output: 
@@ -17,7 +17,7 @@ output:
 
 rm(list = ls())
 
-knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
+knitr::opts_knit$set(progress = TRUE, verbose = TRUE, cache = TRUE)
 
 # devtools::install_github("opetchey/microxanox",
 #                              ref="main",
@@ -58,12 +58,12 @@ initial_pars_from <- "bush_ssfig3"
 num_CB_strains <- 9
 num_SB_strains <- 9
 num_PB_strains <- 9
-CB_gmax_div <- 0.015789474
-CB_h_div <- -0.08
-SB_gmax_div <- 0.015789474
-SB_h_div <- -0.323
-PB_gmax_div <- 0.015789474
-PB_h_div <- -0.323
+CB_var_range <- 0.015789474
+CB_var_TO <- -5
+SB_var_range <- 0.0015789474
+SB_var_TO <- -20.5
+PB_var_range <- 0.0015789474
+PB_var_TO <- -20.5
 
 num_div_treatment_levels <- 2
 ```
@@ -75,12 +75,12 @@ default_9strain <- new_starter(n_CB = num_CB_strains,
                              n_SB = num_SB_strains,
                              n_PB = num_PB_strains,
                              values_initial_state = initial_pars_from)
-CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_gmax_div
-CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_h_div
-SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_gmax_div
-SB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * SB_h_div
-PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_gmax_div
-PB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * PB_h_div
+CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_var_range
+CB_var_h_s = seq(zero, CB_var_TO, length=num_div_treatment_levels) * CB_var_range
+SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_var_range
+SB_var_h_s = seq(zero, SB_var_TO, length=num_div_treatment_levels) * SB_var_range
+PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_var_range
+PB_var_h_s = seq(zero, PB_var_TO, length=num_div_treatment_levels) * PB_var_range
 var_expt <- tibble(CB_var_gmax_s,
                    CB_var_h_s,
                    SB_var_gmax_s,
@@ -201,7 +201,7 @@ initial_state[grep("CB_", names(initial_state))] <- 10/num_CB_strains
 sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number1]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_novar)
-#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+##ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
@@ -211,7 +211,7 @@ sim_number2 <- 2
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number2]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
-#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+##ggsave(here("expteriment 2/figures/switching_highvar.pdf"), width = 10)
 
 ```
 
@@ -254,7 +254,7 @@ ggplot() +
             aes(x=a, y = log10(Total_quantity), group = direction),
             linetype = "dashed", lwd=2, col="red") +
   ggtitle("Solid line is with no intraspecific diversity.\nDashed line is with intraspecific diversity")
-##ggsave(here("simulations/figures/switching_comparison.pdf"), width = 5, height = 4)
+##ggsave(here("experiment 2/figures/switching_comparison.pdf"), width = 8, height = 10)
 
 
 ```
@@ -293,13 +293,10 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 ```{r}
 var_expt <- run_ss_var_experiment()
-saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
-
+saveRDS(var_expt, here("experiments/experiment 2/data/ss_data.RDS"))
 ```
 
 ```{r}
-
-
 result_index1 <- 1
 p1  <- plot_ss_result1(var_expt,
                 result_index = result_index1,
