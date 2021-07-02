@@ -18,11 +18,68 @@ rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = TRUE, cache = TRUE)
 
-# devtools::install_github("opetchey/microxanox",
-#                              ref="main",
-#                              auth_token = "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",
-#                              build_vignettes = FALSE,
-#                              force = TRUE)
+microxanox_release <- "0.2"
+
+tmplib <- tempfile()
+dir.create(tmplib)
+
+
+### From '?remotes::install_github`:
+# auth_token	
+#   To install from a private repo, generate a personal access token (PAT) in
+#   "https://github.com/settings/tokens" and supply to this argument. This is 
+#   safer than using a password because you can easily delete a PAT without 
+#   affecting any others. Defaults to the GITHUB_PAT environment variable.
+
+remotes::install_github(
+  "opetchey/microxanox",
+  ref = microxanox_release,
+  # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
+  build_vignettes = FALSE,
+  force = TRUE,
+  upgrade = FALSE,
+  lib = tmplib
+)
+```
+
+```
+## Using github PAT from envvar GITHUB_PAT
+```
+
+```
+## Downloading GitHub repo opetchey/microxanox@0.2
+```
+
+```
+##   
+   checking for file ‘/private/var/folders/50/wcr5bjwn75q595n6x82gxj280000gq/T/RtmpnIhbmo/remotes9c733db9dfee/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’ ...
+  
+✓  checking for file ‘/private/var/folders/50/wcr5bjwn75q595n6x82gxj280000gq/T/RtmpnIhbmo/remotes9c733db9dfee/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’ (353ms)
+## 
+  
+─  preparing ‘microxanox’:
+## 
+  
+   checking DESCRIPTION meta-information ...
+  
+✓  checking DESCRIPTION meta-information
+## 
+  
+─  checking for LF line-endings in source and make files and shell scripts
+## 
+  
+─  checking for empty or unneeded directories
+## 
+  
+─  building ‘microxanox_0.2.tar.gz’
+## 
+  
+   
+## 
+```
+
+```r
+library(microxanox, lib.loc = tmplib)
 
 library(tidyverse)
 ```
@@ -32,7 +89,7 @@ library(tidyverse)
 ```
 
 ```
-## ✓ ggplot2 3.3.4     ✓ purrr   0.3.4
+## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
 ## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
 ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
 ## ✓ readr   1.4.0     ✓ forcats 0.5.1
@@ -45,13 +102,12 @@ library(tidyverse)
 ```
 
 ```r
-library(microxanox)
 library(patchwork)
 library(here)
 ```
 
 ```
-## here() starts at /Users/owenpetchey/Desktop/microxanox/diversity_envresp1
+## here() starts at /Users/rainerkrug/Documents_Local/git/diversity_envresp1
 ```
 
 ```r
@@ -60,6 +116,8 @@ zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 options(mc.cores = 8)
 ```
+
+## Version of `microxinox` package used: 0.2
 
 ## General simulation conditions
 
