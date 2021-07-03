@@ -32,26 +32,26 @@ plot_and_save <- function(CB_var_gmax, CB_var_h,
 
 run_ss_var_experiment <- function() {
   
-  var_expt <- tibble(CB_var_gmax_s,
-                     CB_var_h_s,
-                     SB_var_gmax_s,
-                     SB_var_h_s,
-                     PB_var_gmax_s,
-                     PB_var_h_s)
-  
-  var_expt <- var_expt %>%
-    group_by(CB_var_gmax_s, CB_var_h_s,
-             SB_var_gmax_s, SB_var_h_s,
-             PB_var_gmax_s, PB_var_h_s,
-    ) %>%
-    do(pars = add_strain_var(default_9strain,
-                             CB_var_gmax = .$CB_var_gmax_s,
-                             CB_var_h = .$CB_var_h_s,
-                             SB_var_gmax = .$SB_var_gmax_s,
-                             SB_var_h = .$SB_var_h_s,
-                             PB_var_gmax = .$PB_var_gmax_s,
-                             PB_var_h = .$PB_var_h_s))
-  #var_expt$pars[[1]]$CB
+  # var_expt <- tibble(CB_var_gmax_s,
+  #                    CB_var_h_s,
+  #                    SB_var_gmax_s,
+  #                    SB_var_h_s,
+  #                    PB_var_gmax_s,
+  #                    PB_var_h_s)
+  # 
+  # var_expt <- var_expt %>%
+  #   group_by(CB_var_gmax_s, CB_var_h_s,
+  #            SB_var_gmax_s, SB_var_h_s,
+  #            PB_var_gmax_s, PB_var_h_s,
+  #   ) %>%
+  #   do(pars = add_strain_var(default_9strain,
+  #                            CB_var_gmax = .$CB_var_gmax_s,
+  #                            CB_var_h = .$CB_var_h_s,
+  #                            SB_var_gmax = .$SB_var_gmax_s,
+  #                            SB_var_h = .$SB_var_h_s,
+  #                            PB_var_gmax = .$PB_var_gmax_s,
+  #                            PB_var_h = .$PB_var_h_s))
+  # #var_expt$pars[[1]]$CB
   #var_expt$pars[[2]]$CB
   #var_expt$pars[[1]]$PB
   #var_expt$pars[[2]]$PB
@@ -70,14 +70,15 @@ run_ss_var_experiment <- function() {
   var_expt <- var_expt %>%
     group_by(CB_var_gmax_s, CB_var_h_s,
              SB_var_gmax_s, SB_var_h_s,
-             PB_var_gmax_s, PB_var_h_s) %>%
-    do(pars = add_strain_var(default_9strain,
-                             CB_var_gmax = .$CB_var_gmax_s,
-                             CB_var_h = .$CB_var_h_s,
-                             SB_var_gmax = .$SB_var_gmax_s,
-                             SB_var_h = .$SB_var_h_s,
-                             PB_var_gmax = .$PB_var_gmax_s,
-                             PB_var_h = .$PB_var_h_s),
+             PB_var_gmax_s, PB_var_h_s,
+             data, pars) %>%
+    do(#pars = add_strain_var(default_9strain,
+                             #CB_var_gmax = .$CB_var_gmax_s,
+                             #CB_var_h = .$CB_var_h_s,
+                             #SB_var_gmax = .$SB_var_gmax_s,
+                             #SB_var_h = .$SB_var_h_s,
+                             #PB_var_gmax = .$PB_var_gmax_s,
+                             #PB_var_h = .$PB_var_h_s),
        ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
     )
   var_expt

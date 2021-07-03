@@ -21,8 +21,8 @@ knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
 
 microxanox_release <- "0.2"
 
-tmplib <- tempfile()
-dir.create(tmplib)
+#tmplib <- tempfile()
+#dir.create(tmplib)
 
 
 ### From '?remotes::install_github`:
@@ -32,18 +32,19 @@ dir.create(tmplib)
 #   safer than using a password because you can easily delete a PAT without 
 #   affecting any others. Defaults to the GITHUB_PAT environment variable.
 
-remotes::install_github(
-  "opetchey/microxanox",
-  ref = microxanox_release,
-  # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
-  build_vignettes = FALSE,
-  force = TRUE,
-  upgrade = FALSE,
-  lib = tmplib
-)
+# remotes::install_github(
+#   "opetchey/microxanox",
+#   ref = microxanox_release,
+#   # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
+#   build_vignettes = FALSE,
+#   force = TRUE,
+#   upgrade = FALSE,
+#   lib = tmplib
+# )
 
-library(microxanox, lib.loc = tmplib)
+#library(microxanox, lib.loc = tmplib)
 
+library(microxanox)
 library(tidyverse)
 library(patchwork)
 library(here)
@@ -280,9 +281,7 @@ p_overlay <- plot_ss_result2(var_expt[result_index1,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay
 
-ss_result1 <- var_expt[result_index1,]$ss_res[[1]]
-ss_result2 <- var_expt[result_index2,]$ss_res[[1]]
-xlims = c(-7, -1)
+
 ```
 
-```{r finalise}
+

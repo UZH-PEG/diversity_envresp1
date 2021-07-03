@@ -21,8 +21,8 @@ knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
 
 microxanox_release <- "0.2"
 
-tmplib <- tempfile()
-dir.create(tmplib)
+#tmplib <- tempfile()
+#dir.create(tmplib)
 
 
 ### From '?remotes::install_github`:
@@ -32,18 +32,19 @@ dir.create(tmplib)
 #   safer than using a password because you can easily delete a PAT without 
 #   affecting any others. Defaults to the GITHUB_PAT environment variable.
 
-remotes::install_github(
-  "opetchey/microxanox",
-  ref = microxanox_release,
-  # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
-  build_vignettes = FALSE,
-  force = TRUE,
-  upgrade = FALSE,
-  lib = tmplib
-)
+# remotes::install_github(
+#   "opetchey/microxanox",
+#   ref = microxanox_release,
+#   # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
+#   build_vignettes = FALSE,
+#   force = TRUE,
+#   upgrade = FALSE,
+#   lib = tmplib
+# )
 
-library(microxanox, lib.loc = tmplib)
+#library(microxanox, lib.loc = tmplib)
 
+library(microxanox)
 library(tidyverse)
 library(patchwork)
 library(here)
@@ -78,12 +79,12 @@ initial_pars_from <- "bush_ssfig3"
 num_CB_strains <- 9
 num_SB_strains <- 9
 num_PB_strains <- 9
-CB_gmax_div <- 0.015789474
-CB_h_div <- -0.08
-SB_gmax_div <- 0.015789474 * 0
-SB_h_div <- -0.323  * 0
-PB_gmax_div <- 0.015789474  * 0
-PB_h_div <- -0.323  * 0
+CB_gmax_div <- 0.015789474 * 0
+CB_h_div <- -0.08 * 0
+SB_gmax_div <- 0.015789474
+SB_h_div <- -0.323
+PB_gmax_div <- 0.015789474
+PB_h_div <- -0.323
 
 num_div_treatment_levels <- 20
 ```
@@ -249,12 +250,12 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 ```{r}
 var_expt <- run_ss_var_experiment()
-saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
+saveRDS(var_expt, here("experiments/experiment 3/data/ss_data.RDS"))
 
 ```
 
 ```{r}
-var_expt <- readRDS(here("experiments/experiment 1/data/ss_data.RDS"))
+var_expt <- readRDS(here("experiments/experiment 3/data/ss_data.RDS"))
 
 result_index1 <- 1
 p1  <- plot_ss_result1(var_expt,
@@ -280,9 +281,9 @@ p_overlay <- plot_ss_result2(var_expt[result_index1,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay
 
-ss_result1 <- var_expt[result_index1,]$ss_res[[1]]
-ss_result2 <- var_expt[result_index2,]$ss_res[[1]]
-xlims = c(-7, -1)
+#ss_result1 <- var_expt[result_index1,]$ss_res[[1]]
+#ss_result2 <- var_expt[result_index2,]$ss_res[[1]]
+#xlims = c(-7, -1)
 ```
 
-```{r finalise}
+
