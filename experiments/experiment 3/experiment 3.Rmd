@@ -1,5 +1,5 @@
 ---
-title: "Experiment 1"
+title: "Experiment 3"
 author: "Owen Petchey"
 date: "6/25/2021"
 output:
@@ -12,8 +12,9 @@ output:
 
 ## R
 
+```{r}
 
-```r
+
 rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
@@ -40,89 +41,23 @@ remotes::install_github(
   upgrade = FALSE,
   lib = tmplib
 )
-```
 
-```
-## Using github PAT from envvar GITHUB_PAT
-```
-
-```
-## Downloading GitHub repo opetchey/microxanox@0.2
-```
-
-```
-##   
-   checking for file ‘/private/var/folders/50/wcr5bjwn75q595n6x82gxj280000gq/T/Rtmpl2q0Kr/remotes90ea508678f/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’ ...
-  
-✓  checking for file ‘/private/var/folders/50/wcr5bjwn75q595n6x82gxj280000gq/T/Rtmpl2q0Kr/remotes90ea508678f/UZH-PEG-microxanox-47841c156a171f22cadbe878ce5dbd03fac12e4a/DESCRIPTION’ (384ms)
-## 
-  
-─  preparing ‘microxanox’:
-## 
-  
-   checking DESCRIPTION meta-information ...
-  
-✓  checking DESCRIPTION meta-information
-## 
-  
-─  checking for LF line-endings in source and make files and shell scripts
-## 
-  
-─  checking for empty or unneeded directories
-## 
-  
-─  building ‘microxanox_0.2.tar.gz’
-## 
-  
-   
-## 
-```
-
-```r
 library(microxanox, lib.loc = tmplib)
 
 library(tidyverse)
-```
-
-```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-```
-
-```
-## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
-## ✓ readr   1.4.0     ✓ forcats 0.5.1
-```
-
-```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```r
 library(patchwork)
 library(here)
-```
-
-```
-## here() starts at /Users/rainerkrug/Documents_Local/git/diversity_envresp1
-```
-
-```r
 source(here("experiments/r functions/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 #options(mc.cores = 8)
 ```
 
-## Version of `microxinox` package used: 0.2
+## Version of `microxanox` package used: `r packageVersion("microxanox") `
 
 ## General simulation conditions
 
-
-```r
+```{r}
 default_dynamic_model <- bushplus_dynamic_model
 default_event_definition <- event_definition_1
 default_event_interval <- 100
@@ -139,36 +74,31 @@ initial_pars_from <- "bush_ssfig3"
 
 ## Define diversity
 
-
-```r
+```{r}
 num_CB_strains <- 9
 num_SB_strains <- 9
 num_PB_strains <- 9
 CB_gmax_div <- 0.015789474
 CB_h_div <- -0.08
-SB_gmax_div <- 0.015789474
-SB_h_div <- -0.323
-PB_gmax_div <- 0.015789474
-PB_h_div <- -0.323
+SB_gmax_div <- 0.015789474 * 0
+SB_h_div <- -0.323  * 0
+PB_gmax_div <- 0.015789474  * 0
+PB_h_div <- -0.323  * 0
 
-num_div_treatment_levels <- 2
+num_div_treatment_levels <- 20
 ```
 
 ## Create diversity
 
-
-```r
+```{r}
 var_expt <- create_diversity()
 ```
 
 ## Display diversity
 
-
-```r
+```{r}
 display_diversity()
 ```
-
-![](experiment-1_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 
 # Temporal switching
@@ -177,13 +107,11 @@ display_diversity()
 
 ### No diversity
 
-
-```r
+```{r}
 default_sim_duration <- 80000
 ```
 
-
-```r
+```{r}
 sim_number <- 1
 default_log10a_series <- c(-1, -7, -7)
 initial_state <- new_initial_state(num_CB_strains,
@@ -194,42 +122,30 @@ initial_state[grep("CB_", names(initial_state))] <- 10^10/num_CB_strains
 sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_novar)
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
-
-```r
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
-
-```r
-sim_number <- 2
+```{r}
+sim_number <- num_div_treatment_levels
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
-
-```r
 #ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+
 ```
 
 ## Anoxic to oxic
 
 ### No diversity
 
-
-```r
+```{r}
 default_sim_duration <- 60000
 ```
 
 
-
-```r
+```{r}
 sim_number <- 1
 default_log10a_series <- c(-5, -3, -1, -1)
 initial_state <- new_initial_state(num_CB_strains,
@@ -240,28 +156,18 @@ initial_state[grep("CB_", names(initial_state))] <- 10/num_CB_strains
 sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_novar)
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
-
-```r
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
-
-```r
-sim_number <- 2
+```{r}
+sim_number <- num_div_treatment_levels
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
-
-```r
 #ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+
 ```
 
 
@@ -269,19 +175,16 @@ plot_dynamics(sim_res_highvar)
 
 ### No diversity
 
-
-```r
+```{r}
 default_sim_duration <- 1000000
 ```
 
-
-```r
+```{r}
 default_minimum_abundances <- rep(100, 3)
 names(default_minimum_abundances) <- c("CB", "PB", "SB")
 ```
 
-
-```r
+```{r}
 sim_number1 <- 1
 default_log10a_series <- c(-1, -8, -1)
 initial_state <- new_initial_state(num_CB_strains,
@@ -292,43 +195,25 @@ initial_state[grep("CB_", names(initial_state))] <- 10/num_CB_strains
 sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number1]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_novar)
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
-
-```r
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
-
-```r
-sim_number2 <- 2
+```{r}
+sim_number2 <- num_div_treatment_levels
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number2]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
-
-```r
 #ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+
 ```
 
 ### Visualise
 
-
-```r
+```{r}
 visualise_temporal_env_eco()
 ```
-
-```
-## `summarise()` has grouped output by 'functional_group', 'a', 'var_type'. You can override using the `.groups` argument.
-## `summarise()` has grouped output by 'functional_group', 'a', 'var_type'. You can override using the `.groups` argument.
-```
-
-![](experiment-1_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 
 
@@ -336,14 +221,12 @@ visualise_temporal_env_eco()
 
 ## Setup
 
-
-```r
+```{r}
 options(mc.cores = 6)
 ```
 
 
-
-```r
+```{r}
 ssfind_minimum_abundances <- rep(0, 3)
 names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
@@ -360,16 +243,17 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
                       N_PB = initial_PBs,
                       N_SB = initial_SBs,
                       a_O = a_Os)
+
+
 ```
 
+```{r}
+var_expt <- run_ss_var_experiment()
+saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
 
-```r
-#var_expt <- run_ss_var_experiment()
-#saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
 ```
 
-
-```r
+```{r}
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data.RDS"))
 
 result_index1 <- 1
@@ -377,61 +261,28 @@ p1  <- plot_ss_result1(var_expt,
                 result_index = result_index1,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
-```
-
-```
-## Warning in mask$eval_all_mutate(quo): NaNs produced
-```
-
-```r
 p1
 ```
 
-![](experiment-1_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
-
-
-```r
-result_index2 <- 2
+```{r}
+result_index2 <- num_div_treatment_levels
 p2  <- plot_ss_result1(var_expt,
                 result_index = result_index2,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p2
+
 ```
 
-![](experiment-1_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
-
-
-```r
+```{r}
 p_overlay <- plot_ss_result2(var_expt[result_index1,]$ss_res[[1]],
                              var_expt[result_index2,]$ss_res[[1]],
                              xlims = c(-7, -1))
-```
-
-```
-## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
-```
-
-```
-## Warning in mask$eval_all_mutate(quo): NaNs produced
-
-## Warning in mask$eval_all_mutate(quo): NaNs produced
-```
-
-```
-## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
-```
-
-```r
 p_overlay
-```
 
-![](experiment-1_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
-
-```r
 ss_result1 <- var_expt[result_index1,]$ss_res[[1]]
 ss_result2 <- var_expt[result_index2,]$ss_res[[1]]
 xlims = c(-7, -1)
 ```
 
-
+```{r finalise}

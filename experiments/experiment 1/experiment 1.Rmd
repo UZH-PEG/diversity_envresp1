@@ -53,7 +53,7 @@ unity <- 1 ## don't change!!!
 #options(mc.cores = 8)
 ```
 
-## Version of `microxinox` package used: `r packageVersion("microxanox") `
+## Version of `microxanox` package used: `r packageVersion("microxanox") `
 
 ## General simulation conditions
 
@@ -85,7 +85,7 @@ SB_h_div <- -0.323
 PB_gmax_div <- 0.015789474
 PB_h_div <- -0.323
 
-num_div_treatment_levels <- 2
+num_div_treatment_levels <- 20
 ```
 
 ## Create diversity
@@ -128,7 +128,7 @@ plot_dynamics(sim_res_novar)
 ### Maximum diversity
 
 ```{r}
-sim_number <- 2
+sim_number <- num_div_treatment_levels
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
@@ -162,7 +162,7 @@ plot_dynamics(sim_res_novar)
 ### Maximum diversity
 
 ```{r}
-sim_number <- 2
+sim_number <- num_div_treatment_levels
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
@@ -201,7 +201,7 @@ plot_dynamics(sim_res_novar)
 ### Maximum diversity
 
 ```{r}
-sim_number2 <- 2
+sim_number2 <- num_div_treatment_levels
 sim_res_highvar <- run_simulation(parameter_values = var_expt$pars[[sim_number2]],
                           initial_state = initial_state)
 plot_dynamics(sim_res_highvar)
@@ -248,8 +248,8 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 ```
 
 ```{r}
-#var_expt <- run_ss_var_experiment()
-#saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
+var_expt <- run_ss_var_experiment()
+saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
 
 ```
 
@@ -265,7 +265,7 @@ p1
 ```
 
 ```{r}
-result_index2 <- 2
+result_index2 <- num_div_treatment_levels
 p2  <- plot_ss_result1(var_expt,
                 result_index = result_index2,
                 filename_prefix = NULL,
