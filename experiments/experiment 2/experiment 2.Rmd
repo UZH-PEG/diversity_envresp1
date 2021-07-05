@@ -223,7 +223,7 @@ visualise_temporal_env_eco()
 ## Setup
 
 ```{r}
-options(mc.cores = 6)
+options(mc.cores = 4)
 ```
 
 

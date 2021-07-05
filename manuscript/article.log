@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.24)  24 JUN 2021 21:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.7.4)  5 JUL 2021 21:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -554,130 +554,115 @@ LaTeX Font Warning: Font shape `T1/lmr/bx/sc' undefined
 {/Users/owenpetchey/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.ma
 p}]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-58.
+57.
 (/Users/owenpetchey/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [2]
-</Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/ecosystem_
-network.png, id=120, 788.9475pt x 461.725pt>
-File: /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/ecosy
-stem_network.png Graphic file (type png)
-<use /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/ecosys
-tem_network.png>
+</Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/ec
+osystem_network.png, id=108, 784.9325pt x 465.74pt>
+File: /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figur
+es/ecosystem_network.png Graphic file (type png)
+<use /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figure
+s/ecosystem_network.png>
 Package pdftex.def Info: /Users/owenpetchey/Desktop/microxanox/diversity_envres
-p1/manuscript/ecosystem_network.png  used on input line 245.
-(pdftex.def)             Requested size: 469.75499pt x 274.91649pt.
+p1/manuscript/figures/ecosystem_network.png  used on input line 249.
+(pdftex.def)             Requested size: 469.75499pt x 278.73549pt.
 
-LaTeX Warning: Reference `(' on page 3 undefined on input line 253.
+LaTeX Warning: Reference `(' on page 3 undefined on input line 257.
 
-[3 </Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/ecosyst
-em_network.png>] [4]
-<article_files/figure-latex/tradeoff-1.pdf, id=140, 469.755pt x 325.215pt>
-File: article_files/figure-latex/tradeoff-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/tradeoff-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/tradeoff-1.pdf  used on inp
-ut line 383.
-(pdftex.def)             Requested size: 234.87749pt x 162.6071pt.
-<article_files/figure-latex/ss_novar-1.pdf, id=141, 469.755pt x 325.215pt>
+[3 </Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures
+/ecosystem_network.png>]
+</Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/di
+versity_example.pdf, id=120, 794.97pt x 505.89pt>
+File: /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figur
+es/diversity_example.pdf Graphic file (type pdf)
+<use /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figure
+s/diversity_example.pdf>
+Package pdftex.def Info: /Users/owenpetchey/Desktop/microxanox/diversity_envres
+p1/manuscript/figures/diversity_example.pdf  used on input line 367.
+(pdftex.def)             Requested size: 469.75499pt x 298.94337pt.
+
+LaTeX Warning: Reference `(' on page 4 undefined on input line 380.
+
+[4] [5 </Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/fig
+ures/diversity_example.pdf>]
+<article_files/figure-latex/ss_novar-1.pdf, id=140, 469.755pt x 325.215pt>
 File: article_files/figure-latex/ss_novar-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/ss_novar-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/ss_novar-1.pdf  used on inp
-ut line 450.
+ut line 514.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[5 <./article_files/figure-latex/tradeoff-1.pdf>]
-<article_files/figure-latex/ss_var-1.pdf, id=160, 469.755pt x 325.215pt>
+<article_files/figure-latex/ss_var-1.pdf, id=141, 469.755pt x 325.215pt>
 File: article_files/figure-latex/ss_var-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/ss_var-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/ss_var-1.pdf  used on input
- line 465.
+ line 529.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/ss_var2-1.pdf, id=161, 469.755pt x 325.215pt>
+<article_files/figure-latex/ss_var2-1.pdf, id=142, 469.755pt x 325.215pt>
 File: article_files/figure-latex/ss_var2-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/ss_var2-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/ss_var2-1.pdf  used on inpu
-t line 476.
+t line 540.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/CB_var1-1.pdf, id=162, 469.755pt x 325.215pt>
+[6]
+<article_files/figure-latex/CB_var1-1.pdf, id=156, 469.755pt x 325.215pt>
 File: article_files/figure-latex/CB_var1-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/CB_var1-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/CB_var1-1.pdf  used on inpu
-t line 491.
+t line 555.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/CB_var2-1.pdf, id=163, 469.755pt x 325.215pt>
+<article_files/figure-latex/CB_var2-1.pdf, id=157, 469.755pt x 325.215pt>
 File: article_files/figure-latex/CB_var2-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/CB_var2-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/CB_var2-1.pdf  used on inpu
-t line 500.
+t line 564.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/SB_var1-1.pdf, id=164, 469.755pt x 325.215pt>
-File: article_files/figure-latex/SB_var1-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/SB_var1-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/SB_var1-1.pdf  used on inpu
-t line 513.
-(pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/SB_var2-1.pdf, id=165, 469.755pt x 325.215pt>
-File: article_files/figure-latex/SB_var2-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/SB_var2-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/SB_var2-1.pdf  used on inpu
-t line 522.
-(pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/PB_var1-1.pdf, id=166, 469.755pt x 325.215pt>
-File: article_files/figure-latex/PB_var1-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/PB_var1-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/PB_var1-1.pdf  used on inpu
-t line 535.
-(pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/PB_var2-1.pdf, id=167, 469.755pt x 325.215pt>
-File: article_files/figure-latex/PB_var2-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/PB_var2-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/PB_var2-1.pdf  used on inpu
-t line 544.
-(pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/SBPB_var1-1.pdf, id=168, 469.755pt x 325.215pt>
+<article_files/figure-latex/SBPB_var1-1.pdf, id=158, 469.755pt x 325.215pt>
 File: article_files/figure-latex/SBPB_var1-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/SBPB_var1-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/SBPB_var1-1.pdf  used on in
-put line 557.
+put line 577.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/SBPB_var2-1.pdf, id=169, 469.755pt x 325.215pt>
+<article_files/figure-latex/SBPB_var2-1.pdf, id=159, 469.755pt x 325.215pt>
 File: article_files/figure-latex/SBPB_var2-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/SBPB_var2-1.pdf>
 Package pdftex.def Info: article_files/figure-latex/SBPB_var2-1.pdf  used on in
-put line 566.
+put line 586.
 (pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/ss_var3-1.pdf, id=170, 469.755pt x 325.215pt>
-File: article_files/figure-latex/ss_var3-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/ss_var3-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/ss_var3-1.pdf  used on inpu
-t line 583.
-(pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-<article_files/figure-latex/ss_var4-1.pdf, id=171, 469.755pt x 325.215pt>
-File: article_files/figure-latex/ss_var4-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/ss_var4-1.pdf>
-Package pdftex.def Info: article_files/figure-latex/ss_var4-1.pdf  used on inpu
-t line 592.
-(pdftex.def)             Requested size: 469.75499pt x 325.2142pt.
-
-Underfull \vbox (badness 2057) has occurred while \output is active []
-
-[6 <./article_files/figure-latex/ss_novar-1.pdf>] [7 <./article_files/figure-la
-tex/ss_var-1.pdf>]
-Underfull \vbox (badness 1158) has occurred while \output is active []
-
-[8 <./article_files/figure-latex/ss_var2-1.pdf>]
+</Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/ex
+tent_of_bistab1.pdf, id=160, 333.245pt x 289.08pt>
+File: /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figur
+es/extent_of_bistab1.pdf Graphic file (type pdf)
+<use /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figure
+s/extent_of_bistab1.pdf>
+Package pdftex.def Info: /Users/owenpetchey/Desktop/microxanox/diversity_envres
+p1/manuscript/figures/extent_of_bistab1.pdf  used on input line 603.
+(pdftex.def)             Requested size: 469.75499pt x 407.52786pt.
+</Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/ex
+tent_of_bistab2.pdf, id=161, 333.245pt x 289.08pt>
+File: /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figur
+es/extent_of_bistab2.pdf Graphic file (type pdf)
+<use /Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figure
+s/extent_of_bistab2.pdf>
+Package pdftex.def Info: /Users/owenpetchey/Desktop/microxanox/diversity_envres
+p1/manuscript/figures/extent_of_bistab2.pdf  used on input line 612.
+(pdftex.def)             Requested size: 469.75499pt x 407.52786pt.
+[7 <./article_files/figure-latex/ss_novar-1.pdf>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[9 <./article_files/figure-latex/CB_var1-1.pdf>]
+[8 <./article_files/figure-latex/ss_var-1.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[9 <./article_files/figure-latex/ss_var2-1.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[10 <./article_files/figure-latex/CB_var1-1.pdf>]
 No file article.bbl.
-[10 <./article_files/figure-latex/CB_var2-1.pdf>] [11 <./article_files/figure-l
-atex/SB_var1-1.pdf>] [12 <./article_files/figure-latex/SB_var2-1.pdf>] [13 <./a
-rticle_files/figure-latex/PB_var1-1.pdf>] [14 <./article_files/figure-latex/PB_
-var2-1.pdf>] [15 <./article_files/figure-latex/SBPB_var1-1.pdf>] [16 <./article
-_files/figure-latex/SBPB_var2-1.pdf>] [17 <./article_files/figure-latex/ss_var3
--1.pdf>] [18 <./article_files/figure-latex/ss_var4-1.pdf>] (./article.aux)
+[11 <./article_files/figure-latex/CB_var2-1.pdf>] [12 <./article_files/figure-l
+atex/SBPB_var1-1.pdf>] [13 <./article_files/figure-latex/SBPB_var2-1.pdf>] [14 
+</Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/ex
+tent_of_bistab1.pdf>] [15 </Users/owenpetchey/Desktop/microxanox/diversity_envr
+esp1/manuscript/figures/extent_of_bistab2.pdf>] (./article.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -685,16 +670,16 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: 823087525FE0D455A1AB083AD3ACE669;5048.
+(rerunfilecheck)             Checksum: 92691FECB5920A899DDA5AF999EB0B87;4181.
  ) 
 Here is how much of TeX's memory you used:
- 11213 strings out of 480470
- 182816 string characters out of 5897608
- 666131 words of memory out of 5000000
- 28466 multiletter control sequences out of 15000+600000
- 457662 words of font info for 135 fonts, out of 8000000 for 9000
+ 11160 strings out of 480477
+ 182346 string characters out of 5897916
+ 667017 words of memory out of 5000000
+ 28415 multiletter control sequences out of 15000+600000
+ 457908 words of font info for 138 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,12n,80p,446b,398s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 72i,12n,80p,446b,404s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/owenpetchey/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{
 /Users/owenpetchey/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Us
 ers/owenpetchey/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/U
@@ -715,10 +700,10 @@ pfb></Users/owenpetchey/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10
 .pfb></Users/owenpetchey/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti
 10.pfb></Users/owenpetchey/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfon
 ts/symbols/msbm10.pfb>
-Output written on article.pdf (18 pages, 1249592 bytes).
+Output written on article.pdf (15 pages, 874802 bytes).
 PDF statistics:
- 439 PDF objects out of 1000 (max. 8388607)
- 354 compressed objects within 4 object streams
- 92 named destinations out of 1000 (max. 500000)
- 29956 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 382 PDF objects out of 1000 (max. 8388607)
+ 308 compressed objects within 4 object streams
+ 79 named destinations out of 1000 (max. 500000)
+ 29912 words of extra memory for PDF output out of 35830 (max. 10000000)
 
