@@ -19,7 +19,7 @@ rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
 
-microxanox_release <- "0.2"
+microxanox_release <- "0.2.1"
 
 #tmplib <- tempfile()
 #dir.create(tmplib)
@@ -34,7 +34,7 @@ microxanox_release <- "0.2"
 
 # remotes::install_github(
 #   "UZH-PEG/microxanox",
-#   ref = "0.2",
+#   ref = microxanox_release,
 #   # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
 #   build_vignettes = FALSE,
 #   force = TRUE,
