@@ -409,6 +409,47 @@ create_diversity <- function() {
 }
 
 
+create_diversity_factorial <- function() {
+  
+  
+  default_9strain <- new_starter(n_CB = num_CB_strains,
+                                 n_SB = num_SB_strains,
+                                 n_PB = num_PB_strains,
+                                 values_initial_state = initial_pars_from)
+  CB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * CB_gmax_div
+  CB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * CB_h_div
+  SB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * SB_gmax_div
+  SB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * SB_h_div
+  PB_var_gmax_s <- seq(zero, unity, length=num_div_treatment_levels) * PB_gmax_div
+  PB_var_h_s = seq(zero, unity, length=num_div_treatment_levels) * PB_h_div
+  
+  var_expt <- crossing(CB_index = 1:length(CB_var_gmax_s),
+                     SBPB_index = 1:length(SB_var_gmax_s)) %>%
+    mutate(CB_var_gmax_s = CB_var_gmax_s[CB_index],
+           CB_var_h_s = CB_var_h_s[CB_index],
+           SB_var_gmax_s = SB_var_gmax_s[SBPB_index],
+           SB_var_h_s = SB_var_h_s[SBPB_index],
+           PB_var_gmax_s = PB_var_gmax_s[SBPB_index],
+           PB_var_h_s = PB_var_h_s[SBPB_index]
+    )
+  var_expt <- var_expt %>%
+    nest_by(CB_var_gmax_s, CB_var_h_s,
+            SB_var_gmax_s, SB_var_h_s,
+            PB_var_gmax_s, PB_var_h_s) %>%
+    mutate(pars = list(add_strain_var(default_9strain,
+                                      CB_var_gmax = CB_var_gmax_s,
+                                      CB_var_h = CB_var_h_s,
+                                      SB_var_gmax = SB_var_gmax_s,
+                                      SB_var_h = SB_var_h_s,
+                                      PB_var_gmax = PB_var_gmax_s,
+                                      PB_var_h = PB_var_h_s)))
+  
+  var_expt
+  
+  
+}
+
+
 visualise_temporal_env_eco <- function() {
   
   

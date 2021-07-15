@@ -19,7 +19,7 @@ rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
 
-microxanox_release <- "0.2"
+microxanox_release <- "0.2.1"
 
 #tmplib <- tempfile()
 #dir.create(tmplib)
@@ -33,16 +33,13 @@ microxanox_release <- "0.2"
 #   affecting any others. Defaults to the GITHUB_PAT environment variable.
 
 # remotes::install_github(
-#   "opetchey/microxanox",
+#   "UZH-PEG/microxanox",
 #   ref = microxanox_release,
 #   # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
 #   build_vignettes = FALSE,
 #   force = TRUE,
-#   upgrade = FALSE,
-#   lib = tmplib
+#   upgrade = FALSE
 # )
-
-#library(microxanox, lib.loc = tmplib)
 
 library(microxanox)
 library(tidyverse)

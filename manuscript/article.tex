@@ -121,15 +121,14 @@ large being with low diversity; panel (c) shows a linear and a
 non-linear response starting and ending at the same place; panel (d)
 shows a hysteretic response, with greater or less range of hysteresis).
 Strong responses of ecosystems to environmental change imply high
-\emph{sensitivity} and lack of resistance to environmental change, and
-higher temporal variability in the face of varying environmental
-conditions. Greater \emph{non-linearity} in ecosystem responses
-increases the potential for surprises, such as when an ecosystem that
-was resistant to an environmental change becomes unexpectedly sensitive
-to further change. The presence and extent of \emph{hysteresis} in
-ecosystem responses to environmental driver gradients concerns how
-readily are ecosystem responses reversed when environmental change is
-reversed.
+sensitivity and lack of resistance to environmental change, and higher
+temporal variability in the face of varying environmental conditions.
+Greater non-linearity in ecosystem responses increases the potential for
+surprises, such as when an ecosystem that was resistant to an
+environmental change becomes unexpectedly sensitive to further change.
+The presence and extent of hysteresis in ecosystem responses to
+environmental driver gradients concerns how readily are ecosystem
+responses reversed when environmental change is reversed.
 
 In this context, a directly relevant aspect of biodiversity is variation
 in functional traits, i.e.~the traits that determine organismal
@@ -155,13 +154,13 @@ affect the occurrence of tipping points. They explain that:
 
 \begin{itemize}
 \item
-  In general, greater functional response diversity may decrease the
-  likelihood of a catastrophic ecosystem response (Figure 2a in Dakos et
-  al. (2019)). Here, we interpret this prediction to be that greater
-  functional response diversity decreases the non-linearity of ecosystem
-  response to environmental driver change, including the extreme
-  non-linearity that can occur when an ecosystem ``flips'' from one
-  state to another one.
+  Greater functional response diversity may decrease the likelihood of a
+  catastrophic ecosystem response (Figure 2a in Dakos et al. (2019)).
+  Here, we interpret this prediction to be that greater functional
+  response diversity decreases the non-linearity of ecosystem response
+  to environmental driver change, including the extreme non-linearity
+  that can occur when an ecosystem ``flips'' from one state to another
+  one.
 \item
   Greater functional trait diversity can make a tipping point occur only
   with greater change in an environmental driver (Figure 2a in Dakos et
@@ -186,13 +185,13 @@ affect the occurrence of tipping points. They explain that:
   non-linearity / no tipping-point (Figure 3 in Dakos et al. (2019)).
 \end{itemize}
 
-These explanations/predictions were based on the verbal/graphical
+These explanations/predictions were based on the verbal and graphical
 argumentation Dakos et al. (2019). There were no mathematical models of
 ecosystem responses to environmental change behind the
 explanations/predictions. Ceulemans, Wojcik, and Gaedke (2021), in their
 article \emph{Functional diversity alters the effects of a pulse
 perturbation on the dynamics of tritrophic food webs}, did employ a such
-a mathematical model {[}to be developed{]}.
+a mathematical model {[}text to be developed{]}.
 
 We discuss empirical studies in the Discussion section (spoiler--there
 are few, if any, directly relevant ones).
@@ -207,24 +206,29 @@ Aim:
 \tightlist
 \item
   To provide an answer to the question of how trait variation affects
-  the non-linearity, resilience and hysteresis of ecosystem response to
-  an environmental change.
+  the resilience and hysteresis of ecosystem response to an
+  environmental change.
 \end{itemize}
 
 Scope:
 
 \begin{itemize}
 \item
-  Mathematical modelling of a microbrial ecosystem. Trait diversity
-  manipulation (can be considered selection among strains, or selection
-  among species). (Do not include mutation or recomination).
+  Mathematical modelling of a microbial ecosystem.
 \item
-  Variation in amount of among strain variation, no variation in number
-  of strains, no variation in strength or shape of the of any tradeoff.
+  Trait diversity manipulation (can be considered selection among
+  strains, or selection among species). (Do not include mutation or
+  recombination).
 \item
-  Measurement of the effect on how the steady state(s) of the system
-  varies with in different environmental conditions, and on the
-  dynamical response of system to gradual environmental change.
+  Variation in amount of among strain variation in two traits, no
+  variation in number of strains, no variation in strength or shape of
+  the of the tradeoff.
+\item
+  Illustration of the dynamical response to gradual environmental
+  change.
+\item
+  Measurement of the effect trait diversity on how the steady state(s)
+  of the system varies with environmental conditions.
 \end{itemize}
 
 \hypertarget{methods}{%
@@ -242,7 +246,7 @@ environmental driver).
 
 \begin{figure}
 
-{\centering \includegraphics[width=1\linewidth]{/Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/ecosystem_network} 
+{\centering \includegraphics[width=1\linewidth]{/Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/ecosystem_network} 
 
 }
 
@@ -320,8 +324,8 @@ Bush et al (2017) contains an accessible and complete description of the
 model of the ecosystem, including rate equations, parameter values, and
 initial conditions. These features are also represented and documented
 in the \texttt{microxanox} R package (\textbf{cite the package}).
-Therefore, here we only describe the relatively straightforward
-extension we used to model multiple strains per functional group.
+Therefore, here we only describe the extension we used to model multiple
+strains per functional group.
 
 Each of the strains within each functional groups has its own parameter
 set and state variable. Thus a system with nine strains within each
@@ -333,13 +337,11 @@ by the same equations. Hence, when parameterised with multiple strains
 per functional group, but no variation among strains (within functional
 groups), the system behaves identically to when there is only one strain
 per functional group (see the \texttt{microxanox} R package \emph{User
-Guide} for a demonstration).
-
-The only other necessary modification was to include summation terms in
-each of the four ordinary differential equations describing the rates of
-change of the four chemical substrates. This was required in order to
-appropriately account for the production and consumption of these
-substrates by multiple strains.
+Guide} for a demonstration). The only other necessary modification was
+to include summation terms in each of the four ordinary differential
+equations describing the rates of change of the four chemical
+substrates. This was required in order to appropriately account for the
+production and consumption of these substrates by multiple strains.
 
 \hypertarget{model-dimensions}{%
 \subsection{Model dimensions}\label{model-dimensions}}
@@ -360,58 +362,120 @@ substrates by multiple strains.
 \subsection{Creating within functional group
 diversity}\label{creating-within-functional-group-diversity}}
 
-In this section we describe how we created variability among the
-multiple strains within functional groups. Since the process was the
-same for each functional group, we usually do not in this description
-subscript parameter names by functional group (though there were
-functional group specific parameters in all simulations). The
-descriptions in this section gradually become more mathematical; the
-next paragraph alone should provide the information required to
-understand all other elements of this report.
-
-We introduced among-strain variability in maximum growth rate (parameter
-\(G_{max}\)) and in the tolerance to the relevant inhibiting chemical
-substrate (parameter \(h\)). Among-strain variability was created such
-that there was a tradeoff between maximum growth rate and tolerance
-(i.e.~high tolerance coinciding with low maximum growth rate)
-(e.g.~Figure @ref(fig:tradeoff). Our implementation of the variation and
-tradeoff contain the assumption of a linear tradeoff of log-log
-transformed among-strain variation.
-
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{article_files/figure-latex/tradeoff-1} 
+{\centering \includegraphics[width=1\linewidth]{/Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/diversity_example} 
 
 }
 
-\caption{An example of among-strain variation in growth rate and tolerance, and the tradeoff in the variation.}\label{fig:tradeoff}
+\caption{your caption}\label{fig:diversity_examples}
 \end{figure}
 
-For further understanding, please consider a reference maximum growth
-rate parameter \(G_{max}\) and reference tolerance parameter \(h\).
-Furthermore, consider the meta-parameters \(Div_{G_{max}}\) and
-\(Div_{h}\), which determine the amount of variation among \(n\)-strains
-in the growth rate and tolerance parameters. To create a tradeoff, the
-two meta-parameters were always of different sign.
+In this section we describe how we created variability among the
+multiple strains within functional groups. In brief, in each functional
+group we created multiple distinct strains that differed in their
+maximum growth rate and tolerance to an inhibiting substrate, with a
+trade-off between the two (e.g.~higher tolerance assocated with lower
+maximum growth rate). An example of the resulting variation is displayed
+in Figure \ref(fig:diversity\_example)).
 
-The among strain variation was calculated such that the growth rate of
-strain \(i = 1\) was a factor \(1/(2^{Div_{G_{max}}})\) of the reference
-growth rate, and the growth rate of the \(i = n\) strain was a factor
-\(2^{Div_{G_{max}}}\) of the reference growth rate. The growth rate of
-the \(i = \{2,...n-1\}\) other strains was the reference growth rate
+A more detailed account of the creation of strains follows now.
+Introducing variation among multiple strains within a functional group
+required a number of decisions:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{The number of strains.} The symbol for this is \(n\)
+  subscripted with the functional group code (CB = cyanobacteria, SP =
+  sulphate reducing bacteria, and PB = phototrophic sulphur bacteria).
+  E.g. \(n_{CB}\) is the number of strains of cyanobacteria. {[}add why
+  we only ever had 9{]}.
+\item
+  \textbf{Which traits to introduce variation in.} We chose the maximum
+  growth rate and the tolerance of growth to an inhibiting substrate.
+  E.g. maximum growth rate of the cyanobacteria \(G_{max,CB}\), and the
+  tolerance of cyanobacterial growth to reduced sulphur \(h_{SR,CB}\).
+\item
+  \textbf{The amount of among strain variation.} The symbol for this is
+  \(Div\) (from \emph{Div}ersity) subscripted by the trait/parameter and
+  the functional group. E.g. * \(Div_{G_{max,CB}}\) is the amount of
+  among strain variation in the maximum growth rate \(G_{max}\) of the
+  cyanobacteria \(CB\).
+\item
+  \textbf{The correlation between variation in different traits.} This
+  was always negative, so there was a tradeoff. Our implementation of
+  the variation and tradeoff contain the assumption of a linear tradeoff
+  of log-log transformed among-strain variation.
+\item
+  \textbf{The relative amount of among strain variation in different
+  functional groups.} E.g. were strains of cyanobacteria very variable
+  compared to strains of the other functional groups. We performed
+  several numerical experiments, varying which functional groups had
+  more or less among strain variation.
+\item
+  \textbf{The distribution of trait variation.} We chose to have among
+  strain variation distributed evenly on a log scale.
+\end{itemize}
+
+The parameters therefore necessary were:
+
+\begin{itemize}
+\tightlist
+\item
+  \(n_{CB}\) - number of strains of cyanobacteria.
+\item
+  \(n_{SB}\) - number of strains of sulphate reducing bacteria.
+\item
+  \(n_{PB}\) - number of strains of phototrophic sulphur bacteria.
+\item
+  \(Div_{G_{max,CB}}\) - amount of among strain variation in the maximum
+  growth rate \(G_{max}\) of the cyanobacteria \(CB\).
+\item
+  \(Div_{h_{SR,CB}}\) - amount of among strain variation in the
+  tolerance \(h\) of cyanobacteria \(CB\) to reduced sulpur compounds
+  \(SR\).
+\item
+  \(Div_{G_{max,SB}}\) - amount of among strain variation in the maximum
+  growth rate \(G_{max}\) of the sulphate reducing bacteria \(SB\).
+\item
+  \(Div_{h_{O,SB}}\) - amount of among strain variation in the tolerance
+  \(h\) of sulphate reducing bacteria \(S\) to oxygen \(O\).
+\item
+  \(Div_{G_{max,PB}}\) - amount of among strain variation in the maximum
+  growth rate \(G_{max}\) of the phototrophic sulphur bacteria \(PB\).
+\item
+  \(Div_{h_{O,PB}}\) - amount of among strain variation in the tolerance
+  \(h\) of phototrophic sulphur bacteria \(PB\) to oxygen \(O\).
+\end{itemize}
+
+For example, cyanobacteria, and a reference maximum growth rate
+parameter \(G_{max,CB}\) and reference tolerance parameter
+\(h_{SR,CB}\). Recall that amount of among strain variation is
+controlled by the two meta-parameters \(Div_{G_{max,CB}}\) and
+\(Div_{h_{SR,CB}}\). To create a tradeoff, the two meta-parameters were
+always of different sign. The among strain variation was calculated such
+that the growth rate of strain \(i = 1\) was a factor
+\(1/(2^{Div_{G_{max,CB}}})\) of the reference growth rate, and the
+growth rate of the \(i = n\) strain was a factor
+\(2^{Div_{G_{max,CB}}}\) of the reference growth rate. The growth rate
+of the \(i = \{2,...n-1\}\) other strains was the reference growth rate
 multiplied by a factor that was equally distributed between the factor
-of the \(i = 1\) and \(i = n\) strain.
+of the \(i = 1\) and \(i = n\) strain. This implementation of the
+variation and trade-off contains the assumption of a linear trade-off of
+log-log transformed among-strain variation.
 
-Hence, for example, with the reference growth rate \(G_{max} =\) 0.05,
-among strain variation of \(Div_{G_{max}} =\) 1, and nine strains
-(\(n =\) 9), then the growth rates of the nine strains are 0.025, 0.03,
-0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1 (Figure @ref(fig:tradeoff).
+Hence, for example, with the reference growth rate \(G_{max,CB} =\)
+0.05, among strain variation of \(Div_{G_{max,CB}} =\) 1, and nine
+strains (\(n =\) 9), then the growth rates of the nine strains are
+0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1 (Figure to be
+added).
 
 (Put another way, the growth rate parameter of the i-th of the \(n\)
 strains in a functional group was calculated as
-\(G_{max, i} = D_i * G_{max}\) where D\_i is the i-th element of the set
-\(D = \{2^{f(x)Div_{G_{max}}} | x \in \mathbb{N}, x \leq n\}\), where
-\(f(x) = (x-(n+1)/2) / (( n-1)/2)\).)
+\(G_{max, i} = D_i * G_{max}\) where \(D_i\) is the i-th element of the
+set \(D = \{2^{f(x)Div_{G_{max}}} | x \in \mathbb{N}, x \leq n\}\),
+where \(f(x) = (x-(n+1)/2) / (( n-1)/2)\).)
 
 \hypertarget{measurement-of-non-linearity-and-hysteresis}{%
 \subsection{Measurement of non-linearity and
@@ -451,7 +515,7 @@ variation}\label{figure-stable-states-without-variation}}
 
 }
 
-\caption{No diversity}\label{fig:ss_novar}
+\caption{Steady states of the ecosystem with no trait diversity, i.e. identical trait values for the strains within a functional group.}\label{fig:ss_novar}
 \end{figure}
 
 X-axis must be labelled log10(a).
@@ -466,7 +530,7 @@ tradeoff}\label{figure-cbsbpb-stable-states-with-variation-and-tradeoff}}
 
 }
 
-\caption{Diversity in all functional groups}\label{fig:ss_var}
+\caption{Steady states of the ecosystem with diversity in all functional groups}\label{fig:ss_var}
 \end{figure}
 
 X-axis must be labelled log10(a).
@@ -477,7 +541,7 @@ X-axis must be labelled log10(a).
 
 }
 
-\caption{Diversity in none (solid) and all functional groups.}\label{fig:ss_var2}
+\caption{Steady states of the ecosystem without any diversity (solid line) and with diversity in all three functional groups.}\label{fig:ss_var2}
 \end{figure}
 
 X-axis must be labelled log10(a).
@@ -492,7 +556,7 @@ tradeoff}\label{figure-cb-stable-states-with-variation-and-tradeoff}}
 
 }
 
-\caption{Diversity in CB functional group.}\label{fig:CB_var1}
+\caption{Steady states of the ecosystem with diversity in only the cyanobacteria functional group.}\label{fig:CB_var1}
 \end{figure}
 
 \begin{figure}
@@ -501,51 +565,7 @@ tradeoff}\label{figure-cb-stable-states-with-variation-and-tradeoff}}
 
 }
 
-\caption{Diversity in none (solid) and CB functional groups.}\label{fig:CB_var2}
-\end{figure}
-
-\hypertarget{figure-sb-stable-states-with-variation-and-tradeoff}{%
-\subsection{Figure: SB Stable states with variation and
-tradeoff}\label{figure-sb-stable-states-with-variation-and-tradeoff}}
-
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/SB_var1-1} 
-
-}
-
-\caption{Diversity in SB functional group.}\label{fig:SB_var1}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/SB_var2-1} 
-
-}
-
-\caption{Diversity in none (solid) and SB functional group.}\label{fig:SB_var2}
-\end{figure}
-
-\hypertarget{figure-pb-stable-states-with-variation-and-tradeoff}{%
-\subsection{Figure: PB Stable states with variation and
-tradeoff}\label{figure-pb-stable-states-with-variation-and-tradeoff}}
-
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/PB_var1-1} 
-
-}
-
-\caption{Diversity in PB functional group.}\label{fig:PB_var1}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/PB_var2-1} 
-
-}
-
-\caption{Diversity in none (solid) and PB functional group.}\label{fig:PB_var2}
+\caption{Steady states of the ecosystem without any diversity (solid line) and with diversity in only the cyanobacteria functional group.}\label{fig:CB_var2}
 \end{figure}
 
 \hypertarget{figure-sbpb-stable-states-with-variation-and-tradeoff}{%
@@ -558,7 +578,7 @@ tradeoff}\label{figure-sbpb-stable-states-with-variation-and-tradeoff}}
 
 }
 
-\caption{Diversity in SB and PB functional groups.}\label{fig:SBPB_var1}
+\caption{Steady states of the ecosystem with diversity in only the two sulphur bacteria functional groups.}\label{fig:SBPB_var1}
 \end{figure}
 
 \begin{figure}
@@ -567,7 +587,7 @@ tradeoff}\label{figure-sbpb-stable-states-with-variation-and-tradeoff}}
 
 }
 
-\caption{Diversity in none (solid) and SB and PB functional groups.}\label{fig:SBPB_var2}
+\caption{Steady states of the ecosystem without any diversity (solid line) and with diversity in only the sulphur bacteria functional group.}\label{fig:SBPB_var2}
 \end{figure}
 
 \hypertarget{figure-hysteresis-shift-point-nonlinearity-as-var-increases.}{%
@@ -580,30 +600,39 @@ log10(a) units.
 
 \begin{figure}
 
-{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/ss_var3-1} 
+{\centering \includegraphics[width=1\linewidth]{/Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/extent_of_bistab1} 
 
 }
 
-\caption{your caption}\label{fig:ss_var3}
+\caption{Effect of increasing amounts of trait diversity on the extent of the environmental gradient for which bistability (i.e. alternative stable states) is present, when different combinations of the three functional groups contain any diversity.}\label{fig:stab1}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=1\linewidth]{article_files/figure-latex/ss_var4-1} 
+{\centering \includegraphics[width=1\linewidth]{/Users/owenpetchey/Desktop/microxanox/diversity_envresp1/manuscript/figures/extent_of_bistab2} 
 
 }
 
-\caption{your caption}\label{fig:ss_var4}
+\caption{Effect of increasing amounts of trait diversity on the upper and lower bound of the environmental gradient for which bistability (i.e. alternative stable states) is present, when different combinations of the three functional groups contain any diversity.}\label{fig:stab2}
 \end{figure}
-
-\hypertarget{figure-temporal-switches}{%
-\subsection{Figure: Temporal switches}\label{figure-temporal-switches}}
-
-Maybe\ldots{} to be added. Need to go both ways (oxic to anoxic, and
-anoxic to oxic).
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
+
+We observed that greater trait diversity among the organisms dominating
+the prevailing ecosystem state can lead to greater resilience of that
+state. We also observed that greater trait diversity among the organisms
+that occur in an different ecosystem state can reduce resilience.
+
+The effect of diversity occurs because with greater trait diversity
+there is a organism with greater tolerance to the deteriorating (from
+the perspective of the dominant organisms). This greater tolerance means
+that a greater amount of environmental deterioration is required to
+cause the ecosystem to flip into the alternative state.
+
+In the case study, with three functional groups, the presence or absence
+of diversity in the different functional groups influences
+resilience\ldots{} with only diversity in the CB\ldots{}
 
 One reason why the explanations of Dakos et al are often indeterminate
 is that trait distributions can be affected by, and effect, organismal
