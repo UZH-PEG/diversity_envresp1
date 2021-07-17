@@ -3,6 +3,7 @@ title: "Experiment 1"
 author: "Owen Petchey"
 date: "6/25/2021"
 output:
+  pdf_document: default
   html_document:
     keep_md: yes
 ---
@@ -90,6 +91,11 @@ num_div_treatment_levels <- 20
 
 ```{r}
 var_expt <- create_diversity()
+
+var_expt[["pars"]][[20]]$CB
+var_expt[["pars"]][[20]]$SB
+var_expt[["pars"]][[20]]$PB
+
 ```
 
 ## Display diversity
@@ -220,7 +226,7 @@ visualise_temporal_env_eco()
 ## Setup
 
 ```{r}
-options(mc.cores = 4)
+options(mc.cores = 12)
 ```
 
 
@@ -247,12 +253,12 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 ```{r}
 var_expt <- run_ss_var_experiment()
-saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
+saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_latest.RDS"))
 
 ```
 
 ```{r}
-var_expt <- readRDS(here("experiments/experiment 1/data/ss_data.RDS"))
+var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_latest.RDS"))
 
 result_index1 <- 1
 p1  <- plot_ss_result1(var_expt,
@@ -280,5 +286,62 @@ p_overlay
 
 
 ```
+
+
+
+## negative abundance investigation
+
+```{r}
+
+var_expt$pars[[1]]
+dd <- var_expt$ss_res[[1]]
+dd1 <- filter(dd, PB_1<(-0.0001))
+dd1$a_O
+
+
+a_Os <- a_Os[355]
+ss_expt <- expand.grid(N_CB = initial_CBs,
+                      N_PB = initial_PBs,
+                      N_SB = initial_SBs,
+                      a_O = a_Os)
+
+var_expt_master <- var_expt
+var_expt <- var_expt[1,]
+var_expt_test <- run_ss_var_experiment()
+res <- var_expt_test$ss_res[[1]]
+#saveRDS(var_expt, here("experiments/experiment 1/data/ss_data.RDS"))
+
+
+
+
+sim_number <- 1
+log10_a <- log10(a_Os[355]) ## very slowly goes anoxic
+#log10_a <- log10(a_Os[354]) ## very slowly goes anoxic
+#log10_a <- log10(a_Os[356]) ## very very very  slowly goes anoxic
+#log10_a <- log10(a_Os[357]) ## does not go anoxic
+
+
+default_log10a_series <- c(log10_a, log10_a)
+initial_state <- new_initial_state(num_CB_strains,
+                                   num_PB_strains,
+                                   num_SB_strains,
+                                   values = "bush_ssfig3")
+initial_state[grep("CB_", names(initial_state))] <- 10^10/num_CB_strains
+sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[sim_number]],
+                          initial_state = initial_state)
+plot_dynamics(sim_res_novar)
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+
+
+
+```
+
+
+
+
+
+
+
+
 
 

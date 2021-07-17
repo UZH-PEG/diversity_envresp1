@@ -3,6 +3,7 @@ title: "Experiment 3"
 author: "Owen Petchey"
 date: "6/25/2021"
 output:
+  pdf_document: default
   html_document:
     keep_md: yes
 ---
@@ -246,8 +247,8 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 ```
 
 ```{r}
-var_expt <- run_ss_var_experiment()
-saveRDS(var_expt, here("experiments/experiment 3/data/ss_data.RDS"))
+#var_expt <- run_ss_var_experiment()
+#saveRDS(var_expt, here("experiments/experiment 3/data/ss_data.RDS"))
 
 ```
 

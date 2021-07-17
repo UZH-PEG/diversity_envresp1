@@ -124,9 +124,9 @@ plot_ss_result1 <- function(ss_exp_result,
                             filename_prefix,
                             save_image_file = TRUE) {
   
-  colfunc_CB <- colorRampPalette(c("#B5FFC9", "#024F17"))
-  colfunc_SB <- colorRampPalette(c("#FCBEB3", "#7D1402"))
-  colfunc_PB <- colorRampPalette(c("#F9AEFC", "#6E0172"))
+  colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+  colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+  colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
   
   ss_result <- ss_exp_result[result_index,]$ss_res[[1]]
   
@@ -143,6 +143,9 @@ plot_ss_result1 <- function(ss_exp_result,
                                         str_detect(species, "PB_") ~ "PB"),
            log10_quantity=log10(quantity+1))
   
+  ## next is important to check why the NaNs occur, rather than use this fix to get a nice graph
+  #temp <- temp %>%
+  #  filter(!is.nan(log10_quantity))
   
   num_strains <- temp %>%
     group_by(functional_group) %>%
@@ -221,9 +224,9 @@ plot_ss_result2 <- function(ss_result1,
   
   species_colours <- c(CB = "#024F17", SB = "#7D1402", PB = "#6E0172")
   
-  #colfunc_CB <- colorRampPalette(c("#B5FFC9", "#024F17"))
-  #colfunc_SB <- colorRampPalette(c("#FCBEB3", "#7D1402"))
-  #colfunc_PB <- colorRampPalette(c("#F9AEFC", "#6E0172"))
+  #colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+  #colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+  #colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
   
   temp1 <- ss_result1 %>%
     mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),
@@ -299,9 +302,9 @@ plot_ss_result2 <- function(ss_result1,
 
 display_diversity <- function() {
   
-  colfunc_CB <- colorRampPalette(rev(c("#B5FFC9", "#024F17")))
-  colfunc_SB <- colorRampPalette(rev(c("#FCBEB3", "#7D1402")))
-  colfunc_PB <- colorRampPalette(rev(c("#F9AEFC", "#6E0172")))
+  colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+  colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+  colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
   
   linewd <- 1.5
   ptsize <- 2
