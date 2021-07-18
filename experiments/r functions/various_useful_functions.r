@@ -130,6 +130,18 @@ plot_ss_result1 <- function(ss_exp_result,
   
   ss_result <- ss_exp_result[result_index,]$ss_res[[1]]
   
+  ## OK ... I (Owen) found that the sampling interval had an effect on the
+  ## stability of the simulation. If the sampling interval was long, then
+  ## in some rare cases (see below) the odesolver failed,
+  ## with negative abundances occuring. I think this is due to abundances
+  ## becoming very small, and then the computer having trouble with precision.
+  ##I guess that when a sample is taken, the abundance is somehow altered
+  ## if it is very low, probably by some rounding.
+  ## This is all shown in the final section of experiment 1:
+  ## "negative abundance investigation"
+  
+  ss_result <- filter(ss_result, if_all(contains("B_"), ~ (.x > - 1)))
+  
   temp <- ss_result %>%
     mutate(a = 10^a) %>%
     #arrange(a) %>%
@@ -143,10 +155,7 @@ plot_ss_result1 <- function(ss_exp_result,
                                         str_detect(species, "PB_") ~ "PB"),
            log10_quantity=log10(quantity+1))
   
-  ## next is important to check why the NaNs occur, rather than use this fix to get a nice graph
-  #temp <- temp %>%
-  #  filter(!is.nan(log10_quantity))
-  
+ 
   num_strains <- temp %>%
     group_by(functional_group) %>%
     summarise(num = length(unique(species))) %>%
@@ -228,6 +237,8 @@ plot_ss_result2 <- function(ss_result1,
   #colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
   #colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
   
+  ss_result1 <- filter(ss_result1, if_all(contains("B_"), ~ (.x > - 1)))
+  
   temp1 <- ss_result1 %>%
     mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),
            a = 10^a) %>%
@@ -240,6 +251,8 @@ plot_ss_result2 <- function(ss_result1,
     group_by(a, direction, var_type, functional_group) %>%
     summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
     mutate(log10_total_quantity = log10(total_quantity+1))
+  
+  ss_result2 <- filter(ss_result2, if_all(contains("B_"), ~ (.x > - 1)))
   
   temp2 <- ss_result2 %>%
     mutate(direction = ifelse(initial_N_CB == 1, "up", "down"),

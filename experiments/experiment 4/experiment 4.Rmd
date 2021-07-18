@@ -299,3 +299,103 @@ stab_data <- unnest(stab_data, cols = c(stability_measures))
 
 ```
 
+
+
+## negative abundance investigation
+
+I (Owen) found that the sampling interval had an effect on the stability of the simulation. If the sampling interval was long, then in some rare cases (see below) the odesolver failed, with negative abundances occuring. I think this is due to abundances becoming very small, and then the computer having trouble with precision. I guess that when a sample is taken, the abundance is somehow altered if it is very low, probably by some rounding.
+
+```{r}
+var_expt$pars[[1]]
+dd <- var_expt$ss_res[[1]]
+dd1 <- filter(dd, PB_1<(-0.0001))
+dd1$a_O
+
+ss_expt_master <- ss_expt
+ss_expt <- ss_expt_master[abs(ss_expt_master$a_O - 1.336984e-05)<1e-10,]
+
+var_expt_master <- var_expt
+#var_expt <- var_expt[1,]
+var_expt_test <- run_ss_var_experiment()
+res <- var_expt_test$ss_res[[1]]
+
+test1 <- ss_by_a_N(ss_expt, var_expt$pars[[1]])
+x <- ss_expt[2,]
+param <- var_expt$pars[[1]]
+get_final_states_a_N(x, param)
+ssfind_parameters <- param
+ssfind_simulation_sampling_interval <- 1000
+## now run inside the function "get_final_states_a_N"
+simres1 <- simres
+ssfind_simulation_sampling_interval <- 5000
+## now run inside the function "get_final_states_a_N"
+simres2 <- simres  # this fails
+
+## now run inside the function "get_final_states_a_N"
+plot_dynamics(simres2)
+
+ggplot() +
+  geom_line(data = simres1$result,
+             mapping = aes(x = time, y = log10(PB_1))) +
+  geom_point(data = simres2$result,
+             mapping = aes(x = time, y = log10(PB_1))) +
+  xlim(c(0, 250000))
+
+ccc <- simres2$result
+
+simres2$result$PB_1
+simres2$result$time
+
+
+log10_a <- log10(ss_expt$a_O[1]) ## very slowly goes anoxic
+#log10_a <- log10(a_Os[354]) ## very slowly goes anoxic
+#log10_a <- log10(a_Os[356]) ## very very very  slowly goes anoxic
+#log10_a <- log10(a_Os[357]) ## does not go anoxic
+
+
+
+default_dynamic_model <- bushplus_dynamic_model
+default_event_definition <- event_definition_1
+default_event_interval <- ssfind_simulation_duration
+default_noise_sigma <- 0
+default_minimum_abundances <- ssfind_minimum_abundances
+default_sim_duration <- ssfind_simulation_duration
+default_sim_sample_interval <- ssfind_simulation_duration
+#initial_pars_from <- "bush_ssfig3"
+
+
+default_log10a_series <- c(log10_a, log10_a)
+initial_state <- new_initial_state(num_CB_strains,
+                                   num_PB_strains,
+                                   num_SB_strains,
+                                   values = "bush_ssfig3")
+initial_state[grep("CB_", names(initial_state))] <- 10^10/num_CB_strains
+sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[1]],
+                          initial_state = initial_state)
+plot_dynamics(sim_res_novar)
+
+simulation_result <- sim_res_novar
+every_n <- 1
+
+chk <- sim_res_novar$result
+
+sim_res_novar$result %>%
+  ggplot() +
+  geom_line(mapping = aes(x = time, y = PB_1))
+
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
