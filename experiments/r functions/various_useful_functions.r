@@ -313,7 +313,7 @@ plot_ss_result2 <- function(ss_result1,
 }
 
 
-display_diversity <- function() {
+display_diversity <- function(this_one) {
   
   colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
   colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
@@ -322,7 +322,7 @@ display_diversity <- function() {
   linewd <- 1.5
   ptsize <- 2
   
-  CBtraits <- var_expt$pars[[num_div_treatment_levels]]$CB
+  CBtraits <- var_expt$pars[[this_one]]$CB
   P <- 1 #10^seq(-5, 5, 0.1)
   SR <- 10^seq(0, 3, 0.1)
   gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
@@ -342,7 +342,7 @@ display_diversity <- function() {
   
   
   
-  SBtraits <- var_expt$pars[[num_div_treatment_levels]]$SB
+  SBtraits <- var_expt$pars[[this_one]]$SB
   P <- 1 #10^seq(-5, 5, 0.1)
   SO <- 1
   O <- 10^seq(-2.5, 2.5, 0.1)
@@ -363,7 +363,7 @@ display_diversity <- function() {
     xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
     ylab("Realised growth rate\n(sulphate reducing bacteria)")
   
-  PBtraits <- var_expt$pars[[num_div_treatment_levels]]$PB
+  PBtraits <- var_expt$pars[[this_one]]$PB
   P <- 1 #10^seq(-5, 5, 0.1)
   SO <- 1
   O <- 10^seq(-2.5, 2.5, 0.1)

@@ -214,17 +214,31 @@ We implemented the model in the `microxanox` package (**cite the package**) of t
 
 ## Figure: Stable states without variation
 
+```{r}
+## find various combintions of diversity
+var_expt <- readRDS(here("experiments/experiment 4/data/ss_data.RDS"))
+
+var_expt_levels <- var_expt[,1:6]
+
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_diversty_all <- which(max(rowSums(abs(var_expt_levels))) ==
+                            rowSums(abs(var_expt_levels)))
+max_only_CB_diversity <- which(max(rowSums(abs(var_expt_levels[,1:2]))) ==
+                            rowSums(abs(var_expt_levels[,1:2])) &
+                              rowSums(abs(var_expt_levels[,3:6]))==0)
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+
+```
 
 
 ```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with no trait diversity, i.e. identical trait values for the strains within a functional group."), echo=FALSE}
-CBSBPB_data <- readRDS(here("experiments/experiment 1/data/ss_data.RDS"))
-result_index1 <- 1
-p1  <- plot_ss_result1(CBSBPB_data,
-                result_index = result_index1,
+p1  <- plot_ss_result1(var_expt,
+                result_index = no_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1
-
 ```
 
 X-axis must be labelled log10(a).
@@ -232,22 +246,20 @@ X-axis must be labelled log10(a).
 ## Figure: CBSBPB Stable states with variation and tradeoff
 
 ```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with diversity in all functional groups"), echo=FALSE}
-result_index2 <- 20
-p2  <- plot_ss_result1(CBSBPB_data,
-                result_index = result_index2,
+p2  <- plot_ss_result1(var_expt,
+                result_index = max_diversty_all,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p2
-
 ```
 
 X-axis must be labelled log10(a).
 
 ```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem without any diversity (solid line) and with diversity in all three functional groups."), echo=FALSE}
-p_overlay <- plot_ss_result2(CBSBPB_data[result_index1,]$ss_res[[1]],
-                             CBSBPB_data[result_index2,]$ss_res[[1]],
+p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_diversty_all,]$ss_res[[1]],
                              xlims = c(-7, -1))
-p_overlay
+p_overlay1
 ```
 
 X-axis must be labelled log10(a).
@@ -257,19 +269,18 @@ X-axis must be labelled log10(a).
 ## Figure: CB Stable states with variation and tradeoff
 
 ```{r CB_var1, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with diversity in only the cyanobacteria functional group."), echo=FALSE}
-CB_data <- readRDS(here("experiments/experiment 2/data/ss_data.RDS"))
-p3  <- plot_ss_result1(CB_data,
-                result_index = result_index2,
+p3  <- plot_ss_result1(var_expt,
+                result_index = max_only_CB_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p3
 ```
 
 ```{r CB_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem without any diversity (solid line) and with diversity in only the cyanobacteria functional group."), echo=FALSE}
-p_overlay <- plot_ss_result2(CB_data[result_index1,]$ss_res[[1]],
-                             CB_data[result_index2,]$ss_res[[1]],
+p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_only_CB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
-p_overlay
+p_overlay2
 ```
 
 
@@ -279,21 +290,20 @@ p_overlay
 ## Figure: SBPB Stable states with variation and tradeoff
 
 ```{r SBPB_var1, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with diversity in only the two sulphur bacteria functional groups."), echo=FALSE}
-SBPB_data <- readRDS(here("experiments/experiment 3/data/ss_data.RDS"))
-p6  <- plot_ss_result1(SBPB_data,
-                result_index = result_index2,
+p4  <- plot_ss_result1(var_expt,
+                result_index = max_only_SBPB_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
-p6
+p4
+
 
 ```
 
 ```{r SBPB_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem without any diversity (solid line) and with diversity in only the sulphur bacteria functional group."), echo=FALSE}
-p_overlay <- plot_ss_result2(CB_data[result_index1,]$ss_res[[1]],
-                             SBPB_data[result_index2,]$ss_res[[1]],
+p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
-
-p_overlay
+p_overlay3
 ```
 
 
