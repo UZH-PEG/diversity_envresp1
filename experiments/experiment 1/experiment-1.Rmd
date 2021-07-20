@@ -291,6 +291,7 @@ options(mc.cores = 12)
 
 
 ```{r}
+default_sim_duration <- 1000000
 ssfind_minimum_abundances <- rep(0, 3)
 names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
 ssfind_simulation_duration <- default_sim_duration
@@ -325,7 +326,7 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 
 ```{r}
 ## find various combintions of diversity
-var_expt <- readRDS(here("experiments/experiment 1/data/ss_data.RDS"))
+var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_300000_small.RDS"))
 
 var_expt_levels <- var_expt[,1:6]
 
@@ -517,6 +518,7 @@ var_expt <- var_expt_master[381,]
 
 
 ```{r}
+library(here)
 zoom <- readRDS(here("experiments/experiment 1/data/ss_data_zoom.RDS"))
 
 p1  <- plot_ss_result1(zoom,
