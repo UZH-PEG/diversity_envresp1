@@ -85,12 +85,17 @@ initial_pars_from <- "bush_ssfig3"
 num_CB_strains <- 9
 num_SB_strains <- 9
 num_PB_strains <- 9
-CB_gmax_div <- 0.015789474 * 0
-CB_h_div <- -0.08 * 0
-SB_gmax_div <- 0.015789474 * 5
-SB_h_div <- -0.323  * 5
-PB_gmax_div <- 0.015789474  * 5
-PB_h_div <- -0.323  * 5
+
+## multiplier of SBPB variation
+CB_var_multiplier <- 1
+SBPB_var_multiplier <- 5
+
+CB_gmax_div <- 0.015789474 * CB_var_multiplier
+CB_h_div <- -0.08 * CB_var_multiplier
+SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
+SB_h_div <- -0.323  * SBPB_var_multiplier
+PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
+PB_h_div <- -0.323  * SBPB_var_multiplier
 
 num_div_treatment_levels <- 20
 ```
@@ -104,8 +109,9 @@ var_expt <- create_diversity_factorial()
 ## Display diversity
 
 ```{r}
-display_diversity(20)
+display_diversity(400)
 ```
+
 
 
 # Temporal switching
@@ -569,6 +575,14 @@ all_stab_results %>%
 
 
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
+stab_data1 <- readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS"))
+stab_data_x <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+stab_data_plus <- bind_rows(stab_data1, stab_data_x)
+stab_data_plus %>%
+  filter(Species == "O",
+         sim_length == 1e6) %>%
+  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range, col = hyst_range)) +
+  geom_point(size = 3)
 
 
 ```
@@ -783,6 +797,70 @@ sim_res_novar$result %>%
 
 
 ```
+
+
+# Understand about relative and absolute variation in traits
+
+```{r echo = FALSE}
+num_CB_strains <- 9
+num_SB_strains <- 9
+num_PB_strains <- 9
+
+## multiplier of SBPB variation
+CB_var_multiplier <- 1
+SBPB_var_multiplier <- 5
+
+CB_gmax_div <- 0.015789474 * CB_var_multiplier
+CB_h_div <- -0.08 * CB_var_multiplier
+SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
+SB_h_div <- -0.323  * SBPB_var_multiplier
+PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
+PB_h_div <- -0.323  * SBPB_var_multiplier
+
+num_div_treatment_levels <- 2
+
+var_expt <- create_diversity_factorial()
+
+display_diversity(4)
+
+this_one <- 4
+CBtraits <- var_expt$pars[[this_one]]$CB
+P <- 1 #10^seq(-5, 5, 0.1)
+SR <- 10^seq(0, 3, 0.1)
+gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
+gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
+CB_gr_rates <- (c(gr_rateCB1, gr_rateCB9))
+CB_gr_range <- max(CB_gr_rates) - min(CB_gr_rates)
+CB_gr_range
+
+SBtraits <- var_expt$pars[[this_one]]$SB
+P <- 1 #10^seq(-5, 5, 0.1)
+SO <- 1
+O <- 10^seq(-2.5, 2.5, 0.1)
+gr_rateSB1 <- growth2(P, SO, SBtraits$g_max_SB[1], SBtraits$k_SB_P[1], SBtraits$k_SB_SO[1]) *
+  inhibition(O, SBtraits$h_O_SB[1])
+gr_rateSB9 <- growth2(P, SO, SBtraits$g_max_SB[9], SBtraits$k_SB_P[9], SBtraits$k_SB_SO[9]) *
+    inhibition(O, SBtraits$h_O_SB[9])
+SB_gr_rates <- (c(gr_rateSB1, gr_rateSB9))
+SB_gr_range <- max(SB_gr_rates) - min(SB_gr_rates)
+SB_gr_range
+
+PBtraits <- var_expt$pars[[this_one]]$PB
+P <- 1 #10^seq(-5, 5, 0.1)
+SO <- 1
+O <- 10^seq(-2.5, 2.5, 0.1)
+gr_ratePB1 <- growth2(P, SO, PBtraits$g_max_PB[1], PBtraits$k_PB_P[1], PBtraits$k_PB_SR[1]) *
+  inhibition(O, PBtraits$h_O_PB[1])
+gr_ratePB9 <- growth2(P, SO, PBtraits$g_max_PB[9], PBtraits$k_PB_P[9], PBtraits$k_PB_SR[9]) *
+  inhibition(O, PBtraits$h_O_PB[9])
+PB_gr_rates <- (c(gr_ratePB1, gr_ratePB9))
+PB_gr_range <- max(PB_gr_rates) - min(PB_gr_rates)
+PB_gr_range
+
+```
+
+With the CB diversity multiplier set at `r CB_var_multiplier` and the SB/PB multiplier set at `r SBPB_var_multiplier` the range of realised growth rates of CB is `r CB_gr_range`, range of SB is `r SB_gr_range`, and range of PB is `r PB_gr_range`.
+
 
 
 
