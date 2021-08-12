@@ -418,7 +418,6 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
                             rowSums(abs(var_expt_levels[,3:6])) &
                               rowSums(abs(var_expt_levels[,1:2]))==0)
 #var_expt_levels[20,]
-var_expt_copy <- var_expt
 ```
 
 
@@ -795,8 +794,8 @@ num_SB_strains <- 9
 num_PB_strains <- 9
 
 ## multiplier of SBPB variation
-CB_var_multiplier <- 2
-SBPB_var_multiplier <- 6
+CB_var_multiplier <- 1
+SBPB_var_multiplier <- 1
 
 CB_gmax_div <- 0.015789474 * CB_var_multiplier
 CB_h_div <- -0.08 * CB_var_multiplier
@@ -865,16 +864,16 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 ## Here the simulations with least and most tolerantsulfur bacteria are run.
 var_expt <- var_expt_least_tolerant_SBPB
 var_expt_least_tolerant_SBPB <- run_ss_var_experiment()
-saveRDS(var_expt_least_tolerant_SBPB, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_least_tolerant.RDS"))
+saveRDS(var_expt_least_tolerant_SBPB, here("experiments/experiment 1/data/ss_data_1e6_x1x1_factorial_SBPB_least_tolerant.RDS"))
 
 var_expt <- var_expt_most_tolerant_SBPB
 var_expt_most_tolerant_SBPB <- run_ss_var_experiment()
-saveRDS(var_expt_most_tolerant_SBPB, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_most_tolerant.RDS"))
+saveRDS(var_expt_most_tolerant_SBPB, here("experiments/experiment 1/data/ss_data_1e6_x1x1_factorial_SBPB_most_tolerant.RDS"))
 ```
 
 ```{r, fig.height=7.5, fig.width=12}
-var_expt_least_tolerant_SBPB <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_least_tolerant.RDS"))
-var_expt_most_tolerant_SBPB <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_most_tolerant.RDS"))
+var_expt_least_tolerant_SBPB <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x1x1_factorial_SBPB_least_tolerant.RDS"))
+var_expt_most_tolerant_SBPB <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x1x1_factorial_SBPB_most_tolerant.RDS"))
 
 plot_ss_result1_v2(var_expt_least_tolerant_SBPB,
                    result_index = 1,
@@ -890,23 +889,30 @@ plot_ss_result1_v2(var_expt_most_tolerant_SBPB,
 ```
 
 ```{r, fig.height=8, fig.width=10, message=FALSE, warning=FALSE}
+var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS"))
+var_expt_levels <- var_expt[,1:6]
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+
 plot_ss_result2(var_expt_least_tolerant_SBPB$ss_res[[1]],
-                var_expt_copy[no_diversity,]$ss_res[[1]],
+                var_expt[no_diversity,]$ss_res[[1]],
                 xlims = c(-7, -1))+
   plot_annotation(title = 'Sims with LEAST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with no diversity (average values) (dashed line)')
 
 plot_ss_result2(var_expt_least_tolerant_SBPB$ss_res[[1]],
-                var_expt_copy[max_only_SBPB_diversity,]$ss_res[[1]],
+                var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                 xlims = c(-7, -1))+
   plot_annotation(title = 'Sims with LEAST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with diversity in SBPB, no diversity (average value) in CB (dashed line)')
 
 plot_ss_result2(var_expt_most_tolerant_SBPB$ss_res[[1]],
-                var_expt_copy[no_diversity,]$ss_res[[1]],
+                var_expt[no_diversity,]$ss_res[[1]],
                 xlims = c(-7, -1))+
   plot_annotation(title = 'Sims with MOST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with no diversity (average values) (dashed line)')
 
 plot_ss_result2(var_expt_most_tolerant_SBPB$ss_res[[1]],
-                var_expt_copy[max_only_SBPB_diversity,]$ss_res[[1]],
+                var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                 xlims = c(-7, -1))+
   plot_annotation(title = 'Sims with MOST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with diversity in SBPB, no diversity (average value) in CB (dashed line)')
 ```
