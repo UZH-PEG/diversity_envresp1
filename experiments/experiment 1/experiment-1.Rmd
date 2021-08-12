@@ -53,6 +53,7 @@ library(microxanox)
 library(tidyverse)
 library(patchwork)
 library(here)
+library(parallel)
 source(here("experiments/r functions/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
@@ -292,7 +293,7 @@ visualise_temporal_env_eco()
 ## Finding
 
 ```{r}
-options(mc.cores = 12)
+options(mc.cores = detectCores())
 ```
 
 
@@ -417,25 +418,25 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
                             rowSums(abs(var_expt_levels[,3:6])) &
                               rowSums(abs(var_expt_levels[,1:2]))==0)
 #var_expt_levels[20,]
-
+var_expt_copy <- var_expt
 ```
 
 
 ```{r}
 
 p1  <- plot_ss_result1(var_expt,
-                result_index = no_diversity,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
+                       result_index = no_diversity,
+                       filename_prefix = NULL,
+                       save_image_file = FALSE)
 p1
 
 
 #junk1 <- var_expt[no_diversity,]$ss_res[[1]]
 ```
 
-```{r}
+```{r, fig.height=7.5, fig.width=12}
 
-p2  <- plot_ss_result1(var_expt,
+p2  <- plot_ss_result1_v2(var_expt,
                 result_index = max_diversty_all,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
@@ -783,6 +784,132 @@ p1_long
 ```
 
 
+## Analysis with least and most tolerant Sulfur Bacteria
+
+```{r}
+##########################################
+###### Setup copy-pasted from above 
+
+num_CB_strains <- 9
+num_SB_strains <- 9
+num_PB_strains <- 9
+
+## multiplier of SBPB variation
+CB_var_multiplier <- 2
+SBPB_var_multiplier <- 6
+
+CB_gmax_div <- 0.015789474 * CB_var_multiplier
+CB_h_div <- -0.08 * CB_var_multiplier
+SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
+SB_h_div <- -0.323  * SBPB_var_multiplier
+PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
+PB_h_div <- -0.323  * SBPB_var_multiplier
+
+num_div_treatment_levels <- 20
+
+var_expt <- create_diversity_factorial()
+
+## rows of interest
+
+var_expt_levels <- var_expt[,1:6]
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+
+## Overwriting average values with most and least tolerant values (tolerance and respective growth)
+
+most_tolerant_PB <- var_expt[max_only_SBPB_diversity,]$pars[[1]]$PB
+least_tolerant_PB <- most_tolerant_PB[which.min(most_tolerant_PB$h_O_PB),]
+most_tolerant_PB <- most_tolerant_PB[which.max(most_tolerant_PB$h_O_PB),]
+
+most_tolerant_SB <- var_expt[max_only_SBPB_diversity,]$pars[[1]]$SB
+least_tolerant_SB <- most_tolerant_SB[which.min(most_tolerant_SB$h_O_SB),]
+most_tolerant_SB <- most_tolerant_SB[which.max(most_tolerant_SB$h_O_SB),]
+
+var_expt_most_tolerant_SBPB <- var_expt[no_diversity, ]
+var_expt_most_tolerant_SBPB$pars[[1]]$PB[1:9] <- most_tolerant_PB
+var_expt_most_tolerant_SBPB$pars[[1]]$SB[1:9] <- most_tolerant_SB
+var_expt_most_tolerant_SBPB$pars[[1]]$PB$strain_name <- paste0("PB_",1:9)
+var_expt_most_tolerant_SBPB$pars[[1]]$SB$strain_name <- paste0("SB_",1:9)
+
+var_expt_least_tolerant_SBPB <- var_expt[no_diversity, ]
+var_expt_least_tolerant_SBPB$pars[[1]]$PB[1:9] <- least_tolerant_PB
+var_expt_least_tolerant_SBPB$pars[[1]]$SB[1:9] <- least_tolerant_SB
+var_expt_least_tolerant_SBPB$pars[[1]]$PB$strain_name <- paste0("PB_",1:9)
+var_expt_least_tolerant_SBPB$pars[[1]]$SB$strain_name <- paste0("SB_",1:9)
+## number of cores usable
+options(mc.cores = detectCores()-1)
+
+## setup copy-pasted from above
+default_sim_duration <- 1000000
+ssfind_minimum_abundances <- rep(0, 3)
+names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
+ssfind_simulation_duration <- default_sim_duration
+ssfind_simulation_sampling_interval <- ssfind_simulation_duration
+ssfind_event_interval <- ssfind_simulation_duration
+grid_num_a <- 1000 #usually 1000 ## number of a_0 values
+a_Os <- 10^seq(-7, -0.5, length=grid_num_a) ## sequence of a_0 values
+grid_num_N <- 2 ## number of N values
+initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
+initial_PBs <- 1e8 ## not varied
+initial_SBs <- 1e8 ## not varied
+# next line creates all possible combinations
+ss_expt <- expand.grid(N_CB = initial_CBs,
+                      N_PB = initial_PBs,
+                      N_SB = initial_SBs,
+                      a_O = a_Os)
+```
+
+```{r eval=FALSE}
+## Here the simulations with least and most tolerantsulfur bacteria are run.
+var_expt <- var_expt_least_tolerant_SBPB
+var_expt_least_tolerant_SBPB <- run_ss_var_experiment()
+saveRDS(var_expt_least_tolerant_SBPB, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_least_tolerant.RDS"))
+
+var_expt <- var_expt_most_tolerant_SBPB
+var_expt_most_tolerant_SBPB <- run_ss_var_experiment()
+saveRDS(var_expt_most_tolerant_SBPB, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_most_tolerant.RDS"))
+```
+
+```{r, fig.height=7.5, fig.width=12}
+var_expt_least_tolerant_SBPB <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_least_tolerant.RDS"))
+var_expt_most_tolerant_SBPB <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_SBPB_most_tolerant.RDS"))
+
+plot_ss_result1_v2(var_expt_least_tolerant_SBPB,
+                   result_index = 1,
+                   filename_prefix = NULL,
+                   save_image_file = FALSE) +
+  plot_annotation(caption = 'Least tolerant SB and PB strains + average CB strain')
+
+plot_ss_result1_v2(var_expt_most_tolerant_SBPB,
+                   result_index = 1,
+                   filename_prefix = NULL,
+                   save_image_file = FALSE)+
+  plot_annotation(caption = 'Most tolerant SB and PB strains + average CB strain')
+```
+
+```{r, fig.height=8, fig.width=10, message=FALSE, warning=FALSE}
+plot_ss_result2(var_expt_least_tolerant_SBPB$ss_res[[1]],
+                var_expt_copy[no_diversity,]$ss_res[[1]],
+                xlims = c(-7, -1))+
+  plot_annotation(title = 'Sims with LEAST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with no diversity (average values) (dashed line)')
+
+plot_ss_result2(var_expt_least_tolerant_SBPB$ss_res[[1]],
+                var_expt_copy[max_only_SBPB_diversity,]$ss_res[[1]],
+                xlims = c(-7, -1))+
+  plot_annotation(title = 'Sims with LEAST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with diversity in SBPB, no diversity (average value) in CB (dashed line)')
+
+plot_ss_result2(var_expt_most_tolerant_SBPB$ss_res[[1]],
+                var_expt_copy[no_diversity,]$ss_res[[1]],
+                xlims = c(-7, -1))+
+  plot_annotation(title = 'Sims with MOST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with no diversity (average values) (dashed line)')
+
+plot_ss_result2(var_expt_most_tolerant_SBPB$ss_res[[1]],
+                var_expt_copy[max_only_SBPB_diversity,]$ss_res[[1]],
+                xlims = c(-7, -1))+
+  plot_annotation(title = 'Sims with MOST tolerant SB and PB strains + average CB strain (solid line)\nVersus\nSims with diversity in SBPB, no diversity (average value) in CB (dashed line)')
+```
 
 
 

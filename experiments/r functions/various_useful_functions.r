@@ -227,6 +227,140 @@ plot_ss_result1 <- function(ss_exp_result,
 }
 
 
+### fct by Uriah
+
+plot_ss_result1_v2 <- function(ss_exp_result,
+                               result_index,
+                               filename_prefix,
+                               save_image_file = TRUE) {
+  
+  colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+  colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+  colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+  
+  ss_result <- ss_exp_result[result_index,]$ss_res[[1]]
+  ss_result <- filter(ss_result, if_all(contains("B_"), ~ (.x > - 1)))
+  
+  temp <- ss_result %>%
+    mutate(a = 10^a) %>%
+    mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+    gather(species, quantity, 1:(ncol(.)-6)) %>% 
+    mutate(var_type=ifelse(grepl("B_", species), "Organism", "Substrate"),
+           functional_group = case_when(str_detect(species, "CB_") ~ "CB",
+                                        str_detect(species, "SB_") ~ "SB",
+                                        str_detect(species, "PB_") ~ "PB"),
+           log10_quantity=log10(quantity+1))
+  
+  
+  num_strains <- temp %>%
+    group_by(functional_group) %>%
+    summarise(num = length(unique(species))) %>%
+    na.omit()
+  
+  num_CB_strains <- num_strains$num[num_strains$functional_group=="CB"]
+  num_SB_strains <- num_strains$num[num_strains$functional_group=="SB"]
+  num_PB_strains <- num_strains$num[num_strains$functional_group=="PB"]
+  
+  p1 <-
+    temp %>%
+    dplyr::filter(functional_group == "CB") %>%
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
+    geom_path() +
+    scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+    theme_bw()+
+    theme(legend.position = "right",
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank()) +
+    labs(x="a", y="log10(quantity [cells])",
+         col="CB Strain", linetype="Direction") +
+    guides(col=guide_legend(ncol = 3),
+           linetype="none")
+
+  p2 <-
+    temp %>%
+    dplyr::filter(functional_group == "SB") %>%
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
+    geom_path() +
+    scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+    theme_bw()+
+    theme(legend.position = "right",
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank()) +
+    labs(x="a", y="log10(quantity [cells])",
+         col="SB Strain", linetype="Direction") +
+    guides(col=guide_legend(ncol = 3),
+           linetype="none")
+  
+  p3 <- temp %>%
+    dplyr::filter(functional_group == "PB") %>%
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
+    geom_path() +
+    scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+    theme_bw()+
+    theme(legend.position = "right",
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank()) +
+    labs(x="a", y="log10(quantity [cells])",
+         col="PB Strain", linetype="Direction") +
+    guides(col=guide_legend(ncol = 3),
+           linetype="none")
+  
+  p4 <- temp %>%
+    dplyr::filter(var_type == "Substrate") %>%
+    ggplot(aes(x=log10(a), y=log10_quantity, col=species, linetype = direction)) +
+    geom_path() +
+    theme_bw()+
+    theme(legend.position = "right",
+          legend.box = "horizontal",
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()) +
+    labs(x="a", y="log10(quantity [cells])",
+         col="Substrate", linetype="Direction") +
+    guides(col=guide_legend(ncol = 3))
+  
+  patchwork <- p1 / p2 / p3 / p4 +
+    plot_annotation(
+      title = paste0("CB_gmax_var = ", as.numeric(ss_exp_result[result_index,"CB_var_gmax_s"]),
+                     " CB_h_var =", as.numeric(ss_exp_result[result_index,"CB_var_h_s"]),
+                     "\nSB_gmax_var = ", as.numeric(ss_exp_result[result_index,"SB_var_gmax_s"]),
+                     " SB_h_var =", as.numeric(ss_exp_result[result_index,"SB_var_h_s"]),
+                     "\nPB_gmax_var = ", as.numeric(ss_exp_result[result_index,"PB_var_gmax_s"]),
+                     " PB_h_var =", as.numeric(ss_exp_result[result_index,"PB_var_h_s"])))
+  
+  if(save_image_file) {
+    
+    
+    ggsave(paste0(filename_prefix,
+                  "-CB_", round(CB_var_gmax,3), "_", round(CB_var_h,3),
+                  "-SB_", round(SB_var_gmax,3), "_", round(SB_var_h,3),
+                  "-PB_", round(PB_var_gmax,3), "_", round(PB_var_h,3),
+                  ".pdf"),
+           width = 10)
+  }
+  
+  if(!save_image_file)
+    return(patchwork)
+  
+  
+}
+
+
+
+### end fct by Uriah
+
+
+
+
+
 plot_ss_result2 <- function(ss_result1,
                             ss_result2,
                             xlims) {
