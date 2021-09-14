@@ -655,25 +655,132 @@ stab_data_x %>%
 ## 2x CB, 6xSBPB diversity
 
 ```{r}
+## find various combinations of diversity
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 stab_data <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
 
+var_expt_levels <- var_expt[,1:6]
+
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_diversty_all <- which(max(rowSums(abs(var_expt_levels))) ==
+                            rowSums(abs(var_expt_levels)))
+max_only_CB_diversity <- which(max(rowSums(abs(var_expt_levels[,1:2]))) ==
+                            rowSums(abs(var_expt_levels[,1:2])) &
+                              rowSums(abs(var_expt_levels[,3:6]))==0)
+#var_expt_levels[381,]
+
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+#var_expt_levels[20,]
+
+```
+
+
+```{r}
+
 p1  <- plot_ss_result1(var_expt,
-                result_index = 1,
+                result_index = no_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1
 
-p1  <- plot_ss_result1(var_expt,
-                result_index = 400,
+
+#junk1 <- var_expt[no_diversity,]$ss_res[[1]]
+```
+
+```{r}
+
+p2  <- plot_ss_result1(var_expt,
+                result_index = max_diversty_all,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
-p1
+p2
 
-p_overlay1 <- plot_ss_result2(var_expt[1,]$ss_res[[1]],
-                             var_expt[400,]$ss_res[[1]],
+```
+
+```{r}
+
+p3  <- plot_ss_result1(var_expt,
+                result_index = max_only_CB_diversity,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p3
+
+```
+
+```{r}
+
+p4  <- plot_ss_result1(var_expt,
+                result_index = max_only_SBPB_diversity,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p4
+
+```
+
+
+```{r}
+p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_diversty_all,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay1
+```
+
+```{r}
+p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_only_CB_diversity,]$ss_res[[1]],
+                             xlims = c(-7, -1))
+p_overlay2
+
+#ss_result1 <- var_expt[no_diversity,]$ss_res[[1]]
+#ss_result2 <- var_expt[max_only_CB_diversity,]$ss_res[[1]]
+
+```
+
+```{r}
+p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
+                             xlims = c(-7, -1))
+p_overlay3
+
+
+#ss_result3 <- var_expt[max_only_SBPB_diversity,]$ss_res[[1]]
+
+
+```
+
+
+```{r}
+tempp1 <- var_expt[no_diversity,]$ss_res[[1]] %>%
+  filter(initial_N_CB == 1e10,
+         log10(a_O) > -4.5, log10(a_O) < -4)
+tempp2 <- var_expt[max_only_SBPB_diversity,]$ss_res[[1]] %>%
+  filter(initial_N_CB == 1e10,
+         log10(a_O) > -4.5, log10(a_O) < -4)
+
+ggplot() +
+  geom_line(mapping = aes(x = log10(tempp1$a_O),
+                          y = log10(tempp1$O))) +
+  geom_line(mapping = aes(x = log10(tempp2$a_O),
+                          y = log10(tempp2$O)),
+            col = "blue")
+
+ggplot() +
+  geom_histogram(mapping = aes(x = log10(tempp1$O) - log10(tempp2$O)),
+            col = "blue")
+
+ggplot() +
+  geom_line(mapping = aes(x = log10(tempp1$a_O),
+    y = log10(tempp1$P) - log10(tempp2$P)),
+            col = "blue")
+
+```
+
+
+
+```{r}
+
 
 
 CB_vars <- unique(stab_data$CB_var_gmax_s)
@@ -781,6 +888,69 @@ p1_long
 
 
 ```
+
+
+
+# Some puzzles
+
+## Puzzle 1
+
+When the environment ameliorates for the sulphur bacteria, there is no strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. Indeed Uriah showed that the presence of only the most tolerant strain is sufficient to give an earlier switch, even though it is not present in the final state when less tolerant strains are present. And he showed that the presence of only the least tolerant strain creates a later switch than when there are more tolerant strains.
+
+The explanation is that the most tolerant strain does play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(a_O) = -4.8) for which the system remains oxic if there is no diversity, but switches to anoxic if there is diversity. There is only diversity in the sulphur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the environment ameliorates (temporally).
+
+
+```{r}
+var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
+var_expt_levels <- var_expt[,1:6]
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_diversty_all <- which(max(rowSums(abs(var_expt_levels))) ==
+                            rowSums(abs(var_expt_levels)))
+max_only_CB_diversity <- which(max(rowSums(abs(var_expt_levels[,1:2]))) ==
+                            rowSums(abs(var_expt_levels[,1:2])) &
+                              rowSums(abs(var_expt_levels[,3:6]))==0)
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+```
+
+```{r eval = eval_dynamics_flag}
+default_sim_duration <- 100000
+```
+
+```{r eval = eval_dynamics_flag}
+default_log10a_series <- c(-4.8, -4.8)
+initial_state <- new_initial_state(num_CB_strains,
+                                   num_PB_strains,
+                                   num_SB_strains,
+                                   values = "bush_ssfig3")
+initial_state[grep("CB_", names(initial_state))] <- 10^10/num_CB_strains
+sim_res_novar1 <- run_simulation(parameter_values = var_expt$pars[[no_diversity]],
+                          initial_state = initial_state)
+saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_1.RDS"))
+```
+
+
+```{r}
+sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_1.RDS"))
+plot_dynamics(sim_res_novar1)
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+```
+
+
+```{r eval = eval_dynamics_flag}
+sim_res_novar1 <- run_simulation(parameter_values = var_expt$pars[[max_only_SBPB_diversity]],
+                          initial_state = initial_state)
+saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_2.RDS"))
+```
+
+```{r}
+sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_2.RDS"))
+plot_dynamics(sim_res_novar1)
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+```
+
+
 
 
 

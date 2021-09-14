@@ -13,3 +13,4 @@ experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS
 experiments/experiment 1/data/ss_data_1000000_20factorial.RDS
 experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS
 experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS
+*.RDS
