@@ -128,8 +128,6 @@ PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
 PB_h_div <- -0.323  * SBPB_var_multiplier
 
 num_div_treatment_levels <- 20
-
-
 ```
 
 ## Create diversity
@@ -184,7 +182,6 @@ max_only_SBPB_diversity <- which(
   rowSums(abs(var_expt_levels[, 1:2])) == 0
 )
 #var_expt_levels[20,]
-
 ```
 
 
@@ -210,8 +207,8 @@ parameter$strain_parameter$initial_state <- new_initial_state(
   values = "bush_ssfig3"
 )
 parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10^10/num_CB_strains
-# sim_res_novar1 <- run_simulation(parameter)
-# saveRDS(sim_res_novar1, here("experiments/experiment 1/data/sim_res_novar1.RDS"))
+sim_res_novar1 <- run_simulation(parameter)
+saveRDS(sim_res_novar1, here("experiments/experiment 1/data/sim_res_novar1.RDS"))
 ```
 
 
@@ -306,7 +303,6 @@ names(parameter$minimum_abundances) <- c("CB", "PB", "SB")
 
 ```{r eval = eval_dynamics_flag}
 # sim_number1 <- 1
-stop("CONTINUE HERE!!!!!")
 parameter$log10a_series <- c(-1, -8, -1)
 parameter$strain_parameter <- var_expt$pars[[no_diversity]]
 parameter$strain_parameter$initial_state <- new_initial_state(
@@ -331,8 +327,9 @@ plot_dynamics(sim_res_novar3)
 
 ```{r eval = eval_dynamics_flag}
 sim_number2 <- num_div_treatment_levels
-sim_res_highvar3 <- run_simulation(parameter_values = var_expt$pars[[max_diversty_all]],
-                          initial_state = initial_state)
+parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
+parameter$strain_parameter$initial_state <- sim_res_novar3$strain_parameter$initial_state
+sim_res_highvar3 <- run_simulation(parameter)
 saveRDS(sim_res_highvar3, here("experiments/experiment 1/data/sim_res_highvar3.RDS"))
 ```
 
@@ -362,12 +359,16 @@ options(mc.cores = 12)
 
 
 ```{r}
-default_sim_duration <- 1000000
-ssfind_minimum_abundances <- rep(0, 3)
-names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
-ssfind_simulation_duration <- default_sim_duration
-ssfind_simulation_sampling_interval <- ssfind_simulation_duration
-ssfind_event_interval <- ssfind_simulation_duration
+# default_sim_duration <- 1000000
+# ssfind_minimum_abundances <- rep(0, 3)
+# names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
+# sfind_simulation_duration <- default_sim_duration
+# ssfind_simulation_sampling_interval <- ssfind_simulation_duration
+# ssfind_event_interval <- ssfind_simulation_duration
+
+minimum_abundances <- rep(0, 3)
+names(minimum_abundances) <- c("CB", "PB", "SB")
+
 grid_num_a <- 1000 #usually 1000 ## number of a_0 values
 a_Os <- 10^seq(-7, -0.5, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
@@ -380,7 +381,16 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
                       N_SB = initial_SBs,
                       a_O = a_Os)
 
+parameter <- new_ss_by_a_N_parameter(
+  sim_duration = 1000000,
+  sim_sample_interval = 1000000,
+  minimum_abundances = minimum_abundances,
+  event_interval = 1000000,
+  ss_expt = ss_expt
+)
+rm(minimum_abundances, grid_num_a, a_Os, grid_num_N, initial_CBs, initial_PBs, initial_SBs, ss_expt)
 
+parameter$strain_parameter <- var_expt$pars[[1]] ### <<<
 ```
 
 Run stable state finding
@@ -388,9 +398,9 @@ Run stable state finding
 *Careful, this simulation takes about 600 hours on a single core
 
 ```{r eval = FALSE}
-var_expt <- run_ss_var_experiment()
+# var_expt <- run_ss_var_experiment(parameter, var_expt)
+var_expt <- ss_by_a_N(parameter) ### <<< CHECK
 saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
-
 ```
 
 Process the stable state data

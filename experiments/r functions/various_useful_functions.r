@@ -32,7 +32,7 @@ plot_and_save <- function(CB_var_gmax, CB_var_h,
 }
 
 
-run_ss_var_experiment <- function() {
+run_ss_var_experiment <- function(parameter, var_expt) {
 
   # var_expt <- tibble(CB_var_gmax_s,
   #                    CB_var_h_s,
@@ -83,7 +83,7 @@ run_ss_var_experiment <- function() {
       # SB_var_h = .$SB_var_h_s,
       # PB_var_gmax = .$PB_var_gmax_s,
       # PB_var_h = .$PB_var_h_s),
-      ss_res = ss_by_a_N(ss_expt, .$pars[[1]]),
+      ss_res = ss_by_a_N(parameter$ss_expt, .$pars[[1]]),
     )
   var_expt
 }
