@@ -71,20 +71,29 @@ run_ss_var_experiment <- function(parameter, var_expt) {
   ## For each line of var_expt, add strain variation, and get stable states.
   var_expt <- var_expt %>%
     group_by(
-      CB_var_gmax_s, CB_var_h_s,
-      SB_var_gmax_s, SB_var_h_s,
-      PB_var_gmax_s, PB_var_h_s,
+      CB_var_gmax_s, 
+      CB_var_h_s,
+      SB_var_gmax_s, 
+      SB_var_h_s,
+      PB_var_gmax_s, 
+      PB_var_h_s,
       data, pars
     ) %>%
-    do( # pars = add_strain_var(default_9strain,
+    do( 
+      # pars = add_strain_var(default_9strain,
       # CB_var_gmax = .$CB_var_gmax_s,
       # CB_var_h = .$CB_var_h_s,
       # SB_var_gmax = .$SB_var_gmax_s,
       # SB_var_h = .$SB_var_h_s,
       # PB_var_gmax = .$PB_var_gmax_s,
       # PB_var_h = .$PB_var_h_s),
-      ss_res = ss_by_a_N(parameter$ss_expt, .$pars[[1]]),
-    )
+      ss_by_a_N_result = {
+        parameter$strain_parameter <- .$pars[[1]]
+        ss_by_a_N(parameter)
+      }
+    ) %>%
+    mutate(ss_res = ss_by_a_N_result$result)
+  
   var_expt
 }
 
