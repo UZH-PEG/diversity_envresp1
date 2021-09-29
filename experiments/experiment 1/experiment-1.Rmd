@@ -262,12 +262,17 @@ plot_dynamics(sim_res_novar3)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
-### Maximum diversity
+### Medium diversity
 
 ```{r eval = eval_dynamics_flag}
 sim_number2 <- num_div_treatment_levels
-sim_res_highvar3 <- run_simulation(parameter_values = var_expt$pars[[max_diversty_all]],
+try_me <- 311
+sim_res_highvar3 <- run_simulation(parameter_values =
+                                     var_expt$pars[[try_me]],
                           initial_state = initial_state)
+# sim_res_highvar3 <- run_simulation(parameter_values =
+#                                      var_expt$pars[[max_diversty_all]],
+#                           initial_state = initial_state)
 saveRDS(sim_res_highvar3, here("experiments/experiment 1/data/sim_res_highvar3.RDS"))
 ```
 
@@ -282,6 +287,8 @@ plot_dynamics(sim_res_highvar3)
 ### Visualise
 
 ```{r eval = FALSE}
+sim_res_novar <- sim_res_novar3
+sim_res_highvar <- sim_res_highvar3
 visualise_temporal_env_eco()
 ```
 
@@ -543,7 +550,7 @@ all_stab_results %>%
   ggplot(aes(x = var_gmax, y = hyst_range_raw, col=var_treat, shape = as_factor(sim_length))) +
   geom_point() +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  ylab("Extent of bistability region\n[oxygen diffusivity]") +
   labs(col = "Variation in\nonly these\nfunctional groups")
 ##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
 
@@ -558,7 +565,7 @@ all_stab_results %>%
   geom_ribbon(alpha = 0.5) +
   facet_wrap( ~ var_treat, nrow = 3) +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  ylab("Oxygen diffusivity\n[uM per hour]") +
   labs(fill = "Variation in\nonly these\nfunctional groups") + 
   coord_flip() +
   theme(
@@ -577,7 +584,7 @@ all_stab_results %>%
   geom_ribbon(alpha = 0.5) +
   facet_wrap( ~ var_treat, nrow = 3) +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  ylab("Oxygen diffusivity\n[uM per hour]") +
   labs(fill = "Variation in\nonly these\nfunctional groups") + 
   coord_flip() +
   theme(
@@ -665,10 +672,11 @@ stab_data_plus %>%
 
 ## Extra SBPB diversity
 
-### Raw Stability
+
 ```{r}
 var_expt_x <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS"))
 stab_data_x <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+
 
 p1  <- plot_ss_result1(var_expt_x,
                 result_index = 1,
@@ -686,14 +694,17 @@ p_overlay1 <- plot_ss_result2(var_expt_x[1,]$ss_res[[1]],
                              var_expt_x[19,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay1
+```
 
-
+### Raw Stability
+ 
+```{r}
 stab_data_x %>%
   filter(Species == "O") %>%
   ggplot(aes(x = SB_var_gmax_s, y = hyst_range_raw)) +
   geom_point() +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  ylab("Extent of bistability region\n[oxygen diffusivity]") +
   labs(col = "Variation in\nonly these\nfunctional groups")
 ##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
 
@@ -705,35 +716,17 @@ stab_data_x %>%
              ymax = hyst_max_raw)) +
   geom_ribbon(alpha = 0.5) +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  ylab("Oxygen diffusivity\n[uM per hour]") +
   coord_flip() +
   theme(
     strip.background = element_blank(),
     strip.text.x = element_blank()
   )
 ```
+
+
 ### Log Stability
 ```{r}
-var_expt_x <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS"))
-stab_data_x <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
-
-p1  <- plot_ss_result1(var_expt_x,
-                result_index = 1,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
-p1
-
-p1  <- plot_ss_result1(var_expt_x,
-                result_index = 19,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
-p1
-
-p_overlay1 <- plot_ss_result2(var_expt_x[1,]$ss_res[[1]],
-                             var_expt_x[19,]$ss_res[[1]],
-                             xlims = c(-7, -1))
-p_overlay1
-
 
 stab_data_x %>%
   filter(Species == "O") %>%
@@ -860,6 +853,12 @@ p_overlay3
 ```
 
 
+
+
+
+
+## I (Owen) do not recall why we made the graphs in this section
+
 ```{r}
 tempp1 <- var_expt[no_diversity,]$ss_res[[1]] %>%
   filter(initial_N_CB == 1e10,
@@ -886,7 +885,7 @@ ggplot() +
 
 ```
 
-
+### Raw Stability
 
 ```{r}
 CB_vars <- unique(stab_data$CB_var_gmax_s)
@@ -925,14 +924,14 @@ all_stab_results<- all_stab_results %>%
 
 ```
 
-### Raw Stability
+
 ```{r}
 all_stab_results %>%
   filter(Species == "O") %>%
   ggplot(aes(x = var_gmax, y = hyst_range_raw, col=var_treat, shape = as_factor(sim_length))) +
   geom_point() +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  ylab("Extent of bistability region\n[oxygen diffusivity]") +
   labs(col = "Variation in\nonly these\nfunctional groups")
 ##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
 
@@ -947,7 +946,7 @@ all_stab_results %>%
   geom_ribbon(alpha = 0.5) +
   facet_wrap( ~ var_treat, nrow = 3) +
   xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  ylab("Oxygen diffusivity\n[uM per hour]") +
   labs(fill = "Variation in\nonly these\nfunctional groups") + 
   coord_flip() +
   theme(

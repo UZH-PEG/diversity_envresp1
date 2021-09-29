@@ -14,3 +14,9 @@ experiments/experiment 1/data/ss_data_1000000_20factorial.RDS
 experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS
 experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS
 *.RDS
+experiments/experiment 1/data/sim_res_highvar1.RDS
+experiments/experiment 1/data/sim_res_highvar2.RDS
+experiments/experiment 1/data/sim_res_highvar3.RDS
+experiments/experiment 1/data/sim_res_novar1.RDS
+experiments/experiment 1/data/sim_res_novar2.RDS
+experiments/experiment 1/data/sim_res_novar3.RDS
