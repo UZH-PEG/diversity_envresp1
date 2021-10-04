@@ -69,32 +69,18 @@ run_ss_var_experiment <- function(parameter, var_expt) {
 
   ## Next chunck of code:
   ## For each line of var_expt, add strain variation, and get stable states.
-  var_expt <- var_expt %>%
-    group_by(
-      CB_var_gmax_s, 
-      CB_var_h_s,
-      SB_var_gmax_s, 
-      SB_var_h_s,
-      PB_var_gmax_s, 
-      PB_var_h_s,
-      data, pars
+  result <- var_expt %>%
+    mutate(
+      ss_by_a_N_result = list({
+        p <- parameter
+        p$strain_parameter <- pars
+        p
+      })
     ) %>%
-    do( 
-      # pars = add_strain_var(default_9strain,
-      # CB_var_gmax = .$CB_var_gmax_s,
-      # CB_var_h = .$CB_var_h_s,
-      # SB_var_gmax = .$SB_var_gmax_s,
-      # SB_var_h = .$SB_var_h_s,
-      # PB_var_gmax = .$PB_var_gmax_s,
-      # PB_var_h = .$PB_var_h_s),
-      ss_by_a_N_result = {
-        parameter$strain_parameter <- .$pars[[1]]
-        ss_by_a_N(parameter)
-      }
-    ) %>%
-    mutate(ss_res = ss_by_a_N_result$result)
+    mutate(ss_by_a_N_result = list(ss_by_a_N(parameter))) %>%
+    mutate(ss_res = ss_by_a_N_result[[1]]$result)
   
-  var_expt
+  return(result)
 }
 
 
@@ -529,7 +515,7 @@ create_diversity_factorial <- function(
 }
 
 
-visualise_temporal_env_eco <- function() {
+visualise_temporal_env_eco <- function(sim_res_novar = NULL, sim_res_highvar = NULL) {
   tmp_novar <- sim_res_novar$result %>%
     filter(time != 0) %>%
     select(-time) %>%

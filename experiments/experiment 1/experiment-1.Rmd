@@ -344,7 +344,7 @@ plot_dynamics(sim_res_highvar3)
 ### Visualise
 
 ```{r eval = FALSE}
-visualise_temporal_env_eco()
+visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 ```
 
 
@@ -400,9 +400,9 @@ Run stable state finding
 
 *Careful, this simulation takes about 600 hours on a single core
 
-```{r eval = FALSE}
+```{r run_experiment, eval = eval_dynamics_flag}
 
-var_expt_res <- run_ss_var_experiment(parameter, var_expt[1:3,])
+var_expt_res <- run_ss_var_experiment(parameter, var_expt)
 
 saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 ```
@@ -412,9 +412,9 @@ Process the stable state data
 Bring in various stable state datasets
 ```{r eval = FALSE}
 ## sim length 80'000, 20 x 20 factorial, reference maximum diversity
+
 var_expt1 <- readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS")) %>%
-  mutate(sim_length = 80000) %>%
-  mutate(ss_res = ss_by_a_N_result$result)
+  mutate(sim_length = 80000)
 
 stab_data1 <- var_expt1 %>%
   group_by(CB_var_gmax_s, CB_var_h_s,
@@ -472,7 +472,6 @@ stab_data5 <- var_expt5 %>%
   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
 stab_data5 <- unnest(stab_data5, cols = c(stability_measures))
 saveRDS(stab_data5, here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
-
 ```
 
 
