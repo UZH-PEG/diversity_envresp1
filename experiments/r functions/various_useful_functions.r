@@ -77,8 +77,8 @@ run_ss_var_experiment <- function(parameter, var_expt) {
         p
       })
     ) %>%
-    mutate(ss_by_a_N_result = list(ss_by_a_N(parameter))) %>%
-    mutate(ss_res = ss_by_a_N_result[[1]]$result)
+    mutate(ss_by_a_N_result = list(ss_by_a_N(ss_by_a_N_result))) %>%
+    mutate(ss_res = list(ss_by_a_N_result$result))
   
   return(result)
 }

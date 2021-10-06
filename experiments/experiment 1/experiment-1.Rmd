@@ -59,7 +59,7 @@ source(here("experiments/r functions/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 options(mc.cores = 8)
-eval_dynamics_flag <- FALSE
+eval_dynamics_flag <- TRUE
 ```
 
 ## Version of `microxanox` package used: `r packageVersion("microxanox") `
@@ -127,7 +127,10 @@ SB_h_div <- -0.323  * SBPB_var_multiplier
 PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
 PB_h_div <- -0.323  * SBPB_var_multiplier
 
-num_div_treatment_levels <- 20
+## num_div_treatment_levels <- 20
+
+num_div_treatment_levels <- 3 ## FOR TEST
+
 ```
 
 ## Create diversity
@@ -150,9 +153,9 @@ var_expt <- create_diversity_factorial(
 
 ## Display diversity
 
-```{r}
+```{r eval = FALSE}
 display_diversity(
-  400,
+  400, ##seems to be necessary to be smaller than num_div_treatment_levels
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
@@ -354,7 +357,7 @@ visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 ## Finding
 
 ```{r}
-options(mc.cores = 6)
+options(mc.cores = 7)
 ```
 
 
@@ -369,7 +372,9 @@ options(mc.cores = 6)
 minimum_abundances <- rep(0, 3)
 names(minimum_abundances) <- c("CB", "PB", "SB")
 
-grid_num_a <- 1000 #usually 1000 ## number of a_0 values
+## grid_num_a <- 1000 #usually 1000 ## number of a_0 values
+grid_num_a <- 100 ## FOR TEST
+
 a_Os <- 10^seq(-7, -0.5, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
@@ -394,6 +399,8 @@ parameter <- new_ss_by_a_N_parameter(
   ss_expt = ss_expt
 )
 rm(minimum_abundances, grid_num_a, a_Os, grid_num_N, initial_CBs, initial_PBs, initial_SBs, ss_expt)
+saveRDS(parameter, here("experiments/experiment 1/data/TEST_parameter.RDS"))
+saveRDS(var_expt, here("experiments/experiment 1/data/TEST_var_expt.RDS"))
 ```
 
 Run stable state finding
@@ -401,6 +408,8 @@ Run stable state finding
 *Careful, this simulation takes about 600 hours on a single core
 
 ```{r run_experiment, eval = eval_dynamics_flag}
+parameter <- readRDS(here("experiments/experiment 1/data/TEST_parameter.RDS"))
+var_expt <- readRDS(here("experiments/experiment 1/data/TEST_var_expt.RDS"))
 
 var_expt_res <- run_ss_var_experiment(parameter, var_expt)
 
@@ -410,7 +419,7 @@ saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial
 Process the stable state data
 
 Bring in various stable state datasets
-```{r eval = FALSE}
+```{r eval = TRUE}
 ## sim length 80'000, 20 x 20 factorial, reference maximum diversity
 
 var_expt1 <- readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS")) %>%
