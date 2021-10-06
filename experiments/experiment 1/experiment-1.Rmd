@@ -155,7 +155,7 @@ var_expt <- create_diversity_factorial(
 
 ```{r}
 display_diversity(
-  9, ##TEST 
+  9, ## FOR TEST was 400
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
