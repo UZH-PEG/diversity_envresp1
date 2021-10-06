@@ -153,9 +153,9 @@ var_expt <- create_diversity_factorial(
 
 ## Display diversity
 
-```{r eval = FALSE}
+```{r}
 display_diversity(
-  400, ##seems to be necessary to be smaller than num_div_treatment_levels
+  9, ##TEST 
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
