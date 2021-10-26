@@ -19,7 +19,7 @@ It takes about 50 hours to run while using 12 cores.
 ```{r setup}
 
 
-rm(list = ls())
+# rm(list = ls())
 
 knitr::opts_knit$set(progress = TRUE, verbose = FALSE, cache = TRUE)
 
@@ -420,69 +420,96 @@ Process the stable state data
 
 Bring in various stable state datasets
 ```{r eval = TRUE}
+cluster <- multidplyr::new_cluster(7)
+multidplyr::cluster_library(cluster, c("microxanoxBeta", "dplyr"))
+
 ## sim length 80'000, 20 x 20 factorial, reference maximum diversity
-
-var_expt1 <- readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS")) %>%
-  mutate(sim_length = 80000)
-
-stab_data1 <- var_expt1 %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s, sim_length) %>%
-  do(stability_measures = get_stability_measures(.$ss_res[[1]]))
-stab_data1 <- unnest(stab_data1, cols = c(stability_measures))
-saveRDS(stab_data1, here("experiments/experiment 1/data/stab_data_80000.RDS"))
+readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS")) %>%
+  mutate(sim_length = 80000) %>% 
+  multidplyr::partition(cluster) %>%
+  mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
+  collect() %>%
+  unnest(cols = c(stability_measures)) %>%
+  saveRDS(here("experiments/experiment 1/data/stab_data_80000.RDS"))
 
 
 
 ## sim length 1'000'000, 20 x 20 factorial, reference maximum diversity
-var_expt2 <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS")) %>%
-  mutate(sim_length = 1000000)
-stab_data2 <- var_expt2 %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s, sim_length) %>%
-  do(stability_measures = get_stability_measures(.$ss_res[[1]]))
-stab_data2 <- unnest(stab_data2, cols = c(stability_measures))
-saveRDS(stab_data2, here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS"))
+# var_expt2 <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS")) %>%
+#   mutate(sim_length = 1000000)
+# # stab_data2 <- var_expt2 %>%
+# #   group_by(CB_var_gmax_s, CB_var_h_s,
+# #            SB_var_gmax_s, SB_var_h_s,
+# #            PB_var_gmax_s, PB_var_h_s, sim_length) %>%
+# #   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
+# stab_data2 <- var_expt2 %>%
+#   mutate(stability_measures = list(get_stability_measures(ss_res)))
+# stab_data2 <- unnest(stab_data2, cols = c(stability_measures))
+# saveRDS(stab_data2, here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS"))
+readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS")) %>%
+  mutate(sim_length = 1000000) %>% 
+  multidplyr::partition(cluster) %>%
+  mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
+  collect() %>%
+  unnest(cols = c(stability_measures)) %>%
+  saveRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS"))
 
 
 ## sim length 1'000'000, 20 SBPBgrad, 5x maximum diversity
-var_expt3 <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS")) %>%
-  mutate(sim_length = 1000000)
-stab_data3 <- var_expt3 %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s, sim_length) %>%
-  do(stability_measures = get_stability_measures(.$ss_res[[1]]))
-stab_data3 <- unnest(stab_data3, cols = c(stability_measures))
-saveRDS(stab_data3, here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+# var_expt3 <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS")) %>%
+#   mutate(sim_length = 1000000)
+# stab_data3 <- var_expt3 %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s, sim_length) %>%
+#   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
+# stab_data3 <- unnest(stab_data3, cols = c(stability_measures))
+# saveRDS(stab_data3, here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS")) %>%
+  mutate(sim_length = 1000000) %>% 
+  multidplyr::partition(cluster) %>%
+  mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
+  collect() %>%
+  unnest(cols = c(stability_measures)) %>%
+  saveRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
 
 
 ## sim length 300'000, 20 SBPBgrad, reference maximum diversity
-var_expt4 <- readRDS(here("experiments/experiment 1/data/ss_data_300000_small.RDS")) %>%
-  mutate(sim_length = 300000)
-stab_data4 <- var_expt4 %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s, sim_length) %>%
-  do(stability_measures = get_stability_measures(.$ss_res[[1]]))
-stab_data4 <- unnest(stab_data4, cols = c(stability_measures))
-saveRDS(stab_data4, here("experiments/experiment 1/data/stab_data_300000.RDS"))
-
+# var_expt4 <- readRDS(here("experiments/experiment 1/data/ss_data_300000_small.RDS")) %>%
+#   mutate(sim_length = 300000)
+# stab_data4 <- var_expt4 %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s, sim_length) %>%
+#   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
+# stab_data4 <- unnest(stab_data4, cols = c(stability_measures))
+# saveRDS(stab_data4, here("experiments/experiment 1/data/stab_data_300000.RDS"))
+readRDS(here("experiments/experiment 1/data/ss_data_300000_small.RDS")) %>%
+  mutate(sim_length = 300000) %>% 
+  multidplyr::partition(cluster) %>%
+  mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
+  collect() %>%
+  unnest(cols = c(stability_measures)) %>%
+  saveRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
 
 ## sim length 1'000'000, 20 SBPBgrad, 2xCB variation, 6xSBPB variation
-var_expt5 <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS")) %>%
-  mutate(sim_length = 1000000)
-stab_data5 <- var_expt5 %>%
-  group_by(CB_var_gmax_s, CB_var_h_s,
-           SB_var_gmax_s, SB_var_h_s,
-           PB_var_gmax_s, PB_var_h_s, sim_length) %>%
-  do(stability_measures = get_stability_measures(.$ss_res[[1]]))
-stab_data5 <- unnest(stab_data5, cols = c(stability_measures))
-saveRDS(stab_data5, here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
+# var_expt5 <- readRDS(here("experiments/experiment 1/data/stab_data_300000.RDS")) %>%
+#   mutate(sim_length = 1000000)
+# stab_data5 <- var_expt5 %>%
+#   group_by(CB_var_gmax_s, CB_var_h_s,
+#            SB_var_gmax_s, SB_var_h_s,
+#            PB_var_gmax_s, PB_var_h_s, sim_length) %>%
+#   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
+# stab_data5 <- unnest(stab_data5, cols = c(stability_measures))
+# saveRDS(stab_data5, here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
+readRDS(here("experiments/experiment 1/data/stab_data_300000.RDS")) %>%
+  mutate(sim_length = 1000000) %>% 
+  multidplyr::partition(cluster) %>%
+  mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
+  collect() %>%
+  unnest(cols = c(stability_measures)) %>%
+  saveRDS(here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
 ```
-
 
 
 ## SS, no diversity, all diversity, CB only, and SBPB only
