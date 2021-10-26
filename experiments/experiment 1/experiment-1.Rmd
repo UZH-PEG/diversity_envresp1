@@ -16,7 +16,7 @@ It takes about 50 hours to run while using 12 cores.
 
 ## R
 
-```{r}
+```{r setup}
 
 
 rm(list = ls())
@@ -55,7 +55,7 @@ if (packageVersion("microxanoxBeta") < package_version("0.2.3")) {
 library(tidyverse)
 library(patchwork)
 library(here)
-source(here("experiments/r functions/various_useful_functions.r"))
+source(here("R/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 options(mc.cores = 8)
@@ -357,7 +357,7 @@ visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 ## Finding
 
 ```{r}
-options(mc.cores = 7)
+options(mc.cores = 8)
 ```
 
 
