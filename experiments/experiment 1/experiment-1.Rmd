@@ -58,7 +58,7 @@ library(here)
 source(here("R/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
-options(mc.cores = 8)
+options(mc.cores = 7)
 eval_dynamics_flag <- TRUE
 ```
 
@@ -356,8 +356,10 @@ visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 
 ## Finding
 
+### Setup parameter
+
 ```{r}
-options(mc.cores = 8)
+options(mc.cores = 7)
 ```
 
 
@@ -403,7 +405,7 @@ saveRDS(parameter, here("experiments/experiment 1/data/TEST_parameter.RDS"))
 saveRDS(var_expt, here("experiments/experiment 1/data/TEST_var_expt.RDS"))
 ```
 
-Run stable state finding
+### Run stable state finding
 
 *Careful, this simulation takes about 600 hours on a single core
 
@@ -416,10 +418,10 @@ var_expt_res <- run_ss_var_experiment(parameter, var_expt)
 saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 ```
 
-Process the stable state data
+### Process the stable state data
 
 Bring in various stable state datasets
-```{r eval = TRUE}
+```{r eval = eval_dynamics_flag}
 cluster <- multidplyr::new_cluster(7)
 multidplyr::cluster_library(cluster, c("microxanoxBeta", "dplyr"))
 
@@ -490,7 +492,7 @@ readRDS(here("experiments/experiment 1/data/ss_data_300000_small.RDS")) %>%
   mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
   collect() %>%
   unnest(cols = c(stability_measures)) %>%
-  saveRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+  saveRDS(here("experiments/experiment 1/data/stab_data_300000.RDS"))
 
 ## sim length 1'000'000, 20 SBPBgrad, 2xCB variation, 6xSBPB variation
 # var_expt5 <- readRDS(here("experiments/experiment 1/data/stab_data_300000.RDS")) %>%
@@ -502,7 +504,7 @@ readRDS(here("experiments/experiment 1/data/ss_data_300000_small.RDS")) %>%
 #   do(stability_measures = get_stability_measures(.$ss_res[[1]]))
 # stab_data5 <- unnest(stab_data5, cols = c(stability_measures))
 # saveRDS(stab_data5, here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
-readRDS(here("experiments/experiment 1/data/stab_data_300000.RDS")) %>%
+x <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS")) %>%
   mutate(sim_length = 1000000) %>% 
   multidplyr::partition(cluster) %>%
   mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
@@ -612,10 +614,12 @@ p_overlay3
 
 ## Look at stability measures
 
+### Calculations
 ```{r}
-stab_data1 <- readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS"))
-stab_data2 <- readRDS(here("experiments/experiment 1/data/stab_data_80000.RDS"))
-stab_data <- bind_rows(stab_data1, stab_data2)
+stab_data <- bind_rows(
+  readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS")), 
+  readRDS(here("experiments/experiment 1/data/stab_data_80000.RDS"))
+)
 
 CB_vars <- unique(stab_data$CB_var_gmax_s)
 SB_vars <- unique(stab_data$CB_var_gmax_s)
@@ -643,17 +647,20 @@ all_stab_results <- CB_stab_data %>%
  # bind_rows(results4) %>%
   bind_rows(CBSBPB_stab_data)
 
-all_stab_results<- all_stab_results %>%
+all_stab_results <- all_stab_results %>%
     mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
 
-#saveRDS(all_stab_results, here("experiments/experiment summary/all_stab.RDS"))
+saveRDS(all_stab_results, here("experiments/experiment 1/data/all_stab.RDS"))
+```
 
+### Plot raw
+```{r}
 
-#all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
+all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
 
 all_stab_results %>%
   filter(Species == "O") %>%
-  ggplot(aes(x = var_gmax, y = hyst_range, col=var_treat, shape = as_factor(sim_length))) +
+  ggplot(aes(x = var_gmax, y = hyst_range_raw, col=var_treat, shape = as_factor(sim_length))) +
   geom_point() +
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
@@ -665,8 +672,8 @@ all_stab_results %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
   ggplot(aes(x = var_gmax,
-             ymin = hyst_min,
-             ymax = hyst_max,
+             ymin = hyst_min_raw,
+             ymax = hyst_max_raw,
              fill=var_treat)) +
   geom_ribbon(alpha = 0.5) +
   facet_wrap( ~ var_treat, nrow = 3) +
@@ -684,8 +691,8 @@ all_stab_results %>%
   filter(Species == "O",
          sim_length == 8e4) %>%
   ggplot(aes(x = var_gmax,
-             ymin = hyst_min,
-             ymax = hyst_max,
+             ymin = hyst_min_raw,
+             ymax = hyst_max_raw,
              fill=var_treat)) +
   geom_ribbon(alpha = 0.5) +
   facet_wrap( ~ var_treat, nrow = 3) +
@@ -701,13 +708,86 @@ all_stab_results %>%
 
 
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
-stab_data1 <- readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS"))
-stab_data_x <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
-stab_data_plus <- bind_rows(stab_data1, stab_data_x)
-stab_data_plus %>%
+
+bind_rows(
+  readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS")), 
+  readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+) %>%
+  filter(
+    Species == "O",
+    sim_length == 1e6
+  ) %>%
+  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_raw, col = hyst_range_raw)) +
+  geom_point(size = 3)
+
+
+```
+
+### Plot log
+```{r}
+
+all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
+
+all_stab_results %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax, y = hyst_range_log, col=var_treat, shape = as_factor(sim_length))) +
+  geom_point() +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  labs(col = "Variation in\nonly these\nfunctional groups")
+##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
-  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range, col = hyst_range)) +
+  ggplot(aes(x = var_gmax,
+             ymin = hyst_min_log,
+             ymax = hyst_max_log,
+             fill=var_treat)) +
+  geom_ribbon(alpha = 0.5) +
+  facet_wrap( ~ var_treat, nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  theme(
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O",
+         sim_length == 8e4) %>%
+  ggplot(aes(x = var_gmax,
+             ymin = hyst_min_log,
+             ymax = hyst_max_log,
+             fill=var_treat)) +
+  geom_ribbon(alpha = 0.5) +
+  facet_wrap( ~ var_treat, nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  theme(
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+
+
+##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
+
+bind_rows(
+  readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS")), 
+  readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
+) %>%
+  filter(
+    Species == "O",
+    sim_length == 1e6
+  ) %>%
+  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_log, col = hyst_range_log)) +
   geom_point(size = 3)
 
 
@@ -735,11 +815,13 @@ p_overlay1 <- plot_ss_result2(var_expt_x[1,]$ss_res[[1]],
                              var_expt_x[19,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay1
+```
 
-
+### raw
+```{r}
 stab_data_x %>%
   filter(Species == "O") %>%
-  ggplot(aes(x = SB_var_gmax_s, y = hyst_range)) +
+  ggplot(aes(x = SB_var_gmax_s, y = hyst_range_raw)) +
   geom_point() +
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
@@ -750,8 +832,8 @@ stab_data_x %>%
   #filter(var_treat == "CB") %>%
   filter(Species == "O") %>%
   ggplot(aes(x = SB_var_gmax_s,
-             ymin = hyst_min,
-             ymax = hyst_max)) +
+             ymin = hyst_min_raw,
+             ymax = hyst_max_raw)) +
   geom_ribbon(alpha = 0.5) +
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Oxygen diffusivity\n[log10 uM per hour]") +
@@ -760,10 +842,33 @@ stab_data_x %>%
     strip.background = element_blank(),
     strip.text.x = element_blank()
   )
+```
 
+### log
+```{r}
+stab_data_x %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = SB_var_gmax_s, y = hyst_range_log)) +
+  geom_point() +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  labs(col = "Variation in\nonly these\nfunctional groups")
+##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
 
-
-
+stab_data_x %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = SB_var_gmax_s,
+             ymin = hyst_min_log,
+             ymax = hyst_max_log)) +
+  geom_ribbon(alpha = 0.5) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  coord_flip() +
+  theme(
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
 ```
 
 
@@ -896,9 +1001,6 @@ ggplot() +
 
 
 ```{r}
-
-
-
 CB_vars <- unique(stab_data$CB_var_gmax_s)
 SB_vars <- unique(stab_data$SB_var_gmax_s)
 
@@ -932,10 +1034,13 @@ all_stab_results<- all_stab_results %>%
 
 
 #all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
+```
 
+### raw
+```{r}
 all_stab_results %>%
   filter(Species == "O") %>%
-  ggplot(aes(x = var_gmax, y = hyst_range, col=var_treat, shape = as_factor(sim_length))) +
+  ggplot(aes(x = var_gmax, y = hyst_range_raw, col=var_treat, shape = as_factor(sim_length))) +
   geom_point() +
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
@@ -947,8 +1052,8 @@ all_stab_results %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
   ggplot(aes(x = var_gmax,
-             ymin = hyst_min,
-             ymax = hyst_max,
+             ymin = hyst_min_raw,
+             ymax = hyst_max_raw,
              fill=var_treat)) +
   geom_ribbon(alpha = 0.5) +
   facet_wrap( ~ var_treat, nrow = 3) +
@@ -961,13 +1066,11 @@ all_stab_results %>%
     strip.text.x = element_blank()
   )
 
-
-
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
 stab_data %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
-  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range, col = hyst_range)) +
+  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_raw, col = hyst_range_raw)) +
   geom_point(size = 3)
 
 
@@ -976,13 +1079,56 @@ stab_data %>%
 stab_data %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
-  ggplot(aes(x = CB_var_gmax_s, y = hyst_range, col = as.factor(SB_var_gmax_s))) +
+  ggplot(aes(x = CB_var_gmax_s, y = hyst_range_raw, col = as.factor(SB_var_gmax_s))) +
   geom_line(size = 2)
-
-
-
 ```
 
+### log
+```{r}
+all_stab_results %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax, y = hyst_range_log, col=var_treat, shape = as_factor(sim_length))) +
+  geom_point() +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  labs(col = "Variation in\nonly these\nfunctional groups")
+##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O",
+         sim_length == 1e6) %>%
+  ggplot(aes(x = var_gmax,
+             ymin = hyst_min_log,
+             ymax = hyst_max_log,
+             fill=var_treat)) +
+  geom_ribbon(alpha = 0.5) +
+  facet_wrap( ~ var_treat, nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  theme(
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
+stab_data %>%
+  filter(Species == "O",
+         sim_length == 1e6) %>%
+  ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_log, col = hyst_range_log)) +
+  geom_point(size = 3)
+
+
+##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
+
+stab_data %>%
+  filter(Species == "O",
+         sim_length == 1e6) %>%
+  ggplot(aes(x = CB_var_gmax_s, y = hyst_range_log, col = as.factor(SB_var_gmax_s))) +
+  geom_line(size = 2)
+```
 
 ## What effect of changing the length of the simulations
 
@@ -1001,8 +1147,6 @@ p1_long  <- plot_ss_result1(var_expt1,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1_long
-
-
 ```
 
 
@@ -1015,6 +1159,7 @@ When the environment ameliorates for the sulphur bacteria, there is no strain re
 
 The explanation is that the most tolerant strain does play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(a_O) = -4.8) for which the system remains oxic if there is no diversity, but switches to anoxic if there is diversity. There is only diversity in the sulphur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the environment ameliorates (temporally).
 
+TODO CHECK THE PARAMETER
 
 ```{r}
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
@@ -1031,18 +1176,23 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
 ```
 
 ```{r eval = eval_dynamics_flag}
-default_sim_duration <- 100000
+parameter <- readRDS(here("experiments/experiment 1/data/sim_res_novar3.RDS"))
+parameter$sim_duration <- 100000
+parameter$result <- NULL
 ```
 
 ```{r eval = eval_dynamics_flag}
-default_log10a_series <- c(-4.8, -4.8)
-initial_state <- new_initial_state(num_CB_strains,
-                                   num_PB_strains,
-                                   num_SB_strains,
-                                   values = "bush_ssfig3")
-initial_state[grep("CB_", names(initial_state))] <- 10^10/num_CB_strains
-sim_res_novar1 <- run_simulation(parameter_values = var_expt$pars[[no_diversity]],
-                          initial_state = initial_state)
+parameter$log10a_series <- c(-4.8, -4.8)
+parameter$strain_parameter$initial_state <- new_initial_state(
+  nrow(parameter$strain_parameter$CB),
+  nrow(parameter$strain_parameter$PB),
+  nrow(parameter$strain_parameter$PB),
+  values = "bush_ssfig3"
+)
+parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10^10/nrow(parameter$strain_parameter$CB)
+
+
+sim_res_novar1 <- run_simulation(parameter)
 saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_1.RDS"))
 ```
 
@@ -1065,11 +1215,6 @@ sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_2.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
-
-
-
-
-
 
 
 # Zoom in on SS
