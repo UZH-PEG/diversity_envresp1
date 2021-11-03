@@ -16,9 +16,8 @@ It takes about 50 hours to run while using 12 cores.
 
 ## R
 
-```{r setup}
 
-
+```r
 # rm(list = ls())
 
 knitr::opts_knit$set(
@@ -57,8 +56,35 @@ if (packageVersion("microxanoxBeta") < package_version("0.2.3")) {
   stop("microxanox version needs to be at least 0.2.3!")
 }
 library(tidyverse)
+```
+
+```
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+```
+
+```
+## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.5     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
+## ✓ readr   2.0.2     ✓ forcats 0.5.1
+```
+
+```
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```r
 library(patchwork)
 library(here)
+```
+
+```
+## here() starts at /Users/rainer/git/diversity_envresp1
+```
+
+```r
 source(here("R/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
@@ -66,13 +92,12 @@ options(mc.cores = 7)
 eval_dynamics_flag <- TRUE
 ```
 
-## Version of `microxanox` package used: `r packageVersion("microxanox") `
+## Version of `microxanox` package used: 0.2.2
 
 ## General simulation conditions
 
-```{r}
 
-
+```r
 # default_dynamic_model <- bushplus_dynamic_model
 # default_event_definition <- event_definition_1
 # default_event_interval <- 100
@@ -113,13 +138,13 @@ parameter <- new_runsim_parameter(
 )
 names(parameter$minimum_abundances) <- c("CB", "PB", "SB")
 rm(sp)
-
 ```
 
 
 ## Define diversity
 
-```{r}
+
+```r
 ## multiplier of SBPB variation
 CB_var_multiplier <- 2
 SBPB_var_multiplier <- 6
@@ -134,12 +159,12 @@ PB_h_div <- -0.323  * SBPB_var_multiplier
 ## num_div_treatment_levels <- 20
 
 num_div_treatment_levels <- 3 ## FOR TEST
-
 ```
 
 ## Create diversity
 
-```{r}
+
+```r
 var_expt <- create_diversity_factorial(
   zero = zero, unity = unity,
   num_div_treatment_levels = num_div_treatment_levels,
@@ -157,7 +182,8 @@ var_expt <- create_diversity_factorial(
 
 ## Display diversity
 
-```{r}
+
+```r
 display_diversity(
   9, ## FOR TEST was 400
   var_expt = var_expt,
@@ -167,11 +193,14 @@ display_diversity(
 )
 ```
 
+![](experiment-1_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
 
 # Temporal switching
 
 
-```{r}
+
+```r
 var_expt_levels <- var_expt[, 1:6]
 
 no_diversity <- which(rowSums(abs(var_expt_levels)) == 0)
@@ -198,12 +227,14 @@ max_only_SBPB_diversity <- which(
 
 ### No diversity
 
-```{r eval = eval_dynamics_flag}
+
+```r
 # default_sim_duration <- 80000
 parameter$sim_duration <- 80000
 ```
 
-```{r eval = eval_dynamics_flag}
+
+```r
 # default_log10a_series <- c(-1, -7, -7)
 parameter$log10a_series <- c(-1, -7, -7)
 parameter$strain_parameter <- var_expt$pars[[no_diversity]]
@@ -219,15 +250,22 @@ saveRDS(sim_res_novar1, here("experiments/experiment 1/data/sim_res_novar1.RDS")
 ```
 
 
-```{r}
+
+```r
 sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/sim_res_novar1.RDS"))
 plot_dynamics(sim_res_novar1)
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+```r
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
-```{r eval = eval_dynamics_flag}
+
+```r
 # Is this actually needed?
 # sim_number <- num_div_treatment_levels
 
@@ -238,23 +276,30 @@ saveRDS(sim_res_highvar1, here("experiments/experiment 1/data/sim_res_highvar1.R
 ```
 
 
-```{r}
+
+```r
 sim_res_highvar1 <- readRDS(here("experiments/experiment 1/data/sim_res_highvar1.RDS"))
 plot_dynamics(sim_res_highvar1)
-#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+```r
+#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 ```
 
 ## Anoxic to oxic
 
 ### No diversity
 
-```{r eval = eval_dynamics_flag}
+
+```r
 parameter$sim_duration <- 60000
 ```
 
 
-```{r eval = eval_dynamics_flag}
+
+```r
 # sim_number <- 1
 parameter$log10a_series <- c(-5, -3, -1, -1)
 parameter$strain_parameter <- var_expt$pars[[no_diversity]]
@@ -270,15 +315,22 @@ saveRDS(sim_res_novar2, here("experiments/experiment 1/data/sim_res_novar2.RDS")
 ```
 
 
-```{r}
+
+```r
 sim_res_novar2 <- readRDS(here("experiments/experiment 1/data/sim_res_novar2.RDS"))
 plot_dynamics(sim_res_novar2)
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+```r
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
-```{r eval = eval_dynamics_flag}
+
+```r
 sim_number <- num_div_treatment_levels
 parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
 parameter$strain_parameter$initial_state <- sim_res_novar2$strain_parameter$initial_state
@@ -287,11 +339,16 @@ saveRDS(sim_res_highvar2, here("experiments/experiment 1/data/sim_res_highvar2.R
 ```
 
 
-```{r}
+
+```r
 sim_res_highvar2 <- readRDS(here("experiments/experiment 1/data/sim_res_highvar2.RDS"))
 plot_dynamics(sim_res_highvar2)
-#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+
+```r
+#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 ```
 
 
@@ -299,16 +356,19 @@ plot_dynamics(sim_res_highvar2)
 
 ### No diversity
 
-```{r eval = eval_dynamics_flag}
+
+```r
 parameter$sim_duration <- 1000000
 ```
 
-```{r eval = eval_dynamics_flag}
+
+```r
 parameter$minimum_abundances <- rep(100, 3)
 names(parameter$minimum_abundances) <- c("CB", "PB", "SB")
 ```
 
-```{r eval = eval_dynamics_flag}
+
+```r
 # sim_number1 <- 1
 parameter$log10a_series <- c(-1, -8, -1)
 parameter$strain_parameter <- var_expt$pars[[no_diversity]]
@@ -324,15 +384,22 @@ saveRDS(sim_res_novar3, here("experiments/experiment 1/data/sim_res_novar3.RDS")
 ```
 
 
-```{r}
+
+```r
 sim_res_novar3 <- readRDS(here("experiments/experiment 1/data/sim_res_novar3.RDS"))
 plot_dynamics(sim_res_novar3)
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+
+```r
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 ### Maximum diversity
 
-```{r eval = eval_dynamics_flag}
+
+```r
 sim_number2 <- num_div_treatment_levels
 parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
 parameter$strain_parameter$initial_state <- sim_res_novar3$strain_parameter$initial_state
@@ -341,16 +408,22 @@ saveRDS(sim_res_highvar3, here("experiments/experiment 1/data/sim_res_highvar3.R
 ```
 
 
-```{r}
+
+```r
 sim_res_highvar3 <- readRDS(here("experiments/experiment 1/data/sim_res_highvar3.RDS"))
 plot_dynamics(sim_res_highvar3)
-#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+
+```r
+#ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 ```
 
 ### Visualise
 
-```{r eval = FALSE}
+
+```r
 visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 ```
 
@@ -362,12 +435,14 @@ visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 
 ### Setup parameter
 
-```{r}
+
+```r
 options(mc.cores = 7)
 ```
 
 
-```{r}
+
+```r
 # default_sim_duration <- 1000000
 # ssfind_minimum_abundances <- rep(0, 3)
 # names(ssfind_minimum_abundances) <- c("CB", "PB", "SB")
@@ -413,7 +488,8 @@ saveRDS(var_expt, here("experiments/experiment 1/data/var_expt_1e6_x2x6_factoria
 
 *Careful, this simulation takes about 600 hours on a single core
 
-```{r run_experiment, eval = eval_dynamics_flag}
+
+```r
 run_ss_var_experiment(
   parameter = readRDS(here("experiments/experiment 1/data/parameter_1e6_x2x6_factorial.RDS")), 
   var_expt = readRDS(here("experiments/experiment 1/data/var_expt_1e6_x2x6_factorial.RDS"))) %>%
@@ -423,7 +499,8 @@ saveRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 ### Process the stable state data
 
 Bring in various stable state datasets
-```{r eval = eval_dynamics_flag}
+
+```r
 cluster <- multidplyr::new_cluster(7)
 multidplyr::cluster_library(cluster, c("microxanoxBeta", "dplyr"))
 
@@ -481,7 +558,8 @@ readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS")) %>
 ## SS, no diversity, all diversity, CB only, and SBPB only
 No Experimental data
 
-```{r, eval = FALSE}
+
+```r
 ## find various combinations of diversity
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS"))
 
@@ -499,12 +577,11 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
                             rowSums(abs(var_expt_levels[,3:6])) &
                               rowSums(abs(var_expt_levels[,1:2]))==0)
 #var_expt_levels[20,]
-
 ```
 
 
-```{r, eval = FALSE}
 
+```r
 p1  <- plot_ss_result1(var_expt,
                 result_index = no_diversity,
                 filename_prefix = NULL,
@@ -515,45 +592,44 @@ p1
 #junk1 <- var_expt[no_diversity,]$ss_res[[1]]
 ```
 
-```{r, eval = FALSE}
 
+```r
 p2  <- plot_ss_result1(var_expt,
                 result_index = max_diversty_all,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p2
-
 ```
 
-```{r, eval = FALSE}
 
+```r
 p3  <- plot_ss_result1(var_expt,
                 result_index = max_only_CB_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p3
-
 ```
 
-```{r, eval = FALSE}
 
+```r
 p4  <- plot_ss_result1(var_expt,
                 result_index = max_only_SBPB_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p4
-
 ```
 
 
-```{r, eval = FALSE}
+
+```r
 p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_diversty_all,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay1
 ```
 
-```{r, eval = FALSE}
+
+```r
 p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_CB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
@@ -561,10 +637,10 @@ p_overlay2
 
 #ss_result1 <- var_expt[no_diversity,]$ss_res[[1]]
 #ss_result2 <- var_expt[max_only_CB_diversity,]$ss_res[[1]]
-
 ```
 
-```{r, eval = FALSE}
+
+```r
 p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
@@ -572,15 +648,14 @@ p_overlay3
 
 
 #ss_result3 <- var_expt[max_only_SBPB_diversity,]$ss_res[[1]]
-
-
 ```
 
 ## Look at stability measures
 No experimental data.
 
 ### Calculations
-```{r, eval = FALSE}
+
+```r
 stab_data <- bind_rows(
   readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS")), 
   readRDS(here("experiments/experiment 1/data/stab_data_80000.RDS"))
@@ -619,8 +694,8 @@ saveRDS(all_stab_results, here("experiments/experiment 1/data/all_stab.RDS"))
 ```
 
 ### Plot raw
-```{r, eval = FALSE}
 
+```r
 all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
 
 all_stab_results %>%
@@ -684,13 +759,11 @@ bind_rows(
   ) %>%
   ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_raw, col = hyst_range_raw)) +
   geom_point(size = 3)
-
-
 ```
 
 ### Plot log
-```{r, eval = FALSE}
 
+```r
 all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
 
 all_stab_results %>%
@@ -754,14 +827,13 @@ bind_rows(
   ) %>%
   ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_log, col = hyst_range_log)) +
   geom_point(size = 3)
-
-
 ```
 
 ## Extra SBPB diversity
 No experimental data.
 
-```{r, eval = FALSE}
+
+```r
 var_expt_x <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS"))
 stab_data_x <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
 
@@ -784,7 +856,8 @@ p_overlay1
 ```
 
 ### raw
-```{r, eval = FALSE}
+
+```r
 stab_data_x %>%
   filter(Species == "O") %>%
   ggplot(aes(x = SB_var_gmax_s, y = hyst_range_raw)) +
@@ -811,7 +884,8 @@ stab_data_x %>%
 ```
 
 ### log
-```{r, eval = FALSE}
+
+```r
 stab_data_x %>%
   filter(Species == "O") %>%
   ggplot(aes(x = SB_var_gmax_s, y = hyst_range_log)) +
@@ -841,7 +915,8 @@ stab_data_x %>%
 
 ## 2x CB, 6xSBPB diversity
 
-```{r}
+
+```r
 ## find various combinations of diversity
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 stab_data <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
@@ -860,85 +935,184 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
                             rowSums(abs(var_expt_levels[,3:6])) &
                               rowSums(abs(var_expt_levels[,1:2]))==0)
 #var_expt_levels[20,]
-
 ```
 
 
-```{r}
 
+```r
 p1  <- plot_ss_result1(var_expt,
                 result_index = no_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-41-1.png)<!-- -->
 
+```r
 #junk1 <- var_expt[no_diversity,]$ss_res[[1]]
 ```
 
-```{r}
 
+```r
 p2  <- plot_ss_result1(var_expt,
                 result_index = max_diversty_all,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p2
-
 ```
 
-```{r}
+![](experiment-1_files/figure-html/unnamed-chunk-42-1.png)<!-- -->
 
+
+```r
 p3  <- plot_ss_result1(var_expt,
                 result_index = max_only_CB_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p3
-
 ```
 
-```{r}
+![](experiment-1_files/figure-html/unnamed-chunk-43-1.png)<!-- -->
 
+
+```r
 p4  <- plot_ss_result1(var_expt,
                 result_index = max_only_SBPB_diversity,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p4
-
 ```
 
+![](experiment-1_files/figure-html/unnamed-chunk-44-1.png)<!-- -->
 
-```{r}
+
+
+```r
 p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_diversty_all,]$ss_res[[1]],
                              xlims = c(-7, -1))
+```
+
+```
+## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+```
+
+```r
 p_overlay1
 ```
 
-```{r}
+```
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+```
+
+```
+## Warning: Removed 64 row(s) containing missing values (geom_path).
+
+## Warning: Removed 64 row(s) containing missing values (geom_path).
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-45-1.png)<!-- -->
+
+
+```r
 p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_CB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
-p_overlay2
-
-#ss_result1 <- var_expt[no_diversity,]$ss_res[[1]]
-#ss_result2 <- var_expt[max_only_CB_diversity,]$ss_res[[1]]
-
 ```
 
-```{r}
+```
+## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+```
+
+```r
+p_overlay2
+```
+
+```
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+```
+
+```
+## Warning: Removed 64 row(s) containing missing values (geom_path).
+
+## Warning: Removed 64 row(s) containing missing values (geom_path).
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-46-1.png)<!-- -->
+
+```r
+#ss_result1 <- var_expt[no_diversity,]$ss_res[[1]]
+#ss_result2 <- var_expt[max_only_CB_diversity,]$ss_res[[1]]
+```
+
+
+```r
 p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
+```
+
+```
+## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+## `summarise()` has grouped output by 'a', 'direction', 'var_type'. You can override using the `.groups` argument.
+```
+
+```r
 p_overlay3
+```
 
+```
+## Warning: Removed 16 row(s) containing missing values (geom_path).
 
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+
+## Warning: Removed 16 row(s) containing missing values (geom_path).
+```
+
+```
+## Warning: Removed 64 row(s) containing missing values (geom_path).
+
+## Warning: Removed 64 row(s) containing missing values (geom_path).
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-47-1.png)<!-- -->
+
+```r
 #ss_result3 <- var_expt[max_only_SBPB_diversity,]$ss_res[[1]]
-
-
 ```
 
 
-```{r}
+
+```r
 tempp1 <- var_expt[no_diversity,]$ss_res[[1]] %>%
   filter(initial_N_CB == 1e10,
          log10(a_O) > -4.5, log10(a_O) < -4)
@@ -952,21 +1126,35 @@ ggplot() +
   geom_line(mapping = aes(x = log10(tempp2$a_O),
                           y = log10(tempp2$O)),
             col = "blue")
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-48-1.png)<!-- -->
+
+```r
 ggplot() +
   geom_histogram(mapping = aes(x = log10(tempp1$O) - log10(tempp2$O)),
             col = "blue")
+```
 
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-48-2.png)<!-- -->
+
+```r
 ggplot() +
   geom_line(mapping = aes(x = log10(tempp1$a_O),
     y = log10(tempp1$P) - log10(tempp2$P)),
             col = "blue")
-
 ```
 
+![](experiment-1_files/figure-html/unnamed-chunk-48-3.png)<!-- -->
 
 
-```{r}
+
+
+```r
 CB_vars <- unique(stab_data$CB_var_gmax_s)
 SB_vars <- unique(stab_data$SB_var_gmax_s)
 
@@ -986,7 +1174,13 @@ CBSBPB_stab_data <- stab_data %>%
   right_join(for_join) %>%
   mutate(var_treat = "CB-SB-PB",
          var_gmax = CB_var_gmax_s)
+```
 
+```
+## Joining, by = c("CB_var_gmax_s", "SB_var_gmax_s")
+```
+
+```r
 all_stab_results <- CB_stab_data %>%
   bind_rows(SBPB_stab_data) %>%
 #  bind_rows(results3) %>%
@@ -995,7 +1189,59 @@ all_stab_results <- CB_stab_data %>%
 
 all_stab_results <- all_stab_results %>%
     mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
+```
 
+```
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+```
+
+```
+## Warning: Unknown levels in `f`: CB, CB-SB-PB
+```
+
+```
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+```
+
+```
+## Warning: Unknown levels in `f`: CB, CB-SB-PB
+```
+
+```
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+```
+
+```
+## Warning: Unknown levels in `f`: SB-PB, CB-SB-PB
+```
+
+```
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+```
+
+```
+## Warning: Unknown levels in `f`: CB, SB-PB
+```
+
+```
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+```
+
+```
+## Warning: Unknown levels in `f`: SB-PB, CB-SB-PB
+```
+
+```
+## Warning: Outer names are only allowed for unnamed scalar atomic inputs
+```
+
+```
+## Warning: Unknown levels in `f`: CB, SB-PB
+```
+
+```r
 #saveRDS(all_stab_results, here("experiments/experiment summary/all_stab.RDS"))
 
 
@@ -1003,7 +1249,8 @@ all_stab_results <- all_stab_results %>%
 ```
 
 ### raw
-```{r}
+
+```r
 all_stab_results %>%
   filter(Species == "O") %>%
   ggplot(aes(x = var_gmax, y = hyst_range_raw, col=var_treat, shape = as_factor(sim_length))) +
@@ -1011,6 +1258,11 @@ all_stab_results %>%
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
   labs(col = "Variation in\nonly these\nfunctional groups")
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-50-1.png)<!-- -->
+
+```r
 ##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
 
 all_stab_results %>%
@@ -1031,15 +1283,22 @@ all_stab_results %>%
     strip.background = element_blank(),
     strip.text.x = element_blank()
   )
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-50-2.png)<!-- -->
+
+```r
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
 stab_data %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
   ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_raw, col = hyst_range_raw)) +
   geom_point(size = 3)
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-50-3.png)<!-- -->
 
+```r
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
 
 stab_data %>%
@@ -1049,8 +1308,11 @@ stab_data %>%
   geom_line(size = 2)
 ```
 
+![](experiment-1_files/figure-html/unnamed-chunk-50-4.png)<!-- -->
+
 ### log
-```{r}
+
+```r
 all_stab_results %>%
   filter(Species == "O") %>%
   ggplot(aes(x = var_gmax, y = hyst_range_log, col=var_treat, shape = as_factor(sim_length))) +
@@ -1058,6 +1320,11 @@ all_stab_results %>%
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
   labs(col = "Variation in\nonly these\nfunctional groups")
+```
+
+![](experiment-1_files/figure-html/unnamed-chunk-51-1.png)<!-- -->
+
+```r
 ##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
 
 all_stab_results %>%
@@ -1078,15 +1345,22 @@ all_stab_results %>%
     strip.background = element_blank(),
     strip.text.x = element_blank()
   )
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-51-2.png)<!-- -->
+
+```r
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
 stab_data %>%
   filter(Species == "O",
          sim_length == 1e6) %>%
   ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_log, col = hyst_range_log)) +
   geom_point(size = 3)
+```
 
+![](experiment-1_files/figure-html/unnamed-chunk-51-3.png)<!-- -->
 
+```r
 ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
 
 stab_data %>%
@@ -1096,10 +1370,13 @@ stab_data %>%
   geom_line(size = 2)
 ```
 
+![](experiment-1_files/figure-html/unnamed-chunk-51-4.png)<!-- -->
+
 ## What effect of changing the length of the simulations
 No Experimental data.
 
-```{r, eval = FALSE}
+
+```r
 var_expt1 <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS"))
 var_expt2 <- readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS"))
 
@@ -1128,7 +1405,8 @@ The explanation is that the most tolerant strain does play a role, but only a tr
 
 TODO CHECK THE PARAMETER
 
-```{r}
+
+```r
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 var_expt_levels <- var_expt[,1:6]
 no_diversity <- which(rowSums(abs(var_expt_levels))==0)
@@ -1142,13 +1420,15 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
                               rowSums(abs(var_expt_levels[,1:2]))==0)
 ```
 
-```{r eval = eval_dynamics_flag}
+
+```r
 parameter <- readRDS(here("experiments/experiment 1/data/sim_res_novar3.RDS"))
 parameter$sim_duration <- 100000
 parameter$result <- NULL
 ```
 
-```{r eval = eval_dynamics_flag}
+
+```r
 parameter$log10a_series <- c(-4.8, -4.8)
 parameter$strain_parameter$initial_state <- new_initial_state(
   nrow(parameter$strain_parameter$CB),
@@ -1164,20 +1444,23 @@ saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_1.RDS"))
 ```
 
 
-```{r, eval = FALSE}
+
+```r
 sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_1.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 
-```{r eval = FALSE}
+
+```r
 sim_res_novar1 <- run_simulation(parameter_values = var_expt$pars[[max_only_SBPB_diversity]],
                           initial_state = initial_state)
 saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_2.RDS"))
 ```
 
-```{r, eval = FALSE}
+
+```r
 sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_2.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
@@ -1186,7 +1469,8 @@ plot_dynamics(sim_res_novar1)
 
 # Zoom in on SS
 
-```{r eval = FALSE}
+
+```r
 a_Os <- 10^seq(-2.479, -2.4785, length=grid_num_a) ## sequence of a_0 values
 initial_CBs <- 1#10^seq(0, 0, length=grid_num_N) ## sequence of N values
 initial_PBs <- 1e8 ## not varied
@@ -1201,13 +1485,15 @@ var_expt <- var_expt_master[381,]
 ```
 
 
-```{r, eval = FALSE}
+
+```r
 #var_expt <- run_ss_var_experiment()
 #saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_zoom.RDS"))
 ```
 
 
-```{r, eval = FALSE}
+
+```r
 library(here)
 zoom <- readRDS(here("experiments/experiment 1/data/ss_data_zoom.RDS"))
 
@@ -1229,7 +1515,8 @@ p1
 
 I (Owen) found that the sampling interval had an effect on the stability of the simulation. If the sampling interval was long, then in some rare cases (see below) the odesolver failed, with negative abundances occuring. I think this is due to abundances becoming very small, and then the computer having trouble with precision. I guess that when a sample is taken, the abundance is somehow altered if it is very low, probably by some rounding.
 
-```{r eval = FALSE}
+
+```r
 var_expt$pars[[1]]
 dd <- var_expt$ss_res[[1]]
 dd1 <- filter(dd, PB_1<(-0.0001))
@@ -1308,77 +1595,12 @@ sim_res_novar$result %>%
   geom_line(mapping = aes(x = time, y = PB_1))
 
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
-
-
-
 ```
 
 
 # Understand about relative and absolute variation in traits
 
-```{r echo = FALSE, eval = FALSE}
-num_CB_strains <- 9
-num_SB_strains <- 9
-num_PB_strains <- 9
 
-## multiplier of SBPB variation
-CB_var_multiplier <- 1
-SBPB_var_multiplier <- 5
-
-CB_gmax_div <- 0.015789474 * CB_var_multiplier
-CB_h_div <- -0.08 * CB_var_multiplier
-SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
-SB_h_div <- -0.323  * SBPB_var_multiplier
-PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
-PB_h_div <- -0.323  * SBPB_var_multiplier
-
-num_div_treatment_levels <- 2
-
-var_expt <- create_diversity_factorial(zero = zero, unity = unity, num_div_treatment_levels = num_div_treatment_levels)
-
-display_diversity(
- 4,
-  var_expt = var_expt,
-  num_CB_strains = num_CB_strains,
-  num_SB_strains = num_SB_strains,
-  num_PB_strains = num_PB_strains
-)
-
-this_one <- 4
-CBtraits <- var_expt$pars[[this_one]]$CB
-P <- 1 #10^seq(-5, 5, 0.1)
-SR <- 10^seq(0, 3, 0.1)
-gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
-gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
-CB_gr_rates <- (c(gr_rateCB1, gr_rateCB9))
-CB_gr_range <- max(CB_gr_rates) - min(CB_gr_rates)
-CB_gr_range
-
-SBtraits <- var_expt$pars[[this_one]]$SB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_rateSB1 <- growth2(P, SO, SBtraits$g_max_SB[1], SBtraits$k_SB_P[1], SBtraits$k_SB_SO[1]) *
-  inhibition(O, SBtraits$h_O_SB[1])
-gr_rateSB9 <- growth2(P, SO, SBtraits$g_max_SB[9], SBtraits$k_SB_P[9], SBtraits$k_SB_SO[9]) *
-    inhibition(O, SBtraits$h_O_SB[9])
-SB_gr_rates <- (c(gr_rateSB1, gr_rateSB9))
-SB_gr_range <- max(SB_gr_rates) - min(SB_gr_rates)
-SB_gr_range
-
-PBtraits <- var_expt$pars[[this_one]]$PB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_ratePB1 <- growth2(P, SO, PBtraits$g_max_PB[1], PBtraits$k_PB_P[1], PBtraits$k_PB_SR[1]) *
-  inhibition(O, PBtraits$h_O_PB[1])
-gr_ratePB9 <- growth2(P, SO, PBtraits$g_max_PB[9], PBtraits$k_PB_P[9], PBtraits$k_PB_SR[9]) *
-  inhibition(O, PBtraits$h_O_PB[9])
-PB_gr_rates <- (c(gr_ratePB1, gr_ratePB9))
-PB_gr_range <- max(PB_gr_rates) - min(PB_gr_rates)
-PB_gr_range
-
-```
 
 <!-- With the CB diversity multiplier set at ` CB_var_multiplier` and the SB/PB multiplier set at ` SBPB_var_multiplier` the range of realised growth rates of CB is ` CB_gr_range`, range of SB is ` SB_gr_range`, and range of PB is ` PB_gr_range`. -->
 
