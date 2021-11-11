@@ -3,6 +3,7 @@ title: "experiment 1"
 author: "Owen Petchey"
 date: "6/25/2021"
 output:
+  pdf_document: default
   html_document:
     keep_md: yes
 ---
@@ -63,7 +64,7 @@ source(here("R/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 options(mc.cores = 7)
-eval_dynamics_flag <- TRUE
+eval_dynamics_flag <- FALSE
 ```
 
 ## Version of `microxanox` package used: `r packageVersion("microxanox") `
@@ -330,11 +331,12 @@ plot_dynamics(sim_res_novar3)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
-### Maximum diversity
+### Medium diversity
 
 ```{r eval = eval_dynamics_flag}
+try_me <- 311
 sim_number2 <- num_div_treatment_levels
-parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
+parameter$strain_parameter <- var_expt$pars[[try_me]]
 parameter$strain_parameter$initial_state <- sim_res_novar3$strain_parameter$initial_state
 sim_res_highvar3 <- run_simulation(parameter)
 saveRDS(sim_res_highvar3, here("experiments/experiment 1/data/sim_res_highvar3.RDS"))
@@ -350,7 +352,7 @@ plot_dynamics(sim_res_highvar3)
 
 ### Visualise
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = FALSE}
 visualise_temporal_env_eco(sim_res_novar3, sim_res_highvar3)
 ```
 
@@ -481,7 +483,7 @@ readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS")) %>
 ## SS, no diversity, all diversity, CB only, and SBPB only
 No Experimental data
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 ## find various combinations of diversity
 var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS"))
 
@@ -503,7 +505,7 @@ max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
 ```
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 
 p1  <- plot_ss_result1(var_expt,
                 result_index = no_diversity,
@@ -515,7 +517,7 @@ p1
 #junk1 <- var_expt[no_diversity,]$ss_res[[1]]
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 
 p2  <- plot_ss_result1(var_expt,
                 result_index = max_diversty_all,
@@ -525,7 +527,7 @@ p2
 
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 
 p3  <- plot_ss_result1(var_expt,
                 result_index = max_only_CB_diversity,
@@ -535,7 +537,7 @@ p3
 
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 
 p4  <- plot_ss_result1(var_expt,
                 result_index = max_only_SBPB_diversity,
@@ -546,14 +548,14 @@ p4
 ```
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_diversty_all,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay1
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_CB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
@@ -564,7 +566,7 @@ p_overlay2
 
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
@@ -580,7 +582,7 @@ p_overlay3
 No experimental data.
 
 ### Calculations
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 stab_data <- bind_rows(
   readRDS(here("experiments/experiment 1/data/stab_data_1000000_20factorial.RDS")), 
   readRDS(here("experiments/experiment 1/data/stab_data_80000.RDS"))
@@ -619,7 +621,7 @@ saveRDS(all_stab_results, here("experiments/experiment 1/data/all_stab.RDS"))
 ```
 
 ### Plot raw
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 
 all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
 
@@ -689,7 +691,7 @@ bind_rows(
 ```
 
 ### Plot log
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 
 all_stab_results <- readRDS(here("experiments/experiment summary/all_stab.RDS"))
 
@@ -761,7 +763,7 @@ bind_rows(
 ## Extra SBPB diversity
 No experimental data.
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 var_expt_x <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_noCB_5xSBPB_.RDS"))
 stab_data_x <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_noCB_5xSBPB_.RDS"))
 
@@ -784,7 +786,7 @@ p_overlay1
 ```
 
 ### raw
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 stab_data_x %>%
   filter(Species == "O") %>%
   ggplot(aes(x = SB_var_gmax_s, y = hyst_range_raw)) +
@@ -811,7 +813,7 @@ stab_data_x %>%
 ```
 
 ### log
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 stab_data_x %>%
   filter(Species == "O") %>%
   ggplot(aes(x = SB_var_gmax_s, y = hyst_range_log)) +
@@ -1099,7 +1101,7 @@ stab_data %>%
 ## What effect of changing the length of the simulations
 No Experimental data.
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 var_expt1 <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS"))
 var_expt2 <- readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS"))
 
@@ -1164,20 +1166,20 @@ saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_1.RDS"))
 ```
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_1.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = FALSE}
 sim_res_novar1 <- run_simulation(parameter_values = var_expt$pars[[max_only_SBPB_diversity]],
                           initial_state = initial_state)
 saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_2.RDS"))
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_2.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
@@ -1186,7 +1188,7 @@ plot_dynamics(sim_res_novar1)
 
 # Zoom in on SS
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = FALSE}
 a_Os <- 10^seq(-2.479, -2.4785, length=grid_num_a) ## sequence of a_0 values
 initial_CBs <- 1#10^seq(0, 0, length=grid_num_N) ## sequence of N values
 initial_PBs <- 1e8 ## not varied
@@ -1201,13 +1203,13 @@ var_expt <- var_expt_master[381,]
 ```
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 #var_expt <- run_ss_var_experiment()
 #saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_zoom.RDS"))
 ```
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 library(here)
 zoom <- readRDS(here("experiments/experiment 1/data/ss_data_zoom.RDS"))
 
@@ -1229,7 +1231,7 @@ p1
 
 I (Owen) found that the sampling interval had an effect on the stability of the simulation. If the sampling interval was long, then in some rare cases (see below) the odesolver failed, with negative abundances occuring. I think this is due to abundances becoming very small, and then the computer having trouble with precision. I guess that when a sample is taken, the abundance is somehow altered if it is very low, probably by some rounding.
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo = FALSE}
 var_expt$pars[[1]]
 dd <- var_expt$ss_res[[1]]
 dd1 <- filter(dd, PB_1<(-0.0001))
