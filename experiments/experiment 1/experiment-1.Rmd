@@ -132,9 +132,9 @@ SB_h_div <- -0.323  * SBPB_var_multiplier
 PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
 PB_h_div <- -0.323  * SBPB_var_multiplier
 
-## num_div_treatment_levels <- 20
+num_div_treatment_levels <- 20
 
-num_div_treatment_levels <- 3 ## FOR TEST
+## num_div_treatment_levels <- 3 ## FOR TEST
 
 ```
 
@@ -160,7 +160,7 @@ var_expt <- create_diversity_factorial(
 
 ```{r}
 display_diversity(
-  9, ## FOR TEST was 400
+  400,
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
@@ -226,13 +226,15 @@ plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
-### Maximum diversity
+### With diversity
 
 ```{r eval = eval_dynamics_flag}
 # Is this actually needed?
 # sim_number <- num_div_treatment_levels
-
-parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
+try_me <- 311
+#sim_number2 <- num_div_treatment_levels
+parameter$strain_parameter <- var_expt$pars[[try_me]]
+#parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
 parameter$strain_parameter$initial_state <- sim_res_novar1$strain_parameter$initial_state
 sim_res_highvar1 <- run_simulation(parameter)
 saveRDS(sim_res_highvar1, here("experiments/experiment 1/data/sim_res_highvar1.RDS"))
@@ -277,11 +279,14 @@ plot_dynamics(sim_res_novar2)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
-### Maximum diversity
+### With diversity
 
 ```{r eval = eval_dynamics_flag}
-sim_number <- num_div_treatment_levels
-parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
+#sim_number <- num_div_treatment_levels
+try_me <- 311
+#sim_number2 <- num_div_treatment_levels
+parameter$strain_parameter <- var_expt$pars[[try_me]]
+#parameter$strain_parameter <- var_expt$pars[[max_diversty_all]]
 parameter$strain_parameter$initial_state <- sim_res_novar2$strain_parameter$initial_state
 sim_res_highvar2 <- run_simulation(parameter)
 saveRDS(sim_res_highvar2, here("experiments/experiment 1/data/sim_res_highvar2.RDS"))
@@ -331,11 +336,11 @@ plot_dynamics(sim_res_novar3)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
-### Medium diversity
+### With diversity
 
 ```{r eval = eval_dynamics_flag}
 try_me <- 311
-sim_number2 <- num_div_treatment_levels
+#sim_number2 <- num_div_treatment_levels
 parameter$strain_parameter <- var_expt$pars[[try_me]]
 parameter$strain_parameter$initial_state <- sim_res_novar3$strain_parameter$initial_state
 sim_res_highvar3 <- run_simulation(parameter)
