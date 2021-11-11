@@ -6,7 +6,7 @@ add_strain_var <- function(
   SB_var_h = 0,
   PB_var_gmax = 0, 
   PB_var_h = 0,
-  method = "even"
+  method = "even_v1.0"
 ){
 
   even <- function(
@@ -17,7 +17,7 @@ add_strain_var <- function(
   }
   
   switch (method,
-    "even" = {
+    "even_v1.0" = {
       x$CB$g_max_CB <- even(x$CB$g_max_CB, CB_var_gmax)
       x$CB$h_SR_CB  <- even(x$CB$h_SR_CB, CB_var_h    )
       x$SB$g_max_SB <- even(x$SB$g_max_SB, SB_var_gmax)
@@ -483,7 +483,7 @@ create_diversity <- function(
       SB_var_h = SB_var_h_s,
       PB_var_gmax = PB_var_gmax_s,
       PB_var_h = PB_var_h_s,
-      method = "even"
+      method = "even_v1.0"
     )))
 
   var_expt
@@ -537,7 +537,7 @@ create_diversity_factorial <- function(
       SB_var_h = SB_var_h_s,
       PB_var_gmax = PB_var_gmax_s,
       PB_var_h = PB_var_h_s,
-      method = "even"
+      method = "even_v1.0"
     )))
 
   var_expt
