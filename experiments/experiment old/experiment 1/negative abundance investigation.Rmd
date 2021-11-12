@@ -23,10 +23,10 @@ microxanox_release <- "0.2.1"
 
 
 ### From '?remotes::install_github`:
-# auth_token	
+# auth_token
 #   To install from a private repo, generate a personal access token (PAT) in
-#   "https://github.com/settings/tokens" and supply to this argument. This is 
-#   safer than using a password because you can easily delete a PAT without 
+#   "https://github.com/settings/tokens" and supply to this argument. This is
+#   safer than using a password because you can easily delete a PAT without
 #   affecting any others. Defaults to the GITHUB_PAT environment variable.
 
 # remotes::install_github(
@@ -86,7 +86,7 @@ num_div_treatment_levels <- 20
 ## Create diversity
 
 ```{r}
-var_expt <- create_diversity()
+var_expt <- create_diversity(zero = zero, unity = unity, num_div_treatment_levels = num_div_treatment_levels)
 
 var_expt[["pars"]][[20]]$CB
 var_expt[["pars"]][[20]]$SB
@@ -97,7 +97,12 @@ var_expt[["pars"]][[20]]$PB
 ## Display diversity
 
 ```{r}
-display_diversity()
+display_diversity(
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
 ```
 
 
