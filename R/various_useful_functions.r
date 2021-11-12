@@ -530,13 +530,14 @@ visualise_temporal_env_eco <- function(sim_res_novar = NULL, sim_res_highvar = N
   ggplot() +
     geom_path(
       data = filter(tmp_novar, functional_group == soi),
-      aes(x = a, y = log10(Total_quantity), group = direction)
+      aes(x = a, y = log10(Total_quantity), group = direction),
+      lwd = 2
     ) +
     geom_path(
       data = filter(tmp_highvar, functional_group == soi),
       aes(x = a, y = log10(Total_quantity), group = direction),
-      linetype = "dashed", lwd = 2, col = "red"
+      lwd = 1, col = "red"
     ) +
-    ggtitle("Solid line is with no intraspecific diversity.\nDashed line is with intraspecific diversity")
+    ggtitle("Black line is with no diversity.\nRed line is with diversity")
   ## ggsave(here("simulations/figures/switching_comparison.pdf"), width = 5, height = 4)
 }
