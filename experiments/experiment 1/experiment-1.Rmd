@@ -55,7 +55,7 @@ microxanox_release <- "0.3.0"
 
 library(microxanox)
 if (packageVersion("microxanox") < package_version("0.3.0")) {
-  stop("microxanox version needs to be at least 0.2.3!")
+  stop("microxanox version needs to be at least 0.3.0!")
 }
 library(tidyverse)
 library(patchwork)
