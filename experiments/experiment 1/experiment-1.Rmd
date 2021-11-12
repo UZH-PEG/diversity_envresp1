@@ -28,7 +28,7 @@ knitr::opts_knit$set(
   cache = TRUE
 )
 
-microxanox_release <- "0.2.3_beta"
+microxanox_release <- "0.3.0"
 
 #tmplib <- tempfile()
 #dir.create(tmplib)
@@ -53,8 +53,8 @@ microxanox_release <- "0.2.3_beta"
 
 #library(microxanox, lib.loc = tmplib)
 
-library(microxanoxBeta)
-if (packageVersion("microxanoxBeta") < package_version("0.2.3")) {
+library(microxanox)
+if (packageVersion("microxanox") < package_version("0.3.0")) {
   stop("microxanox version needs to be at least 0.2.3!")
 }
 library(tidyverse)
@@ -432,7 +432,7 @@ saveRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
 Bring in various stable state datasets
 ```{r eval = eval_dynamics_flag}
 cluster <- multidplyr::new_cluster(7)
-multidplyr::cluster_library(cluster, c("microxanoxBeta", "dplyr"))
+multidplyr::cluster_library(cluster, c("microxanox", "dplyr"))
 
 ## sim length 80'000, 20 x 20 factorial, reference maximum diversity
 # readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS")) %>%
