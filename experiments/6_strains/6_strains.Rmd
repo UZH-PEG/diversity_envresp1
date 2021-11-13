@@ -1,5 +1,5 @@
 ---
-title: "experiment 1"
+title: "6 strains"
 author: "Owen Petchey"
 date: "6/25/2021"
 output:
@@ -65,6 +65,7 @@ zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 options(mc.cores = 7)
 eval_dynamics_flag <- FALSE
+plot_ss_results <- FALSE
 ```
 
 ## Version of `microxanox` package used: `r packageVersion("microxanox") `
@@ -73,9 +74,9 @@ eval_dynamics_flag <- FALSE
 
 ```{r}
 
-num_CB_strains <- 9
-num_SB_strains <- 9
-num_PB_strains <- 9
+num_CB_strains <- 6
+num_SB_strains <- 6
+num_PB_strains <- 6
 
 sp <- new_strain_parameter(
   n_CB = num_CB_strains,
@@ -203,12 +204,12 @@ parameter$strain_parameter$initial_state <- new_initial_state(
 )
 parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10^10/num_CB_strains
 sim_res_novar1 <- run_simulation(parameter)
-saveRDS(sim_res_novar1, here("experiments/experiment 1/data/sim_res_novar1.RDS"))
+saveRDS(sim_res_novar1, here("experiments/6_strains/data/sim_res_novar1.RDS"))
 ```
 
 
 ```{r}
-sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/sim_res_novar1.RDS"))
+sim_res_novar1 <- readRDS(here("experiments/6_strains/data/sim_res_novar1.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
@@ -219,12 +220,12 @@ plot_dynamics(sim_res_novar1)
 parameter$strain_parameter <- var_expt$pars[[medium_diverity_varexp_row]]
 parameter$strain_parameter$initial_state <- sim_res_novar1$strain_parameter$initial_state
 sim_res_highvar1 <- run_simulation(parameter)
-saveRDS(sim_res_highvar1, here("experiments/experiment 1/data/sim_res_highvar1.RDS"))
+saveRDS(sim_res_highvar1, here("experiments/6_strains/data/sim_res_highvar1.RDS"))
 ```
 
 
 ```{r}
-sim_res_highvar1 <- readRDS(here("experiments/experiment 1/data/sim_res_highvar1.RDS"))
+sim_res_highvar1 <- readRDS(here("experiments/6_strains/data/sim_res_highvar1.RDS"))
 plot_dynamics(sim_res_highvar1)
 #ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 
@@ -250,12 +251,12 @@ parameter$strain_parameter$initial_state <- new_initial_state(
 )
 parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10/num_CB_strains
 sim_res_novar2 <- run_simulation(parameter)
-saveRDS(sim_res_novar2, here("experiments/experiment 1/data/sim_res_novar2.RDS"))
+saveRDS(sim_res_novar2, here("experiments/6_strains/data/sim_res_novar2.RDS"))
 ```
 
 
 ```{r}
-sim_res_novar2 <- readRDS(here("experiments/experiment 1/data/sim_res_novar2.RDS"))
+sim_res_novar2 <- readRDS(here("experiments/6_strains/data/sim_res_novar2.RDS"))
 plot_dynamics(sim_res_novar2)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
@@ -266,12 +267,12 @@ plot_dynamics(sim_res_novar2)
 parameter$strain_parameter <- var_expt$pars[[medium_diverity_varexp_row]]
 parameter$strain_parameter$initial_state <- sim_res_novar2$strain_parameter$initial_state
 sim_res_highvar2 <- run_simulation(parameter)
-saveRDS(sim_res_highvar2, here("experiments/experiment 1/data/sim_res_highvar2.RDS"))
+saveRDS(sim_res_highvar2, here("experiments/6_strains/data/sim_res_highvar2.RDS"))
 ```
 
 
 ```{r}
-sim_res_highvar2 <- readRDS(here("experiments/experiment 1/data/sim_res_highvar2.RDS"))
+sim_res_highvar2 <- readRDS(here("experiments/6_strains/data/sim_res_highvar2.RDS"))
 plot_dynamics(sim_res_highvar2)
 #ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 
@@ -302,12 +303,12 @@ parameter$strain_parameter$initial_state <- new_initial_state(
 )
 parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10/num_CB_strains
 sim_res_novar3 <- run_simulation(parameter)
-saveRDS(sim_res_novar3, here("experiments/experiment 1/data/sim_res_novar3.RDS"))
+saveRDS(sim_res_novar3, here("experiments/6_strains/data/sim_res_novar3.RDS"))
 ```
 
 
 ```{r}
-sim_res_novar3 <- readRDS(here("experiments/experiment 1/data/sim_res_novar3.RDS"))
+sim_res_novar3 <- readRDS(here("experiments/6_strains/data/sim_res_novar3.RDS"))
 plot_dynamics(sim_res_novar3)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
@@ -318,12 +319,12 @@ plot_dynamics(sim_res_novar3)
 parameter$strain_parameter <- var_expt$pars[[medium_diverity_varexp_row]]
 parameter$strain_parameter$initial_state <- sim_res_novar3$strain_parameter$initial_state
 sim_res_highvar3 <- run_simulation(parameter)
-saveRDS(sim_res_highvar3, here("experiments/experiment 1/data/sim_res_highvar3.RDS"))
+saveRDS(sim_res_highvar3, here("experiments/6_strains/data/sim_res_highvar3.RDS"))
 ```
 
 
 ```{r}
-sim_res_highvar3 <- readRDS(here("experiments/experiment 1/data/sim_res_highvar3.RDS"))
+sim_res_highvar3 <- readRDS(here("experiments/6_strains/data/sim_res_highvar3.RDS"))
 plot_dynamics(sim_res_highvar3)
 #ggsave(here("simulationsexpt2/figures/switching_highvar.pdf"), width = 10)
 
@@ -379,20 +380,8 @@ parameter <- new_ss_by_a_N_parameter(
 )
 rm(minimum_abundances, grid_num_a, a_Os, grid_num_N, initial_CBs, initial_PBs, initial_SBs, ss_expt)
 
-saveRDS(parameter, here("experiments/experiment 1/data/parameter_1e6_x2x6_factorial.RDS"))
-saveRDS(var_expt_small, here("experiments/experiment 1/data/var_expt_1e6_x2x6_factorial.RDS"))
-```
-
-### for testing
-
-```{r eval = FALSE}
-var_expt_small <- var_expt[c(no_diversity, medium_diverity_varexp_row),]
-saveRDS(parameter, here("experiments/experiment 1/data/parameter_1e6_x2x6_factorial.RDS"))
-saveRDS(var_expt_small, here("experiments/experiment 1/data/var_expt_1e6_x2x6_factorial_small.RDS"))
-run_ss_var_experiment(
-  parameter = readRDS(here("experiments/experiment 1/data/parameter_1e6_x2x6_factorial.RDS")), 
-  var_expt = readRDS(here("experiments/experiment 1/data/var_expt_1e6_x2x6_factorial_small.RDS"))) %>%
-saveRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_small.RDS"))
+saveRDS(parameter, here("experiments/6_strains/data/parameter_1e6_x2x6_factorial.RDS"))
+saveRDS(var_expt, here("experiments/6_strains/data/var_expt_1e6_x2x6_factorial.RDS"))
 ```
 
 
@@ -402,9 +391,9 @@ saveRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_small.RDS
 
 ```{r run_experiment, eval = eval_dynamics_flag}
 run_ss_var_experiment(
-  parameter = readRDS(here("experiments/experiment 1/data/parameter_1e6_x2x6_factorial.RDS")), 
-  var_expt = readRDS(here("experiments/experiment 1/data/var_expt_1e6_x2x6_factorial.RDS"))) %>%
-saveRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
+  parameter = readRDS(here("experiments/6_strains/data/parameter_1e6_x2x6_factorial.RDS")), 
+  var_expt = readRDS(here("experiments/6_strains/data/var_expt_1e6_x2x6_factorial.RDS"))) %>%
+saveRDS(here("experiments/6_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
 ```
 
 ### Process the stable state data
@@ -415,43 +404,22 @@ cluster <- multidplyr::new_cluster(7)
 multidplyr::cluster_library(cluster, c("microxanox", "dplyr"))
 
 ## sim length 1'000'000, 20 SBPBgrad, 2xCB variation, 6xSBPB variation
-readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_small.RDS")) %>%
+readRDS(here("experiments/6_strains/data/ss_data_1e6_x2x6_factorial_small.RDS")) %>%
   mutate(sim_length = 1000000) %>% 
   multidplyr::partition(cluster) %>%
   mutate(stability_measures = list(get_stability_measures(ss_res))) %>%
   collect() %>%
   unnest(cols = c(stability_measures)) %>%
-  saveRDS(here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial_small.RDS"))
+  saveRDS(here("experiments/6_strains/data/stab_data_1e6_x2x6_factorial_small.RDS"))
 ```
 
-
-```{r eval = FALSE}
-## compare version 1 results to the current.
-v1_ss_data <- readRDS(here("experiments/experiment 1/data/version1_ss_data_1e6_x2x6_factorial.RDS"))
-v1_stab_data <- readRDS(here("experiments/experiment 1/data/version1_stab_data_1e6_x2x6_factorial.RDS"))
-
-small_ss_data <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial_small.RDS"))
-small_stab_data <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial_small.RDS"))
-
-xxxxx <- small_stab_data %>%
-  select(-data, -pars, -ss_by_a_N_result, -ss_res, -sim_length) %>%
-  filter(Species == "O")
-v1_stab_data %>%
-  filter(CB_var_gmax_s == 0, CB_var_h_s == 0,
-         SB_var_gmax_s == 0, SB_var_h_s == 0,
-         PB_var_gmax_s == 0, PB_var_h_s == 0) %>%
-  filter(Species == "O")
-v1_stab_data %>%
-  slice(9620) %>%
-  filter(Species == "O")
-```
 
 
 
 ```{r}
 ## find various combinations of diversity
-var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
-stab_data <- readRDS(here("experiments/experiment 1/data/stab_data_1e6_x2x6_factorial.RDS"))
+var_expt <- readRDS(here("experiments/6_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
+stab_data <- readRDS(here("experiments/6_strains/data/stab_data_1e6_x2x6_factorial.RDS"))
 
 var_expt_levels <- var_expt[,1:6]
 
@@ -475,7 +443,7 @@ medium_diverity_varexp_row <- 311
 ### Display results
 
 
-```{r}
+```{r eval = plot_ss_results}
 
 p1  <- plot_ss_result1(var_expt,
                 result_index = no_diversity,
@@ -484,10 +452,7 @@ p1  <- plot_ss_result1(var_expt,
 p1
 
 
-#junk1 <- var_expt[no_diversity,]$ss_res[[1]]
-```
 
-```{r}
 
 p2  <- plot_ss_result1(var_expt,
                 result_index = max_diversty_all,
@@ -495,9 +460,7 @@ p2  <- plot_ss_result1(var_expt,
                 save_image_file = FALSE)
 p2
 
-```
 
-```{r}
 
 p3  <- plot_ss_result1(var_expt,
                 result_index = max_only_CB_diversity,
@@ -505,9 +468,6 @@ p3  <- plot_ss_result1(var_expt,
                 save_image_file = FALSE)
 p3
 
-```
-
-```{r}
 
 p4  <- plot_ss_result1(var_expt,
                 result_index = max_only_SBPB_diversity,
@@ -515,41 +475,30 @@ p4  <- plot_ss_result1(var_expt,
                 save_image_file = FALSE)
 p4
 
-```
 
-
-```{r}
 p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_diversty_all,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay1
-```
 
-```{r}
+
 p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_CB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay2
 
-#ss_result1 <- var_expt[no_diversity,]$ss_res[[1]]
-#ss_result2 <- var_expt[max_only_CB_diversity,]$ss_res[[1]]
 
-```
-
-```{r}
 p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
                              var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
                              xlims = c(-7, -1))
 p_overlay3
 
 
-#ss_result3 <- var_expt[max_only_SBPB_diversity,]$ss_res[[1]]
-
 
 ```
 
 
-```{r}
+```{r eval = plot_ss_results}
 tempp1 <- var_expt[no_diversity,]$ss_res[[1]] %>%
   filter(initial_N_CB == 1e10,
          log10(a_O) > -4.5, log10(a_O) < -4)
@@ -577,7 +526,7 @@ ggplot() +
 
 
 
-```{r}
+```{r eval = plot_ss_results}
 CB_vars <- unique(stab_data$CB_var_gmax_s)
 SB_vars <- unique(stab_data$SB_var_gmax_s)
 
@@ -614,7 +563,7 @@ all_stab_results <- all_stab_results %>%
 ```
 
 ### Raw
-```{r}
+```{r eval = plot_ss_results}
 all_stab_results %>%
   filter(Species == "O") %>%
   ggplot(aes(x = var_gmax, y = hyst_range_raw, col=var_treat, shape = as_factor(sim_length))) +
@@ -662,7 +611,7 @@ stab_data %>%
 
 ### Log transformed
 
-```{r}
+```{r eval = plot_ss_results}
 all_stab_results %>%
   filter(Species == "O") %>%
   ggplot(aes(x = var_gmax, y = hyst_range_log, col=var_treat, shape = as_factor(sim_length))) +
@@ -707,303 +656,4 @@ stab_data %>%
   ggplot(aes(x = CB_var_gmax_s, y = hyst_range_log, col = as.factor(SB_var_gmax_s))) +
   geom_line(size = 2)
 ```
-
-
-
-# FROM HERE NOT CHANGED TO NEW FORMAT!!!!!!
-# Some puzzles
-
-## What effect of changing the length of the simulations
-No Experimental data.
-
-```{r, eval = FALSE, echo = FALSE}
-var_expt1 <- readRDS(here("experiments/experiment 1/data/ss_data_1000000_20factorial.RDS"))
-var_expt2 <- readRDS(here("experiments/experiment 1/data/ss_data_80000.RDS"))
-
-p1_short  <- plot_ss_result1(var_expt2,
-                result_index = max_diversty_all,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
-p1_short
-
-p1_long  <- plot_ss_result1(var_expt1,
-                result_index = max_diversty_all,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
-p1_long
-```
-
-
-## Puzzle 1
-
-When the environment ameliorates for the sulphur bacteria, there is no strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. Indeed Uriah showed that the presence of only the most tolerant strain is sufficient to give an earlier switch, even though it is not present in the final state when less tolerant strains are present. And he showed that the presence of only the least tolerant strain creates a later switch than when there are more tolerant strains.
-
-The explanation is that the most tolerant strain does play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(a_O) = -4.8) for which the system remains oxic if there is no diversity, but switches to anoxic if there is diversity. There is only diversity in the sulphur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the environment ameliorates (temporally).
-
-TODO CHECK THE PARAMETER
-
-```{r}
-var_expt <- readRDS(here("experiments/experiment 1/data/ss_data_1e6_x2x6_factorial.RDS"))
-var_expt_levels <- var_expt[,1:6]
-no_diversity <- which(rowSums(abs(var_expt_levels))==0)
-max_diversty_all <- which(max(rowSums(abs(var_expt_levels))) ==
-                            rowSums(abs(var_expt_levels)))
-max_only_CB_diversity <- which(max(rowSums(abs(var_expt_levels[,1:2]))) ==
-                            rowSums(abs(var_expt_levels[,1:2])) &
-                              rowSums(abs(var_expt_levels[,3:6]))==0)
-max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
-                            rowSums(abs(var_expt_levels[,3:6])) &
-                              rowSums(abs(var_expt_levels[,1:2]))==0)
-```
-
-```{r eval = eval_dynamics_flag}
-parameter <- readRDS(here("experiments/experiment 1/data/sim_res_novar3.RDS"))
-parameter$sim_duration <- 100000
-parameter$result <- NULL
-```
-
-```{r eval = eval_dynamics_flag}
-parameter$log10a_series <- c(-4.8, -4.8)
-parameter$strain_parameter$initial_state <- new_initial_state(
-  nrow(parameter$strain_parameter$CB),
-  nrow(parameter$strain_parameter$PB),
-  nrow(parameter$strain_parameter$PB),
-  values = "bush_ssfig3"
-)
-parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10^10/nrow(parameter$strain_parameter$CB)
-
-
-sim_res_novar1 <- run_simulation(parameter)
-saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_1.RDS"))
-```
-
-
-```{r, eval = FALSE, echo = FALSE}
-sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_1.RDS"))
-plot_dynamics(sim_res_novar1)
-#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
-```
-
-
-```{r eval = FALSE, echo = FALSE}
-sim_res_novar1 <- run_simulation(parameter_values = var_expt$pars[[max_only_SBPB_diversity]],
-                          initial_state = initial_state)
-saveRDS(sim_res_novar1, here("experiments/experiment 1/data/puzzle1_2.RDS"))
-```
-
-```{r, eval = FALSE, echo = FALSE}
-sim_res_novar1 <- readRDS(here("experiments/experiment 1/data/puzzle1_2.RDS"))
-plot_dynamics(sim_res_novar1)
-#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
-```
-
-
-## Zoom in on SS
-
-```{r eval = FALSE, echo = FALSE}
-a_Os <- 10^seq(-2.479, -2.4785, length=grid_num_a) ## sequence of a_0 values
-initial_CBs <- 1#10^seq(0, 0, length=grid_num_N) ## sequence of N values
-initial_PBs <- 1e8 ## not varied
-initial_SBs <- 1e8 ## not varied
-# next line creates all possible combinations
-ss_expt <- expand.grid(N_CB = initial_CBs,
-                      N_PB = initial_PBs,
-                      N_SB = initial_SBs,
-                      a_O = a_Os)
-var_expt_master <- var_expt
-var_expt <- var_expt_master[381,]
-```
-
-
-```{r, eval = FALSE, echo = FALSE}
-#var_expt <- run_ss_var_experiment()
-#saveRDS(var_expt, here("experiments/experiment 1/data/ss_data_zoom.RDS"))
-```
-
-
-```{r, eval = FALSE, echo = FALSE}
-library(here)
-zoom <- readRDS(here("experiments/experiment 1/data/ss_data_zoom.RDS"))
-
-p1  <- plot_ss_result1(zoom,
-                result_index = 1,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
-p1
-```
-
-
-
-
-
-
-
-
-## Negative abundance investigation
-
-I (Owen) found that the sampling interval had an effect on the stability of the simulation. If the sampling interval was long, then in some rare cases (see below) the odesolver failed, with negative abundances occuring. I think this is due to abundances becoming very small, and then the computer having trouble with precision. I guess that when a sample is taken, the abundance is somehow altered if it is very low, probably by some rounding.
-
-```{r eval = FALSE, echo = FALSE}
-var_expt$pars[[1]]
-dd <- var_expt$ss_res[[1]]
-dd1 <- filter(dd, PB_1<(-0.0001))
-dd1$a_O
-
-ss_expt_master <- ss_expt
-ss_expt <- ss_expt_master[abs(ss_expt_master$a_O - 1.336984e-05)<1e-10,]
-
-var_expt_master <- var_expt
-#var_expt <- var_expt[1,]
-var_expt_test <- run_ss_var_experiment()
-res <- var_expt_test$ss_res[[1]]
-
-test1 <- ss_by_a_N(ss_expt, var_expt$pars[[1]])
-x <- ss_expt[2,]
-param <- var_expt$pars[[1]]
-get_final_states_a_N(x, param)
-ssfind_parameters <- param
-ssfind_simulation_sampling_interval <- 1000
-## now run inside the function "get_final_states_a_N"
-simres1 <- simres
-ssfind_simulation_sampling_interval <- 5000
-## now run inside the function "get_final_states_a_N"
-simres2 <- simres  # this fails
-
-## now run inside the function "get_final_states_a_N"
-plot_dynamics(simres2)
-
-ggplot() +
-  geom_line(data = simres1$result,
-             mapping = aes(x = time, y = log10(PB_1))) +
-  geom_point(data = simres2$result,
-             mapping = aes(x = time, y = log10(PB_1))) +
-  xlim(c(0, 250000))
-
-ccc <- simres2$result
-
-simres2$result$PB_1
-simres2$result$time
-
-
-log10_a <- log10(ss_expt$a_O[1]) ## very slowly goes anoxic
-#log10_a <- log10(a_Os[354]) ## very slowly goes anoxic
-#log10_a <- log10(a_Os[356]) ## very very very  slowly goes anoxic
-#log10_a <- log10(a_Os[357]) ## does not go anoxic
-
-
-
-default_dynamic_model <- bushplus_dynamic_model
-default_event_definition <- event_definition_1
-default_event_interval <- ssfind_simulation_duration
-default_noise_sigma <- 0
-default_minimum_abundances <- ssfind_minimum_abundances
-default_sim_duration <- ssfind_simulation_duration
-default_sim_sample_interval <- ssfind_simulation_duration
-#initial_pars_from <- "bush_ssfig3"
-
-
-default_log10a_series <- c(log10_a, log10_a)
-initial_state <- new_initial_state(num_CB_strains,
-                                   num_PB_strains,
-                                   num_SB_strains,
-                                   values = "bush_ssfig3")
-initial_state[grep("CB_", names(initial_state))] <- 10^10/num_CB_strains
-sim_res_novar <- run_simulation(parameter_values = var_expt$pars[[1]],
-                          initial_state = initial_state)
-plot_dynamics(sim_res_novar)
-
-simulation_result <- sim_res_novar
-every_n <- 1
-
-chk <- sim_res_novar$result
-
-sim_res_novar$result %>%
-  ggplot() +
-  geom_line(mapping = aes(x = time, y = PB_1))
-
-#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
-
-
-
-```
-
-
-## Understand about relative and absolute variation in traits
-
-```{r echo = FALSE, eval = FALSE}
-num_CB_strains <- 9
-num_SB_strains <- 9
-num_PB_strains <- 9
-
-## multiplier of SBPB variation
-CB_var_multiplier <- 1
-SBPB_var_multiplier <- 5
-
-CB_gmax_div <- 0.015789474 * CB_var_multiplier
-CB_h_div <- -0.08 * CB_var_multiplier
-SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
-SB_h_div <- -0.323  * SBPB_var_multiplier
-PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
-PB_h_div <- -0.323  * SBPB_var_multiplier
-
-num_div_treatment_levels <- 2
-
-var_expt <- create_diversity_factorial(zero = zero, unity = unity, num_div_treatment_levels = num_div_treatment_levels)
-
-display_diversity(
- 4,
-  var_expt = var_expt,
-  num_CB_strains = num_CB_strains,
-  num_SB_strains = num_SB_strains,
-  num_PB_strains = num_PB_strains
-)
-
-this_one <- 4
-CBtraits <- var_expt$pars[[this_one]]$CB
-P <- 1 #10^seq(-5, 5, 0.1)
-SR <- 10^seq(0, 3, 0.1)
-gr_rateCB1 <- growth1(P, CBtraits$g_max_CB[1], CBtraits$k_CB_P[1]) * inhibition(SR, CBtraits$h_SR_CB[1])
-gr_rateCB9 <- growth1(P, CBtraits$g_max_CB[num_CB_strains], CBtraits$k_CB_P[num_CB_strains]) * inhibition(SR, CBtraits$h_SR_CB[num_CB_strains])
-CB_gr_rates <- (c(gr_rateCB1, gr_rateCB9))
-CB_gr_range <- max(CB_gr_rates) - min(CB_gr_rates)
-CB_gr_range
-
-SBtraits <- var_expt$pars[[this_one]]$SB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_rateSB1 <- growth2(P, SO, SBtraits$g_max_SB[1], SBtraits$k_SB_P[1], SBtraits$k_SB_SO[1]) *
-  inhibition(O, SBtraits$h_O_SB[1])
-gr_rateSB9 <- growth2(P, SO, SBtraits$g_max_SB[9], SBtraits$k_SB_P[9], SBtraits$k_SB_SO[9]) *
-    inhibition(O, SBtraits$h_O_SB[9])
-SB_gr_rates <- (c(gr_rateSB1, gr_rateSB9))
-SB_gr_range <- max(SB_gr_rates) - min(SB_gr_rates)
-SB_gr_range
-
-PBtraits <- var_expt$pars[[this_one]]$PB
-P <- 1 #10^seq(-5, 5, 0.1)
-SO <- 1
-O <- 10^seq(-2.5, 2.5, 0.1)
-gr_ratePB1 <- growth2(P, SO, PBtraits$g_max_PB[1], PBtraits$k_PB_P[1], PBtraits$k_PB_SR[1]) *
-  inhibition(O, PBtraits$h_O_PB[1])
-gr_ratePB9 <- growth2(P, SO, PBtraits$g_max_PB[9], PBtraits$k_PB_P[9], PBtraits$k_PB_SR[9]) *
-  inhibition(O, PBtraits$h_O_PB[9])
-PB_gr_rates <- (c(gr_ratePB1, gr_ratePB9))
-PB_gr_range <- max(PB_gr_rates) - min(PB_gr_rates)
-PB_gr_range
-
-```
-
-<!-- With the CB diversity multiplier set at ` CB_var_multiplier` and the SB/PB multiplier set at ` SBPB_var_multiplier` the range of realised growth rates of CB is ` CB_gr_range`, range of SB is ` SB_gr_range`, and range of PB is ` PB_gr_range`. -->
-
-
-
-
-
-
-
-
-
-
-
 
