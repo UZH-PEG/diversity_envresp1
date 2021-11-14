@@ -180,9 +180,14 @@ max_only_SBPB_diversity <- which(
 
 # What effect of changing the length of the simulations
 
-## Setup parameter
+## Setup and processing
 
-```{r}
+Run a shorter sim:
+
+```{r eval = eval_dynamics_flag}
+
+sim_length <- 100000
+
 options(mc.cores = 7)
 
 minimum_abundances <- rep(0, 3)
@@ -204,11 +209,11 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 parameter <- new_ss_by_a_N_parameter(
   dynamic_model = parameter$dynamic_model,
   event_definition = parameter$event_definition,
-  event_interval = 100000,
+  event_interval = sim_length,
   noise_sigma = parameter$noise_sigma,
   minimum_abundances = minimum_abundances,
-  sim_duration = 100000,  ##    Was 1e6
-  sim_sample_interval = 100000,
+  sim_duration = sim_length,  ##    Was 1e6
+  sim_sample_interval = sim_length,
   log10a_series = parameter$log10a_series,
   solver_method = parameter$solver_method,
   ss_expt = ss_expt
@@ -220,7 +225,6 @@ saveRDS(var_expt, here("experiments/checks_puzzles/data/var_expt_1e5_x2x6_factor
 ```
 
 
-### Run stable state finding
 
 *Careful, this simulation takes about 600 hours on a single core
 
@@ -228,10 +232,10 @@ saveRDS(var_expt, here("experiments/checks_puzzles/data/var_expt_1e5_x2x6_factor
 run_ss_var_experiment(
   parameter = readRDS(here("experiments/checks_puzzles/data/parameter_1e5_x2x6_factorial.RDS")), 
   var_expt = readRDS(here("experiments/checks_puzzles/data/var_expt_1e5_x2x6_factorial.RDS"))) %>%
-saveRDS(here("experiments/checks_puzzles/data/ss_data_1e6_x2x5_factorial.RDS"))
+  saveRDS(here("experiments/checks_puzzles/data/ss_data_1e5_x2x6_factorial.RDS"))
 ```
 
-### Process the stable state data
+
 
 Bring in various stable state datasets
 ```{r eval = eval_dynamics_flag}
@@ -249,32 +253,34 @@ readRDS(here("experiments/checks_puzzles/data/ss_data_1e5_x2x6_factorial.RDS")) 
 ```
 
 
+## Visualise
 
-```{r, eval = FALSE, echo = FALSE}
+
+```{r}
 var_expt1 <- readRDS(here("experiments/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
 var_expt2 <- readRDS(here("experiments/checks_puzzles/data/ss_data_1e5_x2x6_factorial.RDS"))
 
 p1_short  <- plot_ss_result1(var_expt2,
-                result_index = max_diversty_all,
+                result_index = nrow(var_expt2),
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1_short
 
 p1_long  <- plot_ss_result1(var_expt1,
-                result_index = max_diversty_all,
+                result_index = nrow(var_expt1),
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 p1_long
 ```
 
 
+## Continute here to check the stability measures.
 
 
 
 
 
-
-# Puzzle 1
+# Hidden effect of sulphur bacteria diversity
 
 When the environment ameliorates for the sulphur bacteria, there is no strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. Indeed Uriah showed that the presence of only the most tolerant strain is sufficient to give an earlier switch, even though it is not present in the final state when less tolerant strains are present. And he showed that the presence of only the least tolerant strain creates a later switch than when there are more tolerant strains.
 
@@ -316,14 +322,14 @@ saveRDS(sim_res_novar1, here("experiments/checks_puzzles/data/puzzle1_1.RDS"))
 ```
 
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
 sim_res_novar1 <- readRDS(here("experiments/checks_puzzles/data/puzzle1_1.RDS"))
 plot_dynamics(sim_res_novar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 
-```{r eval = FALSE, echo = FALSE}
+```{r eval = eval_dynamics_flag}
 parameter$strain_parameter <- var_expt[max_only_SBPB_diversity,]$pars[[1]]
 #parameter$sim_duration <- 100000
 #parameter$result <- NULL
@@ -339,14 +345,14 @@ sim_res_highvar1 <- run_simulation(parameter)
 saveRDS(sim_res_highvar1, here("experiments/checks_puzzles/data/puzzle1_2.RDS"))
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
 sim_res_highvar1 <- readRDS(here("experiments/checks_puzzles/data/puzzle1_2.RDS"))
 plot_dynamics(sim_res_highvar1)
 #ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
 ```
 
 
-## Zoom in on SS
+# Zoom in on SS
 
 ```{r eval = FALSE, echo = FALSE}
 a_Os <- 10^seq(-2.479, -2.4785, length=grid_num_a) ## sequence of a_0 values
@@ -387,7 +393,7 @@ p1
 
 
 
-## Negative abundance investigation
+# Negative abundance investigation
 
 I (Owen) found that the sampling interval had an effect on the stability of the simulation. If the sampling interval was long, then in some rare cases (see below) the odesolver failed, with negative abundances occuring. I think this is due to abundances becoming very small, and then the computer having trouble with precision. I guess that when a sample is taken, the abundance is somehow altered if it is very low, probably by some rounding.
 
@@ -476,7 +482,7 @@ sim_res_novar$result %>%
 ```
 
 
-## Understand about relative and absolute variation in traits
+# Understand about relative and absolute variation in traits
 
 ```{r echo = FALSE, eval = FALSE}
 num_CB_strains <- 9
