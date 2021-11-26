@@ -1,0 +1,75 @@
+---
+title: "Test Error"
+author: "Rainer M Krug"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  eval = TRUE,
+  echo = TRUE,
+  error = TRUE,
+  messages = TRUE
+)
+
+library(here)
+source(here("R/various_useful_functions.r"))
+
+num_strains <- 9
+num_CB_strains <- num_strains
+num_SB_strains <- num_strains
+num_PB_strains <- num_strains
+
+source(here("experiments/0_ss_finding/setup_experiment.R"))
+
+
+## Get SS
+var_expt <- var_expt[1:2,]
+
+```
+
+## Load the old data
+
+```{r load}
+c1 <- readRDS("~/Documents_Local/git/diversity_envresp1/experiments/0_ss_finding/data/1c_9_strain_SS_data.RDS")
+c6 <- readRDS("~/Documents_Local/git/diversity_envresp1/experiments/0_ss_finding/data/6c_9_strain_SS_data.RDS")
+```
+
+## The error
+
+```{r error1}
+c1 %>% mutate(stability_measures = list(get_stability_measures_new(ssfind_result)))
+c6 %>% mutate(stability_measures = list(get_stability_measures_new(ssfind_result)))
+```
+
+## Further digging
+```{r error2}
+c1["ssfind_result"] %>% mutate(stability_measures = list(get_stability_measures_new(ssfind_result)))
+c6["ssfind_result"] %>% mutate(stability_measures = list(get_stability_measures_new(ssfind_result)))
+```
+
+## Check the attributes
+```{r}
+attributes(c1["ssfind_result"])
+attributes(c6["ssfind_result"])
+```
+
+The single core result is a `rowwise_df`, while the multicore is not.
+
+## Fix
+Add the `%>% rowwise()` to the function `run_temporal_ssfind_experiment()` inm the microxanox package and regenerate the data (in separate script)
+
+## Load the new data
+
+```{r loadNew}
+c1_r <- readRDS("~/Documents_Local/git/diversity_envresp1/experiments/0_ss_finding/data/1c_rowwise_9_strain_SS_data.RDS")
+c6_r <- readRDS("~/Documents_Local/git/diversity_envresp1/experiments/0_ss_finding/data/6c_rowwise_9_strain_SS_data.RDS")
+```
+
+## Now working
+
+```{r Fixed}
+c1_r %>% mutate(stability_measures = list(get_stability_measures_new(ssfind_result)))
+c6_r %>% mutate(stability_measures = list(get_stability_measures_new(ssfind_result)))
+```
