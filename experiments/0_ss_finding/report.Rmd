@@ -1,15 +1,20 @@
 ---
 title: "SS finding report"
 author: "Owen Petchey"
-date: "11/25/2021"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
+```{r echo = FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+```
 
 
 ```{r}
 library(microxanox)
 library(tidyverse)
+library(patchwork)
+library(here)
 
 source(here("R/various_useful_functions.r"))
 
@@ -21,8 +26,8 @@ stab_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_stab_data.RDS"))
 
 ```{r}
 plot_ss_result3(ss_9s, 1)
-plot_ss_result3(ss_9s, 2)
-plot_ss_result4(ss_9s, 1, 2)
+plot_ss_result3(ss_9s, 8)
+plot_ss_result4(ss_9s, 1, 8)
 ```
 
 
