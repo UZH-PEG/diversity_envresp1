@@ -14,9 +14,13 @@ num_PB_strains <- num_strains
 
 source(here("experiments/0_ss_finding/setup_experiment.R"))
 
+#var_expt <- var_expt[1,]
+
+nrow(var_expt)
+wait_time
+length(parameter$log10a_series)
 
 ## Get SS
-#var_expt <- var_expt[1:8,]
 num_cores = 12
 system.time({
 expt_res <- run_temporal_ssfind_experiment(parameter,
