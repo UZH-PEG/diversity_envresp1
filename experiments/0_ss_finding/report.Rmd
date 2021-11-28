@@ -18,22 +18,153 @@ library(here)
 
 source(here("R/various_useful_functions.r"))
 
+ss_2s <- readRDS(here("experiments/0_ss_finding/data/2_strain_SS_data.RDS"))
+stab_2s <- readRDS(here("experiments/0_ss_finding/data/2_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 2)
+ss_3s <- readRDS(here("experiments/0_ss_finding/data/3_strain_SS_data.RDS"))
+stab_3s <- readRDS(here("experiments/0_ss_finding/data/3_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 3)
+ss_6s <- readRDS(here("experiments/0_ss_finding/data/6_strain_SS_data.RDS"))
+stab_6s <- readRDS(here("experiments/0_ss_finding/data/6_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 6)
 ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data.RDS"))
-stab_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_stab_data.RDS"))
+stab_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 9)
+
+all_stab <- stab_2s %>%
+  bind_rows(stab_3s) %>%
+  bind_rows(stab_6s) %>%
+  bind_rows(stab_9s)
+
 
 ```
 
 
 ```{r}
 plot_ss_result3(ss_9s, 1)
-plot_ss_result3(ss_9s, 8)
-plot_ss_result4(ss_9s, 1, 8)
+plot_ss_result3(ss_9s, 13)
+plot_ss_result4(ss_9s, 1, 13)
+
+plot_ss_result3(ss_3s, 1)
+plot_ss_result3(ss_3s, 13)
+plot_ss_result4(ss_3s, 1, 13)
+
+
+plot_ss_result5(ss_2s, 15,
+                ss_9s, 15)
+plot_ss_result5(ss_3s, 15,
+                ss_9s, 15)
+plot_ss_result5(ss_6s, 15,
+                ss_9s, 15)
+
 ```
+
+
 
 
 ```{r}
 ## Test plot stability
 
+CB_vars <- unique(all_stab$CB_var_gmax_s)
+SB_vars <- unique(all_stab$SB_var_gmax_s)
+
+CB_all_stab <- all_stab %>%
+  filter(SB_var_gmax_s == 0) %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s)
+
+SBPB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0) %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSBPB_all_stab <- all_stab %>%
+  right_join(for_join) %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s)
+
+all_stab_results <- CB_all_stab %>%
+  bind_rows(SBPB_all_stab) %>%
+  #  bind_rows(results3) %>%
+  # bind_rows(results4) %>%
+  bind_rows(CBSBPB_all_stab)
+
+all_stab_results <- all_stab_results %>%
+  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
+
+all_stab_results_small <- select(all_stab_results, -7:-12)
+```
+
+
+```{r}
+all_stab_results %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax, y = hyst_range_log, col=var_treat, shape = as.factor(num_strains))) +
+  geom_point() +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  labs(col = "Variation in\nonly these\nfunctional groups")
+##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
+```
+
+
+```{r}
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax,
+             ymin = hyst_min_log,
+             ymax = hyst_max_log,
+             fill=var_treat)) +
+  geom_ribbon(alpha = 0.5) +
+  facet_grid(num_strains ~ var_treat, scales = "free_y") +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  theme(
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+```
+
+
+
+```{r}
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax,
+             col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log)) +
+  geom_line(aes(y = hyst_max_log)) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  theme(
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  )
+
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+## Test plot stability
 
 CB_vars <- unique(stab_9s$CB_var_gmax_s)
 SB_vars <- unique(stab_9s$SB_var_gmax_s)

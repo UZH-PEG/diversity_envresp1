@@ -7,7 +7,7 @@ rm(list = ls())
 library(here)
 source(here("R/various_useful_functions.r"))
 
-num_strains <- 9
+num_strains <- 6
 num_CB_strains <- num_strains
 num_SB_strains <- num_strains
 num_PB_strains <- num_strains
@@ -16,12 +16,20 @@ source(here("experiments/0_ss_finding/setup_experiment.R"))
 
 #var_expt <- var_expt[1,]
 
+## Estimate time require
 nrow(var_expt)
 wait_time
 length(parameter$log10a_series)
-
-## Get SS
 num_cores = 12
+## constants in following formula come from the excel sheet
+time_estimate <- ( nrow(var_expt) * wait_time * length(parameter$log10a_series) /
+  num_cores * 0.000123965 + 126 )
+time_estimate
+time_estimate / 60 ## minutes
+time_estimate / 60 / 60 ## hours
+time_estimate / 60 / 60 / 24 ## days
+
+
 system.time({
 expt_res <- run_temporal_ssfind_experiment(parameter,
                                            var_expt,

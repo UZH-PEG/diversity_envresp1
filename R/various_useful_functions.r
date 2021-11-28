@@ -835,6 +835,120 @@ plot_ss_result4 <- function(temporal_ss_result,
 }
 
 
+
+
+
+plot_ss_result5 <- function(temporal_ss_result1,
+                            first_one,
+                            temporal_ss_result2,
+                            second_one,
+                            xlims = c(-8, 0)) {
+  
+  species_colours <- c(CB = "#024F17", SB = "#7D1402", PB = "#6E0172")
+  
+  # colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+  # colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+  # colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+  
+  #ss_result1 <- filter(ss_result1, if_all(contains("B_"), ~ (.x > -1)))
+  
+  ss_result1 <- temporal_ss_result1$ssfind_result[[first_one]]
+  ss_result2 <- temporal_ss_result2$ssfind_result[[second_one]]
+  
+  
+  temp1 <- ss_result1 %>%
+    mutate(
+      #direction = ifelse(initial_N_CB == 1, "up", "down"),
+      a = 10^a_O
+    ) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"
+      ),
+      functional_group = ifelse(is.na(functional_group), species, functional_group)
+    ) %>%
+    group_by(a, direction, var_type, functional_group) %>%
+    summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
+    mutate(log10_total_quantity = log10(total_quantity + 1))
+  
+  #ss_result2 <- filter(ss_result2, if_all(contains("B_"), ~ (.x > -1)))
+  
+  temp2 <- ss_result2 %>%
+    mutate(
+      #direction = ifelse(initial_N_CB == 1, "up", "down"),
+      a = 10^a_O
+    ) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"
+      ),
+      functional_group = ifelse(is.na(functional_group), species, functional_group)
+    ) %>%
+    group_by(a, direction, var_type, functional_group) %>%
+    summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
+    mutate(
+      log10_total_quantity = log10(total_quantity + 1),
+      log1 = log10(a)
+    )
+  
+  
+  num_CB_strains <- 1
+  num_SB_strains <- 1
+  num_PB_strains <- 1
+  
+  
+  plot_fg_oi <- function(temp1, temp2, fg_oi) {
+    temp1 %>%
+      dplyr::filter(functional_group == fg_oi) %>%
+      arrange(a, direction) %>%
+      ggplot(aes(x = log10(a), y = log10_total_quantity, group = direction)) +
+      geom_path(col = species_colours[fg_oi]) +
+      ylab("log10(quantity [cells])") +
+      xlab("a") +
+      guides(colour = guide_legend(ncol = 3)) +
+      geom_path(
+        data = dplyr::filter(temp2, functional_group == fg_oi),
+        linetype = "dashed", lwd = 1.5,
+        col = species_colours[fg_oi]
+      )
+  }
+  p_CB <- plot_fg_oi(temp1, temp2, "CB") + xlim(xlims[1], xlims[2])
+  p_SB <- plot_fg_oi(temp1, temp2, "SB") + xlim(xlims[1], xlims[2])
+  p_PB <- plot_fg_oi(temp1, temp2, "PB") + xlim(xlims[1], xlims[2])
+  # p_CB
+  # p_SB
+  # p_PB
+  
+  p_Substrate <- temp1 %>%
+    dplyr::filter(var_type == "Substrate") %>%
+    arrange(functional_group, a, direction) %>%
+    ggplot(aes(
+      x = log10(a), y = log10_total_quantity,
+      col = functional_group, group = paste(direction, functional_group)
+    )) +
+    geom_path() +
+    ylab("log10(quantity [cells])") +
+    xlab("a") +
+    geom_path(
+      data = dplyr::filter(temp2, var_type == "Substrate"),
+      linetype = "dashed", lwd = 1.5
+    ) +
+    xlim(xlims[1], xlims[2])
+  # p4
+  patchwork_graph <- p_CB / p_SB / p_PB / p_Substrate
+  
+  patchwork_graph
+}
+
+
 # 
 # 
 # get_ss_temporal_method <- function(p, var_expt,

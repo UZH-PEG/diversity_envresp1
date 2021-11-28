@@ -87,7 +87,9 @@ SB_h_div <- -0.323  * SBPB_var_multiplier
 PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
 PB_h_div <- -0.323  * SBPB_var_multiplier
 
-num_div_treatment_levels <- 5
+num_div_treatment_levels <- 20
+
+
 
 
 
@@ -109,7 +111,22 @@ var_expt <- create_diversity_factorial(
 )
 
 
-
+## some selection of treatments
+CB_vars <- unique(var_expt$CB_var_gmax_s)
+SB_vars <- unique(var_expt$SB_var_gmax_s)
+CB_var_expt <- var_expt %>%
+  filter(SB_var_gmax_s == 0)
+SBPB_var_expt <- var_expt %>%
+  filter(CB_var_gmax_s == 0)
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSBPB_var_expt <- var_expt %>%
+  right_join(for_join)
+var_expt_new <- CB_var_expt %>%
+  bind_rows(SBPB_var_expt) %>%
+  bind_rows(CBSBPB_var_expt) %>%
+  unique()
+var_expt <- var_expt_new
 
 
 wait_time <- 1e6
