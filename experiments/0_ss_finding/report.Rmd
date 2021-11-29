@@ -36,18 +36,19 @@ all_stab <- stab_2s %>%
   bind_rows(stab_6s) %>%
   bind_rows(stab_9s)
 
+all_stab <- stab_9s
 
 ```
 
 
 ```{r}
 plot_ss_result3(ss_9s, 1)
-plot_ss_result3(ss_9s, 13)
-plot_ss_result4(ss_9s, 1, 13)
+plot_ss_result3(ss_9s, 15)
+plot_ss_result4(ss_9s, 1, 15)
 
 plot_ss_result3(ss_3s, 1)
-plot_ss_result3(ss_3s, 13)
-plot_ss_result4(ss_3s, 1, 13)
+plot_ss_result3(ss_3s, 15)
+plot_ss_result4(ss_3s, 1, 15)
 
 
 plot_ss_result5(ss_2s, 15,
@@ -119,7 +120,8 @@ all_stab_results %>%
              ymax = hyst_max_log,
              fill=var_treat)) +
   geom_ribbon(alpha = 0.5) +
-  facet_grid(num_strains ~ var_treat, scales = "free_y") +
+  #facet_grid(num_strains ~ var_treat, scales = "fixed") +
+  facet_wrap( ~ var_treat, nrow = 3, scales = "fixed") +
   xlab("Amount of trait variation\n[see text for units]") +
   ylab("Oxygen diffusivity\n[log10 uM per hour]") +
   labs(fill = "Variation in\nonly these\nfunctional groups") +
