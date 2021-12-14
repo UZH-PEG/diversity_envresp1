@@ -1,0 +1,326 @@
+---
+title: Supplementary Content
+subtitle: Functional diversity ... Predictions of a model of an oxic-anoxic microbial ecosystem 
+author: "Owen L Petchey, Rainer Krug, Marcel Suleiman, ???others???"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r include = FALSE, echo = FALSE}
+knitr::opts_chunk$set(include = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache = TRUE)
+```
+
+```{r echo = FALSE}
+rm(list = ls())
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("r/various_useful_functions.r"))
+colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+zero <- 0
+unity <- 1
+```
+
+# Introduction
+
+This document contains the Supporting Content for the report *?????????????*.
+
+# Visualising among strain diversity
+
+The method for creating among strain diversity is explained in the main report. Here we show three visualisations, one for nine strains, one for three, and one for two.
+
+In each, the top row of three graphs shows the diversity and tradeoff in each of the three functional groups. The most tolerant strain is always in the darker shade.The lower row of three graphs shows the relationship between realised growth rate as a function of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these lower graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff shown in the upper graph. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate.
+
+```{r  echo = FALSE}
+CB_var_multiplier <- 2
+SBPB_var_multiplier <- 6
+CB_gmax_div <- 0.015789474 * CB_var_multiplier
+CB_h_div <- -0.08 * CB_var_multiplier
+SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
+SB_h_div <- -0.323  * SBPB_var_multiplier
+PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
+PB_h_div <- -0.323  * SBPB_var_multiplier
+num_div_treatment_levels <- 2
+```
+
+## Nine strains
+
+```{r nine-strains, echo = FALSE}
+
+num_CB_strains <- 9
+num_PB_strains <- 9
+num_SB_strains <- 9
+var_expt <- create_diversity_factorial(
+  zero = zero, unity = unity,
+  num_div_treatment_levels = num_div_treatment_levels,
+  CB_gmax_div = CB_gmax_div, CB_h_div = CB_h_div,
+  SB_gmax_div = SB_gmax_div, SB_h_div = SB_h_div,
+  PB_gmax_div = PB_gmax_div, PB_h_div = PB_h_div,
+  default_9strain = new_strain_parameter(
+    n_CB = num_CB_strains,
+    n_SB = num_SB_strains,
+    n_PB = num_PB_strains,
+    values_initial_state =  "bush_ssfig3"
+  )
+)
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+## Three strains
+
+```{r three-strains, echo = FALSE}
+
+num_CB_strains <- 3
+num_PB_strains <- 3
+num_SB_strains <- 3
+var_expt <- create_diversity_factorial(
+  zero = zero, unity = unity,
+  num_div_treatment_levels = num_div_treatment_levels,
+  CB_gmax_div = CB_gmax_div, CB_h_div = CB_h_div,
+  SB_gmax_div = SB_gmax_div, SB_h_div = SB_h_div,
+  PB_gmax_div = PB_gmax_div, PB_h_div = PB_h_div,
+  default_9strain = new_strain_parameter(
+    n_CB = num_CB_strains,
+    n_SB = num_SB_strains,
+    n_PB = num_PB_strains,
+    values_initial_state =  "bush_ssfig3"
+  )
+)
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+## Two strains
+
+```{r two-strains, echo = FALSE}
+
+num_CB_strains <- 2
+num_PB_strains <- 2
+num_SB_strains <- 2
+var_expt <- create_diversity_factorial(
+  zero = zero, unity = unity,
+  num_div_treatment_levels = num_div_treatment_levels,
+  CB_gmax_div = CB_gmax_div, CB_h_div = CB_h_div,
+  SB_gmax_div = SB_gmax_div, SB_h_div = SB_h_div,
+  PB_gmax_div = PB_gmax_div, PB_h_div = PB_h_div,
+  default_9strain = new_strain_parameter(
+    n_CB = num_CB_strains,
+    n_SB = num_SB_strains,
+    n_PB = num_PB_strains,
+    values_initial_state =  "bush_ssfig3"
+  )
+)
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+
+
+# Robustness of stable state finding
+
+We now discuss two approaches for finding how the stable state of the system varies along the gradient of oxygen diffusivity when there exists the possibility of multiple stable states. In the main article we describe and report results of the method that we term the *Temporal method*.
+
+Here we also describe and give results of what we term the *Replication method*. In this, we made a separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
+
+
+As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches. For example, in the temporal method, the oxygen concentration in the anoxic state is lower than the initial oxygen concentration in the replication approach, and **Owen guesses that** the sulfide concentration is higher **check that last statement**.
+
+
+## Replication method, no diversity
+
+In the following graph, the solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state).Stable states found with the replication method. Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
+
+```{r repl_meth1, echo=FALSE}
+repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
+temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
+## To be completed.
+plot_ss_result1(repl_meth,
+                result_index = 1,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+```
+
+## Temporal method, no diversity
+
+Same as for the previous graph.
+
+```{r temp_meth1, echo=FALSE}
+plot_ss_result3(temp_meth, 1)
+```
+
+
+## Both methods overlaid, no diversity
+
+Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
+
+```{r both_meth1, echo=FALSE}
+repl_method_1 <- repl_meth$ss_res[[1]] %>%
+     mutate(time = NA,
+            direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  select(names(temp_meth$ssfind_result[[1]]))
+   
+ss_result1 <- repl_method_1
+ss_result2 <- temp_meth$ssfind_result[[1]]
+
+plot_ss_result6(repl_method_1,
+                temp_meth$ssfind_result[[1]],
+                xlims = c(-8, 0))
+```
+
+
+## Effect of diversity, replication method
+
+The replication method shows the same effects of functional diversity as those revealed by the replication method:
+
+-   Introducing functional diversity in all three functional groups increases the region of bistability relative to when there is no diversity within all functional groups).
+-   Introducing functional diversity in only the cyanobacteria function group delays (with respect to the oxygen diffusivity it occurs at) the switch to the anoxic state as oxygen diffusivity is reduced, but has no effect on the oxygen diffusivity at which the anoxic to oxic transition occurs .
+-   Introducing function diversity in only the sulfur bacteria delays (with respect to the oxygen diffusivity it occurs at) the switch from anoxic to oxic, and advances the switch from oxic to anoxic.
+
+These results are shown in the figure below, which shows results of the replication method.
+
+
+```{r echo = FALSE, eval = TRUE}
+stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/small_stab_data_1e6_x2x6_factorial.RDS"))
+
+all_stab <- stab_data
+
+#all_stab <- stab_9s
+
+CB_vars <- unique(all_stab$CB_var_gmax_s)
+SB_vars <- unique(all_stab$SB_var_gmax_s)
+
+CB_all_stab <- all_stab %>%
+  filter(SB_var_gmax_s == 0) %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s)
+
+SBPB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0) %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSBPB_all_stab <- all_stab %>%
+  right_join(for_join) %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s)
+
+all_stab_results <- CB_all_stab %>%
+  bind_rows(SBPB_all_stab) %>%
+  #  bind_rows(results3) %>%
+  # bind_rows(results4) %>%
+  bind_rows(CBSBPB_all_stab)
+
+all_stab_results <- all_stab_results %>%
+  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
+
+```
+
+
+```{r echo = FALSE, eval = TRUE}
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "SR") %>%
+  ggplot(aes(x = var_gmax)) +
+  #ggplot(aes(x = var_gmax,
+  #           col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log), lwd = 2, alpha = 0.8) +
+  geom_line(aes(y = hyst_max_log), lwd = 2, alpha = 0.8) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  #guides(col = guide_legend(title="Number of strains")) +
+  theme(
+    legend.position="top"
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+#ggsave(here("experiments/1_figures_main_ms/figure_5.pdf"),
+#       width = 5, height = 4)
+
+```
+
+The figure above shows the effect of response trait diversity (y-axis) on the positions of the tipping points (show by dark lines), which determine the extent of the region of bistability in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
+
+
+## Effect of simulation duration
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("r/various_useful_functions.r"))
+colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+zero <- 0
+unity <- 1
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.028254848) < 0.0001,
+         abs(SB_var_gmax_s - 0.084764545) < 0.0001)
+parameter <- ss_result$parameter[[1]]
+parameter$strain_parameter <- ss_result$pars[[1]]
+
+wait_time <- 1e6
+#p$log10a_series <- seq(-2.5, -2, 0.025)
+parameter$log10a_series <- seq(-8, 0, length = 300)
+parameter$sim_duration <- wait_time * length(parameter$log10a_series)
+parameter$sim_sample_interval <- wait_time
+total_initial_abundances <- 10^5
+parameter <- set_temporal_ssfind_initial_state(parameter, total_initial_abundances, 
+                total_initial_abundances, total_initial_abundances)
+parameter
+check_results <- run_temporal_ssfind_method(parameter)
+
+check_results_1e6 <- readRDS(here("experiments/2_supplement/data/check1.RDS"))
+junk <- list()
+junk$ssfind_result[[1]] <- check_results_1e6
+plot_ss_result3(junk, 1)
+
+
+
+```
+
+
+# Finding the separatrix
+
+In the original publication ([Bush et al 2017](<https://www.nature.com/articles/s41467-017-00912-x>)) Figure 3a shows a separatrix in the cyanobacteria abundance - oxygen diffusivity dimensions of the system. If the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance increases, and the system goes to the oxic stable state. Conversely, if the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance decreases, and the system goes to the anoxic stable state.
+
+It is critical to note, however, that the position of the separatrix depends on both the parameters of the system, and the initial conditions of variables other than cyanobacterial abundance. If the system were started with higher initial concentration, then the position of the separatrix would change (as would the values of oxygen diffusivity at which the system tipped from anoxic to oxic, and from oxic to anoxic).
+
+This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
+
+We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumption. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
+
+
+
+# Bibliography

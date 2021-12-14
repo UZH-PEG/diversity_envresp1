@@ -1083,3 +1083,247 @@ plot_ss_result5 <- function(temporal_ss_result1,
 # 
 
 
+
+plot_ss_result6 <- function(ss_result1,
+                            ss_result2,
+                            xlims = c(-8, 0)) {
+  
+  species_colours <- c(CB = "#024F17", SB = "#7D1402", PB = "#6E0172")
+  
+  # colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+  # colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+  # colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+  
+  #ss_result1 <- filter(ss_result1, if_all(contains("B_"), ~ (.x > -1)))
+  
+  #ss_result1 <- temporal_ss_result1$ssfind_result[[first_one]]
+  #ss_result2 <- temporal_ss_result2$ssfind_result[[second_one]]
+  
+  
+  temp1 <- ss_result1 %>%
+    mutate(
+      #direction = ifelse(initial_N_CB == 1, "up", "down"),
+      a = a_O
+    ) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"
+      ),
+      functional_group = ifelse(is.na(functional_group), species, functional_group)
+    ) %>%
+    group_by(a, direction, var_type, functional_group) %>%
+    summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
+    mutate(log10_total_quantity = log10(total_quantity + 1))
+  
+  #ss_result2 <- filter(ss_result2, if_all(contains("B_"), ~ (.x > -1)))
+  
+  temp2 <- ss_result2 %>%
+    mutate(
+      #direction = ifelse(initial_N_CB == 1, "up", "down"),
+      a = 10^a_O
+    ) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"
+      ),
+      functional_group = ifelse(is.na(functional_group), species, functional_group)
+    ) %>%
+    group_by(a, direction, var_type, functional_group) %>%
+    summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
+    mutate(
+      log10_total_quantity = log10(total_quantity + 1),
+      log1 = log10(a)
+    )
+  
+  
+  num_CB_strains <- 1
+  num_SB_strains <- 1
+  num_PB_strains <- 1
+  
+  
+  plot_fg_oi <- function(temp1, temp2, fg_oi) {
+    temp1 %>%
+      dplyr::filter(functional_group == fg_oi) %>%
+      arrange(a, direction) %>%
+      ggplot(aes(x = log10(a), y = log10_total_quantity, group = direction)) +
+      geom_path(col = species_colours[fg_oi]) +
+      ylab("log10(quantity [cells])") +
+      xlab("a") +
+      guides(colour = guide_legend(ncol = 3)) +
+      geom_path(
+        data = dplyr::filter(temp2, functional_group == fg_oi),
+        linetype = "dashed", lwd = 1.5,
+        col = species_colours[fg_oi]
+      )
+  }
+  p_CB <- plot_fg_oi(temp1, temp2, "CB") + xlim(xlims[1], xlims[2])
+  p_SB <- plot_fg_oi(temp1, temp2, "SB") + xlim(xlims[1], xlims[2])
+  p_PB <- plot_fg_oi(temp1, temp2, "PB") + xlim(xlims[1], xlims[2])
+  # p_CB
+  # p_SB
+  # p_PB
+  
+  p_Substrate <- temp1 %>%
+    dplyr::filter(var_type == "Substrate") %>%
+    arrange(functional_group, a, direction) %>%
+    ggplot(aes(
+      x = log10(a), y = log10_total_quantity,
+      col = functional_group, group = paste(direction, functional_group)
+    )) +
+    geom_path() +
+    ylab("log10(quantity [cells])") +
+    xlab("a") +
+    geom_path(
+      data = dplyr::filter(temp2, var_type == "Substrate"),
+      linetype = "dashed", lwd = 1.5
+    ) +
+    xlim(xlims[1], xlims[2])
+  # p4
+  patchwork_graph <- p_CB / p_SB / p_PB / p_Substrate
+  
+  patchwork_graph
+}
+
+
+# 
+# 
+# get_ss_temporal_method <- function(p, var_expt,
+#                                    this_diversity_treatment, wait_time) {
+#   #p <- parameter
+#   p$strain_parameter <- var_expt$pars[[this_diversity_treatment]]
+#   divs <- var_expt[this_diversity_treatment,1:6]
+#   
+#   p$minimum_abundances["CB"] <- 1
+#   p$minimum_abundances["SB"] <- 1
+#   p$minimum_abundances["PB"] <- 1
+#   #wait_time <- 10000
+#   p$event_interval <- 100
+#   
+#   up_l_f_f <- approxfun(x = wait_time * c(0:length(p$log10a_series)), 
+#                         y = (c(p$log10a_series, p$log10a_series[length(p$log10a_series)])),
+#                         method = "constant", rule = 1)
+#   
+#   down_l_f_f <- approxfun(x = wait_time * c(0:length(p$log10a_series)), 
+#                           y = c(rev(p$log10a_series), p$log10a_series[1]),
+#                           method = "constant", rule = 1)
+#   
+#   #x <- seq(1, wait_time * length(p$log10a_series), 100)
+#   #plot(x, up_l_f_f(x), type = "l")
+#   #plot(x, down_l_f_f(x), type = "l")
+#   
+#   
+#   #p$strain_parameter$initial_state
+#   x <- p$ss_expt[1,]
+#   CBs <- unlist(rep(x["N_CB"] /
+#                       length(grep("CB", names(p$strain_parameter$initial_state))), 
+#                     length(grep("CB", names(p$strain_parameter$initial_state)))))
+#   names(CBs) <- NULL
+#   p$strain_parameter$initial_state[grep("CB", names(p$strain_parameter$initial_state))] <- CBs
+#   
+#   
+#   PBs <- unlist(rep(x["N_PB"]/length(grep("PB", names(p$strain_parameter$initial_state))), 
+#                     length(grep("PB", names(p$strain_parameter$initial_state)))))
+#   names(PBs) <- NULL
+#   p$strain_parameter$initial_state[grep("PB", names(p$strain_parameter$initial_state))] <- PBs
+#   
+#   SBs <- unlist(rep(x["N_SB"]/length(grep("SB", names(p$strain_parameter$initial_state))), 
+#                     length(grep("SB", names(p$strain_parameter$initial_state)))))
+#   names(SBs) <- NULL
+#   p$strain_parameter$initial_state[grep("SB", names(p$strain_parameter$initial_state))] <- SBs
+#   
+#   p$sim_sample_interval <- wait_time
+#   p$sim_duration <- wait_time * length(p$log10a_series)
+#   
+#   times <- c(0,
+#              seq(p$sim_sample_interval - 1,
+#                  p$sim_duration,
+#                  by = p$sim_sample_interval))
+#   
+#   event_times <- c(0, seq(p$event_interval-1,
+#                           max(times),
+#                           by = p$event_interval))
+#   
+#   
+#   up_res <- as.data.frame(
+#     deSolve::ode(
+#       y = p$strain_parameter$initial_state,
+#       times = times,
+#       func = p$dynamic_model,
+#       parms = p$strain_parameter,
+#       method = p$solver_method,
+#       events = list(
+#         func = p$event_definition,
+#         time = event_times
+#       ),
+#       log10a_forcing_func = up_l_f_f,
+#       noise_sigma = p$noise_sigma,
+#       minimum_abundances = p$minimum_abundances
+#     )
+#   )
+#   up_res <- up_res %>%
+#     filter(time %in% times) %>%
+#     slice(-1) %>%
+#     mutate(direction = "up")
+#   
+#   #plot(up_res$time, log10(up_res$CB_1), type = "l")
+#   #plot(up_res$a, log10(up_res$CB_1), type = "l")
+#   
+#   
+#   
+#   x <- p$ss_expt[2,]
+#   CBs <- unlist(rep(x["N_CB"] /
+#                       length(grep("CB", names(p$strain_parameter$initial_state))), 
+#                     length(grep("CB", names(p$strain_parameter$initial_state)))))
+#   names(CBs) <- NULL
+#   p$strain_parameter$initial_state[grep("CB", names(p$strain_parameter$initial_state))] <- CBs
+#   
+#   
+#   down_res <- as.data.frame(
+#     deSolve::ode(
+#       y = p$strain_parameter$initial_state,
+#       times = times,
+#       func = p$dynamic_model,
+#       parms = p$strain_parameter,
+#       method = p$solver_method,
+#       events = list(
+#         func = p$event_definition,
+#         time = event_times
+#       ),
+#       log10a_forcing_func = down_l_f_f,
+#       noise_sigma = p$noise_sigma,
+#       minimum_abundances = p$minimum_abundances
+#     )
+#   )
+#   down_res <- down_res %>%
+#     filter(time %in% times) %>%
+#     slice(-1) %>%
+#     mutate(direction = "down")
+#   
+#   #plot(down_res$time, log10(down_res$CB_1), type = "l")
+#   #plot(down_res$a, log10(down_res$CB_1), type = "l")
+#   
+#   all_res <- rbind(up_res, down_res)
+#   ss_result <- all_res
+#   
+#   #result <- temp_result %>%
+#   #  tidyr::unnest(cols = 1) %>%
+#   #  tibble::tibble() %>%
+#   #  dplyr::mutate(initial_N_CB = parameter$ss_expt$N_CB,
+#   #                initial_N_PB = parameter$ss_expt$N_PB,
+#   #                initial_N_SB = parameter$ss_expt$N_SB,
+#   #                a_O = parameter$ss_expt$a_O)
+#   temporal_ss_result <- list(parameter=p, divs = divs, all_res = all_res)
+#   return(temporal_ss_result)
+# }
+# 
+# 
+
+

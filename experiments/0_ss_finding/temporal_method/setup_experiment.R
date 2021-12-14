@@ -131,7 +131,7 @@ var_expt <- var_expt_new
 
 wait_time <- 1e6
 #p$log10a_series <- seq(-2.5, -2, 0.025)
-parameter$log10a_series <- seq(-8, 0, length = 100)
+parameter$log10a_series <- seq(-8, 0, length = 300)
 parameter$minimum_abundances["CB"] <- 1
 parameter$minimum_abundances["SB"] <- 1
 parameter$minimum_abundances["PB"] <- 1

@@ -1,0 +1,760 @@
+---
+title: Supplementary Content
+subtitle: Functional diversity ... Predictions of a model of an oxic-anoxic microbial ecosystem 
+authors:
+  - name: Owen L Petchey
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: owen.petchey@ieu.uzh.ch
+  - name: Rainer Krug
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: rainer.krug@ieu.uzh.ch
+  - name: Any Others
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: any.others@ieu.uzh.ch
+  - name: Marcel Suleiman
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: marcel.suleiman@ieu.uzh.ch
+
+
+bibliography: references.bib
+biblio-style: unsrt
+output: 
+  rticles::arxiv_article:
+    keep_tex: true
+---
+
+```{r include = FALSE, echo = FALSE}
+knitr::opts_chunk$set(include = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache = FALSE)
+```
+
+```{r echo = FALSE}
+rm(list = ls())
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("r/various_useful_functions.r"))
+colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+zero <- 0
+unity <- 1
+```
+
+# Introduction
+
+...
+
+# Visualising among strain diversity
+
+The method for creating among strain diversity is explained in the main report. Here we show three visualisations, one for nine strains, one for three, and one for two.
+
+```{r  echo = FALSE}
+CB_var_multiplier <- 2
+SBPB_var_multiplier <- 6
+CB_gmax_div <- 0.015789474 * CB_var_multiplier
+CB_h_div <- -0.08 * CB_var_multiplier
+SB_gmax_div <- 0.015789474 * SBPB_var_multiplier
+SB_h_div <- -0.323  * SBPB_var_multiplier
+PB_gmax_div <- 0.015789474  * SBPB_var_multiplier
+PB_h_div <- -0.323  * SBPB_var_multiplier
+num_div_treatment_levels <- 2
+```
+
+## Nine strains
+
+```{r nine-strains, echo = FALSE}
+
+num_CB_strains <- 9
+num_PB_strains <- 9
+num_SB_strains <- 9
+var_expt <- create_diversity_factorial(
+  zero = zero, unity = unity,
+  num_div_treatment_levels = num_div_treatment_levels,
+  CB_gmax_div = CB_gmax_div, CB_h_div = CB_h_div,
+  SB_gmax_div = SB_gmax_div, SB_h_div = SB_h_div,
+  PB_gmax_div = PB_gmax_div, PB_h_div = PB_h_div,
+  default_9strain = new_strain_parameter(
+    n_CB = num_CB_strains,
+    n_SB = num_SB_strains,
+    n_PB = num_PB_strains,
+    values_initial_state =  "bush_ssfig3"
+  )
+)
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+## Three strains
+
+```{r three-strains, echo = FALSE}
+
+num_CB_strains <- 3
+num_PB_strains <- 3
+num_SB_strains <- 3
+var_expt <- create_diversity_factorial(
+  zero = zero, unity = unity,
+  num_div_treatment_levels = num_div_treatment_levels,
+  CB_gmax_div = CB_gmax_div, CB_h_div = CB_h_div,
+  SB_gmax_div = SB_gmax_div, SB_h_div = SB_h_div,
+  PB_gmax_div = PB_gmax_div, PB_h_div = PB_h_div,
+  default_9strain = new_strain_parameter(
+    n_CB = num_CB_strains,
+    n_SB = num_SB_strains,
+    n_PB = num_PB_strains,
+    values_initial_state =  "bush_ssfig3"
+  )
+)
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+## Two strains
+
+```{r two-strains, echo = FALSE}
+
+num_CB_strains <- 2
+num_PB_strains <- 2
+num_SB_strains <- 2
+var_expt <- create_diversity_factorial(
+  zero = zero, unity = unity,
+  num_div_treatment_levels = num_div_treatment_levels,
+  CB_gmax_div = CB_gmax_div, CB_h_div = CB_h_div,
+  SB_gmax_div = SB_gmax_div, SB_h_div = SB_h_div,
+  PB_gmax_div = PB_gmax_div, PB_h_div = PB_h_div,
+  default_9strain = new_strain_parameter(
+    n_CB = num_CB_strains,
+    n_SB = num_SB_strains,
+    n_PB = num_PB_strains,
+    values_initial_state =  "bush_ssfig3"
+  )
+)
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+
+
+# Effect of number of strains
+
+May not need this section, as number of strains effect is shown in figure of main ms.
+
+```{r eval = FALSE, echo = FALSE}
+
+## Figure 2b-f ----
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data_1e3.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0) < 0.0001,)
+
+
+
+#temp <- ss_result$ssfind_result[[1]] %>%
+  
+#ss_result <- ss_9s$ssfind_result[[25]]
+
+temp <- ss_result$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_5") ~ "CB",
+      str_detect(species, "SB_5") ~ "SB",
+      str_detect(species, "PB_5") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+
+num_strains <- temp %>%
+  group_by(functional_group) %>%
+  summarise(num = length(unique(species))) %>%
+  na.omit()
+
+num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+
+line_width <- 2
+
+p1 <- temp %>%
+  dplyr::filter(functional_group == "CB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(b) Cyanobacteria")
+p1# p1
+
+p2 <- temp %>%
+  dplyr::filter(functional_group == "SB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(c) Sulfate reducing bacteria")
+
+p3 <- temp %>%
+  dplyr::filter(functional_group == "PB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(d) Phototrophic sulfur bacteria")
+
+p4 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(e) Oxygen concentration")
+
+p5 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "SR") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width, col = 6) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(f) Sulfide concentration")
+
+patchwork <- p1 / p2 / p3 / p4 / p5
+patchwork
+#ggsave(here("experiments/1_figures_main_ms/figure_2b-f.pdf"))
+
+
+
+## Figure 3 ----
+## Stable state with diversity in all functional groups.
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data_1e3.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.028254848) < 0.0001,
+         abs(SB_var_gmax_s - 0.084764545) < 0.0001)
+
+temp <- ss_result$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+
+num_strains <- temp %>%
+  group_by(functional_group) %>%
+  summarise(num = length(unique(species))) %>%
+  na.omit()
+
+num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+
+line_width <- 2
+
+p1 <- temp %>%
+  dplyr::filter(functional_group == "CB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(b) Cyanobacteria")
+p1# p1
+
+p2 <- temp %>%
+  dplyr::filter(functional_group == "SB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(c) Sulfate reducing bacteria")
+
+p3 <- temp %>%
+  dplyr::filter(functional_group == "PB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(d) Phototrophic sulfur bacteria")
+
+p4 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(e) Oxygen concentration")
+
+p5 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "SR") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width, col = 6) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(f) Sulfide concentration")
+
+patchwork <- p1 / p2 / p3 / p4 / p5
+patchwork
+#ggsave(here("experiments/1_figures_main_ms/figure_3.pdf"))
+
+
+
+
+
+## Figure 4 ----
+## Shows effect of no diversity versus diversity in all functional groups.
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data_1e3.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+ss_result_none <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
+         abs(SB_var_gmax_s - 0.0) < 0.0001)
+ss_result_CB <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
+         abs(SB_var_gmax_s - 0.0) < 0.0001)
+ss_result_SBPB <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
+         abs(SB_var_gmax_s - 0.044875347) < 0.0001)
+ss_result_both <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
+         abs(SB_var_gmax_s - 0.044875347) < 0.0001)
+
+
+
+temp_none <- ss_result_none$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+
+temp_CB <- ss_result_CB$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+temp_SBPB <- ss_result_SBPB$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+temp_both <- ss_result_both$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+
+line_width <- 2.5
+
+## a
+p1 <- temp_none %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  geom_path(data = filter(temp_CB, var_type == "Substrate", species == "O"),
+            col = "black", lwd = line_width - 1.5) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(a) No diversity versus diversity in only cyanobacteria") +
+  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)
+p2 <- temp_none %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  geom_path(data = filter(temp_SBPB, var_type == "Substrate", species == "O"),
+            col = "black", lwd = line_width - 1.5) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(b) No diversity versus diversity in only sulfur bacteria") +
+  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)
+p3 <- temp_none %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  geom_path(data = filter(temp_both, var_type == "Substrate", species == "O"),
+            col = "black", lwd = line_width - 1.5) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(c) No diversity versus diversity all functional groups") +
+  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)
+
+p1 / p2 / p3
+
+#ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
+#       width = 6, height = 5)
+
+
+## Figure 5 ----
+## Region of bistability by diversity and number of strains.
+
+#ss_2s <- readRDS(here("experiments/0_ss_finding/data/2_strain_SS_data.RDS"))
+#stab_2s <- readRDS(here("experiments/0_ss_finding/data/2_strain_stab_data.RDS")) %>%
+#  mutate(num_strains = 2)
+ss_3s <- readRDS(here("experiments/0_ss_finding/data/3_strain_SS_data_1e3.RDS"))
+stab_3s <- readRDS(here("experiments/0_ss_finding/data/3_strain_stab_data_1e3.RDS")) %>%
+  mutate(num_strains = 3)
+#ss_6s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/6_strain_SS_data.RDS"))
+#stab_6s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/6_strain_stab_data.RDS")) %>%
+#  mutate(num_strains = 6)
+ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data_1e3.RDS"))
+stab_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_stab_data_1e3.RDS")) %>%
+  mutate(num_strains = 9)
+
+
+
+all_stab <- #stab_2s %>%
+  bind_rows(stab_3s) %>%
+  #bind_rows(stab_6s) %>%
+  bind_rows(stab_9s)
+
+#all_stab <- stab_9s
+
+CB_vars <- unique(all_stab$CB_var_gmax_s)
+SB_vars <- unique(all_stab$SB_var_gmax_s)
+
+CB_all_stab <- all_stab %>%
+  filter(SB_var_gmax_s == 0) %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s)
+
+SBPB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0) %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSBPB_all_stab <- all_stab %>%
+  right_join(for_join) %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s)
+
+all_stab_results <- CB_all_stab %>%
+  bind_rows(SBPB_all_stab) %>%
+  #  bind_rows(results3) %>%
+  # bind_rows(results4) %>%
+  bind_rows(CBSBPB_all_stab)
+
+all_stab_results <- all_stab_results %>%
+  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
+
+all_stab_results_small <- select(all_stab_results, -7:-12)
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax,
+             col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log), lwd = 1.5) +
+  geom_line(aes(y = hyst_max_log), lwd = 1.5) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  guides(col = guide_legend(title="Number of strains")) +
+  theme(
+    legend.position="top"
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+#ggsave(here("experiments/1_figures_main_ms/figure_5.pdf"),
+#       width = 5, height = 4)
+
+
+
+
+
+temp <- all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O",
+         var_treat == "SB-PB",
+         num_strains == 9) %>%
+  ggplot(aes(x = var_gmax,
+             col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log)) +
+  geom_line(aes(y = hyst_max_log)) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  guides(col = guide_legend(title="Number of strains")) +
+  theme(
+    legend.position="top"
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+## 
+## 
+```
+
+
+
+# Robustness of stable state finding
+
+We now discuss two approaches for finding how the stable state of the system varies along the gradient of oxygen diffusivity when there exists the possibility of multiple stable states. In the main article we report results of the method also described there. Briefly here, we made a separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We hereafter term this "the replication method", since it is effectively achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
+
+Here we report the results of a second method. We will show some quantitative differences in results compared to the other method, but also show the results concerning diversity effects are qualitatively the same as obtained with the first method.
+
+The second method involves two simulations for a particular system configuration (parameter set). In one simulation the oxygen diffusivity is *increased* in a step-wise fashion. In the other it is *decreased* in a step-wise fashion. That is, oxygen diffusivity is held at a constant level for long enough for steady state to be reach, that state is recorded, and then a slightly higher (or lower) oxygen diffusivity value is set. Hence, at that time point, the system is effectively started with initial conditions that are the state of the system in the previous time step. We hereafter term this "the temporal method".
+
+The temporal method results in a larger region of bistability than the replication method (Figure \@ref(fig:tempmeth1)). That is, a greater extent of environmental change is required to switch the system to the other state (i.e. the region of bistability is greater). This occurs both during increasing and decreasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches. For example, in the temporal method, the oxygen concentration in the anoxic state is lower than the initial oxygen concentration in the replication approach, and **Owen guesses that** the sulfide concentration is higher **check that last statement**.
+
+
+## Replication method
+
+```{r repl_meth1, echo=FALSE}
+repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
+temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
+## To be completed.
+plot_ss_result1(repl_meth,
+                result_index = 1,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+```
+
+## Temporal method
+
+```{r temp_meth1, echo=FALSE}
+plot_ss_result3(temp_meth, 1)
+```
+
+
+## Both methods overlaid
+
+```{r both_meth1, echo=FALSE}
+repl_method_1 <- repl_meth$ss_res[[1]] %>%
+     mutate(time = NA,
+            direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  select(names(temp_meth$ssfind_result[[1]]))
+   
+ss_result1 <- repl_method_1
+ss_result2 <- temp_meth$ssfind_result[[1]]
+
+plot_ss_result6(repl_method_1,
+                temp_meth$ssfind_result[[1]],
+                xlims = c(-8, 0))
+```
+
+
+## Effect of diversity, replication method
+
+The replication method shows the same effects of functional diversity as those revealed by the replication method:
+
+-   Introducing functional diversity in all three functional groups increases the region of bistability relative to when there is no diversity within all functional groups)..
+-   Introducing functional diversity in only the cyanobacteria function group delays (with respect to the oxygen diffusivity it occurs at) the switch to the anoxic state as oxygen diffusivity is reduced, but has no effect on the oxygen diffusivity at which the anoxic to oxic transition occurs .
+-   Introducing function diversity in only the sulfur bacteria delays (with respect to the oxygen diffusivity it occurs at) the switch from anoxic to oxic, and advances the switch from oxic to anoxic (Figure \@ref(fig:tempmeth4).
+
+
+```{r echo = FALSE}
+stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/stab_data_1e6_x2x6_factorial.RDS"))
+
+all_stab <- stab_data
+
+#all_stab <- stab_9s
+
+CB_vars <- unique(all_stab$CB_var_gmax_s)
+SB_vars <- unique(all_stab$SB_var_gmax_s)
+
+CB_all_stab <- all_stab %>%
+  filter(SB_var_gmax_s == 0) %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s)
+
+SBPB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0) %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSBPB_all_stab <- all_stab %>%
+  right_join(for_join) %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s)
+
+all_stab_results <- CB_all_stab %>%
+  bind_rows(SBPB_all_stab) %>%
+  #  bind_rows(results3) %>%
+  # bind_rows(results4) %>%
+  bind_rows(CBSBPB_all_stab)
+
+all_stab_results <- all_stab_results %>%
+  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
+
+all_stab_results_small <- select(all_stab_results, -7:-12)
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "SR") %>%
+  ggplot(aes(x = var_gmax)) +
+  #ggplot(aes(x = var_gmax,
+  #           col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log), lwd = 3, alpha = 0.8) +
+  geom_line(aes(y = hyst_max_log), lwd = 3, alpha = 0.8) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  #guides(col = guide_legend(title="Number of strains")) +
+  theme(
+    legend.position="top"
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+#ggsave(here("experiments/1_figures_main_ms/figure_5.pdf"),
+#       width = 5, height = 4)
+
+```
+
+
+
+# Finding the separatrix
+
+In the original publication ([Bush et al 2017])(<https://www.nature.com/articles/s41467-017-00912-x>) Figure 3a shows a separatrix in the cyanobacteria abundance - oxygen diffusivity dimensions of the system. If the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance increases, and the system goes to the oxic stable state. Conversely, if the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance decreases, and the system goes to the anoxic stable state.
+
+It is critical to note, however, that the position of the separatrix depends on both the parameters of the system, and the initial conditions of variables other than cyanobacterial abundance. If the system were started with higher initial concentration, then the position of the separatrix would change (as would the values of oxygen diffusivity at which the system tipped from anoxic to oxic, and from oxic to anoxic).
+
+This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
+
+We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumption. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
+
+
+
+# Bibliography

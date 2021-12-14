@@ -3,7 +3,6 @@
 ## 
 
 ## Prelims ----
-
 library(microxanox)
 library(tidyverse)
 library(patchwork)
@@ -23,7 +22,7 @@ source(here("R/various_useful_functions.r"))
 
 ## Figure 2b-f ----
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%
@@ -132,7 +131,7 @@ ggsave(here("experiments/1_figures_main_ms/figure_2b-f.pdf"))
 ## Figure 3 ----
 ## Stable state with diversity in all functional groups.
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%
@@ -179,7 +178,7 @@ p1 <- temp %>%
   guides(colour = guide_legend(ncol = 3)) +
   theme(legend.position="none") +
   ggtitle("(b) Cyanobacteria")
-p1# p1
+#p1# p1
 
 p2 <- temp %>%
   dplyr::filter(functional_group == "SB")  %>%
@@ -235,7 +234,7 @@ ggsave(here("experiments/1_figures_main_ms/figure_3.pdf"))
 ## Figure 4 ----
 ## Shows effect of no diversity versus diversity in all functional groups.
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result_none <- ss_9s %>%
@@ -368,22 +367,49 @@ ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
 ## Figure 5 ----
 ## Region of bistability by diversity and number of strains.
 
-ss_2s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/2_strain_SS_data.RDS"))
-stab_2s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/2_strain_stab_data.RDS")) %>%
+ss_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data.RDS"))
+stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 2) %>%
+  filter(SB_var_gmax_s < 0.06)
+ss_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_sub1.RDS"))
+stab_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 2)
-ss_3s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/3_strain_SS_data.RDS"))
-stab_3s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/3_strain_stab_data.RDS")) %>%
+
+
+ss_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data.RDS"))
+stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 3) %>%
+  filter(SB_var_gmax_s < 0.06)
+ss_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_sub1.RDS"))
+stab_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 3)
-ss_6s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/6_strain_SS_data.RDS"))
-stab_6s <- readRDS(here("experiments/0_ss_finding/data/5-level factorial/6_strain_stab_data.RDS")) %>%
+
+
+
+
+ss_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data.RDS"))
+stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 6) %>%
+  filter(SB_var_gmax_s < 0.06)
+ss_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_sub1.RDS"))
+stab_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 6)
-ss_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_SS_data.RDS"))
-stab_9s <- readRDS(here("experiments/0_ss_finding/data/9_strain_stab_data.RDS")) %>%
+
+
+
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
+stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data.RDS")) %>%
   mutate(num_strains = 9)
 
+
+
 all_stab <- stab_2s %>%
+  bind_rows(stab_2s_sub1) %>%
   bind_rows(stab_3s) %>%
+  bind_rows(stab_3s_sub1) %>%
   bind_rows(stab_6s) %>%
+  bind_rows(stab_6s_sub1) %>%
   bind_rows(stab_9s)
 
 #all_stab <- stab_9s
@@ -421,7 +447,36 @@ all_stab_results_small <- select(all_stab_results, -7:-12)
 
 all_stab_results %>%
   #filter(var_treat == "CB") %>%
-  filter(Species == "O") %>%
+  filter(Species == "SR") %>%
+  ggplot(aes(x = var_gmax,
+             col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha = 0.3) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha = 0.3) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  guides(col = guide_legend(title="Number of strains")) +
+  theme(
+    legend.position="top"
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+ggsave(here("experiments/1_figures_main_ms/figure_5.pdf"),
+       width = 6, height = 5)
+
+
+
+
+
+temp <- all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O",
+         var_treat == "SB-PB",
+         num_strains == 9) %>%
   ggplot(aes(x = var_gmax,
              col = as.factor(num_strains))) +
   geom_line(aes(y = hyst_min_log)) +
@@ -438,10 +493,6 @@ all_stab_results %>%
     #strip.text.x = element_blank()
   ) +
   geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
-
-ggsave(here("experiments/1_figures_main_ms/figure_5.pdf"),
-       width = 5, height = 4)
-
 
 ## 
 ## 
