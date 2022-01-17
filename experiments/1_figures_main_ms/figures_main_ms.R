@@ -369,8 +369,7 @@ ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
 
 ss_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data.RDS"))
 stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data.RDS")) %>%
-  mutate(num_strains = 2) %>%
-  filter(SB_var_gmax_s < 0.06)
+  mutate(num_strains = 2)
 ss_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_sub1.RDS"))
 stab_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 2)
@@ -378,8 +377,7 @@ stab_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_st
 
 ss_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data.RDS"))
 stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data.RDS")) %>%
-  mutate(num_strains = 3) %>%
-  filter(SB_var_gmax_s < 0.06)
+  mutate(num_strains = 3) 
 ss_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_sub1.RDS"))
 stab_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 3)
@@ -389,17 +387,17 @@ stab_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_st
 
 ss_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data.RDS"))
 stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data.RDS")) %>%
-  mutate(num_strains = 6) %>%
-  filter(SB_var_gmax_s < 0.06)
+  mutate(num_strains = 6) 
 ss_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_sub1.RDS"))
 stab_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 6)
 
 
-
-
 ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data.RDS"))
 stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data.RDS")) %>%
+  mutate(num_strains = 9) 
+ss_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_sub1.RDS"))
+stab_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_sub1.RDS")) %>%
   mutate(num_strains = 9)
 
 
@@ -410,7 +408,8 @@ all_stab <- stab_2s %>%
   bind_rows(stab_3s_sub1) %>%
   bind_rows(stab_6s) %>%
   bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s)
+  bind_rows(stab_9s) %>%
+  bind_rows(stab_9s_sub1)
 
 #all_stab <- stab_9s
 

@@ -1,0 +1,373 @@
+---
+title: Evolution, functional diversity, regime shifts, hysteresis, and nonlinearity; ecosystem responses to environmental change.
+subtitle: Predictions of a model of an oxic-anoxic microbial ecosystem 
+authors:
+  - name: Owen L Petchey
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: owen.petchey@ieu.uzh.ch
+  - name: Rainer Krug
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: rainer.krug@ieu.uzh.ch
+  - name: Any Others
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: any.others@ieu.uzh.ch
+  - name: Marcel Suleiman
+    department: Department of Evolutionary Biology and Environmental Studies
+    affiliation: University of Zurich
+    location: Zurich 8057, Switzerland
+    email: marcel.suleiman@ieu.uzh.ch
+
+abstract: |
+  To be completed
+  
+keywords:
+  - Biodiversity
+  - Evolution
+  - Hysteresis
+  - Alternate stable states
+  - Environmental change
+  - Regime shift
+  - Threshold
+  - Ecosystem
+  - Cyanobacteria
+  - Sulfur bacteria
+bibliography: references.bib
+biblio-style: unsrt
+output: 
+  rticles::arxiv_article:
+    keep_tex: true
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(include = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("experiments/r functions/various_useful_functions.r"))
+```
+
+# Introduction
+
+This report concerns how biodiversity influences the strength and nature of ecosystem responses to environmental change (figure 1; panel(a) three ovals, environment oval with arrow to ecosystem property oval, with biodiversity oval pointing the arrow between environment and ecosystem property; panel (b) shows linear response with different gradients, large being with low diversity; panel (c) shows a linear and a non-linear response starting and ending at the same place; panel (d) shows a hysteretic response, with greater or less range of hysteresis). Strong responses of ecosystems to environmental change imply high sensitivity and lack of resistance to environmental change, and higher temporal variability in the face of varying environmental conditions. Greater non-linearity in ecosystem responses increases the potential for surprises, such as when an ecosystem that was resistant to an environmental change becomes unexpectedly sensitive to further change. The presence and extent of hysteresis in ecosystem responses to environmental driver gradients concerns how readily are ecosystem responses reversed when environmental change is reversed.
+
+In this context, a directly relevant aspect of biodiversity is variation in functional traits, i.e. the traits that determine organismal responses to environmental conditions and that determine the effects of organisms on their environment (citation). Variation in functional traits is often termed "functional diversity". There is a considerable amount of theory predicting, and evidence supporting, that greater functional diversity leads to lower temporal variability in ecosystem states variables (such as total biomass) (citations) (Leary, Pennekamp). The mechanism by which this occurs is that greater functional response diversity causes a weaker relationship between an environmental driver gradient and the ecosystem state (figure 1a/b), due to the functional turnover along the environmental driver gradient that results from variation in organisms' responses to the environmental driver gradient (citation).
+
+There is less theory about effects of functional diversity on the linearity (figure 1c) and the hysteresis (figure 1d) of ecosystem responses to environmental change. @dakos2019b, in their article *Ecosystem tipping points in an evolving world* asked how changes in functional trait distributions (including evolutionary changes) affect the occurrence of tipping points. They explain that:
+
+-   Greater functional response diversity may decrease the likelihood of a catastrophic ecosystem response (Figure 2a in @dakos2019b). Here, we interpret this prediction to be that greater functional response diversity decreases the non-linearity of ecosystem response to environmental driver change, including the extreme non-linearity that can occur when an ecosystem "flips" from one state to another one.
+
+-   Greater functional trait diversity can make a tipping point occur only with greater change in an environmental driver (Figure 2a in @dakos2019b). I.e. functional trait diversity can increase resilience--the extent of environmental change required to push the ecosystem into another state (@holling1973). This could occur if greater functional diversity equates to the presence of organisms with greater tolerance to the environmental driver @dakos2019b.
+
+-   On the other hand, the opposite could occur: greater functional diversity could make a tipping point occur with less change in an environmental driver (i.e. may cause lower resilience) (Figure 2c in @dakos2019b). This could occur if there is selection for greater tolerance that causes, incidentally, selection for lower growth rate, perhaps due to a tradeoff between the two traits.
+
+-   Finally, the amount of functional diversity may affect the "recovery trajectory", i.e. the relationship between ecosystem state and the environmental driver when the driver change is reversed @dakos2019b. Put another way, functional diversity may increase or decrease the amount of hysteresis, and may even result in a recovery with lower non-linearity / no tipping-point (Figure 3 in @dakos2019b).
+
+These explanations/predictions were based on the verbal and graphical argumentation @dakos2019b. There were no mathematical models of ecosystem responses to environmental change behind the explanations/predictions. @ceulemans2021, in their article *Functional diversity alters the effects of a pulse perturbation on the dynamics of tritrophic food webs*, did employ a such a mathematical model [text to be developed].
+
+We discuss empirical studies in the Discussion section (spoiler--there are few, if any, directly relevant ones).
+
+## Aim and scope of our investigation
+
+Aim:
+
+* To provide an answer to the question of how trait variation affects the resilience and hysteresis of ecosystem response to an environmental change.
+
+Scope:
+
+* Mathematical modelling of a microbial ecosystem.
+
+* Trait diversity manipulation (can be considered selection among strains, or selection among species). (Do not include mutation or recombination).
+
+* Variation in amount of among strain variation in two traits, no variation in number of strains, no variation in strength or shape of the of the tradeoff.
+
+* Illustration of the dynamical response to gradual environmental change.
+
+* Measurement of the effect trait diversity on how the steady state(s) of the system varies with environmental conditions.
+
+# Methods
+
+## The study ecosystem
+
+Anoxic-oxic ecosystem shifts as a case study. Contemporary relevance. Intermediate complexity of system... diagram of system, including some panels of subsystems showing some of the positive feedbacks. Central role of inhibition / tolerance. Also showing responses to changes in oxygen diffusivity (justify from Bush et al this as a key environmental driver).
+
+```{r ecosys_network, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+knitr::include_graphics(here("manuscript/figures/ecosystem_network.png"))
+```
+
+The model ecosystem contains three types (functional groups) of organism (Figure \@ref(fig:ecosys_network)): cyanobacteria ($CB$), sulfate-reducing bacteria ($SB$), and phototrophic sulfur bacteria ($PB$), four chemical substrates (oxygen $O$, phosphorous $P$, reduced sulfur $SR$, and oxidised sulfur $SO$), and four types of flow/interaction (production, consumption, inhibition, and diffusion). Particularly important among these interactions are that the cyanobacteria produce oxygen which inhibits the growth of both types of sulfur bacteria. And the sulfate-reducing bacteria produce reduced sulfur, such as hydrogen sulphide, which inhibit the growth of cyanobacteria. This mutual inhibition (a positive feedback) creates the potential for an oxic cyanobacteria dominated state and an anoxic sulfur bacteria dominated state to be alternate stable states.
+
+Simulation of this ecosystem as a set of ordinary differential equations demonstrated that the presence of alternate stable states depended on the rate at which oxygen diffuses into (or out of) the system [@bush2017]. Low levels of oxygen diffusivity result in only the anoxic state being stable. High levels result in only the oxic state. Intermediate oxygen diffusivity allowed alternate stable states, with the occurring state depending on historical conditions. Historical dominance of cyanobacteria caused the oxic state to occur, which historical dominance of the sulfur bacteria caused the anoxic state to occur. All this was thoroughly and elegantly presented in @bush2017.
+
+As mentioned above, critical for the presence of alternate stable states in this ecosystem is the mutual inhibition between cyanobacteria and sulfur bacteria. This mutual inhibition is created by their intolerance of the chemical substrates that the other produces. Recent experimental evolution studies have demonstrated considerable increases in tolerance. For example, the sulfur bacteria *Desulfovibrio vulgaris* evolved a 32-fold increase in oxygen tolerance, via relatively few mutations [@schoeffler2019]. And the cyanobacterium *Microcystis aeruginosa* evolved a four-fold higher sulfide tolerance via rare spontaneous mutations [@martínclemente2019]. In that study, populations with higher genetic variation and those experiencing slower environmental change (an increase in sulfide concentration) were more likely to persist at high sulfide concentration. Furthemore, there is considerable interspecific variation in tolerances [@schoeffler2019]
+
+"Variation in Sulfide Tolerance of Photosystem II in Phylogenetically Diverse Cyanobacteria from Sulfidic Habitats", by Miller and Bebout (2004) [https://aem.asm.org/content/70/2/736.short]
+
+Physiological tolerances to environmental conditions, including interspecific variation in tolerance and evolution of tolerance, are a key component of the engineering of ecosystem for determining their stability (Minervini *et al.* 2014)(Gómez‐Gras *et al.* 2019)(Cuenca Cambronero *et al.* 2018)(Vos *et al.* 2017)(Evans & Wallenstein 2014)(Rolfe *et al.* 1978)(Knoll & Bauld 1989)(Girvan *et al.* 2005).
+
+[@rolfe1978] - Factors related to the oxygen tolerance of anaerobic bacteria. [@ramel2015] - "they were able to grow but the final biomasses and the growth yield were lower than that obtained under anaerobic conditions", "Determination of the molar growth yields on lactate suggested that a part of the energy gained from lactate oxidation was derived toward cells protection/repairing against oxidative conditions rather than biosynthesis" [@hamilton2018] - "Cyanobacterial photosynthesis under sulfidic conditions: insights from the isolate Leptolyngbya sp. strain hensonii"
+
+## The model
+
+Bush et al (2017) contains an accessible and complete description of the model of the ecosystem, including rate equations, parameter values, and initial conditions. These features are also represented and documented in the `microxanox` R package (**cite the package**). Therefore, here we only describe the extension we used to model multiple strains per functional group.
+
+Each of the strains within each functional groups has its own parameter set and state variable. Thus a system with nine strains within each functional group has 27 state variables, plus another four (one for each of the four chemical substrates). Other than having potentially different parameter values (e.g. maximum growth rate and tolerance parameters) the dynamics of the strains in a functional were described by the same equations. Hence, when parameterised with multiple strains per functional group, but no variation among strains (within functional groups), the system behaves identically to when there is only one strain per functional group (see the `microxanox` R package *User Guide* for a demonstration). The only other necessary modification was to include summation terms in each of the four ordinary differential equations describing the rates of change of the four chemical substrates. This was required in order to appropriately account for the production and consumption of these substrates by multiple strains.
+
+## Model dimensions
+
+-   Time: hours
+-   Volume: litres
+-   Substrate quantity: micromoles
+-   Organism quantity: cells
+
+## Creating within functional group diversity
+
+```{r diversity_examples, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=FALSE}
+knitr::include_graphics(here("manuscript/figures/diversity_example.pdf"))
+```
+
+In this section we describe how we created variability among the multiple strains within functional groups. In brief, in each functional group we created multiple distinct strains that differed in their maximum growth rate and tolerance to an inhibiting substrate, with a trade-off between the two (e.g. higher tolerance assocated with lower maximum growth rate). An example of the resulting variation is displayed in Figure \ref(fig:diversity_example)). 
+
+A more detailed account of the creation of strains follows now. Introducing variation among multiple strains within a functional group required a number of decisions:
+
+* **The number of strains.** The symbol for this is $n$ subscripted with the functional group code (CB = cyanobacteria, SP = sulphate reducing bacteria, and PB = phototrophic sulphur bacteria). E.g. $n_{CB}$ is the number of strains of cyanobacteria. [add why we only ever had 9].
+* **Which traits to introduce variation in.** We chose the maximum growth rate and the tolerance of growth to an inhibiting substrate. E.g. maximum growth rate of the cyanobacteria $G_{max,CB}$, and the tolerance of cyanobacterial growth to reduced sulphur $h_{SR,CB}$.
+* **The amount of among strain variation.** The symbol for this is $Div$ (from *Div*ersity) subscripted by the trait/parameter and the functional group. E.g. * $Div_{G_{max,CB}}$  is the amount of among strain variation in the maximum growth rate $G_{max}$ of the cyanobacteria $CB$. 
+* **The correlation between variation in different traits.** This was always negative, so there was a tradeoff. Our implementation of the variation and tradeoff contain the assumption of a linear tradeoff of log-log transformed among-strain variation.
+* **The relative amount of among strain variation in different functional groups.** E.g. were strains of cyanobacteria very variable compared to strains of the other functional groups. We performed several numerical experiments, varying which functional groups had more or less among strain variation.
+* **The distribution of trait variation.** We chose to have among strain variation distributed evenly on a log scale.
+
+The parameters therefore necessary were:
+
+* $n_{CB}$ - number of strains of cyanobacteria.
+* $n_{SB}$ - number of strains of sulphate reducing bacteria.
+* $n_{PB}$ - number of strains of phototrophic sulphur bacteria.
+* $Div_{G_{max,CB}}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the cyanobacteria $CB$. 
+* $Div_{h_{SR,CB}}$ - amount of among strain variation in the tolerance $h$ of cyanobacteria $CB$ to reduced sulpur compounds $SR$. 
+* $Div_{G_{max,SB}}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the sulphate reducing bacteria $SB$. 
+* $Div_{h_{O,SB}}$ - amount of among strain variation in the tolerance $h$ of sulphate reducing bacteria $S$ to oxygen $O$. 
+* $Div_{G_{max,PB}}$ - amount of among strain variation in the maximum growth rate $G_{max}$ of the phototrophic sulphur bacteria $PB$. 
+* $Div_{h_{O,PB}}$ - amount of among strain variation in the tolerance $h$ of phototrophic sulphur bacteria $PB$ to oxygen $O$.
+
+For example, cyanobacteria, and a reference maximum growth rate parameter $G_{max,CB}$ and reference tolerance parameter $h_{SR,CB}$. Recall that amount of among strain variation is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a tradeoff, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/(2^{Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2^{Div_{G_{max,CB}}}$ of the reference growth rate. The growth rate of the $i = \{2,...n-1\}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off contains the assumption of a linear trade-off of log-log transformed among-strain variation.
+
+```{r echo = FALSE}
+parms <- microxanox::new_starter()
+G_max <- parms$CB$g_max_CB
+h <- parms$CB$h
+Div_G_max <- 1
+Div_h <- -1
+n <- 9
+x <-1:n
+f_x <- (x-(n+1)/2) / (( n-1)/2)
+D_G_max <- 2^(f_x*Div_G_max)
+G_max_i <- D_G_max * G_max
+D_h_i <- 2^(f_x*Div_h)
+h_i <- D_h_i * h
+```
+
+```{r echo = FALSE, eval = FALSE}
+g_max_CB <- G_max * 2^(seq(-Div_G_max, Div_G_max, length=n))
+h_SR_CB <- h * 2^(-seq(-Div_h, Div_h, length=n))
+ggplot() +
+  geom_point(aes(x = g_max_CB, y = h_SR_CB))
+```
+
+```{r tradeoff, eval = FALSE, include = TRUE, echo = FALSE, out.width="0.5\\linewidth", fig.align="center", fig.cap=c("An example of among-strain variation in growth rate and tolerance, and the tradeoff in the variation.")}
+ggplot() +
+  geom_point(aes(x = G_max_i, y = h_i)) +
+  xlab("Maximum growth rate") +
+  ylab("Tolerance") +
+  theme_bw(base_size = 20)
+```
+
+
+Hence, for example, with the reference growth rate $G_{max,CB} =$ `r G_max`, among strain variation of $Div_{G_{max,CB}} =$ `r Div_G_max`, and nine strains ($n =$ `r n`), then the growth rates of the nine strains are `r round(G_max_i,3)` (Figure to be added).
+
+(Put another way, the growth rate parameter of the i-th of the $n$ strains in a functional group was calculated as $G_{max, i} = D_i * G_{max}$ where $D_i$ is the i-th element of the set $D = \{2^{f(x)Div_{G_{max}}} | x \in \mathbb{N}, x \leq n\}$, where $f(x) = (x-(n+1)/2) / (( n-1)/2)$.)
+
+## Measurement of non-linearity and hysteresis
+
+Requires an environmental change... as in Bush, oxygen diffusivity.
+
+Take from Garnier et al.
+
+Rate-independent hysteresis, because we are considering only stable states, and not rate-dependent hysteresis, which can occur when a lag in the system response to an environmental response causes a difference between the observed system state at time $t$ and the stable state for the environmental conditions present at time $t$.
+
+## Implementation
+
+We implemented the model in the `microxanox` package (**cite the package**) of the R programming language (\*\*cite R Core Team*). The package contains functions for initialising, running, visualising, and analysing simulations of the system described above. Please refer to the `microxanox` package* User Guide\* and *Partial reproduction of Bush et al (2017)* vignettes for further information about it.
+
+# Results
+
+## Figure: Stable states without variation
+
+```{r}
+## find various combintions of diversity
+var_expt <- readRDS(here("experiments/experiment 4/data/ss_data.RDS"))
+
+var_expt_levels <- var_expt[,1:6]
+
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_diversty_all <- which(max(rowSums(abs(var_expt_levels))) ==
+                            rowSums(abs(var_expt_levels)))
+max_only_CB_diversity <- which(max(rowSums(abs(var_expt_levels[,1:2]))) ==
+                            rowSums(abs(var_expt_levels[,1:2])) &
+                              rowSums(abs(var_expt_levels[,3:6]))==0)
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+
+```
+
+
+```{r ss_novar, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with no trait diversity, i.e. identical trait values for the strains within a functional group."), echo=FALSE}
+p1  <- plot_ss_result1(var_expt,
+                result_index = no_diversity,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p1
+```
+
+X-axis must be labelled log10(a).
+
+## Figure: CBSBPB Stable states with variation and tradeoff
+
+```{r ss_var, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with diversity in all functional groups"), echo=FALSE}
+p2  <- plot_ss_result1(var_expt,
+                result_index = max_diversty_all,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p2
+```
+
+X-axis must be labelled log10(a).
+
+```{r ss_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem without any diversity (solid line) and with diversity in all three functional groups."), echo=FALSE}
+p_overlay1 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_diversty_all,]$ss_res[[1]],
+                             xlims = c(-7, -1))
+p_overlay1
+```
+
+X-axis must be labelled log10(a).
+
+
+
+## Figure: CB Stable states with variation and tradeoff
+
+```{r CB_var1, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with diversity in only the cyanobacteria functional group."), echo=FALSE}
+p3  <- plot_ss_result1(var_expt,
+                result_index = max_only_CB_diversity,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p3
+```
+
+```{r CB_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem without any diversity (solid line) and with diversity in only the cyanobacteria functional group."), echo=FALSE}
+p_overlay2 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_only_CB_diversity,]$ss_res[[1]],
+                             xlims = c(-7, -1))
+p_overlay2
+```
+
+
+
+
+
+## Figure: SBPB Stable states with variation and tradeoff
+
+```{r SBPB_var1, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem with diversity in only the two sulphur bacteria functional groups."), echo=FALSE}
+p4  <- plot_ss_result1(var_expt,
+                result_index = max_only_SBPB_diversity,
+                filename_prefix = NULL,
+                save_image_file = FALSE)
+p4
+
+
+```
+
+```{r SBPB_var2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Steady states of the ecosystem without any diversity (solid line) and with diversity in only the sulphur bacteria functional group."), echo=FALSE}
+p_overlay3 <- plot_ss_result2(var_expt[no_diversity,]$ss_res[[1]],
+                             var_expt[max_only_SBPB_diversity,]$ss_res[[1]],
+                             xlims = c(-7, -1))
+p_overlay3
+```
+
+
+
+
+## Figure: hysteresis, shift point, nonlinearity, as var increases.
+
+Resolution of a_grid with 100 steps is about 0.03 units, which is about the resolution of the y axis here. Hysteresis range is measures in log10(a) units.
+
+```{r stab1, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Effect of increasing amounts of trait diversity on the extent of the environmental gradient for which bistability (i.e. alternative stable states) is present, when different combinations of the three functional groups contain any diversity."), echo=FALSE}
+
+knitr::include_graphics(here("manuscript/figures/extent_of_bistab1.pdf"))
+
+```
+
+```{r stab2, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Effect of increasing amounts of trait diversity on the upper and lower bound of the environmental gradient for which bistability (i.e. alternative stable states) is present, when different combinations of the three functional groups contain any diversity."), echo=FALSE}
+
+knitr::include_graphics(here("manuscript/figures/extent_of_bistab2.pdf"))
+
+```
+
+
+
+
+
+
+# Discussion
+
+We observed that greater trait diversity among the organisms dominating the prevailing ecosystem state can lead to greater resilience of that state. We also observed that greater trait diversity among the organisms that occur in an different ecosystem state can reduce resilience.
+
+The effect of diversity occurs because with greater trait diversity there is a organism with greater tolerance to the deteriorating (from the perspective of the dominant organisms). This greater tolerance means that a greater amount of environmental deterioration is required to cause the ecosystem to flip into the alternative state.
+
+In the case study, with three functional groups, the presence or absence of diversity in the different functional groups influences resilience... with only diversity in the CB...
+
+One reason why the explanations of Dakos et al are often indeterminate is that trait distributions can be affected by, and effect, organismal abundances and environmental conditions. These numerous resulting feedbacks may limit the determinancy of explanations based on the verbal/graphical argumentation employed by @dakos2019b. They may also make for context dependent effects of functional diversity. I.e. functional diversity may delay a tipping point in one context (e.g. ecosystem type and/or particular parameterisation of a specific system) but delay it in another. **Based on our findings, (1) can we make determinate predictions, and (2) what level of generality do our preditions have?** [Possible text: The answers are (1) no, we cannot make determinate predictions: we found sign varying effects of functional trait diversity on the nature of ecosystem responses to environmental change. And (2) our predictions have very limited generality. This is because we did not aim for general predictions: we investigate a single parameterisation of a single model, with many explicit and implicit assumptions. This is why we need more investigations, both theoretical and empirical, of effects of functional trait diversity on environmental responses to environmental change.]
+
+What of the empirical evidence? Hillebrand...
+
+What are the priorities for follow-on modelling studies?
+
+1)  Multifarious environmental driver changes.
+2)  More process based approach to variation in biodiversity: mutation, genetics,
+
+What does this study tell us about effects of functional diversity on ecosystem stability?
+
+What does this study tell us about the effects of evolution on ecosystem stability?
+
+## Further relaxing the assumptions
+
+Deterministic -> stochastic : www.pnas.org/cgi/doi/10.1073/pnas.1414708112
+
+
+## What are the priorities for subsequent research?
+
+A research programme that integrates [text from ERC application]. E.g. Global Change Microbiology -- with quote.
+
+Then replicated across numerous ecosystems and taxa. That is, we imagine a blue-print / template for proposals that aim to establish such an integrative research programme. This template would contain mandatory workpackages and experiments, and sufficient standardisation to allow for rigorous and quantitative across programme meta-analyses
+
+<https://onlinelibrary.wiley.com/doi/10.1111/gcb.15662?af=R>
+
+<https://onlinelibrary.wiley.com/doi/10.1111/ele.13760?af=R>
+
+# Acknowledgements
+
+SNF URPP
+
+## Bibliography

@@ -5,14 +5,21 @@
 
 rm(list = ls())
 library(here)
+
+max_cores <- benchmarkme::get_cpu()$no_of_cores
+
 source(here("R/various_useful_functions.r"))
 
-num_strains <- 3
+i = 2
+
+for(i in c(2, 3, 6, 9)) {
+  
+num_strains <- i
 num_CB_strains <- num_strains
 num_SB_strains <- num_strains
 num_PB_strains <- num_strains
 
-source(here("experiments/0_ss_finding/setup_experiment.R"))
+source(here("experiments/0_ss_finding/temporal_method/setup_experiment.R"))
 
 #var_expt <- var_expt[1,]
 
@@ -36,12 +43,12 @@ expt_res <- run_temporal_ssfind_experiment(parameter,
                                            total_initial_abundances = total_initial_abundances,
                                            cores = num_cores)
 })
-saveRDS(expt_res, here("experiments/0_ss_finding/data/", paste0(num_strains, "_strain_SS_data_1e3.RDS")))
+saveRDS(expt_res, here("experiments/0_ss_finding/temporal_method/data/", paste0(num_strains, "_strain_SS_data_1e3.RDS")))
 
 
 ## Get stability
 num_cores = 12
-expt_res <- readRDS(here("experiments/0_ss_finding/data/", paste0(num_strains, "_strain_SS_data_1e3.RDS")))
+expt_res <- readRDS(here("experiments/0_ss_finding/temporal_method/data/", paste0(num_strains, "_strain_SS_data_1e3.RDS")))
 cluster1 <- multidplyr::new_cluster(num_cores)
 multidplyr::cluster_library(cluster1, c("microxanox", "dplyr"))
 system.time({
@@ -51,7 +58,7 @@ stab_data <-  expt_res %>%
   collect() %>%
   unnest(cols = c(stability_measures)) 
 })
-saveRDS(stab_data, here("experiments/0_ss_finding/data/", paste0(num_strains, "_strain_stab_data_1e3.RDS")))
+saveRDS(stab_data, here("experiments/0_ss_finding/temporal_method/data/", paste0(num_strains, "_strain_stab_data_1e3.RDS")))
 
 
 

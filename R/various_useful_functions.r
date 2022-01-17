@@ -552,6 +552,103 @@ create_diversity_factorial <- function(
 }
 
 
+
+create_diversity_factorial2 <- function(
+  zero, unity,
+  num_div_treatment_levels,
+  CB_gmax_div, CB_h_div,
+  SB_gmax_div, SB_h_div,
+  PB_gmax_div, PB_h_div,
+  default_9strain
+) {
+  # default_9strain <- new_strain_parameter(
+  #   n_CB = num_CB_strains,
+  #   n_SB = num_SB_strains,
+  #   n_PB = num_PB_strains,
+  #   values_initial_state = initial_pars_from
+  # )
+  CB_var_gmax_s <- seq(zero, unity, length = num_div_treatment_levels) * CB_gmax_div
+  CB_var_h_s <- seq(zero, unity, length = num_div_treatment_levels) * CB_h_div
+  SB_var_gmax_s <- seq(zero, unity, length = num_div_treatment_levels) * SB_gmax_div
+  SB_var_h_s <- seq(zero, unity, length = num_div_treatment_levels) * SB_h_div
+  PB_var_gmax_s <- seq(zero, unity, length = num_div_treatment_levels) * PB_gmax_div
+  PB_var_h_s <- seq(zero, unity, length = num_div_treatment_levels) * PB_h_div
+  
+  var_expt <- crossing(
+    CB_index = seq_along(CB_var_gmax_s),
+    SB_index = seq_along(SB_var_gmax_s),
+    PB_index = seq_along(PB_var_gmax_s)
+   )
+  no_var <- var_expt %>%
+    filter(CB_index == 1,
+           SB_index == 1,
+           PB_index == 1)
+  CB_var_expt <- var_expt %>%
+    filter(SB_index == 1,
+           PB_index == 1)
+  SB_var_expt <- var_expt %>%
+    filter(CB_index == 1,
+           PB_index == 1)
+  PB_var_expt <- var_expt %>%
+    filter(CB_index == 1,
+           SB_index == 1)
+  CBSB_var_expt <- var_expt %>%
+    filter(PB_index == 1,
+           CB_index == SB_index)
+  CBPB_var_expt <- var_expt %>%
+    filter(SB_index == 1,
+           CB_index == PB_index)
+  SBPB_var_expt <- var_expt %>%
+    filter(CB_index == 1,
+           SB_index == PB_index)
+  CBSBPB_var_expt <- var_expt %>%
+    filter(CB_index == SB_index,
+           SB_index == PB_index)
+  var_expt <- bind_rows(
+    no_var,
+    CB_var_expt,
+    SB_var_expt,
+    PB_var_expt,
+    CBSB_var_expt,
+    CBPB_var_expt,
+    SBPB_var_expt,
+    CBSBPB_var_expt
+  ) %>%
+    unique()
+  
+  
+  var_expt <- var_expt %>%
+    mutate(
+      CB_var_gmax_s = CB_var_gmax_s[CB_index],
+      CB_var_h_s = CB_var_h_s[CB_index],
+      SB_var_gmax_s = SB_var_gmax_s[SB_index],
+      SB_var_h_s = SB_var_h_s[SB_index],
+      PB_var_gmax_s = PB_var_gmax_s[PB_index],
+      PB_var_h_s = PB_var_h_s[PB_index]
+    )
+  var_expt <- var_expt %>%
+    nest_by(
+      CB_var_gmax_s, CB_var_h_s,
+      SB_var_gmax_s, SB_var_h_s,
+      PB_var_gmax_s, PB_var_h_s
+    ) %>%
+    mutate(pars = list(add_strain_var(
+      x = default_9strain,
+      CB_var_gmax = CB_var_gmax_s,
+      CB_var_h = CB_var_h_s,
+      SB_var_gmax = SB_var_gmax_s,
+      SB_var_h = SB_var_h_s,
+      PB_var_gmax = PB_var_gmax_s,
+      PB_var_h = PB_var_h_s,
+      method = "even_v1.0"
+    )))
+  
+  var_expt
+}
+
+
+
+
 visualise_temporal_env_eco <- function(sim_res_novar = NULL, sim_res_highvar = NULL) {
   tmp_novar <- sim_res_novar$result %>%
     filter(time != 0) %>%
@@ -1190,6 +1287,14 @@ plot_ss_result6 <- function(ss_result1,
   patchwork_graph <- p_CB / p_SB / p_PB / p_Substrate
   
   patchwork_graph
+}
+
+get_total_bio <- function(result) {
+  res <- result %>%
+    mutate(CB_tot = rowSums(across(starts_with("CB"))),
+           SB_tot = rowSums(across(starts_with("SB"))),
+           PB_tot = rowSums(across(starts_with("PB"))))
+  res
 }
 
 
