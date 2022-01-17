@@ -1,3 +1,7 @@
+## Code to calculate the effects of diversity in each of the
+## combinations of diversity treatments
+
+
 rm(list = ls())
 
 ## Prelims ----
