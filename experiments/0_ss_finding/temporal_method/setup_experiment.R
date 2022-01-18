@@ -46,7 +46,9 @@ options(mc.cores = 7)
 eval_ss_flag <- FALSE
 plot_ss_results <- TRUE
 
-
+num_CB_strains <- num_strains
+num_SB_strains <- num_strains
+num_PB_strains <- num_strains
 
 sp <- new_strain_parameter(
   n_CB = num_CB_strains,
@@ -151,8 +153,11 @@ var_expt <- create_diversity_factorial2(
 
 
 wait_time <- 1e6
-#p$log10a_series <- seq(-2.5, -2, 0.025)
 parameter$log10a_series <- seq(-8, 0, length = 300)
+##### next two lines for testing purposes
+wait_time <- 1e2 ## for testing
+parameter$log10a_series <- seq(-8, 0, length = 30) ## for testing
+##### end of lines for testing
 parameter$minimum_abundances["CB"] <- 1
 parameter$minimum_abundances["SB"] <- 1
 parameter$minimum_abundances["PB"] <- 1
