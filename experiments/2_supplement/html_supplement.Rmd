@@ -269,7 +269,7 @@ The figure above shows the effect of response trait diversity (y-axis) on the po
 
 ## Effect of simulation duration
 
-The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups. There appears to be no effect of using a longer simulation time. This shows that the duration of the simulations is sufficient to reach stable state, or very close to it.
+The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours simulation time, or 2'000'000 hours. This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
 Below is Figure 3 from the main manuscript, in which the duration at each oxygen diffusivity value is 1e6:
  
