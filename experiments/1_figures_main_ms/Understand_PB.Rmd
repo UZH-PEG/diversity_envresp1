@@ -1,0 +1,196 @@
+---
+title: "Understandin PB"
+author: "Rainer M Krug"
+date: "1/20/2022"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: false
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE
+)
+library(microxanox)
+library(tidyverse)
+library(patchwork)
+library(here)
+
+colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+
+source(here("R/various_useful_functions.r"))
+
+
+plot_fig3 <- function(
+  ss_result
+){
+  temp <- ss_result$ssfind_result[[1]] %>%
+    mutate(a = 10^a_O) %>%
+    # arrange(a) %>%
+    # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+    #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+    # select(-initial_N_CB, -a_O) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"
+      ),
+      log10_quantity = log10(quantity + 1)
+    )
+  
+  num_strains <- temp %>%
+    group_by(functional_group) %>%
+    summarise(num = length(unique(species))) %>%
+    na.omit()
+  
+  num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+  num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+  num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+  
+  line_width <- 2
+  
+  p1 <- temp %>%
+    dplyr::filter(functional_group == "CB")  %>%
+    mutate(species = factor(species, levels = unique(species))) %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    ##ylab("log10(quantity [cells])") +
+    ylab("Log(Quantity)") +
+    xlab("Oxygen diffusivity") +
+    scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    theme(legend.position="none") +
+    ggtitle("(a) Cyanobacteria")
+  
+  p2 <- temp %>%
+    dplyr::filter(functional_group == "SB")  %>%
+    mutate(species = factor(species, levels = unique(species))) %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    ##ylab("log10(quantity [cells])") +
+    ylab("Log(Quantity)") +
+    xlab("Oxygen diffusivity") +
+    scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    theme(legend.position="none") +
+    ggtitle("(b) Sulfate reducing bacteria")
+  
+  p3 <- temp %>%
+    dplyr::filter(functional_group == "PB")  %>%
+    mutate(species = factor(species, levels = unique(species))) %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    ##ylab("log10(quantity [cells])") +
+    ylab("Log(Quantity)") +
+    xlab("Oxygen diffusivity") +
+    scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    theme(legend.position="none") +
+    ggtitle("(c) Phototrophic sulfur bacteria")
+  
+  p4 <- temp %>%
+    dplyr::filter(var_type == "Substrate", species == "O") %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    ##ylab("log10(quantity [cells])") +
+    ylab("Log(Quantity)") +
+    xlab("Oxygen diffusivity") +
+    theme(legend.position="none") +
+    ggtitle("(d) Oxygen concentration")
+  
+  p5 <- temp %>%
+    dplyr::filter(var_type == "Substrate", species == "SR") %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width, col = 6) +
+    ##ylab("log10(quantity [cells])") +
+    ylab("Log(Quantity)") +
+    xlab("Oxygen diffusivity") +
+    theme(legend.position="none") +
+    ggtitle("(e) Sulfide concentration")
+  patchwork <- p1 / p2 / p3 / p4 / p5
+  patchwork
+}
+```
+
+## Figure 5
+Region of bistability by diversity and number of strains.
+
+![alt text](figure_5_v2_allstrains.png)
+
+## Figure 3
+Stable state with diversity in all functional groups.
+
+```{r fig3_prep}
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
+
+max <- max(ss_9s$PB_var_gmax_s)
+f <- 0.625
+fv <- f*max
+
+only_PB_variable <- ss_9s %>%
+  filter(
+    abs(CB_var_gmax_s) < 0.0001,
+    abs(SB_var_gmax_s) < 0.0001
+  )
+only_PB_variable <- only_PB_variable[order(only_PB_variable$PB_var_gmax_s), ]
+
+only_PB_variable$PB_var_gmax_s
+```
+
+The following are the same figure for different variabilities in PB. PB Ranges from `r min(ss_9s$PB_var_gmax_s)` to `r max(ss_9s$PB_var_gmax_s)`.
+
+- PB_var_gmax_s: `r max(ss_9s$PB_var_gmax_s)`
+- PB_var_gmax_s: `r max(ss_9s$PB_var_gmax_s)`
+- PB_var_gmax_s: `r max(ss_9s$PB_var_gmax_s)`
+
+### PB_var_gmax_s ascending
+#### v = `r only_PB_variable$PB_var_gmax_s[1] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_1, fig.height=7}
+plot_fig3(only_PB_variable[1,])
+```
+
+#### v = `r only_PB_variable$PB_var_gmax_s[10] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_10, fig.height=7}
+plot_fig3(only_PB_variable[10,])
+```
+
+
+#### v = `r only_PB_variable$PB_var_gmax_s[12] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_12, fig.height=7}
+plot_fig3(only_PB_variable[12,])
+```
+
+#### v = `r only_PB_variable$PB_var_gmax_s[14] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_14, fig.height=7}
+plot_fig3(only_PB_variable[14,])
+```
+
+#### v = `r only_PB_variable$PB_var_gmax_s[16] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_16, fig.height=7}
+plot_fig3(only_PB_variable[16,])
+```
+
+#### v = `r only_PB_variable$PB_var_gmax_s[18] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_18, fig.height=7}
+plot_fig3(only_PB_variable[18,])
+```
+
+#### v = `r only_PB_variable$PB_var_gmax_s[20] / max(only_PB_variable$PB_var_gmax_s)`
+
+```{r figure3_20, fig.height=7}
+plot_fig3(only_PB_variable[20,])
+```
