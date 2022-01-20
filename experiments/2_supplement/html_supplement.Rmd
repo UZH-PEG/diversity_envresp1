@@ -381,7 +381,7 @@ For comparison, here are the results with twice the duration at each oxygen diff
  
 ```{r echo = FALSE, fig.height=10}
 
-single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
+single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
 # sort(unique(ss_9s$CB_var_gmax_s))
 # sort(unique(ss_9s$SB_var_gmax_s))
 # ss_result <- ss_9s %>%
@@ -389,7 +389,7 @@ single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single
 #          abs(SB_var_gmax_s - 0.084764545) < 0.0001,
 #          abs(PB_var_gmax_s - 0.084764545) < 0.0001)
 
-temp <- single_1e6 %>%
+temp <- single_2e6 %>%
   mutate(a = 10^a_O) %>%
   # arrange(a) %>%
   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%

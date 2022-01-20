@@ -43,6 +43,7 @@ system.time(
 )
 saveRDS(result_1e6, here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
 
+
 wait_time <-  2e6
 parameter$sim_duration <- wait_time * length(parameter$log10a_series)
 parameter$sim_sample_interval <- wait_time
