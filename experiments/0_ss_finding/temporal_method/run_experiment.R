@@ -4,7 +4,7 @@
 rm(list = ls())
 library(here)
 source(here("R/various_useful_functions.r"))
-#max_cores <- benchmarkme::get_cpu()$no_of_cores
+max_cores <- benchmarkme::get_cpu()$no_of_cores
 
 
 ## Run for 2, 3, 6, and 9 strains
@@ -19,7 +19,7 @@ for(num_strains in c(2, 3, 6, 9)) {
   nrow(var_expt)
   wait_time
   length(parameter$log10a_series)
-  num_cores = 8
+  num_cores <- min(c(max_cores, nrow(var_expt)))
   ## constants in following formula come from the excel sheet
   time_estimate <- ( nrow(var_expt) * wait_time * length(parameter$log10a_series) /
                        num_cores * 0.000123965 + 126 )
@@ -43,7 +43,7 @@ for(num_strains in c(2, 3, 6, 9)) {
   
   
   ## Get stability measures ----
-  num_cores = 12
+  num_cores <- min(c(max_cores, nrow(var_expt)))
   expt_res <- readRDS(here("experiments/0_ss_finding/temporal_method/data/",
                            paste0(num_strains,
                                   "_strain_SS_data_1e3.RDS")))
