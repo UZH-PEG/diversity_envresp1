@@ -1,6 +1,11 @@
 ## Figures for main manuscript
 ## 
 ## 
+## 
+## 
+## this file -- version 2 -- makes graphs with all combinations
+## the other file -- version 1 -- makes only graphs for CB, SB-PB, and CB-SB-PB
+
 
 ## Prelims ----
 library(microxanox)
@@ -27,7 +32,8 @@ sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%
   filter(abs(CB_var_gmax_s - 0) < 0.0001,
-         abs(SB_var_gmax_s - 0) < 0.0001,)
+         abs(SB_var_gmax_s - 0) < 0.0001,
+         abs(PB_var_gmax_s - 0) < 0.0001)
 
 
 
