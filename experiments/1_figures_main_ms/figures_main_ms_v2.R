@@ -668,6 +668,8 @@ ggsave(here("experiments/1_figures_main_ms/figure_5_v2_9strain_only.pdf"),
        width = 10, height = 8)
 
 
+
+
 ## Figure 5 all strains ----
 
 all_stab_results %>%
@@ -994,6 +996,181 @@ p5 <- temp %>%
 patchwork <- p1 / p2 / p3 / p4 / p5
 patchwork
 #ggsave(here("experiments/1_figures_main_ms/figure_3_v2.pdf"))
+
+
+
+
+
+
+
+
+
+## insert from Uriah ----
+
+all_stab_results9 <- all_stab_results_small %>%
+  distinct() %>%  #there are some duplicated rows....?
+  filter(num_strains == 9, Species == "CB_tot") 
+
+all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, var_gmax)),]
+
+all_stab_results9$method <- "simulated"
+
+calculation_fct <- function(x,y,z=NULL, Method="arithmetic"){
+  if(Method=="arithmetic") {
+    if(is.null(z)) {
+      w <- log10((10^x + 10^y)/2)
+    } else {
+      w <- log10((10^x + 10^y + 10^z)/3)
+    }
+    return(w)
+  }    
+  
+  
+  if(Method%in% c("arith_log","geometric")) {
+    if(is.null(z)) {
+      # w <- (x+y)/2 # the same as below
+      w <- log10((10^x*10^y)^(1/2))
+    } else {
+      # w <- (x+y+z)/3
+      w <- log10((10^x*10^y*10^z)^(1/3))
+    }
+    return(w)
+  }   
+  
+  if(Method=="geom_log") {
+    if(is.null(z)) {
+      w <- (x*y)^(1/2)
+      w <- -w
+    } else {
+      w <- (x*y*z)^(1/3)
+    }
+    return(w) 
+  }
+}
+
+
+combine_fct <- function(Method="arithmetic"){
+  agg_stab_res_single_groups_wide <- all_stab_results9 %>%
+    dplyr::select(Species,hyst_min_log,hyst_max_log,var_treat,var_gmax) %>%
+    dplyr::filter(Species == "CB_tot") %>%
+    group_by(var_treat) %>%
+    dplyr::mutate(var_gmax = rank(var_gmax)) %>%
+    pivot_wider(names_from = "var_treat", values_from = c("hyst_min_log", "hyst_max_log")) %>%
+    dplyr::mutate(hyst_min_log_CB_SB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB, Method=Method),
+                  hyst_max_log_CB_SB = calculation_fct(hyst_max_log_CB,hyst_max_log_SB, Method=Method),
+                  hyst_min_log_CB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_PB, Method=Method),
+                  hyst_max_log_CB_PB = calculation_fct(hyst_max_log_CB,hyst_max_log_PB, Method=Method),
+                  hyst_min_log_SB_PB = calculation_fct(hyst_min_log_SB,hyst_min_log_PB, Method=Method),
+                  hyst_max_log_SB_PB = calculation_fct(hyst_max_log_SB,hyst_max_log_PB, Method=Method),
+                  hyst_min_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB,hyst_min_log_PB, Method=Method),
+                  hyst_max_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_max_log_SB,hyst_max_log_PB, Method=Method),
+                  hyst_min_log_CB_SBPB = calculation_fct(`hyst_min_log_SB-PB`,hyst_min_log_CB, Method=Method),
+                  hyst_max_log_CB_SBPB = calculation_fct(`hyst_max_log_SB-PB`,hyst_max_log_CB, Method=Method))
+  
+  agg_stab_strain9 <- all_stab_results9 %>%
+    dplyr::filter(num_strains==9, Species == "CB_tot") 
+  
+  ### CB + SB
+  agg_stab_strain9_CB_SB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB")
+  
+  agg_stab_strain9_CB_SB$method <- "calculated"
+  agg_stab_strain9_CB_SB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB
+  agg_stab_strain9_CB_SB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB
+  
+  ### CB + PB
+  agg_stab_strain9_CB_PB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-PB")
+  
+  agg_stab_strain9_CB_PB$method <- "calculated"
+  agg_stab_strain9_CB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_PB
+  agg_stab_strain9_CB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_PB
+  
+  ### SB + PB
+  agg_stab_strain9_SB_PB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="SB-PB")
+  
+  agg_stab_strain9_SB_PB$method <- "calculated"
+  agg_stab_strain9_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_SB_PB
+  agg_stab_strain9_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_SB_PB
+  
+  ### CB + SB + PB
+  agg_stab_strain9_CB_SB_PB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB-PB")
+  
+  agg_stab_strain9_CB_SB_PB$method <- "calculated CB+SB+PB"
+  agg_stab_strain9_CB_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB_PB
+  agg_stab_strain9_CB_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB_PB
+  
+  ### CB + SBPB
+  agg_stab_strain9_CB_SBPB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB-PB")
+  
+  agg_stab_strain9_CB_SBPB$method <- "calculated CB+SBPB"
+  agg_stab_strain9_CB_SBPB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SBPB
+  agg_stab_strain9_CB_SBPB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SBPB
+  
+  ### merge 
+  agg_stab_strain9 <- rbind(agg_stab_strain9, agg_stab_strain9_CB_SB, agg_stab_strain9_CB_PB, agg_stab_strain9_SB_PB,
+                            agg_stab_strain9_CB_SB_PB, agg_stab_strain9_CB_SBPB)
+  return(agg_stab_strain9)
+}
+
+agg_stab_strain9 <- combine_fct("arithmetic")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Arithmetic mean on linear scale",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+agg_stab_strain9 <- combine_fct("geometric") # same as agg_stab_strain9 <- combine_fct("arith_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Geometric mean on linear scale",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+agg_stab_strain9 <- combine_fct("geom_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Geometric mean on log scale",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+###### End of insert
+
 
 
 
