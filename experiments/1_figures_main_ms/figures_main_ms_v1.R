@@ -183,7 +183,7 @@ p1 <- temp %>%
   scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
   guides(colour = guide_legend(ncol = 3)) +
   theme(legend.position="none") +
-  ggtitle("(b) Cyanobacteria")
+  ggtitle("(a) Cyanobacteria")
 #p1# p1
 
 p2 <- temp %>%
@@ -197,7 +197,7 @@ p2 <- temp %>%
   scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
   guides(colour = guide_legend(ncol = 3)) +
   theme(legend.position="none") +
-  ggtitle("(c) Sulfate reducing bacteria")
+  ggtitle("(b) Sulfate reducing bacteria")
 
 p3 <- temp %>%
   dplyr::filter(functional_group == "PB")  %>%
@@ -210,7 +210,7 @@ p3 <- temp %>%
   scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
   guides(colour = guide_legend(ncol = 3)) +
   theme(legend.position="none") +
-  ggtitle("(d) Phototrophic sulfur bacteria")
+  ggtitle("(c) Phototrophic sulfur bacteria")
 
 p4 <- temp %>%
   dplyr::filter(var_type == "Substrate", species == "O") %>%
@@ -220,7 +220,7 @@ p4 <- temp %>%
   ylab("Log(Quantity)") +
   xlab("Oxygen diffusivity") +
   theme(legend.position="none") +
-  ggtitle("(e) Oxygen concentration")
+  ggtitle("(d) Oxygen concentration")
 
 p5 <- temp %>%
   dplyr::filter(var_type == "Substrate", species == "SR") %>%
@@ -230,7 +230,7 @@ p5 <- temp %>%
   ylab("Log(Quantity)") +
   xlab("Oxygen diffusivity") +
   theme(legend.position="none") +
-  ggtitle("(f) Sulfide concentration")
+  ggtitle("(e) Sulfide concentration")
 
 patchwork <- p1 / p2 / p3 / p4 / p5
 patchwork
