@@ -1046,6 +1046,16 @@ calculation_fct <- function(x,y,z=NULL, Method="arithmetic"){
     }
     return(w) 
   }
+  
+  if(Method=="EF_log") {
+      w <- x + y - first(x)
+    return(w) 
+  }
+  
+  if(Method=="EF_lin") {
+    w <- log10(10^x + 10^y - 10^first(x))
+    return(w) 
+  }
 }
 
 
@@ -1062,8 +1072,8 @@ combine_fct <- function(Method="arithmetic"){
                   hyst_max_log_CB_PB = calculation_fct(hyst_max_log_CB,hyst_max_log_PB, Method=Method),
                   hyst_min_log_SB_PB = calculation_fct(hyst_min_log_SB,hyst_min_log_PB, Method=Method),
                   hyst_max_log_SB_PB = calculation_fct(hyst_max_log_SB,hyst_max_log_PB, Method=Method),
-                  hyst_min_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB,hyst_min_log_PB, Method=Method),
-                  hyst_max_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_max_log_SB,hyst_max_log_PB, Method=Method),
+                  # hyst_min_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB,hyst_min_log_PB, Method=Method),
+                  # hyst_max_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_max_log_SB,hyst_max_log_PB, Method=Method),
                   hyst_min_log_CB_SBPB = calculation_fct(`hyst_min_log_SB-PB`,hyst_min_log_CB, Method=Method),
                   hyst_max_log_CB_SBPB = calculation_fct(`hyst_max_log_SB-PB`,hyst_max_log_CB, Method=Method))
   
@@ -1095,12 +1105,12 @@ combine_fct <- function(Method="arithmetic"){
   agg_stab_strain9_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_SB_PB
   
   ### CB + SB + PB
-  agg_stab_strain9_CB_SB_PB <- agg_stab_strain9 %>%
-    dplyr::filter(var_treat=="CB-SB-PB")
-  
-  agg_stab_strain9_CB_SB_PB$method <- "calculated CB+SB+PB"
-  agg_stab_strain9_CB_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB_PB
-  agg_stab_strain9_CB_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB_PB
+  # agg_stab_strain9_CB_SB_PB <- agg_stab_strain9 %>%
+  #   dplyr::filter(var_treat=="CB-SB-PB")
+  # 
+  # agg_stab_strain9_CB_SB_PB$method <- "calculated CB+SB+PB"
+  # agg_stab_strain9_CB_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB_PB
+  # agg_stab_strain9_CB_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB_PB
   
   ### CB + SBPB
   agg_stab_strain9_CB_SBPB <- agg_stab_strain9 %>%
@@ -1112,7 +1122,8 @@ combine_fct <- function(Method="arithmetic"){
   
   ### merge 
   agg_stab_strain9 <- rbind(agg_stab_strain9, agg_stab_strain9_CB_SB, agg_stab_strain9_CB_PB, agg_stab_strain9_SB_PB,
-                            agg_stab_strain9_CB_SB_PB, agg_stab_strain9_CB_SBPB)
+                            # agg_stab_strain9_CB_SB_PB,
+                            agg_stab_strain9_CB_SBPB)
   return(agg_stab_strain9)
 }
 
@@ -1168,6 +1179,50 @@ agg_stab_strain9 %>%
   coord_flip() +
   theme_bw()+
   theme(legend.position="top")
+
+
+
+## based on effect sizes 
+
+
+agg_stab_strain9 <- combine_fct("EF_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Addition of effect sizes and starting position (log)",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+
+agg_stab_strain9 <- combine_fct("EF_lin")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Addition of effect sizes and starting position (linear)",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+
 
 ###### End of insert
 
