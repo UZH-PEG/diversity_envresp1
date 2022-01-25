@@ -1,10 +1,11 @@
 ## Figures for main manuscript
 ## 
 ## 
+## 
+## 
+## this file -- version 2 -- makes graphs with all combinations
+## the other file -- version 1 -- makes only graphs for CB, SB-PB, and CB-SB-PB
 
-
-## this file -- version 1 -- makes only graphs for CB, SB-PB, and CB-SB-PB
-## the other file -- version 2 -- makes graphs with all combinations
 
 ## Prelims ----
 library(microxanox)
@@ -26,7 +27,7 @@ source(here("R/various_useful_functions.r"))
 
 ## Figure 2b-f ----
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+02_event_definition_2.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%
@@ -130,13 +131,13 @@ p5 <- temp %>%
 
 patchwork <- p1 / p2 / p3 / p4 / p5
 patchwork
-ggsave(here("experiments/1_figures_main_ms/figure_2b-f_v1.pdf"))
+ggsave(here("experiments/1_figures_main_ms/figure_2b-f.pdf"))
 
 
 ## Figure 3 ----
 ## Stable state with diversity in all functional groups.
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+02_event_definition_2.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%
@@ -234,13 +235,14 @@ p5 <- temp %>%
 
 patchwork <- p1 / p2 / p3 / p4 / p5
 patchwork
-ggsave(here("experiments/1_figures_main_ms/figure_3_v1.pdf"))
+ggsave(here("experiments/1_figures_main_ms/figure_3.pdf"))
 
 
 ## Figure 4 ----
 ## Shows effect of no diversity versus diversity in all functional groups.
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+02_event_definition_2.RDS"))
+
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result_none <- ss_9s %>%
@@ -497,58 +499,30 @@ p7 <- temp_none %>%
   ggtitle("(c) No diversity versus diversity all functional groups") +
   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)
 
-p1 / p6 / p7
+( p1 + p2 + p3 ) / ( p4 + p5 + p6 ) / (plot_spacer() + p7 + plot_spacer())
  
-ggsave(here("experiments/1_figures_main_ms/figure_4_v1.pdf"),
+ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
        width = 6, height = 5)
 
 
 ## Figure 5 ----
 ## Region of bistability by diversity and number of strains.
 
-ss_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6.RDS"))
-stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_1e6.RDS")) %>%
-  mutate(num_strains = 2)
-ss_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6_sub1.RDS"))
-stab_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_1e6_sub1.RDS")) %>%
-  mutate(num_strains = 2)
 
-
-ss_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_1e6.RDS"))
-stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_1e6.RDS")) %>%
-  mutate(num_strains = 3) 
-ss_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_1e6_sub1.RDS"))
-stab_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_1e6_sub1.RDS")) %>%
-  mutate(num_strains = 3)
-
-
-
-
-ss_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_1e6.RDS"))
-stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_1e6.RDS")) %>%
-  mutate(num_strains = 6) 
-ss_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_1e6_sub1.RDS"))
-stab_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_1e6_sub1.RDS")) %>%
-  mutate(num_strains = 6)
-
-
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
-stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6.RDS")) %>%
-  mutate(num_strains = 9) 
-ss_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6_sub1.RDS"))
-stab_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_sub1.RDS")) %>%
-  mutate(num_strains = 9)
-
-
+stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime1e+02_event_definition_2.RDS"))
+stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime1e+02_event_definition_2.RDS"))
+stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime1e+02_event_definition_2.RDS"))
+stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime1e+02_event_definition_2.RDS"))
 
 all_stab <- stab_2s %>%
-  bind_rows(stab_2s_sub1) %>%
+  #bind_rows(stab_2s_sub1) %>%
   bind_rows(stab_3s) %>%
-  bind_rows(stab_3s_sub1) %>%
+  #bind_rows(stab_3s_sub1) %>%
   bind_rows(stab_6s) %>%
-  bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s) %>%
-  bind_rows(stab_9s_sub1)
+  #bind_rows(stab_6s_sub1) %>%
+  bind_rows(stab_9s)
+  #bind_rows(stab_9s_sub1) %>%
+  #bind_rows(stab_9s_diff3)
 
 #all_stab <- stab_9s
 
@@ -639,38 +613,45 @@ all_stab_results <- all_stab_results %>%
 
 all_stab_results_small <- select(all_stab_results, -7:-12)
 
-saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
+#saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
+
+
 
 all_stab_results %>%
-  filter(var_treat %in% c("CB", "SB-PB", "CB-SB-PB")) %>%
+  #filter(var_treat == "CB") %>%
   filter(num_strains == 9) %>%
-  filter(Species == "CB_tot") %>%
+  filter(Species == "SB_tot") %>%
   ggplot(aes(x = stand_var,
              #col = as.factor(num_strains)
              )) +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha = 0.3) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha = 0.3) +
+  geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8) +
+  geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+  geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log), col = "gray", alpha = 0.2) +
   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
   xlab("Standardised amount of trait variation\n[see text for units]") +
   ylab("Oxygen diffusivity\n[log10 uM per hour]") +
   labs(fill = "Variation in\nonly these\nfunctional groups") +
   coord_flip() +
   guides(col = guide_legend(title="Number of strains")) +
+  theme_bw() +
   theme(
-    legend.position="top"
-    #strip.background = element_blank(),
+    legend.position="top",
+    panel.background = element_blank(),
     #strip.text.x = element_blank()
   ) +
-  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+  ggtitle("Bistability region for total SB density")
 
-ggsave(here("experiments/1_figures_main_ms/figure_5_v1_9strain_only.pdf"),
+ggsave(here("experiments/1_figures_main_ms/figure_5_9strain_only.pdf"),
        width = 10, height = 8)
+
+
 
 
 ## Figure 5 all strains ----
 
 all_stab_results %>%
-  filter(var_treat %in% c("CB", "SB-PB", "CB-SB-PB")) %>%
+  #filter(var_treat == "CB") %>%
   #filter(num_strains == 9) %>%
   filter(Species == "CB_tot") %>%
   ggplot(aes(x = stand_var,
@@ -691,7 +672,7 @@ all_stab_results %>%
   ) +
   geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
 
-ggsave(here("experiments/1_figures_main_ms/figure_5_v1_allstrains.pdf"),
+ggsave(here("experiments/1_figures_main_ms/figure_5_v2_allstrains.pdf"),
        width = 10, height = 8)
 
 
@@ -722,6 +703,506 @@ agg_stab_res %>%
     #strip.text.x = element_blank()
   ) +
   geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+
+
+
+
+
+
+temp <- all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O",
+         var_treat == "SB-PB",
+         num_strains == 9) %>%
+  ggplot(aes(x = var_gmax,
+             col = as.factor(num_strains))) +
+  geom_line(aes(y = hyst_min_log)) +
+  geom_line(aes(y = hyst_max_log)) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  guides(col = guide_legend(title="Number of strains")) +
+  theme(
+    legend.position="top"
+    #strip.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
+
+
+
+## test1 :: Just SB ----
+
+
+## Looking at some examples
+# With 3 strains SB_var_gmax_s = 0.07153598 is very different to adjacent
+# 0.06960258 and 0.07346939
+
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6_sub1.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0.06960258) < 0.0001,
+         abs(PB_var_gmax_s - 0) < 0.0001)
+ss_result$pars[[1]]$SB
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0.07153598) < 0.0001,
+         abs(PB_var_gmax_s - 0) < 0.0001)
+ss_result$pars[[1]]$SB
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0.07346939) < 0.0001,
+         abs(PB_var_gmax_s - 0) < 0.0001)
+ss_result$pars[[1]]$SB
+
+temp <- ss_result$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+
+num_strains <- temp %>%
+  group_by(functional_group) %>%
+  summarise(num = length(unique(species))) %>%
+  na.omit()
+
+num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+
+line_width <- 2
+
+p1 <- temp %>%
+  dplyr::filter(functional_group == "CB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(b) Cyanobacteria")
+#p1# p1
+
+p2 <- temp %>%
+  dplyr::filter(functional_group == "SB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(c) Sulfate reducing bacteria")
+
+p3 <- temp %>%
+  dplyr::filter(functional_group == "PB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(d) Phototrophic sulfur bacteria")
+
+p4 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(e) Oxygen concentration")
+
+p5 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "SR") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width, col = 6) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(f) Sulfide concentration")
+
+patchwork <- p1 / p2 / p3 / p4 / p5
+patchwork
+#ggsave(here("experiments/1_figures_main_ms/figure_3_v2.pdf"))
+
+
+
+## test1 :: Just PB ----
+
+
+## Looking at some examples
+# With 3 strains SB_var_gmax_s = 0.07153598 is very different to adjacent
+# 0.06960258 and 0.07346939
+
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+sort(unique(ss_9s$PB_var_gmax_s))
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0) < 0.0001,
+         abs(PB_var_gmax_s - 0.06960258) < 0.0001)
+ss_result$pars[[1]]$SB
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0) < 0.0001,
+         abs(PB_var_gmax_s - 0.07153598) < 0.0001)
+ss_result$pars[[1]]$SB
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0) < 0.0001,
+         abs(SB_var_gmax_s - 0) < 0.0001,
+         abs(PB_var_gmax_s - 0.07346939) < 0.0001)
+ss_result$pars[[1]]$SB
+
+temp <- ss_result$ssfind_result[[1]] %>%
+  mutate(a = 10^a_O) %>%
+  # arrange(a) %>%
+  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+  # select(-initial_N_CB, -a_O) %>%
+  gather(species, quantity, 2:(ncol(.) - 2)) %>%
+  mutate(
+    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+    functional_group = case_when(
+      str_detect(species, "CB_") ~ "CB",
+      str_detect(species, "SB_") ~ "SB",
+      str_detect(species, "PB_") ~ "PB"
+    ),
+    log10_quantity = log10(quantity + 1)
+  )
+
+num_strains <- temp %>%
+  group_by(functional_group) %>%
+  summarise(num = length(unique(species))) %>%
+  na.omit()
+
+num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+
+line_width <- 2
+
+p1 <- temp %>%
+  dplyr::filter(functional_group == "CB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(b) Cyanobacteria")
+#p1# p1
+
+p2 <- temp %>%
+  dplyr::filter(functional_group == "SB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(c) Sulfate reducing bacteria")
+
+p3 <- temp %>%
+  dplyr::filter(functional_group == "PB")  %>%
+  mutate(species = factor(species, levels = unique(species))) %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+  guides(colour = guide_legend(ncol = 3)) +
+  theme(legend.position="none") +
+  ggtitle("(d) Phototrophic sulfur bacteria")
+
+p4 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "O") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(e) Oxygen concentration")
+
+p5 <- temp %>%
+  dplyr::filter(var_type == "Substrate", species == "SR") %>%
+  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+  geom_path(lwd = line_width, col = 6) +
+  ##ylab("log10(quantity [cells])") +
+  ylab("Log(Quantity)") +
+  xlab("Oxygen diffusivity") +
+  theme(legend.position="none") +
+  ggtitle("(f) Sulfide concentration")
+
+patchwork <- p1 / p2 / p3 / p4 / p5
+patchwork
+#ggsave(here("experiments/1_figures_main_ms/figure_3_v2.pdf"))
+
+
+
+
+
+
+
+
+
+## insert from Uriah ----
+
+all_stab_results9 <- all_stab_results_small %>%
+  distinct() %>%  #there are some duplicated rows....? yes, some treatment combs were repeated when sub1 was made
+  filter(num_strains == 9, Species == "CB_tot") 
+
+all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, var_gmax)),]
+
+all_stab_results9$method <- "simulated"
+
+calculation_fct <- function(x,y,z=NULL, Method="arithmetic"){
+  if(Method=="arithmetic") {
+    if(is.null(z)) {
+      w <- log10((10^x + 10^y)/2)
+    } else {
+      w <- log10((10^x + 10^y + 10^z)/3)
+    }
+    return(w)
+  }    
+  
+  
+  if(Method%in% c("arith_log","geometric")) {
+    if(is.null(z)) {
+      # w <- (x+y)/2 # the same as below
+      w <- log10((10^x*10^y)^(1/2))
+    } else {
+      # w <- (x+y+z)/3
+      w <- log10((10^x*10^y*10^z)^(1/3))
+    }
+    return(w)
+  }   
+  
+  if(Method=="geom_log") {
+    if(is.null(z)) {
+      w <- (x*y)^(1/2)
+      w <- -w
+    } else {
+      w <- (x*y*z)^(1/3)
+    }
+    return(w) 
+  }
+  
+  if(Method=="EF_log") {
+    w <- x + y - first(x)
+    return(w) 
+  }
+  
+  if(Method=="EF_lin") {
+    w <- log10(10^x + 10^y - 10^first(x))
+    return(w) 
+  }
+}
+
+
+combine_fct <- function(Method="arithmetic"){
+  agg_stab_res_single_groups_wide <- all_stab_results9 %>%
+    dplyr::select(Species,hyst_min_log,hyst_max_log,var_treat,var_gmax) %>%
+    dplyr::filter(Species == "CB_tot") %>%
+    group_by(var_treat) %>%
+    dplyr::mutate(var_gmax = rank(var_gmax)) %>%
+    pivot_wider(names_from = "var_treat", values_from = c("hyst_min_log", "hyst_max_log")) %>%
+    dplyr::mutate(hyst_min_log_CB_SB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB, Method=Method),
+                  hyst_max_log_CB_SB = calculation_fct(hyst_max_log_CB,hyst_max_log_SB, Method=Method),
+                  hyst_min_log_CB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_PB, Method=Method),
+                  hyst_max_log_CB_PB = calculation_fct(hyst_max_log_CB,hyst_max_log_PB, Method=Method),
+                  hyst_min_log_SB_PB = calculation_fct(hyst_min_log_SB,hyst_min_log_PB, Method=Method),
+                  hyst_max_log_SB_PB = calculation_fct(hyst_max_log_SB,hyst_max_log_PB, Method=Method),
+                  # hyst_min_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB,hyst_min_log_PB, Method=Method),
+                  # hyst_max_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_max_log_SB,hyst_max_log_PB, Method=Method),
+                  hyst_min_log_CB_SBPB = calculation_fct(`hyst_min_log_SB-PB`,hyst_min_log_CB, Method=Method),
+                  hyst_max_log_CB_SBPB = calculation_fct(`hyst_max_log_SB-PB`,hyst_max_log_CB, Method=Method))
+  
+  agg_stab_strain9 <- all_stab_results9 %>%
+    dplyr::filter(num_strains==9, Species == "CB_tot") 
+  
+  ### CB + SB
+  agg_stab_strain9_CB_SB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB")
+  
+  agg_stab_strain9_CB_SB$method <- "calculated"
+  agg_stab_strain9_CB_SB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB
+  agg_stab_strain9_CB_SB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB
+  
+  ### CB + PB
+  agg_stab_strain9_CB_PB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-PB")
+  
+  agg_stab_strain9_CB_PB$method <- "calculated"
+  agg_stab_strain9_CB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_PB
+  agg_stab_strain9_CB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_PB
+  
+  ### SB + PB
+  agg_stab_strain9_SB_PB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="SB-PB")
+  
+  agg_stab_strain9_SB_PB$method <- "calculated"
+  agg_stab_strain9_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_SB_PB
+  agg_stab_strain9_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_SB_PB
+  
+  ### CB + SB + PB
+  # agg_stab_strain9_CB_SB_PB <- agg_stab_strain9 %>%
+  #   dplyr::filter(var_treat=="CB-SB-PB")
+  # 
+  # agg_stab_strain9_CB_SB_PB$method <- "calculated CB+SB+PB"
+  # agg_stab_strain9_CB_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB_PB
+  # agg_stab_strain9_CB_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB_PB
+  
+  ### CB + SBPB
+  agg_stab_strain9_CB_SBPB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB-PB")
+  
+  agg_stab_strain9_CB_SBPB$method <- "calculated CB+SBPB"
+  agg_stab_strain9_CB_SBPB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SBPB
+  agg_stab_strain9_CB_SBPB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SBPB
+  
+  ### merge 
+  agg_stab_strain9 <- rbind(agg_stab_strain9, agg_stab_strain9_CB_SB, agg_stab_strain9_CB_PB, agg_stab_strain9_SB_PB,
+                            # agg_stab_strain9_CB_SB_PB,
+                            agg_stab_strain9_CB_SBPB)
+  return(agg_stab_strain9)
+}
+
+agg_stab_strain9 <- combine_fct("arithmetic")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Arithmetic mean on linear scale",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+agg_stab_strain9 <- combine_fct("geometric") # same as agg_stab_strain9 <- combine_fct("arith_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Geometric mean on linear scale",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+agg_stab_strain9 <- combine_fct("geom_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Geometric mean on log scale",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+
+## based on effect sizes 
+
+
+agg_stab_strain9 <- combine_fct("EF_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Addition of effect sizes and starting position (log)",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+
+agg_stab_strain9 <- combine_fct("EF_lin")
+
+agg_stab_strain9 %>%
+  filter(Species == "CB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Addition of effect sizes and starting position (linear)",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+
+
+###### End of insert
 
 
 

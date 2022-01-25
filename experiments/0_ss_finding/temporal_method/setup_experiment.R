@@ -1,44 +1,11 @@
+## see file R/how_to_install_microxanox for (surprise) how to install the microxanox package
 
-# rm(list = ls())
-
-knitr::opts_knit$set(
-  progress = TRUE, 
-  verbose = FALSE, 
-  cache = TRUE
-)
-
-microxanox_release <- "0.3.1"
-
-#tmplib <- tempfile()
-#dir.create(tmplib)
-
-
-### From '?remotes::install_github`:
-# auth_token
-#   To install from a private repo, generate a personal access token (PAT) in
-#   "https://github.com/settings/tokens" and supply to this argument. This is
-#   safer than using a password because you can easily delete a PAT without
-#   affecting any others. Defaults to the GITHUB_PAT environment variable.
-
-# remotes::install_github(
-#   "opetchey/microxanox",
-#   ref = microxanox_release,
-#   # auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE",
-#   build_vignettes = FALSE,
-#   force = TRUE,
-#   upgrade = FALSE,
-#   lib = tmplib
-# )
-
-#library(microxanox, lib.loc = tmplib)
-
+library(here)
+microxanox_release <- "0.4.9"
 library(microxanox)
-if (packageVersion("microxanox") < package_version("0.3.0")) {
-  stop("microxanox version needs to be at least 0.3.0!")
-}
+source(here::here("experiments/0_ss_finding/temporal_method/check_microxanox_version.R"))
 library(tidyverse)
 library(patchwork)
-library(here)
 source(here("R/various_useful_functions.r"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
@@ -59,7 +26,7 @@ sp <- new_strain_parameter(
 
 parameter <- new_runsim_parameter(
   dynamic_model = bushplus_dynamic_model,
-  event_definition = event_definition_1,
+  event_definition = event_definition_2,
   event_interval = 100,
   noise_sigma = 0,
   minimum_abundances = rep(1, 3),
@@ -152,7 +119,7 @@ var_expt <- create_diversity_factorial2(
 
 
 
-wait_time <- 1e6
+wait_time <- 1e3
 parameter$log10a_series <- seq(-8, 0, length = 300)
 ##### next two lines for testing purposes
 wait_time <- 1e2 ## for testing
@@ -165,3 +132,6 @@ parameter$event_interval <- 1000
 parameter$sim_duration <- wait_time * length(parameter$log10a_series)
 parameter$sim_sample_interval <- wait_time
 total_initial_abundances <- 10^5
+event_def <- "event_definition_2"
+parameter$event_definition <- eval(parse(text = event_def))
+

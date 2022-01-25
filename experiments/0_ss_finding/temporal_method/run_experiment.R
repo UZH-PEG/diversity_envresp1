@@ -2,18 +2,28 @@
 ## Be careful to not overwrite data files
 
 rm(list = ls())
-library(here)
-source(here("R/various_useful_functions.r"))
-max_cores <- benchmarkme::get_cpu()$no_of_cores
+source(here::here("R/various_useful_functions.r"))
+max_cores <- benchmarkme::get_cpu()$no_of_cores-2
 
 
 ## Run for 2, 3, 6, and 9 strains
 for(num_strains in c(2, 3, 6, 9)) {
 
-  num_strains <- 2 ## for testing
+  #num_strains <- 2 ## for testing
     
   ## Run the code that sets up the experiment
-  source(here("experiments/0_ss_finding/temporal_method/setup_experiment.R"))
+  source(here::here("experiments/0_ss_finding/temporal_method/setup_experiment.R"))
+  
+  ss_data_filename <- here("experiments/0_ss_finding/temporal_method/data/",
+                           paste0("ss_data_",
+                                  num_strains, "strains_waittime",
+                                  formatC(wait_time, format = "e", digits = 0),
+                                  "_", event_def,".RDS"))
+  stab_data_filename <- here("experiments/0_ss_finding/temporal_method/data/",
+                           paste0("stab_data_",
+                                  num_strains, "strains_waittime",
+                                  formatC(wait_time, format = "e", digits = 0),
+                                  "_", event_def,".RDS"))
   
   ## Estimate time require ----
   nrow(var_expt)
@@ -35,18 +45,14 @@ for(num_strains in c(2, 3, 6, 9)) {
                                                total_initial_abundances = total_initial_abundances,
                                                cores = num_cores)
   })
-  saveRDS(expt_res,
-          here("experiments/0_ss_finding/temporal_method/data/",
-               paste0(num_strains, "_strain_SS_data_XXX.RDS")))
+  saveRDS(expt_res, ss_data_filename)
   ## End of run experiment
   
   
   
   ## Get stability measures ----
   num_cores <- min(c(max_cores, nrow(var_expt)))
-  expt_res <- readRDS(here("experiments/0_ss_finding/temporal_method/data/",
-                           paste0(num_strains,
-                                  "_strain_SS_data_1e3.RDS")))
+  expt_res <- readRDS(ss_data_filename)
   ## Get total biomass of CB, of SB, and of PB, to allow calculation of stability of these
   expt_res <- expt_res %>%
     mutate(ssfind_result = list(get_total_bio(ssfind_result)))
@@ -55,13 +61,12 @@ for(num_strains in c(2, 3, 6, 9)) {
   system.time({
     stab_data <-  expt_res %>%
       multidplyr::partition(cluster1) %>%
-      mutate(stability_measures = list(get_stability_measures_new(ssfind_result))) %>%
+      mutate(stability_measures = list(get_stability_measures(ssfind_result))) %>%
       collect() %>%
-      unnest(cols = c(stability_measures)) 
+      unnest(cols = c(stability_measures)) %>%
+      mutate(num_strains = num_strains)
   })
-  saveRDS(stab_data,
-          here("experiments/0_ss_finding/temporal_method/data/",
-               paste0(num_strains, "_strain_stab_data_XXX.RDS")))
+  saveRDS(stab_data, stab_data_filename)
   ## End of getting stability measures
 
   

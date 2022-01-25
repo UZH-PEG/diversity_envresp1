@@ -5,7 +5,9 @@
 rm(list = ls())
 
 ## Prelims ----
+microxanox_release <- "0.4.9"
 library(microxanox)
+source(here::here("experiments/0_ss_finding/temporal_method/check_microxanox_version.R"))
 library(tidyverse)
 library(patchwork)
 library(here)

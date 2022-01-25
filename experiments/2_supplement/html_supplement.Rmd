@@ -31,9 +31,17 @@ unity <- 1
 
 This document contains the Supporting Content for the report *?????????????*.
 
+# Creating among strain diversity
+
+Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant sections of the main text.
+
+Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $G_{max,CB}$ and a reference tolerance parameter $h_{SR,CB}$. Recall that amount of among strain variation is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a tradeoff, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{G_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $G_{max,CB} = 0.05$, among strain variation of $Div_{G_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $G_{max,i} = D_i * G_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{G_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
+
+This procedure ensures that the range of trait values is independent of the number of strains. When there were only two strains, the two strains took the minimum and maximum traits values, as defined by the $Div$ variable for that trait. When there were three strains, one had the minimum trait value, one the maximum, and one the mean. With nine strains, one had the minimum trait value, one the maximum, one the mean, and three were equally spaced (on log scale) between the minimum and the mean, and the remaining three between the maximum and the mean. 
+
 # Visualising among strain diversity
 
-The method for creating among strain diversity is explained in the main report. Here we show three visualisations, one for nine strains, one for three, and one for two.
+Here we show three visualisations, one for nine strains, one for three, and one for two.
 
 In each, the top row of three graphs shows the diversity and tradeoff in each of the three functional groups. The most tolerant strain is always in the darker shade.The lower row of three graphs shows the relationship between realised growth rate as a function of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these lower graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff shown in the upper graph. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate.
 
@@ -137,15 +145,15 @@ display_diversity(4,
 
 # Robustness of stable state finding
 
+## Method for finding stable states
+
 We now discuss two approaches for finding how the stable state of the system varies along the gradient of oxygen diffusivity when there exists the possibility of multiple stable states. In the main article we describe and report results of the method that we term the *Temporal method*.
 
 Here we also describe and give results of what we term the *Replication method*. In this, we made a separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
 
-
 As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches. For example, in the temporal method, the oxygen concentration in the anoxic state is lower than the initial oxygen concentration in the replication approach, and **Owen guesses that** the sulfide concentration is higher **check that last statement**.
 
-
-## Replication method, no diversity
+### Replication method, no diversity
 
 In the following graph, the solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state).Stable states found with the replication method. Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
 
@@ -159,7 +167,7 @@ plot_ss_result1(repl_meth,
                 save_image_file = FALSE)
 ```
 
-## Temporal method, no diversity
+### Temporal method, no diversity
 
 Same as for the previous graph.
 
@@ -168,7 +176,7 @@ plot_ss_result3(temp_meth, 1)
 ```
 
 
-## Both methods overlaid, no diversity
+### Both methods overlaid, no diversity
 
 Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
 
@@ -186,8 +194,7 @@ plot_ss_result6(repl_method_1,
                 xlims = c(-8, 0))
 ```
 
-
-## Effect of diversity, replication method
+### Effect of diversity, replication method
 
 The replication method shows the same effects of functional diversity as those revealed by the temporal method:
 
@@ -266,8 +273,222 @@ all_stab_results %>%
 
 The figure above shows the effect of response trait diversity (y-axis) on the positions of the tipping points (show by dark lines), which determine the extent of the region of bistability in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
 
+### Further information
+
+Here we give some further thoughts regarding the comparison of the temporal and replication method for stable state finding.
+
+A particularly notable difference between the two approaches is in the initial condition. In the temporal approach, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the approach of Bush et al (2017) the initial conditions are fixed and arbitrary (though this approach is still useful for illustrating the bistability of the system). This difference in initial conditions increases the region of bistability in the temporal approach because as a tipping point approaches, the functional group that will dominate after the regime shift starts from much lower abundances than in the approach by Bush et al (2017) and thus requires stronger amelioration of the environment to take over. Nevertheless, our main conclusions about the effects of functional trait diversity are the same using either approach. 
+
+The temporal approach is particularly useful when investigating the effects of strain richness. In preliminary simulations using the Bush et al (2017) approach, we found the counterintuitive result that higher strain richness led to lower resilience. We then recalled that we chose to divide the initial total abundance of the cyanobacterial (CB) functional group equally among the strains (termed a substitutive design in biodiversity manipulation experiments). This meant that the most tolerant CB strain in a three-strain simulation had higher initial abundance than the same most tolerant CB strain in a nine-strain simulation. The greater abundance of the most CB tolerant strain made it possible for a three-strain system to develop to be oxic, whereas the nine-strain system developed to be anoxic, despite identical range of trait variation. We could have chosen to do otherwise, for example start with the least tolerant strains of cyanobacteria as more abundant when the system started with high cyanobacterial abundance, and the most tolerant strain as more abundant when the system starts with low cyanobacterial abundance. Using the temporal approach removed the need to specify initial abundances (except the very first one), and therefore results were not so determined by the assumptions used to determine the initial conditions. 
+
+
+## Effect of immigration / minimum abundance event
+
+The simulations include two methods to prevent very low densities. One is to make a floor density; if densities go below this, then they are set to that floor value. Another is to regularly add a density of 1 to all biological state variables. Here are the results for adding 1.
+
+```{r}
+## Figure 5 ----
+## Region of bistability by diversity and number of strains.
+
+# ss_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6.RDS"))
+# stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_1e6.RDS")) %>%
+#   mutate(num_strains = 2)
+# ss_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6_sub1.RDS"))
+# stab_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_1e6_sub1.RDS")) %>%
+#   mutate(num_strains = 2)
+# 
+# 
+# ss_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_1e6.RDS"))
+# stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_1e6.RDS")) %>%
+#   mutate(num_strains = 3) 
+# ss_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_1e6_sub1.RDS"))
+# stab_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_1e6_sub1.RDS")) %>%
+#   mutate(num_strains = 3)
+# 
+# 
+# 
+# 
+# ss_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_1e6.RDS"))
+# stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_1e6.RDS")) %>%
+#   mutate(num_strains = 6) 
+# ss_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_1e6_sub1.RDS"))
+# stab_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_1e6_sub1.RDS")) %>%
+#   mutate(num_strains = 6)
+# 
+
+# expt_res <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6_eventdef2.RDS"))
+# num_cores <- 8
+# expt_res <- expt_res %>%
+#   mutate(ssfind_result = list(get_total_bio(ssfind_result)))
+# cluster1 <- multidplyr::new_cluster(num_cores)
+# multidplyr::cluster_library(cluster1, c("microxanox", "dplyr"))
+# system.time({
+#   stab_data <-  expt_res %>%
+#     multidplyr::partition(cluster1) %>%
+#     mutate(stability_measures = list(get_stability_measures_new(ssfind_result))) %>%
+#     collect() %>%
+#     unnest(cols = c(stability_measures)) 
+# })
+# saveRDS(stab_data, here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_eventdef2.RDS"))
+
+stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_eventdef2.RDS")) %>%
+  mutate(num_strains = 9) 
+
+stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_eventdef2.RDS")) %>%
+  mutate(num_strains = 9) 
+
+
+#ss_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6_sub1.RDS"))
+#stab_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_sub1.RDS")) %>%
+#  mutate(num_strains = 9)
+
+#stab_9s_diff3 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_diff3.RDS")) %>%
+#  mutate(num_strains = 9) 
+
+
+# all_stab <- stab_2s %>%
+#   bind_rows(stab_2s_sub1) %>%
+#   bind_rows(stab_3s) %>%
+#   bind_rows(stab_3s_sub1) %>%
+#   bind_rows(stab_6s) %>%
+#   bind_rows(stab_6s_sub1) %>%
+#   bind_rows(stab_9s) %>%
+#   bind_rows(stab_9s_sub1) %>%
+#   bind_rows(stab_9s_diff3)
+
+all_stab <- stab_9s
+
+CB_vars <- unique(all_stab$CB_var_gmax_s)
+SB_vars <- unique(all_stab$SB_var_gmax_s)
+PB_vars <- unique(all_stab$PB_var_gmax_s)
+
+CB_all_stab <- all_stab %>%
+  filter(SB_var_gmax_s == 0,
+         PB_var_gmax_s == 0) %>%
+  ungroup() %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+SB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0,
+         PB_var_gmax_s == 0)  %>%
+  ungroup() %>%
+  mutate(var_treat = "SB",
+         var_gmax = SB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+PB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0,
+         SB_var_gmax_s == 0) %>%
+  ungroup()  %>%
+  mutate(var_treat = "PB",
+         var_gmax = PB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "CB-SB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax)) %>%
+  filter(PB_var_gmax_s == 0)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   PB_var_gmax_s = sort(PB_vars))
+CBPB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "CB-PB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax)) %>%
+  filter(SB_var_gmax_s == 0)
+
+for_join <- tibble(SB_var_gmax_s = sort(SB_vars),
+                   PB_var_gmax_s = sort(PB_vars))
+SBPB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax)) %>%
+  filter(CB_var_gmax_s == 0)
+
+
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars),
+                   PB_var_gmax_s = sort(PB_vars))
+CBSBPB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+
+all_stab_results <- CB_all_stab %>%
+  bind_rows(SB_all_stab) %>%
+  bind_rows(PB_all_stab) %>%
+  bind_rows(CBSB_all_stab) %>%
+  bind_rows(CBPB_all_stab) %>%
+  bind_rows(SBPB_all_stab) %>%
+  bind_rows(CBSBPB_all_stab)
+
+all_stab_results <- all_stab_results %>%
+  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB",
+                                                                "SB",
+                                                                "PB",
+                                                                "CB-SB",
+                                                                "CB-PB",
+                                                                "SB-PB",
+                                                                "CB-SB-PB")))
+
+all_stab_results_small <- select(all_stab_results, -7:-12)
+
+#saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
+
+
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(num_strains == 9) %>%
+  filter(Species == "SB_tot") %>%
+  ggplot(aes(x = stand_var,
+             #col = as.factor(num_strains)
+             )) +
+  geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8) +
+  geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+  geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log), col = "gray", alpha = 0.2) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Standardised amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  guides(col = guide_legend(title="Number of strains")) +
+  theme_bw() +
+  theme(
+    legend.position="top",
+    panel.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+  ggtitle("Bistability region for total SB density")
+
+#ggsave(here("experiments/1_figures_main_ms/figure_5_v2_9strain_only.pdf"),
+#       width = 10, height = 8)
+
+
+
+```
+
+
+
+
+
 
 ## Effect of simulation duration
+
+### A case where 1'000'000 hours is not long enough
 
 The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours simulation time, or 2'000'000 hours. This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
@@ -481,7 +702,206 @@ patchwork <- p1 / p2 / p3 / p4 / p5
 patchwork
 ```
  
- 
+### Shorter simulation times
+
+Here 1e4 hours at each oxygen diffusivity level:
+
+```{r}
+## Figure 5 ----
+## Region of bistability by diversity and number of strains.
+
+# ss_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6.RDS"))
+# stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_1e6.RDS")) %>%
+#   mutate(num_strains = 2)
+# ss_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_SS_data_1e6_sub1.RDS"))
+# stab_2s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/2_strain_stab_data_1e6_sub1.RDS")) %>%
+#   mutate(num_strains = 2)
+# 
+# 
+# ss_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_1e6.RDS"))
+# stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_1e6.RDS")) %>%
+#   mutate(num_strains = 3) 
+# ss_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_SS_data_1e6_sub1.RDS"))
+# stab_3s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/3_strain_stab_data_1e6_sub1.RDS")) %>%
+#   mutate(num_strains = 3)
+# 
+# 
+# 
+# 
+# ss_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_1e6.RDS"))
+# stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_1e6.RDS")) %>%
+#   mutate(num_strains = 6) 
+# ss_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_SS_data_1e6_sub1.RDS"))
+# stab_6s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/6_strain_stab_data_1e6_sub1.RDS")) %>%
+#   mutate(num_strains = 6)
+# 
+
+# expt_res <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6_eventdef2.RDS"))
+# num_cores <- 8
+# expt_res <- expt_res %>%
+#   mutate(ssfind_result = list(get_total_bio(ssfind_result)))
+# cluster1 <- multidplyr::new_cluster(num_cores)
+# multidplyr::cluster_library(cluster1, c("microxanox", "dplyr"))
+# system.time({
+#   stab_data <-  expt_res %>%
+#     multidplyr::partition(cluster1) %>%
+#     mutate(stability_measures = list(get_stability_measures_new(ssfind_result))) %>%
+#     collect() %>%
+#     unnest(cols = c(stability_measures)) 
+# })
+# saveRDS(stab_data, here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_eventdef2.RDS"))
+
+#stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_eventdef2.RDS")) %>%
+#  mutate(num_strains = 9) 
+
+stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e4_eventdef2.RDS")) %>%
+  mutate(num_strains = 9) 
+
+
+#ss_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6_sub1.RDS"))
+#stab_9s_sub1 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_sub1.RDS")) %>%
+#  mutate(num_strains = 9)
+
+#stab_9s_diff3 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_stab_data_1e6_diff3.RDS")) %>%
+#  mutate(num_strains = 9) 
+
+
+# all_stab <- stab_2s %>%
+#   bind_rows(stab_2s_sub1) %>%
+#   bind_rows(stab_3s) %>%
+#   bind_rows(stab_3s_sub1) %>%
+#   bind_rows(stab_6s) %>%
+#   bind_rows(stab_6s_sub1) %>%
+#   bind_rows(stab_9s) %>%
+#   bind_rows(stab_9s_sub1) %>%
+#   bind_rows(stab_9s_diff3)
+
+all_stab <- stab_9s
+
+CB_vars <- unique(all_stab$CB_var_gmax_s)
+SB_vars <- unique(all_stab$SB_var_gmax_s)
+PB_vars <- unique(all_stab$PB_var_gmax_s)
+
+CB_all_stab <- all_stab %>%
+  filter(SB_var_gmax_s == 0,
+         PB_var_gmax_s == 0) %>%
+  ungroup() %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+SB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0,
+         PB_var_gmax_s == 0)  %>%
+  ungroup() %>%
+  mutate(var_treat = "SB",
+         var_gmax = SB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+PB_all_stab <- all_stab %>%
+  filter(CB_var_gmax_s == 0,
+         SB_var_gmax_s == 0) %>%
+  ungroup()  %>%
+  mutate(var_treat = "PB",
+         var_gmax = PB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars))
+CBSB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "CB-SB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax)) %>%
+  filter(PB_var_gmax_s == 0)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   PB_var_gmax_s = sort(PB_vars))
+CBPB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "CB-PB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax)) %>%
+  filter(SB_var_gmax_s == 0)
+
+for_join <- tibble(SB_var_gmax_s = sort(SB_vars),
+                   PB_var_gmax_s = sort(PB_vars))
+SBPB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax)) %>%
+  filter(CB_var_gmax_s == 0)
+
+
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                   SB_var_gmax_s = sort(SB_vars),
+                   PB_var_gmax_s = sort(PB_vars))
+CBSBPB_all_stab <- all_stab %>%
+  right_join(for_join)  %>%
+  ungroup() %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s,
+         stand_var = var_gmax / max(var_gmax))
+
+all_stab_results <- CB_all_stab %>%
+  bind_rows(SB_all_stab) %>%
+  bind_rows(PB_all_stab) %>%
+  bind_rows(CBSB_all_stab) %>%
+  bind_rows(CBPB_all_stab) %>%
+  bind_rows(SBPB_all_stab) %>%
+  bind_rows(CBSBPB_all_stab)
+
+all_stab_results <- all_stab_results %>%
+  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB",
+                                                                "SB",
+                                                                "PB",
+                                                                "CB-SB",
+                                                                "CB-PB",
+                                                                "SB-PB",
+                                                                "CB-SB-PB")))
+
+all_stab_results_small <- select(all_stab_results, -7:-12)
+
+#saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
+
+
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(num_strains == 9) %>%
+  filter(Species == "SB_tot") %>%
+  ggplot(aes(x = stand_var,
+             #col = as.factor(num_strains)
+             )) +
+  geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8) +
+  geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+  geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log), col = "gray", alpha = 0.2) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  xlab("Standardised amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  guides(col = guide_legend(title="Number of strains")) +
+  theme_bw() +
+  theme(
+    legend.position="top",
+    panel.background = element_blank(),
+    #strip.text.x = element_blank()
+  ) +
+  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+  ggtitle("Bistability region for total SB density")
+
+#ggsave(here("experiments/1_figures_main_ms/figure_5_v2_9strain_only.pdf"),
+#       width = 10, height = 8)
+
+
+
+```
+
+
  
 
 # Finding the separatrix

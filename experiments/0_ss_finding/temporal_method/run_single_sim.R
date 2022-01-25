@@ -1,15 +1,14 @@
 ## Note that the microxanox function "get_ssbyaN_parameter" may be useful here, though the code below
 ## would need to be changed in order to use it.
+## See file R/how_to_install_microxanox for (surprise) how to install the microxanox package
 
 
 
 rm(list = ls())
 
-microxanox_release <- "0.3.1"
+microxanox_release <- "0.4.9"
 library(microxanox)
-if (packageVersion("microxanox") < package_version("0.3.0")) {
-  stop("microxanox version needs to be at least 0.3.0!")
-}
+source(here::here("experiments/0_ss_finding/temporal_method/check_microxanox_v0.4.9_or_higher.R"))
 library(tidyverse)
 library(patchwork)
 library(here)
