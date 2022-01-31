@@ -22,319 +22,15 @@ source(here("experiments/1_figures_main_ms/ms_figure_functions.R"))
 
 ## Figure 1 ----
 ## Powerpoint
+## Conceptual figure
 
-## Figure 2a ----
+## Figure 2 ----
 ## Keynote
-
-## Figure 2b-f ----
-
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
-sort(unique(ss_9s$CB_var_gmax_s))
-sort(unique(ss_9s$SB_var_gmax_s))
-ss_result <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0) < 0.0001,
-         abs(SB_var_gmax_s - 0) < 0.0001,
-         abs(PB_var_gmax_s - 0) < 0.0001)
-
-fig_state_vs_o2diff_sidebyside(ss_result)
-ggsave(here("experiments/1_figures_main_ms/figure_2b-f.pdf"))
-
+## Model system
 
 ## Figure 3 ----
-## Stable state with diversity in all functional groups.
-
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
-sort(unique(ss_9s$CB_var_gmax_s))
-sort(unique(ss_9s$SB_var_gmax_s))
-ss_result <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.028254848) < 0.0001,
-         abs(SB_var_gmax_s - 0.084764545) < 0.0001,
-         abs(PB_var_gmax_s - 0.084764545) < 0.0001)
-
-
-fig_state_vs_o2diff_sidebyside(ss_result)
-ggsave(here("experiments/1_figures_main_ms/figure_3.pdf"))
-
-
-## Figure 4 ----
-## Shows effect of no diversity versus diversity in all functional groups.
-
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
-
-sort(unique(ss_9s$CB_var_gmax_s))
-sort(unique(ss_9s$SB_var_gmax_s))
-ss_result_none <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
-         abs(SB_var_gmax_s - 0.0) < 0.0001,
-         abs(PB_var_gmax_s - 0.0) < 0.0001)
-ss_result_CB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
-         abs(SB_var_gmax_s - 0.0) < 0.0001,
-         abs(PB_var_gmax_s - 0.0) < 0.0001)
-ss_result_SB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
-         abs(SB_var_gmax_s - 0.044875347) < 0.0001,
-         abs(PB_var_gmax_s - 0.0) < 0.0001)
-ss_result_PB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
-         abs(SB_var_gmax_s - 0.0) < 0.0001,
-         abs(PB_var_gmax_s - 0.044875347) < 0.0001)
-ss_result_CBSB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
-         abs(SB_var_gmax_s - 0.044875347) < 0.0001,
-         abs(PB_var_gmax_s - 0.0) < 0.0001)
-ss_result_CBPB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
-         abs(SB_var_gmax_s - 0.0) < 0.0001,
-         abs(PB_var_gmax_s - 0.044875347) < 0.0001)
-ss_result_SBPB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
-         abs(SB_var_gmax_s - 0.044875347) < 0.0001,
-         abs(PB_var_gmax_s - 0.044875347) < 0.0001)
-ss_result_CBSBPB <- ss_9s %>%
-  filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
-         abs(SB_var_gmax_s - 0.044875347) < 0.0001,
-         abs(PB_var_gmax_s - 0.044875347) < 0.0001)
-
-
-
-temp_none <- ss_result_none$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-
-temp_CB <- ss_result_CB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-temp_SB <- ss_result_SB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-temp_PB <- ss_result_PB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-temp_CBSB <- ss_result_CBSB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-temp_CBPB <- ss_result_CBPB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-temp_SBPB <- ss_result_SBPB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-temp_CBSBPB <- ss_result_CBSBPB$ssfind_result[[1]] %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-
-line_width <- 2.5
-
-## a
-p1 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_CB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(a) No diversity versus diversity\nin only CB") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
-  theme(plot.title = element_text(size = 10))
-p2 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_SB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(a) No diversity versus diversity\nin only SB") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
-  theme(plot.title = element_text(size = 10))
-p3 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_PB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(a) No diversity versus diversity\nin only PB") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
-  theme(plot.title = element_text(size = 10))
-p4 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_CBSB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(b) No diversity versus diversity\nin only CB & SB") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
-  theme(plot.title = element_text(size = 10))
-p5 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_CBPB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(b) No diversity versus diversity\nin only CB & PB") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
-  theme(plot.title = element_text(size = 10))
-p6 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_SBPB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(b) No diversity versus diversity\nin only SB & PB") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
-  theme(plot.title = element_text(size = 10))
-
-p7 <- temp_none %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  geom_path(data = filter(temp_CBSBPB, var_type == "Substrate", species == "O"),
-            col = "black", lwd = line_width - 1.5) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(c) No diversity versus diversity\nin all functional groups") +
-  geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3) +
-  theme(plot.title = element_text(size = 10))
-
-( p1 + p2 + p3 ) / ( p4 + p5 + p6 ) / (plot_spacer() + p7 + plot_spacer())
- 
-ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
-       width = 6, height = 5)
-
-
-
-
-## Figure 5 ----
-## Region of bistability by diversity and number of strains.
-
+## Effects of diversity on position of tipping points and effect sizes
+## Two column
 
 stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime1e+06_event_definition_2.RDS"))
 stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime1e+06_event_definition_2.RDS"))
@@ -348,26 +44,11 @@ all_stab <- stab_2s %>%
   bind_rows(stab_6s) %>%
   #bind_rows(stab_6s_sub1) %>%
   bind_rows(stab_9s)
-  #bind_rows(stab_9s_sub1) %>%
-  #bind_rows(stab_9s_diff3)
+#bind_rows(stab_9s_sub1) %>%
+#bind_rows(stab_9s_diff3)
 
 all_stab <- stab_9s
 
-fig_div_vs_o2diff_1strain(all_stab,
-                          which_strain=9,
-                          figure_title = "1e6 wait time, 9 strains") 
-ggsave(here("experiments/1_figures_main_ms/figure_5_9strain.pdf"), width = 10, height = 8)
-
-## Figure 5 all strains ----
-fig_div_vs_o2diff_multistrain(all_stab,
-                          which_strain=c(2,3,6,9),
-                          figure_title = "1e5 wait time") 
-
-#ggsave(here("experiments/1_figures_main_ms/figure_5_v2_allstrains.pdf"), width = 10, height = 8)
-
-
-
-## New figure idea ----
 
 p1 <- fig_div_vs_o2diff_1strain_7row(all_stab,
                                      which_strain = 9,
@@ -377,11 +58,358 @@ p2 <- fig_resilience_vs_div(all_stab, which_strain = 9, figure_title = " ")
 #p2
 p1 + p2
 
-ggsave(here("experiments/1_figures_main_ms/Figure_5_newpossible.pdf"),
+ggsave(here("experiments/1_figures_main_ms/Figure_3.pdf"),
        width = 6, height = 9)
 
 
 
+## Figure 4 ----
+## Stable state with diversity in all functional groups.
+
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+sort(unique(ss_9s$CB_var_gmax_s))
+sort(unique(ss_9s$SB_var_gmax_s))
+ss_result <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.028254848) < 0.0001,
+         abs(SB_var_gmax_s - 0.084764545) < 0.0001,
+         abs(PB_var_gmax_s - 0.084764545) < 0.0001)
+
+
+fig_state_vs_o2diff_sidebyside(ss_result)
+ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"))
+
+
+
+
+
+## Not used anymore ----
+
+# ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+# sort(unique(ss_9s$CB_var_gmax_s))
+# sort(unique(ss_9s$SB_var_gmax_s))
+# ss_result <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0) < 0.0001,
+#          abs(SB_var_gmax_s - 0) < 0.0001,
+#          abs(PB_var_gmax_s - 0) < 0.0001)
+# 
+# fig_state_vs_o2diff_sidebyside(ss_result)
+# ggsave(here("experiments/1_figures_main_ms/figure_2b-f.pdf"))
+# 
+
+
+
+## Not used any more ----
+## Shows effect of no diversity versus diversity in all functional groups.
+
+# ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+# 
+# sort(unique(ss_9s$CB_var_gmax_s))
+# sort(unique(ss_9s$SB_var_gmax_s))
+# ss_result_none <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
+#          abs(SB_var_gmax_s - 0.0) < 0.0001,
+#          abs(PB_var_gmax_s - 0.0) < 0.0001)
+# ss_result_CB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
+#          abs(SB_var_gmax_s - 0.0) < 0.0001,
+#          abs(PB_var_gmax_s - 0.0) < 0.0001)
+# ss_result_SB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
+#          abs(SB_var_gmax_s - 0.044875347) < 0.0001,
+#          abs(PB_var_gmax_s - 0.0) < 0.0001)
+# ss_result_PB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
+#          abs(SB_var_gmax_s - 0.0) < 0.0001,
+#          abs(PB_var_gmax_s - 0.044875347) < 0.0001)
+# ss_result_CBSB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
+#          abs(SB_var_gmax_s - 0.044875347) < 0.0001,
+#          abs(PB_var_gmax_s - 0.0) < 0.0001)
+# ss_result_CBPB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
+#          abs(SB_var_gmax_s - 0.0) < 0.0001,
+#          abs(PB_var_gmax_s - 0.044875347) < 0.0001)
+# ss_result_SBPB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.0) < 0.0001,
+#          abs(SB_var_gmax_s - 0.044875347) < 0.0001,
+#          abs(PB_var_gmax_s - 0.044875347) < 0.0001)
+# ss_result_CBSBPB <- ss_9s %>%
+#   filter(abs(CB_var_gmax_s - 0.014958449) < 0.0001,
+#          abs(SB_var_gmax_s - 0.044875347) < 0.0001,
+#          abs(PB_var_gmax_s - 0.044875347) < 0.0001)
+# 
+# 
+# 
+# temp_none <- ss_result_none$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# 
+# temp_CB <- ss_result_CB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# temp_SB <- ss_result_SB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# temp_PB <- ss_result_PB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# temp_CBSB <- ss_result_CBSB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# temp_CBPB <- ss_result_CBPB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# temp_SBPB <- ss_result_SBPB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# temp_CBSBPB <- ss_result_CBSBPB$ssfind_result[[1]] %>%
+#   mutate(a = 10^a_O) %>%
+#   # arrange(a) %>%
+#   # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
+#   #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
+#   # select(-initial_N_CB, -a_O) %>%
+#   gather(species, quantity, 2:(ncol(.) - 2)) %>%
+#   mutate(
+#     var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+#     functional_group = case_when(
+#       str_detect(species, "CB_") ~ "CB",
+#       str_detect(species, "SB_") ~ "SB",
+#       str_detect(species, "PB_") ~ "PB"
+#     ),
+#     log10_quantity = log10(quantity + 1)
+#   )
+# 
+# line_width <- 2.5
+# 
+# ## a
+# p1 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_CB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(a) No diversity versus diversity\nin only CB") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
+#   theme(plot.title = element_text(size = 10))
+# p2 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_SB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(a) No diversity versus diversity\nin only SB") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
+#   theme(plot.title = element_text(size = 10))
+# p3 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_PB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(a) No diversity versus diversity\nin only PB") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
+#   theme(plot.title = element_text(size = 10))
+# p4 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_CBSB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(b) No diversity versus diversity\nin only CB & SB") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
+#   theme(plot.title = element_text(size = 10))
+# p5 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_CBPB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(b) No diversity versus diversity\nin only CB & PB") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
+#   theme(plot.title = element_text(size = 10))
+# p6 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_SBPB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(b) No diversity versus diversity\nin only SB & PB") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3)+
+#   theme(plot.title = element_text(size = 10))
+# 
+# p7 <- temp_none %>%
+#   dplyr::filter(var_type == "Substrate", species == "O") %>%
+#   ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+#   geom_path(lwd = line_width) +
+#   geom_path(data = filter(temp_CBSBPB, var_type == "Substrate", species == "O"),
+#             col = "black", lwd = line_width - 1.5) +
+#   ##ylab("log10(quantity [cells])") +
+#   ylab("Log(Quantity)") +
+#   xlab("Oxygen diffusivity") +
+#   theme(legend.position="none") +
+#   ggtitle("(c) No diversity versus diversity\nin all functional groups") +
+#   geom_vline(xintercept = c(-8, 0), col = "grey", lwd = 3) +
+#   theme(plot.title = element_text(size = 10))
+# 
+# ( p1 + p2 + p3 ) / ( p4 + p5 + p6 ) / (plot_spacer() + p7 + plot_spacer())
+#  
+# ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
+#        width = 6, height = 5)
+# 
+
+
+
+## Not used anymore ----
+## Region of bistability by diversity and number of strains.
+
+# 
+# stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime1e+06_event_definition_2.RDS"))
+# stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime1e+06_event_definition_2.RDS"))
+# stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime1e+06_event_definition_2.RDS"))
+# stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime1e+06_event_definition_2.RDS"))
+# 
+# all_stab <- stab_2s %>%
+#   #bind_rows(stab_2s_sub1) %>%
+#   bind_rows(stab_3s) %>%
+#   #bind_rows(stab_3s_sub1) %>%
+#   bind_rows(stab_6s) %>%
+#   #bind_rows(stab_6s_sub1) %>%
+#   bind_rows(stab_9s)
+#   #bind_rows(stab_9s_sub1) %>%
+#   #bind_rows(stab_9s_diff3)
+# 
+# all_stab <- stab_9s
+# 
+# fig_div_vs_o2diff_1strain(all_stab,
+#                           which_strain=9,
+#                           figure_title = "1e6 wait time, 9 strains") 
+# ggsave(here("experiments/1_figures_main_ms/figure_5_9strain.pdf"), width = 10, height = 8)
+# 
+# ## Figure 5 all strains
+# fig_div_vs_o2diff_multistrain(all_stab,
+#                           which_strain=c(2,3,6,9),
+#                           figure_title = "1e5 wait time") 
+
+#ggsave(here("experiments/1_figures_main_ms/figure_5_v2_allstrains.pdf"), width = 10, height = 8)
+
+
+
+## Figure 5 ----
 ## Assessing additivity of diversity effects ----
 ## By Uriah
 ## Owen switched to SB_tot
@@ -602,6 +630,8 @@ agg_stab_strain9 %>%
   theme_bw()+
   theme(legend.position="top")
 
+ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
+       width = 6, height = 9)
 
 
 
