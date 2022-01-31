@@ -538,14 +538,13 @@ create_diversity_factorial <- function(
       PB_var_gmax_s, PB_var_h_s
     ) %>%
     mutate(pars = list(add_strain_var(
-      x = default_9strain,
+      strain_parameter = default_9strain,
       CB_var_gmax = CB_var_gmax_s,
       CB_var_h = CB_var_h_s,
       SB_var_gmax = SB_var_gmax_s,
       SB_var_h = SB_var_h_s,
       PB_var_gmax = PB_var_gmax_s,
-      PB_var_h = PB_var_h_s,
-      method = "even_v1.0"
+      PB_var_h = PB_var_h_s
     )))
 
   var_expt
