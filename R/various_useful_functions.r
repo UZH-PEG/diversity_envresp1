@@ -370,7 +370,8 @@ display_diversity <- function(
   var_expt,
   num_CB_strains,
   num_SB_strains,
-  num_PB_strains
+  num_PB_strains,
+  which_graphs = 3
 ) {
   colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
   colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
@@ -389,7 +390,7 @@ display_diversity <- function(
   
   CB_TO1 <- ggplot(CBtraits) +
     geom_point(aes(x = h_SR_CB, y = g_max_CB, col = strain_name), size = ptsize) +
-    xlab("Tolerance\n(cyanobacteria to reduced sulphur)") +
+    xlab("Tolerance\n(cyanobacteria to\nreduced sulphur)") +
     ylab("Maximum growth rate\n(cyanobacteria)") +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     theme(legend.position = "none")
@@ -414,7 +415,7 @@ display_diversity <- function(
 
   SB_TO1 <- ggplot(SBtraits) +
     geom_point(aes(x = h_O_SB, y = g_max_SB, col = strain_name), size = ptsize) +
-    xlab("Tolerance\n(sulphate reducing bacteria to oxygen)") +
+    xlab("Tolerance\n(sulphate reducing bacteria\nto oxygen)") +
     ylab("Maximum growth rate\n(sulphate reducing bacteria)") +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     theme(legend.position = "none")
@@ -437,7 +438,7 @@ display_diversity <- function(
 
   PB_TO1 <- ggplot(PBtraits) +
     geom_point(aes(x = h_O_PB, y = g_max_PB, col = strain_name), size = ptsize) +
-    xlab("Tolerance\n(phototrophic sulphur bacteria to oxygen)") +
+    xlab("Tolerance\n(phototrophic sulphur bacteria\nto oxygen)") +
     ylab("Maximum growth rate\n(phototrophic sulphur bacteria") +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     theme(legend.position = "none")
@@ -447,7 +448,14 @@ display_diversity <- function(
     xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
     ylab("Realised growth rate\n(phototrophic sulphur bacteria)")
 
-  (CB_TO1 + SB_TO1 + PB_TO1) / (CB_TO2 + SB_TO2 + PB_TO2)
+  if(which_graphs==1)
+    p1 <- (CB_TO1 + SB_TO1 + PB_TO1)
+  if(which_graphs==2)
+    p1 <- (CB_TO2 + SB_TO2 + PB_TO2)
+  if(which_graphs==3)
+    p1 <- (CB_TO1 + SB_TO1 + PB_TO1) / (CB_TO2 + SB_TO2 + PB_TO2)
+  
+  p1
 }
 
 create_diversity <- function(

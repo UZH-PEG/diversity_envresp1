@@ -3,14 +3,19 @@ title: Supplementary Content
 subtitle: Functional diversity ... Predictions of a model of an oxic-anoxic microbial ecosystem 
 author: "Owen L Petchey, Rainer Krug, Marcel Suleiman, ???others???"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
 ---
 
 ```{r include = FALSE, echo = FALSE}
 knitr::opts_chunk$set(include = TRUE,
                       warning = FALSE,
                       message = FALSE,
-                      cache = TRUE)
+                      cache = FALSE)
 ```
 
 ```{r echo = FALSE}
@@ -43,11 +48,9 @@ Take for example the cyanobacteria functional group, a reference maximum growth 
 
 This procedure ensures that the range of trait values is independent of the number of strains. When there were only two strains, the two strains took the minimum and maximum traits values, as defined by the $Div$ variable for that trait. When there were three strains, one had the minimum trait value, one the maximum, and one the mean. With nine strains, one had the minimum trait value, one the maximum, one the mean, and three were equally spaced (on log scale) between the minimum and the mean, and the remaining three between the maximum and the mean. 
 
-# Visualising among strain diversity
+We show three examples of the created variation among strains within functional groups, one for nine strains (Figure \@ref(fig:nine-strain-div)), one for three (Figure \@ref(fig:three-strain-div)), and one for two (Figure \@ref(fig:two-strain-div)). In each, three graphs shows the diversity among strains in the maximum growth rate trait and the tolerance trait, plotted against each other and therefore also showing the tradeoff between the two traits.
 
-Here we show three visualisations, one for nine strains, one for three, and one for two.
-
-In each, the top row of three graphs shows the diversity and tradeoff in each of the three functional groups. The most tolerant strain is always in the darker shade.The lower row of three graphs shows the relationship between realised growth rate as a function of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these lower graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff shown in the upper graph. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate.
+Notice that in all three cases, the range of trait variation represented by the strains is the same, even though the number of strains differs (a consequence is that the lower row of panels in Figures \@ref(fig:nine-strain-div), \@ref(fig:three-strain-div), and \@ref(fig:two-strain-div) are identical). This approach allowed us to independently manipulate trait diversity and number of strains.
 
 ```{r  echo = FALSE}
 CB_var_multiplier <- 2
@@ -61,9 +64,11 @@ PB_h_div <- -0.323  * SBPB_var_multiplier
 num_div_treatment_levels <- 2
 ```
 
-## Nine strains
+All three examples have the following amounts of trait variation: $Div_{G_{max,CB}}$ = `r round(CB_gmax_div, 3)`, $Div_{h_{SR,CB}}$ = `r round(CB_h_div, 3)`, $Div_{G_{max,SB}}$ = `r round(SB_gmax_div, 3)`, $Div_{h_{O,SB}}$ = `r round(SB_h_div, 3)`, $Div_{G_{max,PB}}$ = `r round(PB_gmax_div, 3)`, $Div_{h_{O,PB}}$ = `r round(PB_h_div, 3)`. These are also the maximum amounts of trait variation explored in the simulations.
 
-```{r nine-strains, echo = FALSE}
+(ref:nine-strain-div) Trait variation with nine strains in each of the functional groups. In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+
+```{r nine-strain-div, echo = FALSE,  include=TRUE, fig.cap='(ref:nine-strain-div)', fig.align="center", fig.height=3, fig.width=8}
 
 num_CB_strains <- 9
 num_PB_strains <- 9
@@ -85,13 +90,15 @@ display_diversity(4,
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
-  num_PB_strains = num_PB_strains
+  num_PB_strains = num_PB_strains,
+  which_graphs = 1
 )
 ```
 
-## Three strains
 
-```{r three-strains, echo = FALSE}
+(ref:three-strain-div) Trait variation with three strains in each of the functional groups. Note that the three displayed strains are the 1st, 5th, and 9th strains from the nine strain example shown in Figure \@ref(fig:nine-strain-div). In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+
+```{r three-strain-div, echo = FALSE,  include=TRUE, fig.cap='(ref:three-strain-div)', fig.height=3, fig.width=8, fig.align="center"}
 
 num_CB_strains <- 3
 num_PB_strains <- 3
@@ -113,13 +120,16 @@ display_diversity(4,
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
-  num_PB_strains = num_PB_strains
+  num_PB_strains = num_PB_strains,
+  which_graphs = 1
 )
 ```
 
-## Two strains
 
-```{r two-strains, echo = FALSE}
+
+(ref:two-strain-div) Trait variation with two strains in each of the functional groups. Note that the two displayed strains are the 1st and 9th strains from the nine strain example shown in Figure \@ref(fig:nine-strain-div). In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+
+```{r two-strain-div, echo = FALSE,  include=TRUE, fig.cap='(ref:two-strain-div)', fig.height=3, fig.width=8, fig.align="center"}
 
 num_CB_strains <- 2
 num_PB_strains <- 2
@@ -141,15 +151,27 @@ display_diversity(4,
   var_expt = var_expt,
   num_CB_strains = num_CB_strains,
   num_SB_strains = num_SB_strains,
-  num_PB_strains = num_PB_strains
+  num_PB_strains = num_PB_strains,
+  which_graphs = 1
+)
+```
+
+We also show, in Figure \@ref(fig:growth-rates), the relationship between realised growth rate and the concentration of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate. 
+
+(ref:growth-rates) Response of realised growth rate to variation in concentration of the inhibiting substrate for two strains, namely the most and the least tolerant strain. As always colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+
+```{r growth-rates, echo = FALSE,  include=TRUE, fig.cap='(ref:growth-rates)', fig.height=3, fig.width=8, fig.align="center"}
+display_diversity(4,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains,
+  which_graphs = 2
 )
 ```
 
 
-
-# Robustness of stable state finding
-
-## Method for finding stable states
+# Method for finding stable states
 
 We now discuss two approaches for finding how the stable state of the system varies along the gradient of oxygen diffusivity when there exists the possibility of multiple stable states. In the main article we describe and report results of the method that we term the *Temporal method*.
 
@@ -157,13 +179,13 @@ Here we also describe and give results of what we term the *Replication method*.
 
 As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches. For example, in the temporal method, the oxygen concentration in the anoxic state is lower than the initial oxygen concentration in the replication approach, and **Owen guesses that** the sulfide concentration is higher **check that last statement**.
 
-### Replication method, no diversity
+## Replication method, no diversity
 
 In the following graph, the solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state).Stable states found with the replication method. Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
 
 
 
-```{r repl_meth1, echo=FALSE, eval = TRUE}
+```{r repl_meth1, echo=FALSE, eval = FALSE}
 repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
 temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 ## To be completed.
@@ -173,23 +195,23 @@ plot_ss_result1(repl_meth,
                 save_image_file = FALSE)
 ```
 
-### Temporal method, no diversity
+## Temporal method, no diversity
 
 Same as for the previous graph.
 
 
-```{r temp_meth1, echo=FALSE, eval = TRUE}
+```{r temp_meth1, echo=FALSE, eval = FALSE}
 plot_ss_result3(temp_meth, 1)
 ```
 
 
-### Both methods overlaid, no diversity
+## Both methods overlaid, no diversity
 
 Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
 
 
 
-```{r both_meth1, echo=FALSE, eval = TRUE}
+```{r both_meth1, echo=FALSE, eval = FALSE}
 repl_method_1 <- repl_meth$ss_res[[1]] %>%
      mutate(time = NA,
             direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
@@ -203,7 +225,7 @@ plot_ss_result6(repl_method_1,
                 xlims = c(-8, 0))
 ```
 
-### Effect of diversity, replication method
+## Effect of diversity, replication method
 
 The replication method shows the same effects of functional diversity as those revealed by the temporal method:
 
@@ -214,7 +236,7 @@ The replication method shows the same effects of functional diversity as those r
 These results are shown in the figure below, which shows results of the replication method.
 
 
-```{r echo = FALSE, eval = TRUE}
+```{r echo = FALSE, eval = FALSE}
 stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/small_stab_data_1e6_x2x6_factorial.RDS"))
 
 all_stab <- stab_data
@@ -253,7 +275,7 @@ all_stab_results <- all_stab_results %>%
 ```
 
 
-```{r echo = FALSE, eval = TRUE}
+```{r echo = FALSE, eval = FALSE}
 all_stab_results %>%
   #filter(var_treat == "CB") %>%
   filter(Species == "SR") %>%
@@ -282,7 +304,7 @@ all_stab_results %>%
 
 The figure above shows the effect of response trait diversity (y-axis) on the positions of the tipping points (show by dark lines), which determine the extent of the region of bistability in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
 
-### Further information
+## Further thoughts
 
 Here we give some further thoughts regarding the comparison of the temporal and replication method for stable state finding.
 
@@ -291,13 +313,13 @@ A particularly notable difference between the two approaches is in the initial c
 The temporal approach is particularly useful when investigating the effects of strain richness. In preliminary simulations using the Bush et al (2017) approach, we found the counterintuitive result that higher strain richness led to lower resilience. We then recalled that we chose to divide the initial total abundance of the cyanobacterial (CB) functional group equally among the strains (termed a substitutive design in biodiversity manipulation experiments). This meant that the most tolerant CB strain in a three-strain simulation had higher initial abundance than the same most tolerant CB strain in a nine-strain simulation. The greater abundance of the most CB tolerant strain made it possible for a three-strain system to develop to be oxic, whereas the nine-strain system developed to be anoxic, despite identical range of trait variation. We could have chosen to do otherwise, for example start with the least tolerant strains of cyanobacteria as more abundant when the system started with high cyanobacterial abundance, and the most tolerant strain as more abundant when the system starts with low cyanobacterial abundance. Using the temporal approach removed the need to specify initial abundances (except the very first one), and therefore results were not so determined by the assumptions used to determine the initial conditions. 
 
 
-## Effect of simulation duration
+# Effect of simulation duration
 
-### Effect of shorter wait times
+*Review what the wait time is.*
 
 Wait times of 1e6 hours produce the following results (same as those presented in the main report).
 
-```{r wait_time_1e6, eval = TRUE}
+```{r wait_time_1e6, eval = FALSE}
 wait_time <- "1e+06"
 
 #stab_2s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime", wait_time, "_event_definition_2.RDS")))
@@ -362,7 +384,7 @@ fig_div_vs_o2diff_multistrain(all_stab = all_stab,
 
 Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Here is an example of the stable states when diversity is moderate:
 
-```{r}
+```{r eval = FALSE}
 wait_time <- "1e+04"
 ss_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/ss_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
 
@@ -381,13 +403,13 @@ only_SB_variable <- only_SB_variable[order(only_SB_variable$SB_var_gmax_s), ]
 only_SB_variable$SB_var_gmax_s
 ```
 
-```{r}
+```{r eval = FALSE}
 fig_state_vs_o2diff(only_SB_variable[13,])
 ```
 
 Increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift. When there is just a little more diversity in the SB, this happens:
 
-```{r}
+```{r eval = FALSE}
 fig_state_vs_o2diff(only_SB_variable[14,])
 ```
 
@@ -481,7 +503,7 @@ fig_div_vs_o2diff_multistrain(all_stab = all_stab,
 ```
 
 
-### Example transient at 1'000'000 hours
+### Example of transient dynamics at 1'000'000 hours
 
 The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours simulation time, or 2'000'000 hours. This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
@@ -593,7 +615,7 @@ patchwork
  
 For comparison, here are the results with twice the duration at each oxygen diffusivity:
  
-```{r echo = FALSE, fig.height=10}
+```{r echo = FALSE, fig.height=10, eval = FALSE}
 
 single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
 # sort(unique(ss_9s$CB_var_gmax_s))
