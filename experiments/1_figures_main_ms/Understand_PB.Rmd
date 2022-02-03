@@ -121,15 +121,16 @@ plot_fig3 <- function(
 ```
 
 ## Figure 5
+
 Region of bistability by diversity and number of strains.
 
-![alt text](figure_5_v2_allstrains.png)
+(*Graphs should be remade/reinserted.*)
 
 ## Figure 3
 Stable state with diversity in all functional groups.
 
 ```{r fig3_prep}
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/9_strain_SS_data_1e6.RDS"))
+ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 
 max <- max(ss_9s$PB_var_gmax_s)
 f <- 0.625

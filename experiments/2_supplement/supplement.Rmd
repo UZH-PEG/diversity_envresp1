@@ -185,7 +185,7 @@ In the following graph, the solid (down) line refers to the stable state when cy
 
 
 
-```{r repl_meth1, echo=FALSE, eval = FALSE}
+```{r repl_meth1, echo=FALSE, eval = TRUE}
 repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
 temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 ## To be completed.
@@ -200,7 +200,7 @@ plot_ss_result1(repl_meth,
 Same as for the previous graph.
 
 
-```{r temp_meth1, echo=FALSE, eval = FALSE}
+```{r temp_meth1, echo=FALSE, eval = TRUE}
 plot_ss_result3(temp_meth, 1)
 ```
 
@@ -211,7 +211,7 @@ Stable states of the two methods overlaid, the temporal method with a dashed lin
 
 
 
-```{r both_meth1, echo=FALSE, eval = FALSE}
+```{r both_meth1, echo=FALSE, eval = TRUE}
 repl_method_1 <- repl_meth$ss_res[[1]] %>%
      mutate(time = NA,
             direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
@@ -236,7 +236,7 @@ The replication method shows the same effects of functional diversity as those r
 These results are shown in the figure below, which shows results of the replication method.
 
 
-```{r echo = FALSE, eval = FALSE}
+```{r echo = FALSE, eval = TRUE}
 stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/small_stab_data_1e6_x2x6_factorial.RDS"))
 
 all_stab <- stab_data
@@ -275,7 +275,7 @@ all_stab_results <- all_stab_results %>%
 ```
 
 
-```{r echo = FALSE, eval = FALSE}
+```{r echo = FALSE, eval = TRUE}
 all_stab_results %>%
   #filter(var_treat == "CB") %>%
   filter(Species == "SR") %>%
@@ -319,72 +319,105 @@ The temporal approach is particularly useful when investigating the effects of s
 
 Wait times of 1e6 hours produce the following results (same as those presented in the main report).
 
-```{r wait_time_1e6, eval = FALSE}
-wait_time <- "1e+06"
+```{r wait_time_1e6, eval = TRUE}
+all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
-#stab_2s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime", wait_time, "_event_definition_2.RDS")))
-#stab_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
-#stab_6s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-
-#all_stab <- stab_2s %>%
-  #bind_rows(stab_2s_sub1) %>%
-#  bind_rows(stab_3s) %>%
-  #bind_rows(stab_3s_sub1) %>%
-#  bind_rows(stab_6s) %>%
-  #bind_rows(stab_6s_sub1) %>%
-#  bind_rows(stab_9s)
-  #bind_rows(stab_9s_sub1) %>%
-  #bind_rows(stab_9s_diff3)
-
-all_stab <- stab_9s
-```
-
-
-```{r wait_time_1e6_2, eval = FALSE}
-p1 <- fig_div_vs_o2diff_1strain_7row(all_stab,
-                                     which_strain = 9,
-                                     figure_title = "1e6 wait time, 9 strains")
-#p1
-p2 <- fig_resilience_vs_div(all_stab, which_strain = 9, figure_title = " ") 
-#p2
+wait_time <- 1e6
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(wait_time,
+                                                           " wait time,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
 p1 + p2
 
-
 ```
+
+```{r wait_time_1e5, eval = TRUE}
+
+wait_time <- 1e5
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(wait_time,
+                                                           " wait time,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+```
+
+
+```{r wait_time_1e4, eval = TRUE}
+
+wait_time <- 1e4
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(wait_time,
+                                                           " wait time,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+```
+
+```{r wait_time_1e3, eval = TRUE}
+
+wait_time <- 1e3
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(wait_time,
+                                                           " wait time,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+```
+
+```{r wait_time_1e2, eval = TRUE}
+
+wait_time <- 1e2
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(wait_time,
+                                                           " wait time,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+```
+
 
 Wait times of 1e5 produce the following results, which qualitatively and often quantitatively very similar to those for wait times of 1e6. There is a notable difference when there is variation in only SB, or CB-SB variation treatments with two or three strains:
 
-```{r wait_time_1e5, eval = FALSE}
-
-wait_time <- "1e+05"
-
-stab_2s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_6s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-
-all_stab <- stab_2s %>%
-  #bind_rows(stab_2s_sub1) %>%
-  bind_rows(stab_3s) %>%
-  #bind_rows(stab_3s_sub1) %>%
-  bind_rows(stab_6s) %>%
-  #bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s)
-  #bind_rows(stab_9s_sub1) %>%
-  #bind_rows(stab_9s_diff3)
-
-#all_stab <- stab_9s
-
-fig_div_vs_o2diff_multistrain(all_stab = all_stab,
-                  which_strains = c(2, 3, 6, 9),
-                  figure_title = paste0("Wait time = ", wait_time))
-
-```
-
 Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Here is an example of the stable states when diversity is moderate:
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 wait_time <- "1e+04"
 ss_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/ss_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
 
@@ -403,13 +436,13 @@ only_SB_variable <- only_SB_variable[order(only_SB_variable$SB_var_gmax_s), ]
 only_SB_variable$SB_var_gmax_s
 ```
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 fig_state_vs_o2diff(only_SB_variable[13,])
 ```
 
 Increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift. When there is just a little more diversity in the SB, this happens:
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 fig_state_vs_o2diff(only_SB_variable[14,])
 ```
 
@@ -419,88 +452,6 @@ In the simulated microbial ecosystem, the strains are the stepping stones, and i
 
 This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
-### Even shorter wait times
-
-```{r wait_time_1e4, eval = FALSE}
-
-wait_time <- "1e+04"
-
-stab_2s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_6s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-
-all_stab <- stab_2s %>%
-  #bind_rows(stab_2s_sub1) %>%
-  bind_rows(stab_3s) %>%
-  #bind_rows(stab_3s_sub1) %>%
-  bind_rows(stab_6s) %>%
-  #bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s)
-  #bind_rows(stab_9s_sub1) %>%
-  #bind_rows(stab_9s_diff3)
-
-#all_stab <- stab_9s
-
-fig_div_vs_o2diff_multistrain(all_stab = all_stab,
-                  which_strains = c(2, 3, 6, 9),
-                  figure_title = paste0("Wait time = ", wait_time))
-
-```
-
-```{r wait_time_1e3, eval = FALSE}
-
-wait_time <- "1e+03"
-
-stab_2s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_6s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-
-all_stab <- stab_2s %>%
-  #bind_rows(stab_2s_sub1) %>%
-  bind_rows(stab_3s) %>%
-  #bind_rows(stab_3s_sub1) %>%
-  bind_rows(stab_6s) %>%
-  #bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s)
-  #bind_rows(stab_9s_sub1) %>%
-  #bind_rows(stab_9s_diff3)
-
-#all_stab <- stab_9s
-
-fig_div_vs_o2diff_multistrain(all_stab = all_stab,
-                  which_strains = c(2, 3, 6, 9),
-                  figure_title = paste0("Wait time = ", wait_time))
-
-```
-
-```{r wait_time_1e2, eval = FALSE}
-
-wait_time <- "1e+02"
-
-stab_2s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_6s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime", wait_time, "_event_definition_2.RDS")))
-stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-
-all_stab <- stab_2s %>%
-  #bind_rows(stab_2s_sub1) %>%
-  bind_rows(stab_3s) %>%
-  #bind_rows(stab_3s_sub1) %>%
-  bind_rows(stab_6s) %>%
-  #bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s)
-  #bind_rows(stab_9s_sub1) %>%
-  #bind_rows(stab_9s_diff3)
-
-#all_stab <- stab_9s
-
-fig_div_vs_o2diff_multistrain(all_stab = all_stab,
-                  which_strains = c(2, 3, 6, 9),
-                  figure_title = paste0("Wait time = ", wait_time))
-
-```
 
 
 ### Example of transient dynamics at 1'000'000 hours
@@ -615,7 +566,7 @@ patchwork
  
 For comparison, here are the results with twice the duration at each oxygen diffusivity:
  
-```{r echo = FALSE, fig.height=10, eval = FALSE}
+```{r echo = FALSE, fig.height=10, eval = TRUE}
 
 single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
 # sort(unique(ss_9s$CB_var_gmax_s))

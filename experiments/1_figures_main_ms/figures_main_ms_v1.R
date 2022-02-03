@@ -8,6 +8,7 @@
 
 
 ## Prelims ----
+rm(list=ls())
 library(microxanox)
 library(tidyverse)
 library(patchwork)
@@ -32,32 +33,22 @@ source(here("experiments/1_figures_main_ms/ms_figure_functions.R"))
 ## Effects of diversity on position of tipping points and effect sizes
 ## Two column
 
-stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime1e+06_event_definition_2.RDS"))
-stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime1e+06_event_definition_2.RDS"))
-stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime1e+06_event_definition_2.RDS"))
-stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime1e+06_event_definition_2.RDS"))
+all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
-all_stab <- stab_2s %>%
-  #bind_rows(stab_2s_sub1) %>%
-  bind_rows(stab_3s) %>%
-  #bind_rows(stab_3s_sub1) %>%
-  bind_rows(stab_6s) %>%
-  #bind_rows(stab_6s_sub1) %>%
-  bind_rows(stab_9s)
-#bind_rows(stab_9s_sub1) %>%
-#bind_rows(stab_9s_diff3)
-
-all_stab <- stab_9s
-
-
-p1 <- fig_div_vs_o2diff_1strain_7row(all_stab,
-                                     which_strain = 9,
-                                     figure_title = "1e6 wait time, 9 strains")
-#p1
-p2 <- fig_resilience_vs_div(all_stab, which_strain = 9, figure_title = " ") 
-#p2
+wait_time <- 1e6
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(wait_time,
+                                                           " wait time,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
 p1 + p2
-
 ggsave(here("experiments/1_figures_main_ms/Figure_3.pdf"),
        width = 6, height = 9)
 
@@ -75,12 +66,126 @@ ss_result <- ss_9s %>%
          abs(PB_var_gmax_s - 0.084764545) < 0.0001)
 
 
-fig_state_vs_o2diff_sidebyside(ss_result)
-ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"))
+fig_state_vs_o2diff_sidebyside_dots(ss_result)
+ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
+       width = 6, height = 9)
 
 
 
 
+
+
+## Figure 5 ----
+## Assessing additivity of diversity effect sizes
+## By Uriah
+## Owen switched to SB_tot
+
+all_stab_results_small <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+
+wait_time <- 1e6
+all_stab_results9 <- all_stab_results_small %>%
+  distinct() %>%  #there are some duplicated rows....? yes, some treatment combs were repeated when sub1 was made
+  filter(num_strains == 9,
+         Species == "SB_tot",
+         waittime == wait_time) 
+
+all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, var_gmax)),]
+
+all_stab_results9$method <- "simulated"
+
+agg_stab_strain9 <- combine_fct("EF_log")
+
+agg_stab_strain9 %>%
+  filter(Species == "SB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Addition of effect sizes and starting position (log)",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+
+
+agg_stab_strain9 <- combine_fct("EF_lin")
+
+agg_stab_strain9 %>%
+  filter(Species == "SB_tot", num_strains==9) %>%
+  ggplot(aes(x = var_gmax, col=method)) +
+  geom_hline(yintercept = c(-8, 0), col = "black") +
+  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+  labs(x="Amount of trait variation\n[see text for units]",
+       y="Amount of trait variation\n[see text for units]",
+       title = "Addition of effect sizes and starting position (linear)",
+       col="Method") +
+  coord_flip() +
+  theme_bw()+
+  theme(legend.position="top")
+
+ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
+       width = 6, height = 9)
+
+
+# 
+# agg_stab_strain9 <- combine_fct("arithmetic")
+# 
+# agg_stab_strain9 %>%
+#   filter(Species == "SB_tot", num_strains==9) %>%
+#   ggplot(aes(x = var_gmax, col=method)) +
+#   geom_hline(yintercept = c(-8, 0), col = "black") +
+#   geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+#   geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+#   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+#   labs(x="Amount of trait variation\n[see text for units]",
+#        y="Amount of trait variation\n[see text for units]",
+#        title = "Arithmetic mean on linear scale",
+#        col="Method") +
+#   coord_flip() +
+#   theme_bw()+
+#   theme(legend.position="top")
+# 
+# 
+# agg_stab_strain9 <- combine_fct("geometric") # same as agg_stab_strain9 <- combine_fct("arith_log")
+# 
+# agg_stab_strain9 %>%
+#   filter(Species == "SB_tot", num_strains==9) %>%
+#   ggplot(aes(x = var_gmax, col=method)) +
+#   geom_hline(yintercept = c(-8, 0), col = "black") +
+#   geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+#   geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+#   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+#   labs(x="Amount of trait variation\n[see text for units]",
+#        y="Amount of trait variation\n[see text for units]",
+#        title = "Geometric mean on linear scale",
+#        col="Method") +
+#   coord_flip() +
+#   theme_bw()+
+#   theme(legend.position="top")
+# 
+# 
+# agg_stab_strain9 <- combine_fct("geom_log")
+# 
+# agg_stab_strain9 %>%
+#   filter(Species == "SB_tot", num_strains==9) %>%
+#   ggplot(aes(x = var_gmax, col=method)) +
+#   geom_hline(yintercept = c(-8, 0), col = "black") +
+#   geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
+#   geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+#   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+#   labs(x="Amount of trait variation\n[see text for units]",
+#        y="Amount of trait variation\n[see text for units]",
+#        title = "Geometric mean on log scale",
+#        col="Method") +
+#   coord_flip() +
+#   theme_bw()+
+#   theme(legend.position="top")
 
 ## Not used anymore ----
 
@@ -409,233 +514,6 @@ ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"))
 
 
 
-## Figure 5 ----
-## Assessing additivity of diversity effects ----
-## By Uriah
-## Owen switched to SB_tot
-
-all_stab_results_small <- readRDS(here("experiments/0_ss_finding/temporal_method/data/must_be_updated_all_stab_results_small.RDS"))
-
-all_stab_results9 <- all_stab_results_small %>%
-  distinct() %>%  #there are some duplicated rows....? yes, some treatment combs were repeated when sub1 was made
-  filter(num_strains == 9, Species == "SB_tot") 
-
-all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, var_gmax)),]
-
-all_stab_results9$method <- "simulated"
-
-calculation_fct <- function(x,y,z=NULL, Method="arithmetic"){
-  if(Method=="arithmetic") {
-    if(is.null(z)) {
-      w <- log10((10^x + 10^y)/2)
-    } else {
-      w <- log10((10^x + 10^y + 10^z)/3)
-    }
-    return(w)
-  }    
-  
-  
-  if(Method%in% c("arith_log","geometric")) {
-    if(is.null(z)) {
-      # w <- (x+y)/2 # the same as below
-      w <- log10((10^x*10^y)^(1/2))
-    } else {
-      # w <- (x+y+z)/3
-      w <- log10((10^x*10^y*10^z)^(1/3))
-    }
-    return(w)
-  }   
-  
-  if(Method=="geom_log") {
-    if(is.null(z)) {
-      w <- (x*y)^(1/2)
-      w <- -w
-    } else {
-      w <- (x*y*z)^(1/3)
-    }
-    return(w) 
-  }
-  
-  if(Method=="EF_log") {
-    w <- x + y - first(x)
-    return(w) 
-  }
-  
-  if(Method=="EF_lin") {
-    w <- log10(10^x + 10^y - 10^first(x))
-    return(w) 
-  }
-}
-
-
-combine_fct <- function(Method="arithmetic"){
-  agg_stab_res_single_groups_wide <- all_stab_results9 %>%
-    dplyr::select(Species,hyst_min_log,hyst_max_log,var_treat,var_gmax) %>%
-    dplyr::filter(Species == "SB_tot") %>%
-    group_by(var_treat) %>%
-    dplyr::mutate(var_gmax = rank(var_gmax)) %>%
-    pivot_wider(names_from = "var_treat", values_from = c("hyst_min_log", "hyst_max_log")) %>%
-    dplyr::mutate(hyst_min_log_CB_SB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB, Method=Method),
-                  hyst_max_log_CB_SB = calculation_fct(hyst_max_log_CB,hyst_max_log_SB, Method=Method),
-                  hyst_min_log_CB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_PB, Method=Method),
-                  hyst_max_log_CB_PB = calculation_fct(hyst_max_log_CB,hyst_max_log_PB, Method=Method),
-                  hyst_min_log_SB_PB = calculation_fct(hyst_min_log_SB,hyst_min_log_PB, Method=Method),
-                  hyst_max_log_SB_PB = calculation_fct(hyst_max_log_SB,hyst_max_log_PB, Method=Method),
-                  # hyst_min_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB,hyst_min_log_PB, Method=Method),
-                  # hyst_max_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_max_log_SB,hyst_max_log_PB, Method=Method),
-                  hyst_min_log_CB_SBPB = calculation_fct(`hyst_min_log_SB-PB`,hyst_min_log_CB, Method=Method),
-                  hyst_max_log_CB_SBPB = calculation_fct(`hyst_max_log_SB-PB`,hyst_max_log_CB, Method=Method))
-  
-  agg_stab_strain9 <- all_stab_results9 %>%
-    dplyr::filter(num_strains==9, Species == "SB_tot") 
-  
-  ### CB + SB
-  agg_stab_strain9_CB_SB <- agg_stab_strain9 %>%
-    dplyr::filter(var_treat=="CB-SB")
-  
-  agg_stab_strain9_CB_SB$method <- "calculated"
-  agg_stab_strain9_CB_SB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB
-  agg_stab_strain9_CB_SB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB
-  
-  ### CB + PB
-  agg_stab_strain9_CB_PB <- agg_stab_strain9 %>%
-    dplyr::filter(var_treat=="CB-PB")
-  
-  agg_stab_strain9_CB_PB$method <- "calculated"
-  agg_stab_strain9_CB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_PB
-  agg_stab_strain9_CB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_PB
-  
-  ### SB + PB
-  agg_stab_strain9_SB_PB <- agg_stab_strain9 %>%
-    dplyr::filter(var_treat=="SB-PB")
-  
-  agg_stab_strain9_SB_PB$method <- "calculated"
-  agg_stab_strain9_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_SB_PB
-  agg_stab_strain9_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_SB_PB
-  
-  ### CB + SB + PB
-  # agg_stab_strain9_CB_SB_PB <- agg_stab_strain9 %>%
-  #   dplyr::filter(var_treat=="CB-SB-PB")
-  # 
-  # agg_stab_strain9_CB_SB_PB$method <- "calculated CB+SB+PB"
-  # agg_stab_strain9_CB_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB_PB
-  # agg_stab_strain9_CB_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB_PB
-  
-  ### CB + SBPB
-  agg_stab_strain9_CB_SBPB <- agg_stab_strain9 %>%
-    dplyr::filter(var_treat=="CB-SB-PB")
-  
-  agg_stab_strain9_CB_SBPB$method <- "calculated CB+SBPB"
-  agg_stab_strain9_CB_SBPB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SBPB
-  agg_stab_strain9_CB_SBPB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SBPB
-  
-  ### merge 
-  agg_stab_strain9 <- rbind(agg_stab_strain9, agg_stab_strain9_CB_SB, agg_stab_strain9_CB_PB, agg_stab_strain9_SB_PB,
-                            # agg_stab_strain9_CB_SB_PB,
-                            agg_stab_strain9_CB_SBPB)
-  return(agg_stab_strain9)
-}
-
-agg_stab_strain9 <- combine_fct("arithmetic")
-
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
-       title = "Arithmetic mean on linear scale",
-       col="Method") +
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="top")
-
-
-agg_stab_strain9 <- combine_fct("geometric") # same as agg_stab_strain9 <- combine_fct("arith_log")
-
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
-       title = "Geometric mean on linear scale",
-       col="Method") +
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="top")
-
-
-agg_stab_strain9 <- combine_fct("geom_log")
-
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
-       title = "Geometric mean on log scale",
-       col="Method") +
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="top")
-
-
-
-## based on effect sizes 
-
-
-agg_stab_strain9 <- combine_fct("EF_log")
-
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
-       title = "Addition of effect sizes and starting position (log)",
-       col="Method") +
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="top")
-
-
-
-agg_stab_strain9 <- combine_fct("EF_lin")
-
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
-       title = "Addition of effect sizes and starting position (linear)",
-       col="Method") +
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="top")
-
-ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
-       width = 6, height = 9)
-
-
-
-###### End of insert
 
 
 
