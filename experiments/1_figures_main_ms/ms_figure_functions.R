@@ -446,6 +446,18 @@ fig_state_vs_o2diff_sidebyside <- function(ss_result){
 }
 
 fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
+  
+  temp1 <- ss_result %>%
+    mutate(ssfind_result = list(get_total_bio(ssfind_result)))
+  stab_measures <- get_stability_measures(temp1$ssfind_result[[1]],
+                                          threshold_diff_log10scale = 3) %>%
+    filter(Species == "SB_tot") %>%
+    select(down=hyst_min_log, up=hyst_max_log) %>%
+    pivot_longer(names_to = "direction", values_to = "aO_flip", 1:2) %>%
+    mutate(y_start = c(2.5, 7.5),
+           y_end = c(7.5, 2.5))
+  rm(temp1)
+
   temp <- ss_result$ssfind_result[[1]] %>%
     mutate(a = 10^a_O) %>%
     # arrange(a) %>%
@@ -474,11 +486,18 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
   
   line_width <- 0.2
   point_size <- 0.6
+  arrow_lwd <- 1
   
   p1 <- temp %>%
     dplyr::filter(functional_group == "CB")  %>%
     mutate(species = factor(species, levels = unique(species))) %>%
     ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+               aes(x = aO_flip, xend = aO_flip,
+                   y = y_start, yend = y_end),
+               col = "#bbbbbbff", lwd = arrow_lwd,
+               arrow = arrow(length=unit(0.30,"cm"),
+                             ends="first", type = "closed")) +
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
@@ -486,14 +505,22 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     xlab("Oxygen diffusivity") +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
-    theme(legend.position="none") +
+    theme_bw() +
+    theme(legend.position="none",
+          plot.title = element_text(size = 10)) +
     ggtitle("(a) Cyanobacteria") +
     facet_grid(. ~ direction) 
-  #p1
+  
   p2 <- temp %>%
     dplyr::filter(functional_group == "SB")  %>%
     mutate(species = factor(species, levels = unique(species))) %>%
     ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(7.5, 2), yend = c(2, 7.5)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
@@ -501,7 +528,9 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     xlab("Oxygen diffusivity") +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
-    theme(legend.position="none") +
+    theme_bw() +
+    theme(legend.position="none",
+          plot.title = element_text(size = 10)) +
     ggtitle("(b) Sulfate reducing bacteria")+
     facet_grid(. ~ direction) +
     theme(strip.text = element_blank())
@@ -510,6 +539,12 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     dplyr::filter(functional_group == "PB")  %>%
     mutate(species = factor(species, levels = unique(species))) %>%
     ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(7, 2), yend = c(2, 7)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
@@ -517,7 +552,9 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     xlab("Oxygen diffusivity") +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
-    theme(legend.position="none") +
+    theme_bw() +
+    theme(legend.position="none",
+          plot.title = element_text(size = 10)) +
     ggtitle("(c) Phototrophic sulfur bacteria")+
     facet_grid(. ~ direction) +
     theme(strip.text = element_blank())
@@ -525,12 +562,20 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
   p4 <- temp %>%
     dplyr::filter(var_type == "Substrate", species == "O") %>%
     ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(0.5, 2), yend = c(2, 0.5)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
     ylab("Log(Quantity)") +
     xlab("Oxygen diffusivity") +
-    theme(legend.position="none") +
+    theme_bw() +
+    theme(legend.position="none",
+          plot.title = element_text(size = 10)) +
     ggtitle("(d) Oxygen concentration")+
     facet_grid(. ~ direction) +
     theme(strip.text = element_blank())
@@ -538,13 +583,21 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
   p5 <- temp %>%
     dplyr::filter(var_type == "Substrate", species == "SR") %>%
     ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(2.5, 1.5), yend = c(1.5, 2.5)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
     geom_path(lwd = line_width, col = 6) +
     geom_point(size = point_size, col = 6) +
     ##ylab("log10(quantity [cells])") +
     ylab("Log(Quantity)") +
     xlab("Oxygen diffusivity") +
-    theme(legend.position="none") +
-    ggtitle("(e) Sulfide concentration")+
+    theme_bw() +
+    theme(legend.position="none",
+          plot.title = element_text(size = 10)) +
+    ggtitle("(e) Sulfide concentration") +
     facet_grid(. ~ direction) +
     theme(strip.text = element_blank())
   
