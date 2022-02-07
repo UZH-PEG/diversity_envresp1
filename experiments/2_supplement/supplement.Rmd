@@ -1,7 +1,7 @@
 ---
 title: Supplementary Content
 subtitle: Functional diversity ... Predictions of a model of an oxic-anoxic microbial ecosystem 
-author: "Owen L Petchey, Rainer Krug, Marcel Suleiman, ???others???"
+author: "Owen L Petchey, Rainer Krug, Marcel Suleiman, Romana Limberger, ???others???"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::html_document2:
