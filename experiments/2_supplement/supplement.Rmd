@@ -236,6 +236,31 @@ The replication method shows the same effects of functional diversity as those r
 These results are shown in the figure below, which shows results of the replication method.
 
 
+
+```{r eval = TRUE}
+all_stab <- readRDS(here("experiments/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
+
+simlength <- 1e4
+num_strains <- 2
+plot_here <- all_stab %>%
+  filter(simlength == simlength)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(simlength,
+                                                           " sim. length,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+
+```
+
+
+
+
+
 ```{r echo = FALSE, eval = TRUE}
 stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/small_stab_data_1e6_x2x6_factorial.RDS"))
 

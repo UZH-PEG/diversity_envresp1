@@ -56,7 +56,7 @@ setup_R <- function() {
 
 
 
-run_ss_var_experiment <- function(parameter, var_expt) {
+run_replication_ssfind_experiment <- function(parameter, var_expt) {
 
   # var_expt <- tibble(CB_var_gmax_s,
   #                    CB_var_h_s,
@@ -101,7 +101,7 @@ run_ss_var_experiment <- function(parameter, var_expt) {
         p
       })
     ) %>%
-    mutate(ss_by_a_N_result = list(ss_by_a_N(ss_by_a_N_result))) %>%
+    mutate(ss_by_a_N_result = list(run_replication_ssfind(ss_by_a_N_result))) %>%
     mutate(ss_res = list(ss_by_a_N_result$result))
   
   return(result)
