@@ -78,7 +78,7 @@ minimum_abundances <- rep(1, 3)
 names(minimum_abundances) <- c("CB", "PB", "SB")
 
 grid_num_a <- 300 #usually 1000 ## number of a_0 values
-grid_num_a <- 10 ## FOR TEST
+grid_num_a <- 3 ## FOR TEST
 a_Os <- 10^seq(-8, -0, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values
@@ -93,7 +93,7 @@ ss_expt <- expand.grid(N_CB = initial_CBs,
 parameter <- new_replication_ssfind_parameter(
   dynamic_model = parameter$dynamic_model,
   event_definition = eval(parse(text = event_def)),
-  event_interval = 1000,
+  event_interval = sim_length,
   noise_sigma = parameter$noise_sigma,
   minimum_abundances = minimum_abundances,
   sim_duration = sim_length,

@@ -6,29 +6,29 @@ source(here::here("R/various_useful_functions.r"))
 max_cores <- benchmarkme::get_cpu()$no_of_cores-2
 options(mc.cores = max_cores)
 
-sim_length <- 1e4
-event_def <- "event_definition_2"
+sim_length <- 1e6
+event_def <- "event_definition_2" ## not relevant, since no events occur
 
 ## Run for 2, 3, 6, and 9 strains
-for(num_strains in c(2, 3, 6, 9)) {
+#for(num_strains in c(2, 3, 6, 9)) {
   
-  num_strains <- 2 ## for testing
+  num_strains <- 9 ## for testing
   
   ## Run the code that sets up the experiment
   source(here::here("experiments/0_ss_finding/replication_method/setup_experiment.R"))
   
   ss_data_filename <- here("experiments/0_ss_finding/replication_method/data",
-                           paste0("ss_data_",
+                           paste0("test_ss_data_",
                                   num_strains, "strains_sim_length",
                                   formatC(sim_length, format = "e", digits = 0),
                                   "_", event_def,".RDS"))
   stab_data_filename <- here("experiments/0_ss_finding/replication_method/data",
-                             paste0("stab_data_",
+                             paste0("test_stab_data_",
                                     num_strains, "strains_sim_length",
                                     formatC(sim_length, format = "e", digits = 0),
                                     "_", event_def,".RDS"))
 
-  #var_expt <- var_expt[1:10,]
+  var_expt <- var_expt[1,]
   
   system.time(
     run_replication_ssfind_experiment(parameter, var_expt) %>%

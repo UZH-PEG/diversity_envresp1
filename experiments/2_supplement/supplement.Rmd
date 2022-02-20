@@ -15,7 +15,7 @@ output:
 knitr::opts_chunk$set(include = TRUE,
                       warning = FALSE,
                       message = FALSE,
-                      cache = FALSE)
+                      cache = TRUE)
 ```
 
 ```{r echo = FALSE}
@@ -181,13 +181,18 @@ As is shown in the figures below, the temporal method results in a larger region
 
 ## Replication method, no diversity
 
-In the following graph, the solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state).Stable states found with the replication method. Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
-
-
 
 ```{r repl_meth1, echo=FALSE, eval = TRUE}
-repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
+repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/data/ss_data_9strains_sim_length1e+06_event_definition_2.RDS"))
 temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+```
+
+
+In the following graph, the solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state). Stable states found with the replication method. Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
+
+(ref:repl-meth2) Figure caption.
+
+```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 ## To be completed.
 plot_ss_result1(repl_meth,
                 result_index = 1,
@@ -197,10 +202,9 @@ plot_ss_result1(repl_meth,
 
 ## Temporal method, no diversity
 
-Same as for the previous graph.
+(ref:temp-meth2) ...
 
-
-```{r temp_meth1, echo=FALSE, eval = TRUE}
+```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 plot_ss_result3(temp_meth, 1)
 ```
 
@@ -209,9 +213,9 @@ plot_ss_result3(temp_meth, 1)
 
 Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
 
+(ref:both-meth1) ...
 
-
-```{r both_meth1, echo=FALSE, eval = TRUE}
+```{r both-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:both-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 repl_method_1 <- repl_meth$ss_res[[1]] %>%
      mutate(time = NA,
             direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
@@ -235,18 +239,18 @@ The replication method shows the same effects of functional diversity as those r
 
 These results are shown in the figure below, which shows results of the replication method.
 
+(ref:div-repl-meth1) The figure shows the effect of response trait diversity (y-axis) on the positions of the tipping points (show by dark lines), which determine the extent of the region of bistability in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
 
-
-```{r eval = TRUE}
+```{r div-repl-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-repl-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("experiments/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
 
-simlength <- 1e4
-num_strains <- 2
+sim_length <- 1e6
+num_strains <- 9
 plot_here <- all_stab %>%
-  filter(simlength == simlength)
+  filter(simlength == sim_length)
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(simlength,
+                                     figure_title = paste0(sim_length,
                                                            " sim. length,\n",
                                                            num_strains,
                                                            " strains"))
@@ -261,7 +265,7 @@ p1 + p2
 
 
 
-```{r echo = FALSE, eval = TRUE}
+```{r echo = FALSE, eval = FALSE}
 stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/small_stab_data_1e6_x2x6_factorial.RDS"))
 
 all_stab <- stab_data
@@ -300,7 +304,7 @@ all_stab_results <- all_stab_results %>%
 ```
 
 
-```{r echo = FALSE, eval = TRUE}
+```{r echo = FALSE, eval = FALSE}
 all_stab_results %>%
   #filter(var_treat == "CB") %>%
   filter(Species == "SR") %>%
@@ -327,7 +331,7 @@ all_stab_results %>%
 
 ```
 
-The figure above shows the effect of response trait diversity (y-axis) on the positions of the tipping points (show by dark lines), which determine the extent of the region of bistability in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
+
 
 ## Further thoughts
 
@@ -340,11 +344,15 @@ The temporal approach is particularly useful when investigating the effects of s
 
 # Effect of simulation duration
 
-*Review what the wait time is.*
+## Diversity effects
 
-Wait times of 1e6 hours produce the following results (same as those presented in the main report).
+Recall that the temporal method for finding stable states involves running the simulation for a certain amount of time, termed the "wait time", at a constant level of oxygen diffusivity. At the end of that wait time the state of the system is recorded, and then the oxygen diffusivity is slightly increased or decreased, and the system then simulated again for the duration of the wait time.
 
-```{r wait_time_1e6, eval = TRUE}
+The following figures \@ref(fig:div-temp-meth1)-\@ref(fig:div-temp-meth5) show the effects of diversity with long to shorter wait times. 
+
+(ref:div-temp-meth1) Effects of diversity with wait time of 1e6 hours (same figure as in main report).
+
+```{r div-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth1)', fig.height=7, fig.width=6, fig.align="center"}
 all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
 wait_time <- 1e6
@@ -364,7 +372,9 @@ p1 + p2
 
 ```
 
-```{r wait_time_1e5, eval = TRUE}
+(ref:div-temp-meth2) Effects of diversity with wait time of 1e5 hours.
+
+```{r div-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth2)', fig.height=7, fig.width=6, fig.align="center"}
 
 wait_time <- 1e5
 num_strains <- 9
@@ -382,8 +392,9 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
+(ref:div-temp-meth3) Effects of diversity with wait time of 1e4 hours.
 
-```{r wait_time_1e4, eval = TRUE}
+```{r div-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth3)', fig.height=7, fig.width=6, fig.align="center"}
 
 wait_time <- 1e4
 num_strains <- 9
@@ -401,8 +412,9 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
-```{r wait_time_1e3, eval = TRUE}
+(ref:div-temp-meth4) Effects of diversity with wait time of 1e3 hours.
 
+```{r div-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth4)', fig.height=7, fig.width=6, fig.align="center"}
 wait_time <- 1e3
 num_strains <- 9
 plot_here <- all_stab %>%
@@ -419,7 +431,9 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
-```{r wait_time_1e2, eval = TRUE}
+(ref:div-temp-meth5) Effects of diversity with wait time of 1e2 hours.
+
+```{r div-temp-meth5, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth5)', fig.height=7, fig.width=6, fig.align="center"}
 
 wait_time <- 1e2
 num_strains <- 9
@@ -438,37 +452,72 @@ p1 + p2
 ```
 
 
-Wait times of 1e5 produce the following results, which qualitatively and often quantitatively very similar to those for wait times of 1e6. There is a notable difference when there is variation in only SB, or CB-SB variation treatments with two or three strains:
 
-Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Here is an example of the stable states when diversity is moderate:
+## Example of transient dynamics at 1e6 hours
 
-```{r eval = TRUE}
+The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours simulation time, or 2'000'000 hours. This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
+
+Below is Figure 3 from the main manuscript, in which the duration at each oxygen diffusivity value is 1e6:
+ 
+(ref:ss-temp-meth3) ...
+
+```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
+single_1e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
+only_SB_variable[13,]$ssfind_result[[1]] <- single_1e6
+fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
+```
+ 
+ 
+ 
+For comparison, here are the results with twice the duration at each oxygen diffusivity:
+ 
+(ref:ss-temp-meth4) ...
+
+```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=8, fig.width=8, fig.align="center"}
+single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
+only_SB_variable[13,]$ssfind_result[[1]] <- single_2e6
+fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
+```
+ 
+# SB diversity effects
+
+Wait times of 1e5 (Figure \@ref(fig:div-temp-meth2) and 1e4 (Figure \@ref(fig:div-temp-meth4) produce qualitatively and often quantitatively very similar to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or CB-SB variation treatments with wait time of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6.
+
+However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift. 
+
+(ref:ss-temp-meth1) Stable state of the system with moderate level of diversity in only SB, and no diversity in the other two groups.
+
+```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
-ss_3s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/ss_data_3strains_waittime", wait_time, "_event_definition_2.RDS")))
+ss_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+#stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
 
 
 #max <- max(ss_3s$PB_var_gmax_s)
 #f <- 0.625
 #fv <- f*max
 
-only_SB_variable <- ss_3s %>%
+only_SB_variable <- ss_9s %>%
   filter(
     abs(CB_var_gmax_s) < 0.0001,
     abs(PB_var_gmax_s) < 0.0001
   )
 only_SB_variable <- only_SB_variable[order(only_SB_variable$SB_var_gmax_s), ]
 
-only_SB_variable$SB_var_gmax_s
+#only_SB_variable$SB_var_gmax_s
+
+fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
+
+
+#fig_state_vs_o2diff(only_SB_variable[13,])
 ```
 
-```{r eval = TRUE}
-fig_state_vs_o2diff(only_SB_variable[13,])
-```
+Suprisingly, when there is just a little more diversity in the SB then the anoxic to oxic transition happens earlier, i.e. there is large decrease in resilience \@ref(fig:ss-temp-meth2).
 
-Increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift. When there is just a little more diversity in the SB, this happens:
+(ref:ss-temp-meth2)  Stable state of the system with higher than moderate level of diversity in only SB, and no diversity in the other two groups.
 
-```{r eval = TRUE}
-fig_state_vs_o2diff(only_SB_variable[14,])
+```{r ss-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[14,])
 ```
 
 We believe that this phenomenon is caused by an effect that we explain with reference to an anology of using stepping stones to cross a river. Increasing diversity in our simulations is akin to increasing the width of the river, but while keeping the number of stepping stones (strains) constant. So long as the river is not too wide, we can still cross it, but once the width of the river is such that the stepping stones are too far apart, we can't cross the river. And this happens suddenly, the width increases just a tiny bit more, and we suddenly can't cross the river when we could before.
@@ -477,222 +526,19 @@ In the simulated microbial ecosystem, the strains are the stepping stones, and i
 
 This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
+(ref:div-stab-multstrain1)  Effects of diversity on positions of tipping points with different numbers of strains.
 
+```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
+all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
-### Example of transient dynamics at 1'000'000 hours
+which_strains <- c(2, 3, 6, 9)
+which_wait_time<- 1e6
+figure_title <- " "
 
-The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours simulation time, or 2'000'000 hours. This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
-
-Below is Figure 3 from the main manuscript, in which the duration at each oxygen diffusivity value is 1e6:
- 
-```{r echo = FALSE, fig.height=10}
-
-single_1e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
-# sort(unique(ss_9s$CB_var_gmax_s))
-# sort(unique(ss_9s$SB_var_gmax_s))
-# ss_result <- ss_9s %>%
-#   filter(abs(CB_var_gmax_s - 0.028254848) < 0.0001,
-#          abs(SB_var_gmax_s - 0.084764545) < 0.0001,
-#          abs(PB_var_gmax_s - 0.084764545) < 0.0001)
-
-temp <- single_1e6 %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-
-num_strains <- temp %>%
-  group_by(functional_group) %>%
-  summarise(num = length(unique(species))) %>%
-  na.omit()
-
-num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
-num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
-num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
-
-line_width <- 1
-
-p1 <- temp %>%
-  dplyr::filter(functional_group == "CB")  %>%
-  mutate(species = factor(species, levels = unique(species))) %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
-  guides(colour = guide_legend(ncol = 3)) +
-  theme(legend.position="none") +
-  ggtitle("(b) Cyanobacteria")
-#p1# p1
-
-p2 <- temp %>%
-  dplyr::filter(functional_group == "SB")  %>%
-  mutate(species = factor(species, levels = unique(species))) %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
-  guides(colour = guide_legend(ncol = 3)) +
-  theme(legend.position="none") +
-  ggtitle("(c) Sulfate reducing bacteria")
-
-p3 <- temp %>%
-  dplyr::filter(functional_group == "PB")  %>%
-  mutate(species = factor(species, levels = unique(species))) %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
-  guides(colour = guide_legend(ncol = 3)) +
-  theme(legend.position="none") +
-  ggtitle("(d) Phototrophic sulfur bacteria")
-
-p4 <- temp %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(e) Oxygen concentration")
-
-p5 <- temp %>%
-  dplyr::filter(var_type == "Substrate", species == "SR") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width, col = 6) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(f) Sulfide concentration")
-
-patchwork <- p1 / p2 / p3 / p4 / p5
-patchwork
+fig_div_vs_o2diff_multistrain(all_stab, which_strains,
+                              which_wait_time, figure_title)
 ```
- 
- 
- 
-For comparison, here are the results with twice the duration at each oxygen diffusivity:
- 
-```{r echo = FALSE, fig.height=10, eval = TRUE}
 
-single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
-# sort(unique(ss_9s$CB_var_gmax_s))
-# sort(unique(ss_9s$SB_var_gmax_s))
-# ss_result <- ss_9s %>%
-#   filter(abs(CB_var_gmax_s - 0.028254848) < 0.0001,
-#          abs(SB_var_gmax_s - 0.084764545) < 0.0001,
-#          abs(PB_var_gmax_s - 0.084764545) < 0.0001)
-
-temp <- single_2e6 %>%
-  mutate(a = 10^a_O) %>%
-  # arrange(a) %>%
-  # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
-  #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
-  # select(-initial_N_CB, -a_O) %>%
-  gather(species, quantity, 2:(ncol(.) - 2)) %>%
-  mutate(
-    var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
-    functional_group = case_when(
-      str_detect(species, "CB_") ~ "CB",
-      str_detect(species, "SB_") ~ "SB",
-      str_detect(species, "PB_") ~ "PB"
-    ),
-    log10_quantity = log10(quantity + 1)
-  )
-
-num_strains <- temp %>%
-  group_by(functional_group) %>%
-  summarise(num = length(unique(species))) %>%
-  na.omit()
-
-num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
-num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
-num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
-
-line_width <- 1
-
-p1 <- temp %>%
-  dplyr::filter(functional_group == "CB")  %>%
-  mutate(species = factor(species, levels = unique(species))) %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
-  guides(colour = guide_legend(ncol = 3)) +
-  theme(legend.position="none") +
-  ggtitle("(b) Cyanobacteria")
-#p1# p1
-
-p2 <- temp %>%
-  dplyr::filter(functional_group == "SB")  %>%
-  mutate(species = factor(species, levels = unique(species))) %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
-  guides(colour = guide_legend(ncol = 3)) +
-  theme(legend.position="none") +
-  ggtitle("(c) Sulfate reducing bacteria")
-
-p3 <- temp %>%
-  dplyr::filter(functional_group == "PB")  %>%
-  mutate(species = factor(species, levels = unique(species))) %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
-  guides(colour = guide_legend(ncol = 3)) +
-  theme(legend.position="none") +
-  ggtitle("(d) Phototrophic sulfur bacteria")
-
-p4 <- temp %>%
-  dplyr::filter(var_type == "Substrate", species == "O") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(e) Oxygen concentration")
-
-p5 <- temp %>%
-  dplyr::filter(var_type == "Substrate", species == "SR") %>%
-  ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
-  geom_path(lwd = line_width, col = 6) +
-  ##ylab("log10(quantity [cells])") +
-  ylab("Log(Quantity)") +
-  xlab("Oxygen diffusivity") +
-  theme(legend.position="none") +
-  ggtitle("(f) Sulfide concentration")
-
-patchwork <- p1 / p2 / p3 / p4 / p5
-patchwork
-```
- 
 
  
 
