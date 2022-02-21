@@ -452,6 +452,7 @@ fig_state_vs_o2diff_sidebyside <- function(ss_result){
 
 fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
 
+  #browser()
   is_repl <- "ss_by_a_N_result" %in% names(ss_result)
 
   if (is_repl) {
@@ -484,10 +485,14 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
 
   if (is_repl) {
     gathcols <- 1:(31)
+    ss_result$ssfind_result[[1]] <- ss_result$ssfind_result[[1]] %>%
+      mutate(a_O = log10(a_O),
+             direction = ifelse(initial_N_CB == 1, "up", "down"))
   } else {
     gathcols <- 2:(ncol(ss_result$ssfind_result[[1]]) - 2)
   }
-  browser()
+  
+  #browser()
   temp <- ss_result$ssfind_result[[1]] %>%
     mutate(a = 10^a_O) %>%
     # arrange(a) %>%

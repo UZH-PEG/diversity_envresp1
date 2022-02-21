@@ -177,7 +177,7 @@ We now discuss two approaches for finding how the stable state of the system var
 
 Here we also describe and give results of what we term the *Replication method*. In this, we made a separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
 
-As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches. For example, in the temporal method, the oxygen concentration in the anoxic state is lower than the initial oxygen concentration in the replication approach, and **Owen guesses that** the sulfide concentration is higher **check that last statement**.
+As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches.
 
 ## Replication method, no diversity
 
@@ -189,24 +189,15 @@ temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data
 
 
 
-(ref:repl-meth2) Stable states found with the *replication* method. The solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state). Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
+(ref:repl-meth2) Stable states found with the *replication* method. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=8, fig.width=8, fig.align="center"}
-## To be completed.
-plot_ss_result1(repl_meth,
-                result_index = 1,
-                filename_prefix = NULL,
-                save_image_file = FALSE)
-
 fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
-
-## Would like to here use the function fig_state_vs_o2diff_sidebyside_dots() (as is used in the next chunk) but there is some incompatibility as the function was written for results from the temporal method, and does not work for those from the replication method. Rainer, could you please see if you can make a workaround?
-
 ```
 
 ## Temporal method, no diversity
 
-(ref:temp-meth2) Stable states found with the *temporal* method. All other aspects are the same as in Figure \@ref(fig:repl-meth1).
+(ref:temp-meth2) Stable states found with the *temporal* method. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
 ```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
@@ -394,8 +385,8 @@ The results below show the stable states as a function of oxygen diffusivity for
 
 ```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
 single_1e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
-only_SB_variable[13,]$ssfind_result[[1]] <- single_1e6
-fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
+temp_meth[1,]$ssfind_result[[1]] <- single_1e6
+fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
  
  
@@ -403,8 +394,8 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 
 ```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=8, fig.width=8, fig.align="center"}
 single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
-only_SB_variable[13,]$ssfind_result[[1]] <- single_2e6
-fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
+temp_meth[1,]$ssfind_result[[1]] <- single_2e6
+fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
  
 # SB diversity effects
