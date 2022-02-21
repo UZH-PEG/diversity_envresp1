@@ -173,13 +173,15 @@ display_diversity(4,
 
 # Method for finding stable states
 
+## General method
+
 We now discuss two approaches for finding how the stable state of the system varies along the gradient of oxygen diffusivity when there exists the possibility of multiple stable states. In the main article we describe and report results of the method that we term the *Temporal method*.
 
 Here we also describe and give results of what we term the *Replication method*. In this, we made a separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
 
 As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches.
 
-## Replication method, no diversity
+### Replication method, no diversity
 
 
 ```{r repl_meth1, echo=FALSE, eval = TRUE}
@@ -195,7 +197,7 @@ temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data
 fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
 ```
 
-## Temporal method, no diversity
+### Temporal method, no diversity
 
 (ref:temp-meth2) Stable states found with the *temporal* method. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
@@ -204,7 +206,7 @@ fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
 
 
-## Both methods overlaid, no diversity
+### Both methods overlaid, no diversity
 
 
 (ref:both-meth1) Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
@@ -222,6 +224,35 @@ plot_ss_result6(repl_method_1,
                 temp_meth$ssfind_result[[1]],
                 xlims = c(-8, 0))
 ```
+
+## Effect of abundance change event
+
+**To be completed... waiting for data**
+
+As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours (a slightly different method produced the same results, see the Supplementary Information for details). We also test the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. any adundances that were lower than 1 unit were set to 1 unit, every 1,000 hours. As shown below, the results with this floor abundance are the same as when 1 unit is added.
+
+(ref:div-temp-eventdef1) **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
+
+```{r div-temp-eventdef1, eval = FALSE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
+all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method_eventdef1.RDS"))
+
+sim_length <- 1e6
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(simlength == sim_length)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(sim_length,
+                                                           " sim. length,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+
+```
+
 
 ## Effect of diversity, replication method
 
