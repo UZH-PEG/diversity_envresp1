@@ -1,6 +1,6 @@
 ---
 title: Supplementary Content
-subtitle: Functional diversity ... Predictions of a model of an oxic-anoxic microbial ecosystem 
+subtitle: ??????Insert ms title???????
 author: "Owen L Petchey, Rainer Krug, Marcel Suleiman, Romana Limberger, ???others???"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -38,7 +38,7 @@ unity <- 1
 
 # Introduction
 
-This document contains the Supporting Content for the report *?????????????*.
+This document contains the Supplementary Content for the report *?????????????*.
 
 # Creating among strain diversity
 
@@ -188,9 +188,8 @@ temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data
 ```
 
 
-In the following graph, the solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state). Stable states found with the replication method. Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
 
-(ref:repl-meth2) Figure caption.
+(ref:repl-meth2) Stable states found with the *replication* method. The solid (down) line refers to the stable state when cyanobacteria begin at high abundance (favouring the oxic state). The dashed up line refers to when their initial abundnace is low (favouring the anoxic state). Please note: i) that near vertical lines indicate the position of a tipping point and hence the system cannot exist on point of that part of the line; ii) the separatrix (the unstable equilibrium) is not shown.
 
 ```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 ## To be completed.
@@ -198,22 +197,24 @@ plot_ss_result1(repl_meth,
                 result_index = 1,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
+
+## Would like to here use the function fig_state_vs_o2diff_sidebyside_dots() (as is used in the next chunk) but there is some incompatibility as the function was written for results from the temporal method, and does not work for those from the replication method. Rainer, could you please see if you can make a workaround?
+
 ```
 
 ## Temporal method, no diversity
 
-(ref:temp-meth2) ...
+(ref:temp-meth2) Stable states found with the *temporal* method. All other aspects are the same as in Figure \@ref(fig:repl-meth1).
 
 ```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
-plot_ss_result3(temp_meth, 1)
+fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
 
 
 ## Both methods overlaid, no diversity
 
-Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
 
-(ref:both-meth1) ...
+(ref:both-meth1) Stable states of the two methods overlaid, the temporal method with a dashed line, and the replication method with a solid line.
 
 ```{r both-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:both-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 repl_method_1 <- repl_meth$ss_res[[1]] %>%
@@ -231,15 +232,13 @@ plot_ss_result6(repl_method_1,
 
 ## Effect of diversity, replication method
 
-The replication method shows the same effects of functional diversity as those revealed by the temporal method:
+The replication method shows the same effects of functional diversity as those revealed by the temporal method (Figure \@ref(fig:div-repl-meth1). Namely
 
--   Introducing functional diversity in all three functional groups increases the region of bistability relative to when there is no diversity within all functional groups).
+-   Introducing functional diversity in all three functional groups increases the resilience of both the anoxic and oxic state.
 -   Introducing functional diversity in only the cyanobacteria function group delays (with respect to the oxygen diffusivity it occurs at) the switch to the anoxic state as oxygen diffusivity is reduced, but has no effect on the oxygen diffusivity at which the anoxic to oxic transition occurs .
 -   Introducing function diversity in only the sulfur bacteria delays (with respect to the oxygen diffusivity it occurs at) the switch from anoxic to oxic, and advances the switch from oxic to anoxic.
 
-These results are shown in the figure below, which shows results of the replication method.
-
-(ref:div-repl-meth1) The figure shows the effect of response trait diversity (y-axis) on the positions of the tipping points (show by dark lines), which determine the extent of the region of bistability in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
+(ref:div-repl-meth1) **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
 ```{r div-repl-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-repl-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("experiments/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
@@ -265,74 +264,6 @@ p1 + p2
 
 
 
-```{r echo = FALSE, eval = FALSE}
-stab_data <- readRDS(here("experiments/0_ss_finding/replication_method/9_strains/data/small_stab_data_1e6_x2x6_factorial.RDS"))
-
-all_stab <- stab_data
-
-#all_stab <- stab_9s
-
-CB_vars <- unique(all_stab$CB_var_gmax_s)
-SB_vars <- unique(all_stab$SB_var_gmax_s)
-
-CB_all_stab <- all_stab %>%
-  filter(SB_var_gmax_s == 0) %>%
-  mutate(var_treat = "CB",
-         var_gmax = CB_var_gmax_s)
-
-SBPB_all_stab <- all_stab %>%
-  filter(CB_var_gmax_s == 0) %>%
-  mutate(var_treat = "SB-PB",
-         var_gmax = SB_var_gmax_s)
-
-for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-                   SB_var_gmax_s = sort(SB_vars))
-CBSBPB_all_stab <- all_stab %>%
-  right_join(for_join) %>%
-  mutate(var_treat = "CB-SB-PB",
-         var_gmax = CB_var_gmax_s)
-
-all_stab_results <- CB_all_stab %>%
-  bind_rows(SBPB_all_stab) %>%
-  #  bind_rows(results3) %>%
-  # bind_rows(results4) %>%
-  bind_rows(CBSBPB_all_stab)
-
-all_stab_results <- all_stab_results %>%
-  mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
-
-```
-
-
-```{r echo = FALSE, eval = FALSE}
-all_stab_results %>%
-  #filter(var_treat == "CB") %>%
-  filter(Species == "SR") %>%
-  ggplot(aes(x = var_gmax)) +
-  #ggplot(aes(x = var_gmax,
-  #           col = as.factor(num_strains))) +
-  geom_line(aes(y = hyst_min_log), lwd = 2, alpha = 0.8) +
-  geom_line(aes(y = hyst_max_log), lwd = 2, alpha = 0.8) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  xlab("Amount of trait variation\n[see text for units]") +
-  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
-  labs(fill = "Variation in\nonly these\nfunctional groups") +
-  coord_flip() +
-  #guides(col = guide_legend(title="Number of strains")) +
-  theme(
-    legend.position="top"
-    #strip.background = element_blank(),
-    #strip.text.x = element_blank()
-  ) +
-  geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3)
-
-#ggsave(here("experiments/1_figures_main_ms/figure_5.pdf"),
-#       width = 5, height = 4)
-
-```
-
-
-
 ## Further thoughts
 
 Here we give some further thoughts regarding the comparison of the temporal and replication method for stable state finding.
@@ -350,7 +281,7 @@ Recall that the temporal method for finding stable states involves running the s
 
 The following figures \@ref(fig:div-temp-meth1)-\@ref(fig:div-temp-meth5) show the effects of diversity with long to shorter wait times. 
 
-(ref:div-temp-meth1) Effects of diversity with wait time of 1e6 hours (same figure as in main report).
+(ref:div-temp-meth1) Effects of diversity with wait time of 1e6 hours (same figure as in main report). (All else as in (Figure \@ref(fig:div-repl-meth1)).
 
 ```{r div-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth1)', fig.height=7, fig.width=6, fig.align="center"}
 all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
@@ -372,7 +303,7 @@ p1 + p2
 
 ```
 
-(ref:div-temp-meth2) Effects of diversity with wait time of 1e5 hours.
+(ref:div-temp-meth2) Effects of diversity with wait time of 1e5 hours. (All else as in (Figure \@ref(fig:div-repl-meth1)).
 
 ```{r div-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth2)', fig.height=7, fig.width=6, fig.align="center"}
 
@@ -392,7 +323,7 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
-(ref:div-temp-meth3) Effects of diversity with wait time of 1e4 hours.
+(ref:div-temp-meth3) Effects of diversity with wait time of 1e4 hours. (All else as in (Figure \@ref(fig:div-repl-meth1)).
 
 ```{r div-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth3)', fig.height=7, fig.width=6, fig.align="center"}
 
@@ -412,7 +343,7 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
-(ref:div-temp-meth4) Effects of diversity with wait time of 1e3 hours.
+(ref:div-temp-meth4) Effects of diversity with wait time of 1e3 hours. (All else as in Figure \@ref(fig:div-repl-meth1)).
 
 ```{r div-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth4)', fig.height=7, fig.width=6, fig.align="center"}
 wait_time <- 1e3
@@ -431,7 +362,7 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
-(ref:div-temp-meth5) Effects of diversity with wait time of 1e2 hours.
+(ref:div-temp-meth5) Effects of diversity with wait time of 1e2 hours. (All else as in Figure \@ref(fig:div-repl-meth1)).
 
 ```{r div-temp-meth5, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth5)', fig.height=7, fig.width=6, fig.align="center"}
 
@@ -455,11 +386,9 @@ p1 + p2
 
 ## Example of transient dynamics at 1e6 hours
 
-The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours simulation time, or 2'000'000 hours. This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
+The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
-Below is Figure 3 from the main manuscript, in which the duration at each oxygen diffusivity value is 1e6:
- 
-(ref:ss-temp-meth3) ...
+(ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of 1e6 hours. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning. 
 
 ```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
 single_1e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
@@ -468,10 +397,7 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 ```
  
  
- 
-For comparison, here are the results with twice the duration at each oxygen diffusivity:
- 
-(ref:ss-temp-meth4) ...
+(ref:ss-temp-meth4) Stable states found with the temporal method with duration at each oxygen diffusivity value of 2e6 hours. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=8, fig.width=8, fig.align="center"}
 single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
@@ -483,9 +409,9 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 
 Wait times of 1e5 (Figure \@ref(fig:div-temp-meth2) and 1e4 (Figure \@ref(fig:div-temp-meth4) produce qualitatively and often quantitatively very similar to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or CB-SB variation treatments with wait time of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6.
 
-However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift. 
+However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift.  Suprisingly, when there is just a little more diversity in the SB then the anoxic to oxic transition happens earlier, i.e. there is large decrease in resilience \@ref(fig:ss-temp-meth2).
 
-(ref:ss-temp-meth1) Stable state of the system with moderate level of diversity in only SB, and no diversity in the other two groups.
+(ref:ss-temp-meth1) Stable state of the system with moderate level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
@@ -512,9 +438,9 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 #fig_state_vs_o2diff(only_SB_variable[13,])
 ```
 
-Suprisingly, when there is just a little more diversity in the SB then the anoxic to oxic transition happens earlier, i.e. there is large decrease in resilience \@ref(fig:ss-temp-meth2).
 
-(ref:ss-temp-meth2)  Stable state of the system with higher than moderate level of diversity in only SB, and no diversity in the other two groups.
+
+(ref:ss-temp-meth2)  Stable state of the system with higher than moderate level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth1).
 
 ```{r ss-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[14,])
@@ -526,7 +452,9 @@ In the simulated microbial ecosystem, the strains are the stepping stones, and i
 
 This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
-(ref:div-stab-multstrain1)  Effects of diversity on positions of tipping points with different numbers of strains.
+# Effect of number of strains
+
+(ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains. 
 
 ```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
