@@ -451,25 +451,50 @@ fig_state_vs_o2diff_sidebyside <- function(ss_result){
 }
 
 fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
+
+  is_repl <- "ss_by_a_N_result" %in% names(ss_result)
+
+  if (is_repl) {
+    ss_result$ssfind_result <- ss_result$ss_res
+  }
   
   temp1 <- ss_result %>%
     mutate(ssfind_result = list(get_total_bio(ssfind_result)))
-  stab_measures <- get_stability_measures(temp1$ssfind_result[[1]],
-                                          threshold_diff_log10scale = 3) %>%
+
+  if (is_repl){
+    temp1 <- microxanox:::get_stability_measures.replication_ssfind_result(
+      temp1$ssfind_result[[1]],
+      threshold_diff_log10scale = 3
+    )
+  } else {
+    temp1 <- microxanox:::get_stability_measures.temporal_ssfind_result(
+      temp1$ssfind_result[[1]],
+      threshold_diff_log10scale = 3
+    )
+  }
+ 
+  stab_measures <- temp1 %>% 
     filter(Species == "SB_tot") %>%
     select(down=hyst_min_log, up=hyst_max_log) %>%
     pivot_longer(names_to = "direction", values_to = "aO_flip", 1:2) %>%
     mutate(y_start = c(2.5, 7.5),
            y_end = c(7.5, 2.5))
+  
   rm(temp1)
 
+  if (is_repl) {
+    gathcols <- 1:(31)
+  } else {
+    gathcols <- 2:(ncol(ss_result$ssfind_result[[1]]) - 2)
+  }
+  browser()
   temp <- ss_result$ssfind_result[[1]] %>%
     mutate(a = 10^a_O) %>%
     # arrange(a) %>%
     # mutate(direction = rep(c("up", "down"), nrow(ss_result)/2)) %>%
     #mutate(direction = ifelse(initial_N_CB == 1, "up", "down")) %>%
     # select(-initial_N_CB, -a_O) %>%
-    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    gather(species, quantity, gathcols) %>%
     mutate(
       var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
       functional_group = case_when(
@@ -492,7 +517,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
   line_width <- 0.2
   point_size <- 0.6
   arrow_lwd <- 1
-  
+
   p1 <- temp %>%
     dplyr::filter(functional_group == "CB")  %>%
     mutate(species = factor(species, levels = unique(species))) %>%

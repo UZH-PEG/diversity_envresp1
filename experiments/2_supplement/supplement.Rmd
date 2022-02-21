@@ -198,6 +198,8 @@ plot_ss_result1(repl_meth,
                 filename_prefix = NULL,
                 save_image_file = FALSE)
 
+fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
+
 ## Would like to here use the function fig_state_vs_o2diff_sidebyside_dots() (as is used in the next chunk) but there is some incompatibility as the function was written for results from the temporal method, and does not work for those from the replication method. Rainer, could you please see if you can make a workaround?
 
 ```
