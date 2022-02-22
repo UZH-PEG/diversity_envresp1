@@ -185,8 +185,8 @@ As is shown in the figures below, the temporal method results in a larger region
 
 
 ```{r repl_meth1, echo=FALSE, eval = TRUE}
-repl_meth <- readRDS(here("experiments/0_ss_finding/replication_method/data/ss_data_9strains_sim_length1e+06_event_definition_2.RDS"))
-temp_meth <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+repl_meth <- readRDS(here("data/0_ss_finding/replication_method/ss_data_9strains_sim_length1e+06_event_definition_2.RDS"))
+temp_meth <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 ```
 
 
@@ -234,7 +234,7 @@ As mentioned in the main report, to avoid very low strain densities, we added 1 
 (ref:div-temp-eventdef1) **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
 ```{r div-temp-eventdef1, eval = FALSE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
-all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method_eventdef1.RDS"))
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method_eventdef1.RDS"))
 
 sim_length <- 1e6
 num_strains <- 9
@@ -265,7 +265,7 @@ The replication method shows the same effects of functional diversity as those r
 (ref:div-repl-meth1) **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
 ```{r div-repl-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-repl-meth1)', fig.height=8, fig.width=8, fig.align="center"}
-all_stab <- readRDS(here("experiments/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
+all_stab <- readRDS(here("data/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
 
 sim_length <- 1e6
 num_strains <- 9
@@ -308,7 +308,7 @@ The following figures \@ref(fig:div-temp-meth1)-\@ref(fig:div-temp-meth5) show t
 (ref:div-temp-meth1) Effects of diversity with wait time of 1e6 hours (same figure as in main report). (All else as in (Figure \@ref(fig:div-repl-meth1)).
 
 ```{r div-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth1)', fig.height=7, fig.width=6, fig.align="center"}
-all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
 wait_time <- 1e6
 num_strains <- 9
@@ -415,7 +415,7 @@ The results below show the stable states as a function of oxygen diffusivity for
 (ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of 1e6 hours. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning. 
 
 ```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
-single_1e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
+single_1e6 <- readRDS(here("data/0_ss_finding/temporal_method/single_1e6_result.RDS"))
 temp_meth[1,]$ssfind_result[[1]] <- single_1e6
 fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
@@ -424,7 +424,7 @@ fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 (ref:ss-temp-meth4) Stable states found with the temporal method with duration at each oxygen diffusivity value of 2e6 hours. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=8, fig.width=8, fig.align="center"}
-single_2e6 <- readRDS(here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
+single_2e6 <- readRDS(here("data/0_ss_finding/temporal_method/single_2e6_result.RDS"))
 temp_meth[1,]$ssfind_result[[1]] <- single_2e6
 fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
@@ -439,8 +439,8 @@ However, larger increases in diversity suddenly cause a large reduction in resil
 
 ```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
-ss_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-#stab_9s <- readRDS(here(paste0("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+ss_9s <- readRDS(here(paste0("data/0_ss_finding/temporal_method/ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+#stab_9s <- readRDS(here(paste0("data/0_ss_finding/temporal_method/stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
 
 
 #max <- max(ss_3s$PB_var_gmax_s)
@@ -481,7 +481,7 @@ This phenomena is dependent on having static trait values for the strains. If st
 (ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains. 
 
 ```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
-all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
 which_strains <- c(2, 3, 6, 9)
 which_wait_time<- 1e6
