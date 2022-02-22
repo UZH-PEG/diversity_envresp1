@@ -33,7 +33,7 @@ source(here("experiments/1_figures_main_ms/ms_figure_functions.R"))
 ## Effects of diversity on position of tipping points and effect sizes
 ## Two column
 
-all_stab <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
 wait_time <- 1e6
 num_strains <- 9
@@ -57,7 +57,7 @@ ggsave(here("experiments/1_figures_main_ms/Figure_3.pdf"),
 ## Figure 4 ----
 ## Stable state with diversity in all functional groups.
 
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+ss_9s <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%

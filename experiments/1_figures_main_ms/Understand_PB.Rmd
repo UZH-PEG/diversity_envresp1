@@ -130,7 +130,7 @@ Region of bistability by diversity and number of strains.
 Stable state with diversity in all functional groups.
 
 ```{r fig3_prep}
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+ss_9s <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 
 max <- max(ss_9s$PB_var_gmax_s)
 f <- 0.625
