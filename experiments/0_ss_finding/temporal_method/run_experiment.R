@@ -14,16 +14,19 @@ for(num_strains in c(2, 3, 6, 9)) {
   ## Run the code that sets up the experiment
   source(here::here("experiments/0_ss_finding/temporal_method/setup_experiment.R"))
   
-  ss_data_filename <- here("experiments/0_ss_finding/temporal_method/data/",
-                           paste0("ss_data_",
-                                  num_strains, "strains_waittime",
-                                  formatC(wait_time, format = "e", digits = 0),
-                                  "_", event_def,".RDS"))
-  stab_data_filename <- here("experiments/0_ss_finding/temporal_method/data/",
-                           paste0("stab_data_",
-                                  num_strains, "strains_waittime",
-                                  formatC(wait_time, format = "e", digits = 0),
-                                  "_", event_def,".RDS"))
+  datadir <- here::here("data/0_ss_finding/temporal_method/")
+  dir.create(datadir, recursive = TRUE, showWarnings = FALSE)
+  
+  ss_data_filename <- file.path(datadir,
+                                paste0("ss_data_",
+                                       num_strains, "strains_waittime",
+                                       formatC(wait_time, format = "e", digits = 0),
+                                       "_", event_def,".RDS"))
+  stab_data_filename <- file.path(datadir,
+                                  paste0("stab_data_",
+                                         num_strains, "strains_waittime",
+                                         formatC(wait_time, format = "e", digits = 0),
+                                         "_", event_def,".RDS"))
   
   ## Estimate time require ----
   nrow(var_expt)

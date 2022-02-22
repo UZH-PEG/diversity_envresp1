@@ -20,7 +20,7 @@ source(here("R/various_useful_functions.r"))
 
 
 
-all_stab_results_small <- readRDS(here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
+all_stab_results_small <- readRDS(here::here("data/0_ss_finding/temporal_method/all_stab_results_small.RDS"))
 sort(unique(all_stab_results_small$stand_var))
 
 

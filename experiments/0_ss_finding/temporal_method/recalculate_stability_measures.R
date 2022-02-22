@@ -18,9 +18,9 @@ for(num_strains in c(2, 3, 6, 9)) {
     
   
   ## Get stability measures ----
-  expt_res <- readRDS(here("experiments/0_ss_finding/temporal_method/data/",
-                           paste0(num_strains,
-                                  "_strain_SS_data_1e6.RDS")))
+  expt_res <- readRDS(here::here("data/0_ss_finding/temporal_method/",
+                                 paste0(num_strains,
+                                        "_strain_SS_data_1e6.RDS")))
   num_cores <- min(c(max_cores, nrow(expt_res)))
     ## Get total biomass of CB, of SB, and of PB, to allow calculation of stability of these
   expt_res <- expt_res %>%
@@ -35,8 +35,8 @@ for(num_strains in c(2, 3, 6, 9)) {
       unnest(cols = c(stability_measures)) 
   })
   saveRDS(stab_data,
-          here("experiments/0_ss_finding/temporal_method/data/",
-               paste0(num_strains, "_strain_stab_data_1e6.RDS")))
+          here::here("data/0_ss_finding/temporal_method/",
+                     paste0(num_strains, "_strain_stab_data_1e6.RDS")))
   ## End of getting stability measures
 
   

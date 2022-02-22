@@ -17,7 +17,7 @@ zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 
 ## Re-run sim selected in figure 3 for longer
-ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime1e+06_event_definition_2.RDS"))
+ss_9s <- readRDS(here::here("data/0_ss_finding/temporal_method/stab_data_9strains_waittime1e+06_event_definition_2.RDS"))
 sort(unique(ss_9s$CB_var_gmax_s))
 sort(unique(ss_9s$SB_var_gmax_s))
 ss_result <- ss_9s %>%
@@ -40,7 +40,7 @@ parameter$sim_duration
 system.time(
   result_1e6 <- run_temporal_ssfind(parameter)
 )
-saveRDS(result_1e6, here("experiments/0_ss_finding/temporal_method/data/single_1e6_result.RDS"))
+saveRDS(result_1e6, here::here("data/0_ss_finding/temporal_method/single_1e6_result.RDS"))
 
 
 wait_time <-  2e6
@@ -49,4 +49,4 @@ parameter$sim_sample_interval <- wait_time
 parameter$sim_duration
 result_2e6 <- run_temporal_ssfind(parameter)
 
-saveRDS(result_2e6, here("experiments/0_ss_finding/temporal_method/data/single_2e6_result.RDS"))
+saveRDS(result_2e6, here("data/0_ss_finding/temporal_method/single_2e6_result.RDS"))
