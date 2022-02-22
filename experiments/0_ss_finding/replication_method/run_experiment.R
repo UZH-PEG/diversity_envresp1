@@ -11,32 +11,35 @@ event_def <- "event_definition_2" ## not relevant, since no events occur
 
 ## Run for 2, 3, 6, and 9 strains
 #for(num_strains in c(2, 3, 6, 9)) {
-  
+
   num_strains <- 9 ## for testing
-  
+
   ## Run the code that sets up the experiment
   source(here::here("experiments/0_ss_finding/replication_method/setup_experiment.R"))
+
+  datadir <- here::here("data/0_ss_finding/replication_method/")
+  dir.create(datadir, showWarnings = FALSE, recursive = TRUE)
   
-  ss_data_filename <- here("experiments/0_ss_finding/replication_method/data",
-                           paste0("test_ss_data_",
-                                  num_strains, "strains_sim_length",
-                                  formatC(sim_length, format = "e", digits = 0),
-                                  "_", event_def,".RDS"))
-  stab_data_filename <- here("experiments/0_ss_finding/replication_method/data",
-                             paste0("test_stab_data_",
-                                    num_strains, "strains_sim_length",
-                                    formatC(sim_length, format = "e", digits = 0),
-                                    "_", event_def,".RDS"))
+  ss_data_filename <- file.path(datadir,
+                                paste0("test_ss_data_",
+                                       num_strains, "strains_sim_length",
+                                       formatC(sim_length, format = "e", digits = 0),
+                                       "_", event_def,".RDS"))
+  stab_data_filename <- file.path(datadir,
+                                  paste0("test_stab_data_",
+                                         num_strains, "strains_sim_length",
+                                         formatC(sim_length, format = "e", digits = 0),
+                                         "_", event_def,".RDS"))
 
   var_expt <- var_expt[1,]
-  
+
   system.time(
     run_replication_ssfind_experiment(parameter, var_expt) %>%
       saveRDS(ss_data_filename)
   )
-  
-  
-  
+
+
+
   ## Get stability measures ----
   num_cores <- min(c(max_cores, nrow(var_expt)))
   expt_res <- readRDS(ss_data_filename)
@@ -55,8 +58,8 @@ event_def <- "event_definition_2" ## not relevant, since no events occur
   })
   saveRDS(stab_data, stab_data_filename)
   ## End of getting stability measures
-  
-    
+
+
 }
 
 

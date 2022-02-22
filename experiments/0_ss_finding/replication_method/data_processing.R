@@ -13,10 +13,10 @@ read_plus <- function(flnm) {
     mutate(filename = flnm)
 }
 
-tbl1 <- list.files(path = here("experiments/0_ss_finding/replication_method/data"),
+tbl1 <- list.files(path = here("data/0_ss_finding/replication_method/"),
                    pattern = "stab_data", 
-                   full.names = T,
-                   recursive = T) %>% 
+                   full.names = TRUE,
+                   recursive = TRUE) %>% 
   map_df(~read_plus(.))
 
 keep_tbl1 <- tbl1
@@ -114,7 +114,11 @@ all_stab_results <- all_stab_results %>%
                                                                 "SB-PB",
                                                                 "CB-SB-PB")))
 
-saveRDS(all_stab_results, here("experiments/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
+
+datadir <- here::here("data/0_ss_finding/replication_method/processed_data/")
+dir.create(datadir)
+
+saveRDS(all_stab_results, file.path(datadir, "stab_data_replication_method.RDS"))
 
 
 
