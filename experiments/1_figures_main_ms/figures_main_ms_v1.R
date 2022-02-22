@@ -81,7 +81,7 @@ ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
 ## By Uriah
 ## Owen switched to SB_tot
 
-all_stab_results_small <- readRDS(here("experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+all_stab_results_small <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
 wait_time <- 1e6
 all_stab_results9 <- all_stab_results_small %>%
@@ -190,7 +190,7 @@ ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
 
 ## Not used anymore ----
 
-# ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+# ss_9s <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 # sort(unique(ss_9s$CB_var_gmax_s))
 # sort(unique(ss_9s$SB_var_gmax_s))
 # ss_result <- ss_9s %>%
@@ -207,7 +207,7 @@ ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
 ## Not used any more ----
 ## Shows effect of no diversity versus diversity in all functional groups.
 
-# ss_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+# ss_9s <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 # 
 # sort(unique(ss_9s$CB_var_gmax_s))
 # sort(unique(ss_9s$SB_var_gmax_s))
@@ -484,10 +484,10 @@ ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
 ## Region of bistability by diversity and number of strains.
 
 # 
-# stab_2s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_2strains_waittime1e+06_event_definition_2.RDS"))
-# stab_3s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_3strains_waittime1e+06_event_definition_2.RDS"))
-# stab_6s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_6strains_waittime1e+06_event_definition_2.RDS"))
-# stab_9s <- readRDS(here("experiments/0_ss_finding/temporal_method/data/stab_data_9strains_waittime1e+06_event_definition_2.RDS"))
+# stab_2s <- readRDS(here("data/0_ss_finding/temporal_method/stab_data_2strains_waittime1e+06_event_definition_2.RDS"))
+# stab_3s <- readRDS(here("data/0_ss_finding/temporal_method/stab_data_3strains_waittime1e+06_event_definition_2.RDS"))
+# stab_6s <- readRDS(here("data/0_ss_finding/temporal_method/stab_data_6strains_waittime1e+06_event_definition_2.RDS"))
+# stab_9s <- readRDS(here("data/0_ss_finding/temporal_method/stab_data_9strains_waittime1e+06_event_definition_2.RDS"))
 # 
 # all_stab <- stab_2s %>%
 #   #bind_rows(stab_2s_sub1) %>%
