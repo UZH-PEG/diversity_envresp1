@@ -5,3 +5,6 @@
 *.RData
 *.rdb
 data
+experiments/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS
+experiments/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS
+experiments/old/experiment old/experiment summary/all_stab.RDS

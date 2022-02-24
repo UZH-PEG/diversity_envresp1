@@ -20,16 +20,17 @@ source(here("R/various_useful_functions.r"))
 
 
 
-all_stab_results_small <- readRDS(here::here("data/0_ss_finding/temporal_method/all_stab_results_small.RDS"))
-sort(unique(all_stab_results_small$stand_var))
+all_stab_results <- readRDS(here::here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+sort(unique(all_stab_results$stand_var))
 
 
 reference_var <- 0.47368421
 
-temp <- all_stab_results_small %>%
+temp <- all_stab_results %>%
   filter(round(stand_var,4) == round(reference_var,4) | stand_var == 0,
-         Species == "CB_tot",
-         num_strains == 9) %>%
+         Species == "SB_tot",
+         num_strains == 9,
+         waittime == 1e6) %>%
   arrange(var_treat, stand_var) %>%
   group_by(var_treat) %>%
   summarise(an2ox_div_effect = hyst_max_log[2]-hyst_max_log[1],
