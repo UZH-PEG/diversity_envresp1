@@ -476,13 +476,122 @@ In the simulated microbial ecosystem, the strains are the stepping stones, and i
 
 This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
+
+# PB diversity effects
+
+
+```{r echo = FALSE}
+ss_9s <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+only_PB_variable <- ss_9s %>%
+  filter(
+    abs(CB_var_gmax_s) < 0.0001,
+    abs(SB_var_gmax_s) < 0.0001
+  )
+only_PB_variable <- only_PB_variable[order(only_PB_variable$PB_var_gmax_s), ]
+
+only_PB_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS")) %>%
+  filter(
+    num_strains == 9,
+    waittime == 1e6,
+    var_treat == "PB",
+    Species == "SB_tot"
+  )
+only_PB_stab <- only_PB_stab[order(only_PB_stab$PB_var_gmax_s), ]
+
+sim1 <- 2
+sim2 <- 10
+
+aO_flip_sim1 <- only_PB_stab[sim1,"hyst_max_log"]
+aO_flip_sim2 <- only_PB_stab[sim2,"hyst_max_log"]
+
+
+```
+
+Increases in the diversity within the PB functional group leads to lower resilience of the anoxic state (Figure \@ref(fig:div-temp-meth1), Panel PB, blue line). For example, a small amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)` (Figure \@ref(fig:pbdiv-only-1)). Whereas, a moderate amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)` (Figure \@ref(fig:pbdiv-only-2)). 
+
+
+(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a low amount of variation in only the PB functional group. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+
+```{r pbdiv-only-1, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-1)', fig.height=8, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim1,])
+```
+
+(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a moderate amount of variation in only the PB functional group. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+
+```{r pbdiv-only-2, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-2)', fig.height=8, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim2,])
+```
+
+
+This result is different to the effect of diversity within the CB and SB functional groups, which both cause increases in resilience (Figure \@ref(fig:div-temp-meth1)). Why does diversity in the PB functional group reduce the resilience of the state it dominates?
+
+The phototrophic sulfur bacteria (PB) in the model ecosystem produce oxidised sulfur compounds (SO), and consume reduced sulfur compounds (SR). Since SR inhibits the cyanobacteria, PB can have a positive effect on CB via their consumption of SR. Hence, high growth rates of PB will have a positive effect on on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower SR and higher SO before the transition.
+
+Another pathway by which higher PB growth rate can favour the oxic state is by PB inhibiting PB and SB (and thus favouring CB). This effect occurs because PB consumes SR, making less SR available for abiotic oxidation (SR + O -> SO). Reduced abiotic oxidation leaves greater amounts of O in the environment, and O inhibits. We would expect to see that higher diversity of PB is associated with higher O before the transition.
+
+There is, however, at least one pathway by which PB can favour the anoxic state. PB produces SO which is consumed by SB, and SB produce SR, which inhibits CB.
+
+Looking at the strain replacement that occurs across the oxygen diffusivity gradient, we see that as oxygen diffusivity increases, then the more oxygen tolerant strains of PB replace the less tolerant ones. This is because these more tolerant strains have higher realised growth rates under the prevailing environmental conditions (even though they have lower maximum growth rate than lower tolerance strains). Having an even more tolerant strain available (which is what happens when there is greater PB diversity) gives the opportunity for even higher realised growth rates, which via the effect pathways mentioned above, can favour the oxic state.
+
+The expected effects of having a more PB tolerant strain (because there is higher PB diversity) is shown in Figure \@ref(fig:pbdiv-only-3)). As the transition is approached, higher PB diversity leads to higher oxygen concentration, higher SO concentration, and lower SR concentration, than in a simulation with lower PB diversity. All these differences in substrate concentrations are in the direction of favouring the oxic state, and thus the system transitions earlier to the oxic state.
+
+(ref:pbdiv-only-3) Concentrations of three substrates (one in each panel) in a low PB diversity simulation (x-axis) versus concentration in a high PB diversity simuation (y-axis). Only a small range of oxygen diffusivity is show, and result only shown for increasing oxygen diffusivity. The black line is the 1:1 line.
+
+
+```{r pbdiv-only-3, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-3)', fig.height=5, fig.width=8, fig.align="center"}
+
+
+stab_9s <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+
+
+
+ss1 <- only_PB_variable[sim1,]
+ss2 <- only_PB_variable[sim2,]
+
+dd1 <- ss1$ssfind_result[[1]] %>%
+  pivot_longer(names_to = "State_variable", values_to = "Quantity_sim1", 2:32)
+dd2 <- ss2$ssfind_result[[1]] %>%
+  pivot_longer(names_to = "State_variable", values_to = "Quantity_sim2", 2:32)
+dd <- full_join(dd1, dd2)
+rm(ss1, ss2, dd1, dd2)
+
+labs <- seq(-3.5, -3.3, by=0.05)
+
+dd %>%
+  filter(State_variable %in% c("O", "SR", "SO"),
+         direction == "up", 
+         a_O < as.numeric(aO_flip_sim2),
+         a_O > -3.5) %>%
+  ggplot(aes(x = log10(Quantity_sim1),
+                 y = log10(Quantity_sim2),
+                 col = a_O )) +
+  geom_point(lwd = 3) +
+  geom_path() +
+  scale_color_gradient(low = "yellow", high = "red", na.value = NA,
+                       breaks = labs,
+                       labels = labs) +
+  #coord_trans(x = "log10", y = "log10") +
+  facet_wrap( ~ State_variable, scales = "free") +
+  geom_abline(intercept = 0, slope = 1) +
+  xlab("Log10(Concentration)\nLow PB diversity") +
+  ylab("Log10(Concentration)\nHigh PB diversity") +
+  labs(col="Log10(Oxygen diffusivity)") +
+  theme_bw() +
+  theme(legend.position="top")
+
+  
+
+```
+
+There still remains the question of why the effect of PB diversity saturates. We don't currently have a good explanation for this, just as we don't have good explanations for other effects of diversity that are non-linear.
+
+
 # Effect of number of strains
 
 (ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains. 
 
 ```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
-all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
-
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS")) 
 which_strains <- c(2, 3, 6, 9)
 which_wait_time<- 1e6
 figure_title <- " "
