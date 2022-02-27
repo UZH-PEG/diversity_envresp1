@@ -191,7 +191,7 @@ temp_meth <- readRDS(here("data/0_ss_finding/temporal_method/ss_data_9strains_wa
 
 
 
-(ref:repl-meth2) Stable states found with the *replication* method. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
+(ref:repl-meth2) Stable states found with the **replication method**. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
@@ -199,7 +199,7 @@ fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
 
 ### Temporal method, no diversity
 
-(ref:temp-meth2) Stable states found with the *temporal* method. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:temp-meth2) Stable states found with the **temporal method**. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
 ```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
@@ -225,44 +225,17 @@ plot_ss_result6(repl_method_1,
                 xlims = c(-8, 0))
 ```
 
-## Effect of abundance change event
-
-**To be completed... waiting for data**
-
-As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours (a slightly different method produced the same results, see the Supplementary Information for details). We also test the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. any adundances that were lower than 1 unit were set to 1 unit, every 1,000 hours. As shown below, the results with this floor abundance are the same as when 1 unit is added.
-
-(ref:div-temp-eventdef1) **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
-
-```{r div-temp-eventdef1, eval = FALSE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
-all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method_eventdef1.RDS"))
-
-sim_length <- 1e6
-num_strains <- 9
-plot_here <- all_stab %>%
-  filter(simlength == sim_length)
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
-                                     which_strain = num_strains,
-                                     figure_title = paste0(sim_length,
-                                                           " sim. length,\n",
-                                                           num_strains,
-                                                           " strains"))
-p2 <- fig_resilience_vs_div(plot_here,
-                            which_strain = num_strains,
-                            figure_title = " ") 
-p1 + p2
-
-```
 
 
 ## Effect of diversity, replication method
 
-The replication method shows the same effects of functional diversity as those revealed by the temporal method (Figure \@ref(fig:div-repl-meth1). Namely
+The replication method shows the same effects of functional diversity as those revealed by the temporal method (Figure \@ref(fig:div-repl-meth1)). Namely
 
 -   Introducing functional diversity in all three functional groups increases the resilience of both the anoxic and oxic state.
 -   Introducing functional diversity in only the cyanobacteria function group delays (with respect to the oxygen diffusivity it occurs at) the switch to the anoxic state as oxygen diffusivity is reduced, but has no effect on the oxygen diffusivity at which the anoxic to oxic transition occurs .
 -   Introducing function diversity in only the sulfur bacteria delays (with respect to the oxygen diffusivity it occurs at) the switch from anoxic to oxic, and advances the switch from oxic to anoxic.
 
-(ref:div-repl-meth1) **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
+(ref:div-repl-meth1) **Replication method results.** **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
 ```{r div-repl-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-repl-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("data/0_ss_finding/replication_method/processed_data/stab_data_replication_method.RDS"))
@@ -285,6 +258,32 @@ p1 + p2
 ```
 
 
+## Effect of abundance change event
+
+
+As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours (a slightly different method produced the same results, see the Supplementary Information for details). We also test the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. any abundances that were lower than 1 unit were set to 1 unit, every 1,000 hours. As shown in Figure \@ref(fig:div-temp-eventdef1), the results with this floor abundance are similar as when 1 was added every 1,000 hours. Note that a coarser gradient of trait variation was used, hence the saw-tooth patterns. A further difference is the large decrease in resilience of the anoxic to oxic transition above moderate levels of diversity in the SB and SB-SB treatments. This pattern can also occur with addition of 1 abundance unit (e.g., see Figure \@ref(fig:div-temp-meth3), and is discussed in the section that concerns this below (section [SB diversity effects]).
+
+(ref:div-temp-eventdef1) **Results with an abundance floor.** **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
+
+```{r div-temp-eventdef1, eval = TRUE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/event_def1/processed_data/stab_data_temporal_method.RDS"))
+
+wait_time <- 1e6
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+                                     which_strain = num_strains,
+                                     figure_title = paste0(sim_length,
+                                                           " sim. length,\n",
+                                                           num_strains,
+                                                           " strains"))
+p2 <- fig_resilience_vs_div(plot_here,
+                            which_strain = num_strains,
+                            figure_title = " ") 
+p1 + p2
+
+```
 
 
 
@@ -412,7 +411,7 @@ p1 + p2
 
 The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
-(ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of 1e6 hours. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning. 
+(ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning. 
 
 ```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
 single_1e6 <- readRDS(here("data/0_ss_finding/temporal_method/single_1e6_result.RDS"))
@@ -421,7 +420,7 @@ fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 ```
  
  
-(ref:ss-temp-meth4) Stable states found with the temporal method with duration at each oxygen diffusivity value of 2e6 hours. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
+(ref:ss-temp-meth4) Stable states found with the temporal method with duration at each oxygen diffusivity value of **2e6 hours**. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=8, fig.width=8, fig.align="center"}
 single_2e6 <- readRDS(here("data/0_ss_finding/temporal_method/single_2e6_result.RDS"))
@@ -435,7 +434,7 @@ Wait times of 1e5 (Figure \@ref(fig:div-temp-meth2) and 1e4 (Figure \@ref(fig:di
 
 However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift.  Suprisingly, when there is just a little more diversity in the SB then the anoxic to oxic transition happens earlier, i.e. there is large decrease in resilience \@ref(fig:ss-temp-meth2).
 
-(ref:ss-temp-meth1) Stable state of the system with moderate level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
+(ref:ss-temp-meth1) Stable state of the system with **moderate** level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
@@ -464,7 +463,7 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 
 
 
-(ref:ss-temp-meth2)  Stable state of the system with higher than moderate level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth1).
+(ref:ss-temp-meth2)  Stable state of the system with **higher than moderate** level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth1).
 
 ```{r ss-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[14,])
@@ -510,13 +509,13 @@ aO_flip_sim2 <- only_PB_stab[sim2,"hyst_max_log"]
 Increases in the diversity within the PB functional group leads to lower resilience of the anoxic state (Figure \@ref(fig:div-temp-meth1), Panel PB, blue line). For example, a small amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)` (Figure \@ref(fig:pbdiv-only-1)). Whereas, a moderate amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)` (Figure \@ref(fig:pbdiv-only-2)). 
 
 
-(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a low amount of variation in only the PB functional group. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a **low amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
 ```{r pbdiv-only-1, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-1)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim1,])
 ```
 
-(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a moderate amount of variation in only the PB functional group. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a **moderate amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
 ```{r pbdiv-only-2, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim2,])
