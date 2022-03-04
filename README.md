@@ -18,4 +18,8 @@ Running the simulations takes many days. Therefore the data produced is availabl
 
 # Required packages
 
-**TO DO**: add text for how to install microxanox.
+**TO DO**: add text for how to install microxanox, and remove any unnecessary text below.
+
+From '?remotes::install_github\`: To install from a private repo, generate a personal access token (PAT) in"<https://github.com/settings/tokens>" and use the following
+
+`remotes::install_github( "opetchey/microxanox", ref = microxanox_release, auth_token = "ENTER YOUR TOKEN or PROVED AS ENVIRONMENT VARIABLE", build_vignettes = FALSE, force = TRUE, upgrade = FALSE, lib = tmplib )`

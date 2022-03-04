@@ -121,8 +121,8 @@ agg_stab_strain9 %>%
   geom_line(aes(y = hyst_min_log), size = 1) +
   geom_line(aes(y = hyst_max_log), size = 1) +
   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
+  labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+       x="Amount of trait variation\n[see text for units]",
        title = "Addition of effect sizes and starting position (log)",
        linetype="Method",col="Calculation") +
   # scale_colour_manual(values = c("red","black"))+
@@ -132,6 +132,8 @@ agg_stab_strain9 %>%
   theme_bw()+
   theme(legend.position="right")
 
+ggsave(here("experiments/1_figures_main_ms/Figure_5_log.pdf"),
+       width = 8, height = 8)
 
 
 
@@ -163,8 +165,8 @@ agg_stab_strain9 %>%
   geom_line(aes(y = hyst_min_log), size = 1) +
   geom_line(aes(y = hyst_max_log), size = 1) +
   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(x="Amount of trait variation\n[see text for units]",
-       y="Amount of trait variation\n[see text for units]",
+  labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+       x="Amount of trait variation\n[see text for units]",
        title = "Addition of effect sizes and starting position (linear)",
        linetype="Method",col="Calculation") +
   # scale_colour_manual(values = c("red","black"))+
@@ -174,8 +176,8 @@ agg_stab_strain9 %>%
   theme_bw()+
   theme(legend.position="right")
 
-ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
-       width = 6, height = 9)
+ggsave(here("experiments/1_figures_main_ms/Figure_5_lin.pdf"),
+       width = 8, height = 8)
 
 
 # 
