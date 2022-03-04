@@ -92,43 +92,87 @@ all_stab_results9 <- all_stab_results_small %>%
 
 all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, var_gmax)),]
 
-all_stab_results9$method <- "simulated"
+all_stab_results9$method <- "Simulated"
 
 agg_stab_strain9 <- combine_fct("EF_log")
 
+agg_stab_strain9_temp <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat=="CB-SB-PB")
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat!="CB-SB-PB")
+
+agg_stab_strain9 <- rbind(agg_stab_strain9,
+                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SB-PB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CB-SB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CB-PB"))
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  mutate(method2 = ifelse(agg_stab_strain9$method=="Simulated","Simulated","Calculated")) %>%
+  rename(Calculation=method, Method=method2)%>%
+  mutate(Calculation = factor(Calculation, levels = c("Simulated","CB+SB","CB+PB","SB+PB",
+                                                      "CB+SBPB","PB+CBSB","SB+CBPB")),
+         Method = factor(Method, levels = c("Simulated","Calculated")))
+
 agg_stab_strain9 %>%
   filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
+  ggplot(aes(x = var_gmax, linetype=Method, col=Calculation)) +
   geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_min_log), size = 1) +
+  geom_line(aes(y = hyst_max_log), size = 1) +
   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
   labs(x="Amount of trait variation\n[see text for units]",
        y="Amount of trait variation\n[see text for units]",
        title = "Addition of effect sizes and starting position (log)",
-       col="Method") +
+       linetype="Method",col="Calculation") +
+  # scale_colour_manual(values = c("red","black"))+
+  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
+  scale_linetype_manual(values = c(1,2))+
   coord_flip() +
   theme_bw()+
-  theme(legend.position="top")
+  theme(legend.position="right")
+
 
 
 
 agg_stab_strain9 <- combine_fct("EF_lin")
 
+agg_stab_strain9_temp <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat=="CB-SB-PB")
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat!="CB-SB-PB")
+
+agg_stab_strain9 <- rbind(agg_stab_strain9,
+                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SB-PB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CB-SB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CB-PB"))
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  mutate(method2 = ifelse(agg_stab_strain9$method=="Simulated","Simulated","Calculated")) %>%
+  rename(Calculation=method, Method=method2)%>%
+  mutate(Calculation = factor(Calculation, levels = c("Simulated","CB+SB","CB+PB","SB+PB",
+                                                      "CB+SBPB","PB+CBSB","SB+CBPB")),
+         Method = factor(Method, levels = c("Simulated","Calculated")))
+
+
 agg_stab_strain9 %>%
   filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, col=method)) +
+  ggplot(aes(x = var_gmax, linetype=Method, col=Calculation)) +
   geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), lwd = 1, alpha=0.6) +
-  geom_line(aes(y = hyst_max_log), lwd = 1, alpha=0.6) +
+  geom_line(aes(y = hyst_min_log), size = 1) +
+  geom_line(aes(y = hyst_max_log), size = 1) +
   facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
   labs(x="Amount of trait variation\n[see text for units]",
        y="Amount of trait variation\n[see text for units]",
        title = "Addition of effect sizes and starting position (linear)",
-       col="Method") +
+       linetype="Method",col="Calculation") +
+  # scale_colour_manual(values = c("red","black"))+
+  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
+  scale_linetype_manual(values = c(1,2))+
   coord_flip() +
   theme_bw()+
-  theme(legend.position="top")
+  theme(legend.position="right")
 
 ggsave(here("experiments/1_figures_main_ms/Figure_5.pdf"),
        width = 6, height = 9)
