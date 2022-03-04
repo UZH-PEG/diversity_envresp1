@@ -19,7 +19,7 @@ colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
 colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
 
 source(here("R/various_useful_functions.r"))
-source(here("experiments/1_figures_main_ms/ms_figure_functions.R"))
+source(here("R/ms_figure_functions.R"))
 
 ## Figure 1 ----
 ## Powerpoint
