@@ -946,7 +946,13 @@ combine_fct <- function(Method="arithmetic"){
                   # hyst_min_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_min_log_SB,hyst_min_log_PB, Method=Method),
                   # hyst_max_log_CB_SB_PB = calculation_fct(hyst_min_log_CB,hyst_max_log_SB,hyst_max_log_PB, Method=Method),
                   hyst_min_log_CB_SBPB = calculation_fct(`hyst_min_log_SB-PB`,hyst_min_log_CB, Method=Method),
-                  hyst_max_log_CB_SBPB = calculation_fct(`hyst_max_log_SB-PB`,hyst_max_log_CB, Method=Method))
+                  hyst_max_log_CB_SBPB = calculation_fct(`hyst_max_log_SB-PB`,hyst_max_log_CB, Method=Method),
+                  # new (1) 20220303
+                  hyst_min_log_CBSB_PB = calculation_fct(`hyst_min_log_CB-SB`,hyst_min_log_PB, Method=Method),
+                  hyst_max_log_CBSB_PB = calculation_fct(`hyst_max_log_CB-SB`,hyst_max_log_PB, Method=Method),
+                  # new (2) 20220303
+                  hyst_min_log_CBPB_SB = calculation_fct(`hyst_min_log_CB-PB`,hyst_min_log_SB, Method=Method),
+                  hyst_max_log_CBPB_SB = calculation_fct(`hyst_max_log_CB-PB`,hyst_max_log_SB, Method=Method))
   
   agg_stab_strain9 <- all_stab_results9 %>%
     dplyr::filter(num_strains==9, Species == "SB_tot") 
@@ -955,7 +961,7 @@ combine_fct <- function(Method="arithmetic"){
   agg_stab_strain9_CB_SB <- agg_stab_strain9 %>%
     dplyr::filter(var_treat=="CB-SB")
   
-  agg_stab_strain9_CB_SB$method <- "calculated"
+  agg_stab_strain9_CB_SB$method <- factor("CB+SB")
   agg_stab_strain9_CB_SB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SB
   agg_stab_strain9_CB_SB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SB
   
@@ -963,7 +969,7 @@ combine_fct <- function(Method="arithmetic"){
   agg_stab_strain9_CB_PB <- agg_stab_strain9 %>%
     dplyr::filter(var_treat=="CB-PB")
   
-  agg_stab_strain9_CB_PB$method <- "calculated"
+  agg_stab_strain9_CB_PB$method <- factor("CB+PB")
   agg_stab_strain9_CB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_PB
   agg_stab_strain9_CB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_PB
   
@@ -971,7 +977,7 @@ combine_fct <- function(Method="arithmetic"){
   agg_stab_strain9_SB_PB <- agg_stab_strain9 %>%
     dplyr::filter(var_treat=="SB-PB")
   
-  agg_stab_strain9_SB_PB$method <- "calculated"
+  agg_stab_strain9_SB_PB$method <- factor("SB+PB")
   agg_stab_strain9_SB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_SB_PB
   agg_stab_strain9_SB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_SB_PB
   
@@ -987,13 +993,29 @@ combine_fct <- function(Method="arithmetic"){
   agg_stab_strain9_CB_SBPB <- agg_stab_strain9 %>%
     dplyr::filter(var_treat=="CB-SB-PB")
   
-  agg_stab_strain9_CB_SBPB$method <- "calculated CB+SBPB"
+  agg_stab_strain9_CB_SBPB$method <- factor("CB+SBPB")
   agg_stab_strain9_CB_SBPB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CB_SBPB
   agg_stab_strain9_CB_SBPB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CB_SBPB
+  
+  ### CBSB + PB
+  agg_stab_strain9_CBSB_PB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB-PB")
+  
+  agg_stab_strain9_CBSB_PB$method <- factor("PB+CBSB")
+  agg_stab_strain9_CBSB_PB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CBSB_PB
+  agg_stab_strain9_CBSB_PB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CBSB_PB
+  
+  ### CBPB + SB
+  agg_stab_strain9_CBPB_SB <- agg_stab_strain9 %>%
+    dplyr::filter(var_treat=="CB-SB-PB")
+  
+  agg_stab_strain9_CBPB_SB$method <- factor("SB+CBPB")
+  agg_stab_strain9_CBPB_SB$hyst_min_log <- agg_stab_res_single_groups_wide$hyst_min_log_CBPB_SB
+  agg_stab_strain9_CBPB_SB$hyst_max_log <- agg_stab_res_single_groups_wide$hyst_max_log_CBPB_SB
   
   ### merge 
   agg_stab_strain9 <- rbind(agg_stab_strain9, agg_stab_strain9_CB_SB, agg_stab_strain9_CB_PB, agg_stab_strain9_SB_PB,
                             # agg_stab_strain9_CB_SB_PB,
-                            agg_stab_strain9_CB_SBPB)
+                            agg_stab_strain9_CB_SBPB, agg_stab_strain9_CBSB_PB, agg_stab_strain9_CBPB_SB)
   return(agg_stab_strain9)
 }
