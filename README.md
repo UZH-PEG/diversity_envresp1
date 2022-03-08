@@ -24,6 +24,7 @@ Ensure that the first folder in this directory is `0_ss_finding` and not `data`.
 
 You can download and extract the data automatically by executing the commands below, which will install the package `zen4R` if not installed yet, download the data package to the working directory (this will take some time), unzip it, and delete the downloaded file "data.zip":
 
+
 ```
 if (system.file(package = "zen4R") == "") {
   install.packages("zen4R")
@@ -79,9 +80,6 @@ Beware that running simulations can take a long time (days). All data generated 
 ## Making visualisations and the supplement
 
 -   `1_figures_main_ms/`
-
     -   **`1_figures_main_ms/figures_main_ms_v1.R`**: Script to generate the graphs from the publication
-
 -   `2_supplement/`
-
     -   `2_supplement/supplement.Rmd`: RMarkdown file used to generate the supplement to the publication **TO DO: add publication ref**

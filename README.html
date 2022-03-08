@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>README File</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">README File</h1>
+</header>
+<p>TO DO: set package versions everywhere to the one used in the release
+(1.0.0) TO DO: delete <code>old</code> and other not needed directories
+(before this we should tag this)</p>
+<h1 id="introduction">Introduction</h1>
+<p>This is a repository containing simulation, analysis, and
+visualisation code for the publication <strong>TO DO - publication
+information</strong>.</p>
+<p>It contains two folders:</p>
+<ol type="1">
+<li><code>R</code> – a folder of containing a file or files of useful R
+functions. The files are sourced from other scripts; there is no need to
+directly work with them.</li>
+<li><code>experiments</code> – code for running simulations, processing
+the data produces, and visualising the results.</li>
+</ol>
+<p>and a file <code>microxanox_1.0.0.tar.gz</code> with the R package
+<code>microxanox</code> which contains the actual functionality for the
+simulations, experimants, analysis and basic visualisations.</p>
+<p>A third folder named <code>data</code> is created or populated by
+either running the experiments or downloading the data from a repository
+(see <a href="#getting-the-data">below for details</a>). It will contain
+the data in <code>.RDS</code> format readable from R.</p>
+<h1 id="getting-the-data">Getting the data</h1>
+<p>To get the data, you have two options: either run all experiments
+(which takes many days) or use the data as used for the publication
+<strong>TO DO - publication information</strong>.</p>
+<p>The data used is available as a compressed zip file under the
+following DOI <a
+href="https://doi.org/10.5281/zenodo.6334147">10.5281/zenodo.6334147</a>.
+It is a zip file which contains the data folder which should be placed
+in the same directory which contains the folder <code>R</code> and
+<code>experiments</code>. Extraction of the zip file will create a
+folder named <code>data</code> in the same directory with the data
+generated by the scripts in the <code>experiment</code> folder.</p>
+<p>Ensure that the first folder in this directory is
+<code>0_ss_finding</code> and not <code>data</code>.</p>
+<p>You can download and extract the data automatically by executing the
+commands below, which will install the package <code>zen4R</code> if not
+installed yet, download the data package to the working directory (this
+will take some time), unzip it, and delete the downloaded file
+“data.zip”:</p>
+<pre><code>if (system.file(package = &quot;zen4R&quot;) == &quot;&quot;) {
+  install.packages(&quot;zen4R&quot;)
+}
+zen4R::download_zenodo(&quot;10.5281/zenodo.6334147&quot;)
+unzip(&quot;data.zip&quot;)
+rm(&quot;data.zip&quot;)</code></pre>
+<p>A complete guide to all of the data files is not provided. Please
+work through the code for the Supplement and also the various R scripts
+to develop your understanding. Of course, please also get in touch with
+the authors, preferably via submitting and Issue in the github repo.</p>
+<p>TO DO: REMOVE THIS: Data is currently available from the group file
+server: <a
+href="smb://ieu-fs.uzh.ch"><code>smb://ieu-fs.uzh.ch</code></a> in
+<code>Gr_Petchey/4 Projects/diversity_envresp1/data</code>
+{&gt;&gt;&lt;#comment#&gt;&lt;&lt;}</p>
+<h1 id="required-packages">Required packages</h1>
+<p>To be able to use the scripts in the <code>experiments</code> folder,
+the package <code>microxanox</code> version <code>1.0.0</code> is
+needed. <strong>Compatibility with newer versions can not be guaranteed.
+Of the same main release (1.x.x), compatibility is very likely, with
+other main releases (2.x.x, 3.x.x, …) extremely unlikely!</strong></p>
+<p>This repository contains a file called
+<code>microxanox_1.0.0.tar.gz</code> which contains the R package in the
+correct version.</p>
+<p>The R package can be installed by either installing from this file by
+using</p>
+<pre><code>remotes::install_local(&quot;./microxanox_0.4.9.tar.gz&quot;, upgrade = FALSE)</code></pre>
+<p>You can also install it from the github repository by using</p>
+<pre><code>remotes::install_github( &quot;UZH-PEG/microxanox&quot;, ref = &quot;v1.0.0&quot;, build_vignettes = TRUE, upgrade = FALSE)</code></pre>
+<h1 id="running-the-scripts-and-rmd-files">Running the scripts and RMD
+files</h1>
+<p>TO Do: do we need ta short one-liner for each <code>.R</code> file
+which describes what these scripts are doing?</p>
+<p>The <strong>bold</strong> scripts need to be run, the non-bold are
+called from the <strong>bold</strong> scripts. The scripts in
+<strong>bold</strong> need to be executed in the order of their
+appearance in the subfolders.</p>
+<h2 id="running-simulations-and-processing-data">Running simulations and
+processing data</h2>
+<p>Beware that running simulations can take a long time (days). All data
+generated by the scripts and RMarkdown files is contained in the data
+deposit with the DOI <a
+href="https://doi.org/10.5281/zenodo.6334147">10.5281/zenodo.6334147</a></p>
+<ul>
+<li><p><code>replication_method/</code></p>
+<ul>
+<li><code>replication_method/setup_experiment.R</code>: Setup the
+experiment including all parameters needed</li>
+<li><strong><code>replication_method/run_experiment.R</code></strong>:
+Run the experiment.</li>
+<li><strong><code>replication_method/data_processing.R</code></strong>:
+Process the data for further processing and analysis.</li>
+</ul></li>
+<li><p><code>temporal_method/</code></p>
+<ul>
+<li><code>temporal_method/check_microxanox_version.R</code>: Check the
+version of the installed <code>microxanox</code> package.</li>
+<li><code>temporal_method/setup_experiment.R</code>: Setup the
+experiment including all parameters needed</li>
+<li><strong><code>temporal_method/run_single_sim.R</code></strong>: Run
+a single simulation.</li>
+<li><strong><code>temporal_method/run_experiment.R</code></strong>: Run
+the experiment.</li>
+<li><strong><code>temporal_method/data_processing.R</code></strong>:
+Process the data for further processing and analysis.</li>
+<li><strong><code>temporal_method/get_div_effects.R</code></strong>:
+Calculate the effects of diversity in each of the combinations of
+diversity treatments</li>
+</ul></li>
+</ul>
+<h2 id="making-visualisations-and-the-supplement">Making visualisations
+and the supplement</h2>
+<ul>
+<li><code>1_figures_main_ms/</code>
+<ul>
+<li><strong><code>1_figures_main_ms/figures_main_ms_v1.R</code></strong>:
+Script to generate the graphs from the publication</li>
+</ul></li>
+<li><code>2_supplement/</code>
+<ul>
+<li><code>2_supplement/supplement.Rmd</code>: RMarkdown file used to
+generate the supplement to the publication <strong>TO DO: add
+publication ref</strong></li>
+</ul></li>
+</ul>
+</body>
+</html>
