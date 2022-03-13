@@ -34,12 +34,25 @@ Ensure that the first folder in this directory is `0_ss_finding` and not `data`.
 
 You can download and extract the data automatically by executing the commands below, which will install the package `zen4R` if not installed yet, download the data package to the working directory (this will take some time, since the file is 10 GB), unzip it, and delete the downloaded file "data.zip":
 
-    if (system.file(package = "zen4R") == "") {
-      install.packages("zen4R")
-    }
-    zen4R::download_zenodo("10.5281/zenodo.6334147")
-    unzip("data.zip")
-    rm("data.zip")
+```
+if (system.file(package = "zen4R") == "") {
+    install.packages("zen4R")
+}
+zen4R::download_zenodo("10.5281/zenodo.6334147")
+unzip("data.zip")
+rm("data.zip")
+```
+
+or with base R:
+
+TO Do: get Zenodo link
+```
+download.file("https://zenodo.org/record/I HAVE TO GET THIS PART?download=1", "data.zip")
+unzip("data.zip")
+rm("data.zip")
+```
+
+
 
 A complete guide to all of the data files is not provided. Please work through the code for the Supplement and also the various R scripts to develop your understanding. Of course, please also get in touch with the authors, preferably via submitting and Issue in the github repo.
 
