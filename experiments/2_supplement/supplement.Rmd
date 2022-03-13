@@ -430,6 +430,8 @@ fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
  
 # SB diversity effects
 
+## SB diversity effect anoxic to oxic transition
+
 Wait times of 1e5 (Figure \@ref(fig:div-temp-meth2) and 1e4 (Figure \@ref(fig:div-temp-meth4) produce qualitatively and often quantitatively very similar to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or CB-SB variation treatments with wait time of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6.
 
 However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift.  Suprisingly, when there is just a little more diversity in the SB then the anoxic to oxic transition happens earlier, i.e. there is large decrease in resilience \@ref(fig:ss-temp-meth2).
@@ -474,6 +476,83 @@ We believe that this phenomenon is caused by an effect that we explain with refe
 In the simulated microbial ecosystem, the strains are the stepping stones, and it is much hard (takes longer) for strains to replace each other when there is greater distance (in trait space) between them. When they can no longer replace each other in the time available, the system behaves as if only the least tolerant, highest growth rate strain (lighted shade of colour) is present. In the case illustrated above, this leads to much lower resilience of the anoxic system state.
 
 This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
+
+## SB diversity effect oxic to anoxic transition
+
+
+When the environment ameliorates for the sulphur bacteria, there can be limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. Indeed Uriah showed that the presence of only the most tolerant strain is sufficient to give an earlier switch, even though it is not present in the final state when less tolerant strains are present. And he showed that the presence of only the least tolerant strain creates a later switch than when there are more tolerant strains.
+
+The explanation is that the most tolerant strain does play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(a_O) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the sulphur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the environment ameliorates (temporally).
+
+```{r echo = FALSE}
+run_sims_this_section <- FALSE
+```
+
+```{r eval = run_sims_this_section, echo = FALSE}
+#var_expt <- readRDS(here("experiments/9_strains/data/ss_data_1e6_x2x6_factorial.RDS"))
+var_expt_levels <- var_expt[,1:6]
+no_diversity <- which(rowSums(abs(var_expt_levels))==0)
+max_diversty_all <- which(max(rowSums(abs(var_expt_levels))) ==
+                            rowSums(abs(var_expt_levels)))
+max_only_CB_diversity <- which(max(rowSums(abs(var_expt_levels[,1:2]))) ==
+                            rowSums(abs(var_expt_levels[,1:2])) &
+                              rowSums(abs(var_expt_levels[,3:6]))==0)
+max_only_SBPB_diversity <- which(max(rowSums(abs(var_expt_levels[,3:6]))) ==
+                            rowSums(abs(var_expt_levels[,3:6])) &
+                              rowSums(abs(var_expt_levels[,1:2]))==0)
+```
+
+```{r  eval = run_sims_this_section, echo = FALSE}
+parameter <- parameter_master
+parameter$strain_parameter <- var_expt[no_diversity,]$pars[[1]]
+parameter$sim_duration <- 100000
+parameter$result <- NULL
+parameter$log10a_series <- c(-4.8, -4.8)
+parameter$strain_parameter$initial_state <- new_initial_state(
+  nrow(parameter$strain_parameter$CB),
+  nrow(parameter$strain_parameter$PB),
+  nrow(parameter$strain_parameter$PB),
+  values = "bush_ssfig3"
+)
+parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10^10/nrow(parameter$strain_parameter$CB)
+
+sim_res_novar1 <- run_simulation(parameter)
+saveRDS(sim_res_novar1, here("experiments/checks_puzzles/data/puzzle1_1.RDS"))
+```
+
+(ref:sb-div-effect3)  Dynamics of the system with no diversity in any functional group, and log10(oxygen diffusivity) = -4.8. The system remains oxic when starting in the oxic state.
+
+```{r  sb-div-effect3, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect3)', fig.height=8, fig.width=8, fig.align="center"}
+sim_res_novar1 <- readRDS(here("experiments/2_supplement/data/puzzle1_1.RDS"))
+plot_dynamics(sim_res_novar1)
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+```
+
+
+```{r  eval = run_sims_this_section, echo = FALSE}
+parameter$strain_parameter <- var_expt[max_only_SBPB_diversity,]$pars[[1]]
+#parameter$sim_duration <- 100000
+#parameter$result <- NULL
+#parameter$log10a_series <- c(-5.2, -5.2)
+#parameter$strain_parameter$initial_state <- new_initial_state(
+#  nrow(parameter$strain_parameter$CB),
+#  nrow(parameter$strain_parameter$PB),
+#  nrow(parameter$strain_parameter$PB),
+#  values = "bush_ssfig3"
+#)
+parameter$strain_parameter$initial_state[grep("CB_", names(parameter$strain_parameter$initial_state))] <- 10^10/nrow(parameter$strain_parameter$CB)
+sim_res_highvar1 <- run_simulation(parameter)
+saveRDS(sim_res_highvar1, here("experiments/checks_puzzles/data/puzzle1_2.RDS"))
+```
+
+
+(ref:sb-div-effect4) Dynamics of the system with diversity in sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div_effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity. 
+
+```{r sb-div-effect4, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect4)', fig.height=8, fig.width=8, fig.align="center"}
+sim_res_highvar1 <- readRDS(here("experiments/2_supplement/data/puzzle1_2.RDS"))
+plot_dynamics(sim_res_highvar1)
+#ggsave(here("simulations/expt2/figures/switching_novar.pdf"), width = 10)
+```
 
 
 # PB diversity effects
