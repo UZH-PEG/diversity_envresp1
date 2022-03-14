@@ -441,8 +441,8 @@ However, larger increases in diversity suddenly cause a large reduction in resil
 
 ```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
-ss_9s <- readRDS(here(paste0("data", "0_ss_finding", "temporal_method", "ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-#stab_9s <- readRDS(here(paste0("data", "0_ss_finding", "temporal_method", "stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+ss_9s <- readRDS(here::here("data", "0_ss_finding", "temporal_method", paste0("ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+#stab_9s <- readRDS(here::here(\"data", "0_ss_finding", "temporal_method", paste0("stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS"))
 
 
 #max <- max(ss_3s$PB_var_gmax_s)
@@ -486,7 +486,7 @@ When the environment ameliorates for the sulphur bacteria, there can be limited 
 The explanation is that the most tolerant strain does play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(a_O) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the sulphur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the environment ameliorates (temporally).
 
 ```{r echo = FALSE}
-run_sims_this_section <- FALSE
+run_sims_this_section <- TRUE
 ```
 
 ```{r eval = run_sims_this_section, echo = FALSE}
@@ -531,6 +531,7 @@ parameter <- new_runsim_parameter(
   )
 )
 names(parameter$minimum_abundances) <- c("CB", "PB", "SB")
+
 rm(sp)
 
 parameter$strain_parameter <- var_expt[no_diversity,]$pars[[1]]
