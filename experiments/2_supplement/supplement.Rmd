@@ -51,7 +51,7 @@ This procedure ensures that the range of trait values is independent of the numb
 
 We show three examples of the created variation among strains within functional groups, one for nine strains (Figure \@ref(fig:nine-strain-div)), one for three (Figure \@ref(fig:three-strain-div)), and one for two (Figure \@ref(fig:two-strain-div)). In each, three graphs shows the diversity among strains in the maximum growth rate trait and the tolerance trait, plotted against each other and therefore also showing the tradeoff between the two traits.
 
-Notice that in all three cases, the range of trait variation represented by the strains is the same, even though the number of strains differs (a consequence is that the lower row of panels in Figures \@ref(fig:nine-strain-div), \@ref(fig:three-strain-div), and \@ref(fig:two-strain-div) are identical). This approach allowed us to independently manipulate trait diversity and number of strains.
+Notice that in all three cases, the range of trait variation represented by the strains is the same, even though the number of strains differs. This approach allowed us to independently manipulate trait diversity and number of strains. Also note that maximum growth rate of strains is evenly distributed on a log scale, even though it may appear at first site that they are distributed evenly on a linear scale (e.g. Figure \@ref(fig:three-strain-div)).
 
 ```{r  echo = FALSE}
 CB_var_multiplier <- 2
@@ -124,6 +124,12 @@ display_diversity(4,
   num_PB_strains = num_PB_strains,
   which_graphs = 1
 )
+
+
+#0.05*2^(CB_gmax_div) - 0.05
+#0.05 - 0.05*2^(-CB_gmax_div)
+
+
 ```
 
 
@@ -157,7 +163,7 @@ display_diversity(4,
 )
 ```
 
-We also show, in Figure \@ref(fig:growth-rates), the relationship between realised growth rate and the concentration of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate. 
+A consequence of this variation and of the tradeoffs is shown in  Figure \@ref(fig:growth-rates), which shows the relationship between realised growth rate and the concentration of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate. 
 
 (ref:growth-rates) Response of realised growth rate to variation in concentration of the inhibiting substrate for two strains, namely the most and the least tolerant strain. As always colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
 
@@ -185,7 +191,7 @@ As is shown in the figures below, the temporal method results in a larger region
 ### Replication method, no diversity
 
 
-```{r repl_meth1, echo=FALSE, eval = TRUE}
+```{r repl-meth1, echo=FALSE, eval = TRUE}
 repl_meth <- readRDS(here("data", "0_ss_finding", "replication_method", "ss_data_9strains_sim_length1e+06_event_definition_2.RDS"))
 temp_meth <- readRDS(here("data", "0_ss_finding", "temporal_method", "ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
 ```
@@ -230,6 +236,10 @@ plot_ss_result6(repl_method_1,
 
 ## Effect of diversity, replication method
 
+
+
+### Overal effects of diversity
+
 The replication method shows the same effects of functional diversity as those revealed by the temporal method (Figure \@ref(fig:div-repl-meth1)). Namely
 
 -   Introducing functional diversity in all three functional groups increases the resilience of both the anoxic and oxic state.
@@ -256,6 +266,19 @@ p2 <- fig_resilience_vs_div(plot_here,
                             figure_title = " ") 
 p1 + p2
 
+```
+
+### An example of stable states
+
+Figure \@ref(fig:repl-meth-ex1) shows an example of stable states along the oxygen diffusivity gradient produced by the replication method for finding stable states. The patterns are similar to those produced by the temporal method for finding the stable states (see Figure 3 in the main report), though differ in one respect: some of the more tolerant strains occur in the stable states found by the temporal method (Figure 3 in the main report), while they do not occur in stable states found by the replication method (Figure \@ref(fig:repl-meth-ex1) here). We understand that the appearance of these strains is transient, and the difference in their appearance in results of the two methods is due to differences in starting conditions of the two methods, and that this difference influences how long transients are present for. Transients close to a state change are likely longer for longer in the temporal method than the replication method.
+
+An interesting feature of these results is that although the position of the oxic to anoxic tipping point is affected by diversity (Figure \@ref(fig:div-repl-meth1) and Figure 3 in the main report) there is no evidence of more tolerant strains being present in the final system state (Figure \@ref(fig:repl-meth-ex1)). This phenomenon is explained in Section \@ref(SB2).
+
+(ref:repl-meth-ex1) Stable states found with the **replication method** with intermediate levels of diversity in all functional groups. Figure features are otherwise the same as those in Figure \@ref(fig:repl-meth2)). 
+
+```{r repl-meth-ex1, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth-ex1)', fig.height=8, fig.width=8, fig.align="center"}
+repl_meth <- readRDS(here("data", "0_ss_finding", "replication_method", "ss_data_9strains_sim_length1e+06_event_definition_2.RDS"))
+fig_state_vs_o2diff_sidebyside_dots(repl_meth[94,])
 ```
 
 
@@ -441,7 +464,7 @@ However, larger increases in diversity suddenly cause a large reduction in resil
 
 ```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
-ss_9s <- readRDS(here(paste0("data", "0_ss_finding", "temporal_method", "ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+ss_9s <- readRDS(here("data", "0_ss_finding", "temporal_method", paste0("ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
 #stab_9s <- readRDS(here(paste0("data", "0_ss_finding", "temporal_method", "stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
 
 
@@ -478,7 +501,7 @@ In the simulated microbial ecosystem, the strains are the stepping stones, and i
 
 This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
-## SB diversity effect oxic to anoxic transition
+## SB diversity effect oxic to anoxic transition {#SB2}
 
 
 When the environment ameliorates for the sulphur bacteria, there can be limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. Indeed Uriah showed that the presence of only the most tolerant strain is sufficient to give an earlier switch, even though it is not present in the final state when less tolerant strains are present. And he showed that the presence of only the least tolerant strain creates a later switch than when there are more tolerant strains.
