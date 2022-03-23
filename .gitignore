@@ -6,3 +6,6 @@
 *.rdb
 data
 data.zip
+
+*_cache
+*_files
