@@ -98,6 +98,47 @@ all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, 
 
 all_stab_results9$method <- "Simulated"
 
+
+### Things used for plotting ----
+
+# the legend
+library(ggpubr)
+fig5legend <- agg_stab_strain9 %>%
+  filter(Species == "SB_tot", num_strains==9) %>%
+  ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+  geom_line(aes(y = hyst_min_log), size = 1) +
+  geom_line(aes(y = hyst_max_log), size = 1) +
+  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
+  scale_linetype_manual(values = c(1,2))+
+  coord_flip() +
+  theme_bw() +
+  theme(legend.position="right")
+
+fig5legend <- get_legend(fig5legend)
+
+# the y and x labels
+ylab <- ggplot(data.frame(l = "            Standardised amount of trait variation", x = 1, y = 4.1)) +
+  geom_text(aes(x, y, label = l), angle = 90, size=5) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+xlab <- ggplot(data.frame(x = 1, y = 1)) +
+  geom_text(aes(x, y), label = expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"), size=4.5) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+# colours and tags used
+colours <- c(Simulated="black",`CB+SB`="#e41a1c",`CB+PB`="#377eb8",
+             `SB+PB`="#4daf4a",`CB+SBPB`="#984ea3",`PB+CBSB`="#ff7f00",
+             `SB+CBPB`="#a65628")
+
+tags <- c(`CB`="a",`SB`="b",`PB`="c",
+          `CB-SB`="d",`CB-PB`="e",`SB-PB`="f",
+          `CB-SB-PB & CB+SBPB`="g",`CB-SB-PB & PB+CBSB`="h",`CB-SB-PB & SB+CBPB`="i")
+
+
+### Fig 5 - log ----
+
 agg_stab_strain9 <- combine_fct("EF_log")
 
 agg_stab_strain9_temp <- agg_stab_strain9 %>%
@@ -107,9 +148,9 @@ agg_stab_strain9 <- agg_stab_strain9 %>%
   dplyr::filter(var_treat!="CB-SB-PB")
 
 agg_stab_strain9 <- rbind(agg_stab_strain9,
-                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SB-PB"),
-                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CB-SB"),
-                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CB-PB"))
+                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SBPB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CBSB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CBPB"))
 
 agg_stab_strain9 <- agg_stab_strain9 %>%
   mutate(method2 = ifelse(agg_stab_strain9$method=="Simulated","Simulated","Calculated")) %>%
@@ -118,28 +159,56 @@ agg_stab_strain9 <- agg_stab_strain9 %>%
                                                       "CB+SBPB","PB+CBSB","SB+CBPB")),
          Method = factor(Method, levels = c("Simulated","Calculated")))
 
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, linetype=Method, col=Calculation)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), size = 1) +
-  geom_line(aes(y = hyst_max_log), size = 1) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(y="Oxygen diffusivity\n[log10 uM per hour]",
-       x="Amount of trait variation\n[see text for units]",
-       title = "Addition of effect sizes and starting position (log)",
-       linetype="Method",col="Calculation") +
-  # scale_colour_manual(values = c("red","black"))+
-  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
-  scale_linetype_manual(values = c(1,2))+
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="right")
+
+# The figure
+
+fig5_log <- split(agg_stab_strain9, f=agg_stab_strain9$var_treat, drop = T)
+
+fig5_log <- lapply(fig5_log, function(df){
+  tag <- tags[as.character(unique(df$var_treat))]
+  plot <- df %>%
+    filter(Species == "SB_tot", num_strains==9) %>%
+    ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+    geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
+    geom_line(aes(y = hyst_min_log), size = 1) +
+    geom_line(aes(y = hyst_max_log), size = 1) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+         x="Amount of trait variation\n[see text for units]",
+         linetype="Method",col="Calculation", tag=tag) +
+    scale_color_manual(values = colours[unique(df$Calculation)]) +
+    scale_linetype_manual(values = c(1,2))+
+    coord_flip() +
+    theme_bw()+
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
+  
+  if(tag %in% c("a","d")){
+    plot <- plot + theme(axis.text.y = element_text(),
+                         axis.ticks.y = element_line())
+  }
+  if(tag %in% c("h","i")){
+    plot <- plot + theme(axis.text.x = element_text(),
+                         axis.ticks.x = element_line())
+  }
+  if(tag == "g"){
+    plot <- plot + theme(axis.text = element_text(),
+                         axis.ticks = element_line())
+  }
+  plot
+})
+
+ylab + ((((Reduce("+",fig5_log))/xlab + plot_layout(heights = c(25,1))) | fig5legend) + 
+          plot_layout(widths = c(7,1))) + plot_layout(widths = c(1,25))
 
 ggsave(here("experiments/1_figures_main_ms/Figure_5_log.pdf"),
        width = 8, height = 8)
 
 
+
+### Fig 5 - linear ----
 
 agg_stab_strain9 <- combine_fct("EF_lin")
 
@@ -150,9 +219,9 @@ agg_stab_strain9 <- agg_stab_strain9 %>%
   dplyr::filter(var_treat!="CB-SB-PB")
 
 agg_stab_strain9 <- rbind(agg_stab_strain9,
-                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SB-PB"),
-                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CB-SB"),
-                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CB-PB"))
+                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SBPB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CBSB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CBPB"))
 
 agg_stab_strain9 <- agg_stab_strain9 %>%
   mutate(method2 = ifelse(agg_stab_strain9$method=="Simulated","Simulated","Calculated")) %>%
@@ -162,26 +231,61 @@ agg_stab_strain9 <- agg_stab_strain9 %>%
          Method = factor(Method, levels = c("Simulated","Calculated")))
 
 
-agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = var_gmax, linetype=Method, col=Calculation)) +
-  geom_hline(yintercept = c(-8, 0), col = "black") +
-  geom_line(aes(y = hyst_min_log), size = 1) +
-  geom_line(aes(y = hyst_max_log), size = 1) +
-  facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-  labs(y="Oxygen diffusivity\n[log10 uM per hour]",
-       x="Amount of trait variation\n[see text for units]",
-       title = "Addition of effect sizes and starting position (linear)",
-       linetype="Method",col="Calculation") +
-  # scale_colour_manual(values = c("red","black"))+
-  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
-  scale_linetype_manual(values = c(1,2))+
-  coord_flip() +
-  theme_bw()+
-  theme(legend.position="right")
+
+fig5_lin <- split(agg_stab_strain9, f=agg_stab_strain9$var_treat, drop = T)
+
+fig5_lin <- lapply(fig5_lin, function(df){
+  tag <- tags[as.character(unique(df$var_treat))]
+  plot <- df %>%
+    filter(Species == "SB_tot", num_strains==9) %>%
+    ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+    geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
+    geom_line(aes(y = hyst_min_log), size = 1) +
+    geom_line(aes(y = hyst_max_log), size = 1) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+         x="Amount of trait variation\n[see text for units]",
+         linetype="Method",col="Calculation", tag=tag) +
+    scale_color_manual(values = colours[unique(df$Calculation)]) +
+    scale_linetype_manual(values = c(1,2))+
+    coord_flip() +
+    theme_bw()+
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
+  
+  if(tag %in% c("a","d")){
+    plot <- plot + theme(axis.text.y = element_text(),
+                         axis.ticks.y = element_line())
+  }
+  if(tag %in% c("h","i")){
+    plot <- plot + theme(axis.text.x = element_text(),
+                         axis.ticks.x = element_line())
+  }
+  if(tag == "g"){
+    plot <- plot + theme(axis.text = element_text(),
+                         axis.ticks = element_line())
+  }
+  plot
+})
+
+ylab + ((((Reduce("+",fig5_lin))/xlab + plot_layout(heights = c(25,1))) | fig5legend) + 
+          plot_layout(widths = c(7,1))) + plot_layout(widths = c(1,25))
+
 
 ggsave(here("experiments/1_figures_main_ms/Figure_5_lin.pdf"),
        width = 8, height = 8)
+
+
+
+
+
+
+
+
+
+
 
 
 # 
