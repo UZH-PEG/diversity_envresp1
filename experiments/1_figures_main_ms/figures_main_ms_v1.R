@@ -33,6 +33,7 @@ source(here("R/ms_figure_functions.R"))
 ## Effects of diversity on position of tipping points and effect sizes
 ## Two column
 
+
 all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
 wait_time <- 1e6
@@ -41,13 +42,16 @@ plot_here <- all_stab %>%
   filter(waittime == wait_time)
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
-                                                           num_strains,
-                                                           " strains"))
+                                     figure_title = NULL
+                                     # figure_title = paste0(wait_time,
+                                     #                       " wait time,\n",
+                                     #                       num_strains,
+                                     #                       " strains")
+                                     )
 p2 <- fig_resilience_vs_div(plot_here,
                             which_strain = num_strains,
-                            figure_title = " ") 
+                            figure_title = NULL
+                            ) 
 p1 + p2
 ggsave(here("experiments/1_figures_main_ms/Figure_3.pdf"),
        width = 6, height = 9)

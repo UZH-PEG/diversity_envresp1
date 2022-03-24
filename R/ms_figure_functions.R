@@ -109,7 +109,7 @@ fig_div_vs_o2diff_1strain <- function(all_stab, which_strain, figure_title) {
     geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log),
                 fill = "green", alpha = 0.2) +
     facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-    xlab("Standardised amount of trait variation\n[see text for units]") +
+    xlab("Standardised amount of trait variation]") +
     ylab("Oxygen diffusivity\n[log10 uM per hour]") +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
@@ -238,7 +238,7 @@ fig_div_vs_o2diff_multistrain <- function(all_stab,
                     col = as.factor(num_strains),
                     fill = as.factor(num_strains)), alpha = 0.2) +
     facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-    xlab("Standardised amount of trait variation\n[see text for units]") +
+    xlab("Standardised amount of trait variation") +
     ylab("Oxygen diffusivity\n[log10 uM per hour]") +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
@@ -536,8 +536,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("Log(Quantity)") +
-    xlab("Oxygen diffusivity") +
+    ylab("log10(density) (cells L-1)") +
+    xlab(NULL) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     theme_bw() +
@@ -559,8 +559,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("Log(Quantity)") +
-    xlab("Oxygen diffusivity") +
+    ylab("log10(density) (cells L-1)") +
+    xlab(NULL) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     theme_bw() +
@@ -583,8 +583,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("Log(Quantity)") +
-    xlab("Oxygen diffusivity") +
+    ylab("log10(density) (cells L-1)") +
+    xlab(NULL) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     theme_bw() +
@@ -606,8 +606,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("Log(Quantity)") +
-    xlab("Oxygen diffusivity") +
+    ylab("log10(concentration) (µM)") +
+    xlab(NULL) +
     theme_bw() +
     theme(legend.position="none",
           plot.title = element_text(size = 10)) +
@@ -627,8 +627,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width, col = 6) +
     geom_point(size = point_size, col = 6) +
     ##ylab("log10(quantity [cells])") +
-    ylab("Log(Quantity)") +
-    xlab("Oxygen diffusivity") +
+    ylab("log10(concentration) (µM)") +
+    xlab("log10(oxygen diffusivity) (h-1)") +
     theme_bw() +
     theme(legend.position="none",
           plot.title = element_text(size = 10)) +
@@ -754,9 +754,9 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
       panel.background = element_blank(),
       #strip.text.x = element_blank()
       ) +
-    ylab("Effect on resilience\n[see text for units]") +
-    xlab("Standardised amount of trait variation\n[see caption for units]") +
-    scale_color_manual(values = c("blue", "red"))
+    ylab("Effect on resilience") +
+    xlab("Standardised amount of trait variation") +
+    scale_color_manual(values = c("#38ACC4", "#C43926"))
   
   p1
   
@@ -862,13 +862,13 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
     ggplot(aes(x = stand_var
                #col = as.factor(num_strains))
     )) +
-    geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8, col="red") +
-    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8, col="blue") +
+    geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8, col="#C43926") +
+    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8, col="#38ACC4") +
     geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log),
                 fill = "green", alpha = 0.1) +
     facet_grid(var_treat ~ ., scales = "fixed") +
-    xlab("Standardised amount of trait variation\n[see caption for units]") +
-    ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+    xlab("Standardised amount of trait variation") +
+    ylab("log10(oxygen diffusivity) (h-1)") +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     #guides(col = guide_legend(title="Number of strains"),
@@ -881,7 +881,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
     ) +
     geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
     ggtitle(figure_title)
-  
+
   p1
   
 }
