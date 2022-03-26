@@ -73,12 +73,19 @@ ss_result <- ss_9s %>%
 
 fig_state_vs_o2diff_sidebyside_dots(ss_result)
 ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
-       width = 6, height = 6)
+       width = 10, height = 10)
 
 
 
 
 
+
+#### Uriah insert for figure 4
+
+fig_state_vs_o2diff_sidebyside_alternative(ss_result)
+
+ggsave(here("experiments/1_figures_main_ms/figure_4_alternative.pdf"),
+       width = 10, height = 10)
 
 ## Figure 5 ----
 ## Assessing additivity of diversity effect sizes
@@ -117,8 +124,9 @@ fig5legend <- agg_stab_strain9 %>%
 fig5legend <- get_legend(fig5legend)
 
 # the y and x labels
-ylab <- ggplot(data.frame(l = "            Standardised amount of trait variation", x = 1, y = 4.1)) +
-  geom_text(aes(x, y, label = l), angle = 90, size=5) + 
+# ylab <- ggplot(data.frame(l = "            Standardised amount of trait variation", x = 1, y = 4.1)) +
+ylab <- ggplot(data.frame(l = "Standardised amount of trait variation", x = 1, y = 4.1)) +
+  geom_text(aes(x, y, label = l), angle = 90, size=4.5) + 
   theme_void() +
   coord_cartesian(clip = "off")
 
@@ -200,8 +208,10 @@ fig5_log <- lapply(fig5_log, function(df){
   plot
 })
 
-ylab + ((((Reduce("+",fig5_log))/xlab + plot_layout(heights = c(25,1))) | fig5legend) + 
-          plot_layout(widths = c(7,1))) + plot_layout(widths = c(1,25))
+
+ylab + Reduce("+",fig5_log) + fig5legend +
+  plot_spacer() + xlab + plot_spacer() +
+  plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
 
 ggsave(here("experiments/1_figures_main_ms/Figure_5_log.pdf"),
        width = 8, height = 8)
@@ -270,20 +280,13 @@ fig5_lin <- lapply(fig5_lin, function(df){
   plot
 })
 
-ylab + ((((Reduce("+",fig5_lin))/xlab + plot_layout(heights = c(25,1))) | fig5legend) + 
-          plot_layout(widths = c(7,1))) + plot_layout(widths = c(1,25))
+ylab + Reduce("+",fig5_lin) + fig5legend +
+  plot_spacer() + xlab + plot_spacer() +
+  plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
 
 
 ggsave(here("experiments/1_figures_main_ms/Figure_5_lin.pdf"),
        width = 8, height = 8)
-
-
-
-
-
-
-
-
 
 
 
