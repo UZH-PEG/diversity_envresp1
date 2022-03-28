@@ -13,6 +13,7 @@ library(microxanox)
 library(tidyverse)
 library(patchwork)
 library(here)
+library(ggpubr)
 
 colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
 colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
@@ -108,41 +109,6 @@ all_stab_results9$method <- "Simulated"
 
 ### Things used for plotting ----
 
-# the legend
-library(ggpubr)
-fig5legend <- agg_stab_strain9 %>%
-  filter(Species == "SB_tot", num_strains==9) %>%
-  ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
-  geom_line(aes(y = hyst_min_log), size = 1) +
-  geom_line(aes(y = hyst_max_log), size = 1) +
-  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
-  scale_linetype_manual(values = c(1,2))+
-  coord_flip() +
-  theme_bw() +
-  theme(legend.position="right")
-
-fig5legend <- get_legend(fig5legend)
-
-# the y and x labels
-# ylab <- ggplot(data.frame(l = "            Standardised amount of trait variation", x = 1, y = 4.1)) +
-ylab <- ggplot(data.frame(l = "Standardised amount of trait variation", x = 1, y = 4.1)) +
-  geom_text(aes(x, y, label = l), angle = 90, size=4.5) + 
-  theme_void() +
-  coord_cartesian(clip = "off")
-
-xlab <- ggplot(data.frame(x = 1, y = 1)) +
-  geom_text(aes(x, y), label = expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"), size=4.5) + 
-  theme_void() +
-  coord_cartesian(clip = "off")
-
-# colours and tags used
-colours <- c(Simulated="black",`CB+SB`="#e41a1c",`CB+PB`="#377eb8",
-             `SB+PB`="#4daf4a",`CB+SBPB`="#984ea3",`PB+CBSB`="#ff7f00",
-             `SB+CBPB`="#a65628")
-
-tags <- c(`CB`="a",`SB`="b",`PB`="c",
-          `CB-SB`="d",`CB-PB`="e",`SB-PB`="f",
-          `CB-SB-PB & CB+SBPB`="g",`CB-SB-PB & PB+CBSB`="h",`CB-SB-PB & SB+CBPB`="i")
 
 
 ### Fig 5 - log ----
@@ -166,6 +132,44 @@ agg_stab_strain9 <- agg_stab_strain9 %>%
   mutate(Calculation = factor(Calculation, levels = c("Simulated","CB+SB","CB+PB","SB+PB",
                                                       "CB+SBPB","PB+CBSB","SB+CBPB")),
          Method = factor(Method, levels = c("Simulated","Calculated")))
+
+
+
+# the legend
+fig5legend <- agg_stab_strain9 %>%
+  filter(Species == "SB_tot", num_strains==9) %>%
+  ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+  geom_line(aes(y = hyst_min_log), size = 1) +
+  geom_line(aes(y = hyst_max_log), size = 1) +
+  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
+  scale_linetype_manual(values = c(1,2))+
+  coord_flip() +
+  theme_bw() +
+  theme(legend.position="right")
+
+fig5legend <- ggpubr::get_legend(fig5legend)
+
+# the y and x labels
+# ylab <- ggplot(data.frame(l = "            Standardised amount of trait variation", x = 1, y = 4.1)) +
+ylab <- ggplot(data.frame(l = "Standardised amount of trait variation", x = 1, y = 4.1)) +
+  geom_text(aes(x, y, label = l), angle = 90, size=4.5) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+xlab <- ggplot(data.frame(x = 1, y = 1)) +
+  geom_text(aes(x, y), label = expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"), size=4.5) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+# colours and tags used
+colours <- c(Simulated="black",`CB+SB`="#e41a1c",`CB+PB`="#377eb8",
+             `SB+PB`="#4daf4a",`CB+SBPB`="#984ea3",`PB+CBSB`="#ff7f00",
+             `SB+CBPB`="#a65628")
+
+tags <- c(`CB`="a",`SB`="b",`PB`="c",
+          `CB-SB`="d",`CB-PB`="e",`SB-PB`="f",
+          `CB-SB-PB & CB+SBPB`="g",`CB-SB-PB & PB+CBSB`="h",`CB-SB-PB & SB+CBPB`="i")
+
 
 
 # The figure
