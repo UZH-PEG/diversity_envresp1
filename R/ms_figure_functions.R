@@ -1124,7 +1124,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
   all_stab$label[all_stab$var_treat == "CB-SB"] <- "g"
   all_stab$label[all_stab$var_treat == "CB-PB"] <- "i"
   all_stab$label[all_stab$var_treat == "SB-PB"] <- "l"
-  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "m"
+  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "n"
   p1 <- all_stab %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains == which_strain) %>%
