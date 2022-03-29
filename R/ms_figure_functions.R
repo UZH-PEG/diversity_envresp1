@@ -696,7 +696,7 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
       species = factor(species, levels = unique(species)),
       functional_group2 = case_when(
         functional_group == "CB" ~ "Cyanobacteria",
-        functional_group == "SB" ~ "Sulfate\nreducing bacteria",
+        functional_group == "SB" ~ "Sulfate-reducing\nbacteria",
         functional_group == "PB" ~ "Phototrophic\nsulfur bacteria"),
       substrate2 = case_when(
         var_type == "Substrate" & species == "SR" ~ "Sulfide\nconcentration",
@@ -726,8 +726,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     labs(tag="a")+
@@ -752,8 +752,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     labs(tag="b")+
@@ -780,8 +780,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     labs(tag="c", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
@@ -807,8 +807,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     labs(tag="d")+
     theme_bw() +
     theme(legend.position="none",
@@ -833,8 +833,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5, col=6) +
-    # geom_point(size = point_size, col=6) +
+    geom_path(lwd = line_width, col=6) +
+    geom_point(size = point_size, col=6) +
     labs(tag="e", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
     theme_bw() +
     theme(legend.position="none",
