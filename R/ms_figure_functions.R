@@ -447,7 +447,6 @@ fig_state_vs_o2diff_sidebyside <- function(ss_result){
     theme(strip.text = element_blank())
   
   patchwork <- p1 / p2 / p3 / p4 / p5
-  patchwork
 }
 
 fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
@@ -536,7 +535,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(density) (cells L-1)") +
+    ylab(expression(atop(log[10](dens), (cells~L^{~1})))) +
     xlab(NULL) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
@@ -559,7 +558,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(density) (cells L-1)") +
+    ylab(expression(atop(log[10](dens), (cells~L^{~1})))) +
     xlab(NULL) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
@@ -583,7 +582,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(density) (cells L-1)") +
+    ylab(expression(atop(log[10](dens), (cells~L^{~1})))) +
     xlab(NULL) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
@@ -606,7 +605,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(concentration) (µM)") +
+    ylab(expression(atop(log[10](conc), (mu~M)))) +
     xlab(NULL) +
     theme_bw() +
     theme(legend.position="none",
@@ -627,8 +626,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width, col = 6) +
     geom_point(size = point_size, col = 6) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(concentration) (µM)") +
-    xlab("log10(oxygen diffusivity) (h-1)") +
+    ylab(expression(atop(log[10](conc), (mu~M)))) +
+    xlab(expression(log[10](oxygen~diffusivity)~h^{-1})) +
     theme_bw() +
     theme(legend.position="none",
           plot.title = element_text(size = 10)) +
@@ -637,6 +636,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     theme(strip.text = element_blank())
   
   patchwork <- p1 / p2 / p3 / p4 / p5
+  patchwork <- patchwork + plot_annotation(tag_levels = 'a')
   patchwork
 }
 
@@ -868,7 +868,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
                 fill = "green", alpha = 0.1) +
     facet_grid(var_treat ~ ., scales = "fixed") +
     xlab("Standardised amount of trait variation") +
-    ylab("log10(oxygen diffusivity) (h-1)") +
+    ylab(expression(log[10](oxygen~diffusivity)~h^{-1})) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     #guides(col = guide_legend(title="Number of strains"),
