@@ -653,7 +653,7 @@ fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim2,])
 
 This result is different to the effect of diversity within the CB and SB functional groups, which both cause increases in resilience of the state that they dominate (Figure \@ref(fig:div-temp-meth1)). Why does diversity in the PB functional group reduce the resilience of the state it dominates?
 
-The counter-intuitive effect of diversity in the phototrophic sulfur bacteria (PB) possibly results from their positive effects on the oxic state. The phototrophic sulfur bacteria oxidise reduced sulfur to oxidised sulfur. Since reduced sulfur inhibits the cyanobacteria (CB), PB can have a positive effect on CB via their consumption of reduced sulfur Hence, high growth rates of PB will have a positive effect on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower concentrations of reduced sulfur and higher concentrations of oxidised sulfur before the transition.
+The counter-intuitive effect of diversity in the phototrophic sulfur bacteria (PB) possibly results from their positive effects on the oxic state. The phototrophic sulfur bacteria oxidise reduced sulfur to oxidised sulfur. Since reduced sulfur inhibits the cyanobacteria (CB), PB can have a positive effect on CB via their consumption of reduced sulfur. Hence, high growth rates of PB will have a positive effect on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower concentrations of reduced sulfur and higher concentrations of oxidised sulfur before the transition.
 
 Another pathway by which a higher growth rate of PB can favour the oxic state is by indirectly increasing the concentration of oxygen, thus inhibiting themselves and sulfate-reducing bacteria. This effect occurs because PB consume reduced sulfur, such that less reduced sulfur is available for abiotic oxidation. Consequently, a larger amount of oxygen remains in the environment and inhibits sulfur bacteria. We would expect to see that higher diversity of PB is associated with higher concentrations of oxygen before the transition.
 
@@ -701,9 +701,9 @@ dd %>%
   #coord_trans(x = "log10", y = "log10") +
   facet_wrap( ~ State_variable, scales = "free") +
   geom_abline(intercept = 0, slope = 1) +
-  xlab("Log10(Concentration)\nLow PB diversity") +
-  ylab("Log10(Concentration)\nHigh PB diversity") +
-  labs(col="Log10(Oxygen diffusivity)") +
+  xlab("log10(concentration) (µM)\nLow PB diversity") +
+  ylab("log10(concentration) (µM)\nHigh PB diversity") +
+  labs(col=expression(paste("log"[10],"(oxygen diffusivity) (h"^{-1}, ")"))) +
   theme_bw() +
   theme(legend.position="top")
 
