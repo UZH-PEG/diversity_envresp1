@@ -1018,7 +1018,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
       ) +
     ylab("Effect on resilience") +
     xlab("Standardised amount of trait variation") +
-    geom_text(aes(x = 0, y = 2.7, label = label), label.size = 0, colour = "black") +
+    geom_text(aes(x = 0, y = 2.85, label = label), label.size = 0, colour = "black") +
     scale_color_manual(values = c("#38ACC4", "#C43926"))
   
   p1
@@ -1150,7 +1150,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
       #strip.text.x = element_blank()
     ) +
     geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
-    geom_text(aes(x = 0.95, y = -8.1, label = label), , colour = "black") +
+    geom_text(aes(x = 0.95, y = -8.1, label = label), colour = "black") +
     ggtitle(figure_title)
 
   p1
