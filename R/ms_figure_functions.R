@@ -984,6 +984,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
   
   #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
   
+  
   resilience <- all_stab %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains == which_strain) %>%
@@ -997,6 +998,15 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
                  values_to = "rel_log_trans_pos",
                  13:14)
     
+  resilience$label <- NA
+  resilience$label[resilience$var_treat == "CB"] <- "b"
+  resilience$label[resilience$var_treat == "SB"] <- "d"
+  resilience$label[resilience$var_treat == "PB"] <- "f"
+  resilience$label[resilience$var_treat == "CB-SB"] <- "h"
+  resilience$label[resilience$var_treat == "CB-PB"] <- "k"
+  resilience$label[resilience$var_treat == "SB-PB"] <- "m"
+  resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
+
   p1 <- resilience %>%
     ggplot(aes(x = stand_var, y = rel_log_trans_pos, col = which_transition)) +
     geom_line(show.legend = FALSE) +
@@ -1008,6 +1018,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
       ) +
     ylab("Effect on resilience") +
     xlab("Standardised amount of trait variation") +
+    geom_text(aes(x = 0, y = 2.7, label = label), label.size = 0, colour = "black") +
     scale_color_manual(values = c("#38ACC4", "#C43926"))
   
   p1
@@ -1106,7 +1117,14 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
   #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
   
   
-  
+  all_stab$label <- NA
+  all_stab$label[all_stab$var_treat == "CB"] <- "a"
+  all_stab$label[all_stab$var_treat == "SB"] <- "c"
+  all_stab$label[all_stab$var_treat == "PB"] <- "e"
+  all_stab$label[all_stab$var_treat == "CB-SB"] <- "g"
+  all_stab$label[all_stab$var_treat == "CB-PB"] <- "i"
+  all_stab$label[all_stab$var_treat == "SB-PB"] <- "l"
+  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "m"
   p1 <- all_stab %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains == which_strain) %>%
@@ -1120,7 +1138,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
                 fill = "green", alpha = 0.1) +
     facet_grid(var_treat ~ ., scales = "fixed") +
     xlab("Standardised amount of trait variation") +
-    ylab(expression(log[10](oxygen~diffusivity)~h^{-1})) +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     #guides(col = guide_legend(title="Number of strains"),
@@ -1132,6 +1150,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
       #strip.text.x = element_blank()
     ) +
     geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    geom_text(aes(x = 0.95, y = -8.1, label = label), , colour = "black") +
     ggtitle(figure_title)
 
   p1
