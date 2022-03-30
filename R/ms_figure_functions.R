@@ -239,7 +239,7 @@ fig_div_vs_o2diff_multistrain <- function(all_stab,
                     fill = as.factor(num_strains)), alpha = 0.2) +
     facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
     xlab("Standardised amount of trait variation") +
-    ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+    ylab(expression(log[10](Oxygen~diffusivity)~(h^{-1}))) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     guides(col = guide_legend(title="Number of strains"),
