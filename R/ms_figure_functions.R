@@ -447,7 +447,6 @@ fig_state_vs_o2diff_sidebyside <- function(ss_result){
     theme(strip.text = element_blank())
   
   patchwork <- p1 / p2 / p3 / p4 / p5
-  patchwork
 }
 
 fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
@@ -536,7 +535,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(density) (cells L-1)") +
+    ylab(expression(atop(log[10](dens), (cells~L^{~1})))) +
     xlab(NULL) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
@@ -559,7 +558,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(density) (cells L-1)") +
+    ylab(expression(atop(log[10](dens), (cells~L^{~1})))) +
     xlab(NULL) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
@@ -583,7 +582,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(density) (cells L-1)") +
+    ylab(expression(atop(log[10](dens), (cells~L^{~1})))) +
     xlab(NULL) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
@@ -606,7 +605,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width) +
     geom_point(size = point_size) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(concentration) (µM)") +
+    ylab(expression(atop(log[10](conc), (mu~M)))) +
     xlab(NULL) +
     theme_bw() +
     theme(legend.position="none",
@@ -627,8 +626,8 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     geom_path(lwd = line_width, col = 6) +
     geom_point(size = point_size, col = 6) +
     ##ylab("log10(quantity [cells])") +
-    ylab("log10(concentration) (µM)") +
-    xlab("log10(oxygen diffusivity) (h-1)") +
+    ylab(expression(atop(log[10](conc), (mu~M)))) +
+    xlab(expression(log[10](oxygen~diffusivity)~h^{-1})) +
     theme_bw() +
     theme(legend.position="none",
           plot.title = element_text(size = 10)) +
@@ -637,6 +636,7 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
     theme(strip.text = element_blank())
   
   patchwork <- p1 / p2 / p3 / p4 / p5
+  patchwork <- patchwork + plot_annotation(tag_levels = 'a')
   patchwork
 }
 
@@ -696,7 +696,7 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
       species = factor(species, levels = unique(species)),
       functional_group2 = case_when(
         functional_group == "CB" ~ "Cyanobacteria",
-        functional_group == "SB" ~ "Sulfate\nreducing bacteria",
+        functional_group == "SB" ~ "Sulfate-reducing\nbacteria",
         functional_group == "PB" ~ "Phototrophic\nsulfur bacteria"),
       substrate2 = case_when(
         var_type == "Substrate" & species == "SR" ~ "Sulfide\nconcentration",
@@ -726,8 +726,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     labs(tag="a")+
@@ -752,8 +752,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     labs(tag="b")+
@@ -780,8 +780,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
     labs(tag="c", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
@@ -807,8 +807,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5) +
-    # geom_point(size = point_size) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
     labs(tag="d")+
     theme_bw() +
     theme(legend.position="none",
@@ -833,8 +833,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
                  col = "#bbbbbbff", lwd = arrow_lwd,
                  arrow = arrow(length=unit(0.30,"cm"),
                                ends="first", type = "closed")) +
-    geom_path(lwd = 0.5, col=6) +
-    # geom_point(size = point_size, col=6) +
+    geom_path(lwd = line_width, col=6) +
+    geom_point(size = point_size, col=6) +
     labs(tag="e", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
     theme_bw() +
     theme(legend.position="none",
@@ -984,6 +984,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
   
   #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
   
+  
   resilience <- all_stab %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains == which_strain) %>%
@@ -997,6 +998,15 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
                  values_to = "rel_log_trans_pos",
                  13:14)
     
+  resilience$label <- NA
+  resilience$label[resilience$var_treat == "CB"] <- "b"
+  resilience$label[resilience$var_treat == "SB"] <- "d"
+  resilience$label[resilience$var_treat == "PB"] <- "f"
+  resilience$label[resilience$var_treat == "CB-SB"] <- "h"
+  resilience$label[resilience$var_treat == "CB-PB"] <- "k"
+  resilience$label[resilience$var_treat == "SB-PB"] <- "m"
+  resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
+
   p1 <- resilience %>%
     ggplot(aes(x = stand_var, y = rel_log_trans_pos, col = which_transition)) +
     geom_line(show.legend = FALSE) +
@@ -1008,6 +1018,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
       ) +
     ylab("Effect on resilience") +
     xlab("Standardised amount of trait variation") +
+    geom_text(aes(x = 0, y = 2.85, label = label), label.size = 0, colour = "black") +
     scale_color_manual(values = c("#38ACC4", "#C43926"))
   
   p1
@@ -1106,7 +1117,14 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
   #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
   
   
-  
+  all_stab$label <- NA
+  all_stab$label[all_stab$var_treat == "CB"] <- "a"
+  all_stab$label[all_stab$var_treat == "SB"] <- "c"
+  all_stab$label[all_stab$var_treat == "PB"] <- "e"
+  all_stab$label[all_stab$var_treat == "CB-SB"] <- "g"
+  all_stab$label[all_stab$var_treat == "CB-PB"] <- "i"
+  all_stab$label[all_stab$var_treat == "SB-PB"] <- "l"
+  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "n"
   p1 <- all_stab %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains == which_strain) %>%
@@ -1120,7 +1138,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
                 fill = "green", alpha = 0.1) +
     facet_grid(var_treat ~ ., scales = "fixed") +
     xlab("Standardised amount of trait variation") +
-    ylab("log10(oxygen diffusivity) (h-1)") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     #guides(col = guide_legend(title="Number of strains"),
@@ -1132,6 +1150,7 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
       #strip.text.x = element_blank()
     ) +
     geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    geom_text(aes(x = 0.95, y = -8.1, label = label), colour = "black") +
     ggtitle(figure_title)
 
   p1

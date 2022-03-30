@@ -43,8 +43,7 @@ This document contains the Supplementary Content for the report *?????????????*.
 
 # Creating among strain diversity
 
-Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant sections of the main text. test test test
-
+Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant sections of the main text. 
 We generated variation in maximum growth rate $G_{max}$ and tolerance to reduced sulfur $h_{SR}$ or oxygen $h_{O}$ by varying the range of trait values around a reference trait value. Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $G_{max,CB}$ and a reference tolerance parameter $h_{SR,CB}$. Recall that amount of among strain variation is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a trade-off, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{G_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $G_{max,CB} = 0.05$, among strain variation of $Div_{G_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $G_{max,i} = D_i * G_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{G_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
 
 This procedure ensures that the range of trait values is independent of the number of strains. When there were only two strains, the two strains took the minimum and maximum traits values, as defined by the $Div$ variable for that trait. When there were three strains, one had the minimum trait value, one the maximum, and one the mean. With nine strains, one had the minimum trait value, one the maximum, one the mean, and three were equally spaced (on log scale) between the minimum and the mean, and the remaining three between the maximum and the mean.
@@ -67,7 +66,7 @@ num_div_treatment_levels <- 2
 
 All three examples have the following amounts of trait variation: $Div_{G_{max,CB}}$ = `r round(CB_gmax_div, 3)`, $Div_{h_{SR,CB}}$ = `r round(CB_h_div, 3)`, $Div_{G_{max,SB}}$ = `r round(SB_gmax_div, 3)`, $Div_{h_{O,SB}}$ = `r round(SB_h_div, 3)`, $Div_{G_{max,PB}}$ = `r round(PB_gmax_div, 3)`, $Div_{h_{O,PB}}$ = `r round(PB_h_div, 3)`. These are also the maximum amounts of trait variation explored in the simulations.
 
-(ref:nine-strain-div) Trait variation with nine strains in each of the functional groups. In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+(ref:nine-strain-div) Trait variation with nine strains in each of the functional groups. In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains. Tolerance is given as the concentration of the inhibiting substrate where the growth rate of the strain is reduced by 50%. 
 
 ```{r nine-strain-div, echo = FALSE,  include=TRUE, fig.cap='(ref:nine-strain-div)', fig.align="center", fig.height=3, fig.width=8}
 
@@ -97,7 +96,7 @@ display_diversity(4,
 ```
 
 
-(ref:three-strain-div) Trait variation with three strains in each of the functional groups. Note that the three displayed strains are the 1st, 5th, and 9th strains from the nine strain example shown in Figure \@ref(fig:nine-strain-div). In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+(ref:three-strain-div) Trait variation with three strains in each of the functional groups. Note that the three displayed strains are the 1st, 5th, and 9th strains from the nine strain example shown in Figure \@ref(fig:nine-strain-div). In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains. Tolerance is given as the concentration of the inhibiting substrate where the growth rate of the strain is reduced by 50%. 
 
 ```{r three-strain-div, echo = FALSE,  include=TRUE, fig.cap='(ref:three-strain-div)', fig.height=3, fig.width=8, fig.align="center"}
 
@@ -134,7 +133,7 @@ display_diversity(4,
 
 
 
-(ref:two-strain-div) Trait variation with two strains in each of the functional groups. Note that the two displayed strains are the 1st and 9th strains from the nine strain example shown in Figure \@ref(fig:nine-strain-div). In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
+(ref:two-strain-div) Trait variation with two strains in each of the functional groups. Note that the two displayed strains are the 1st and 9th strains from the nine strain example shown in Figure \@ref(fig:nine-strain-div). In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains. Tolerance is given as the concentration of the inhibiting substrate where the growth rate of the strain is reduced by 50%. 
 
 ```{r two-strain-div, echo = FALSE,  include=TRUE, fig.cap='(ref:two-strain-div)', fig.height=3, fig.width=8, fig.align="center"}
 
@@ -163,7 +162,7 @@ display_diversity(4,
 )
 ```
 
-A consequence of this variation and of the tradeoffs is shown in  Figure \@ref(fig:growth-rates), which shows the relationship between realised growth rate and the concentration of the respective inhibiting substance, e.g. sulfide for the cyanobacteria. In these graphs only the least and most tolerant strains are shown. The lines cross due to the tradeoff. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate.
+A consequence of this variation and of the trade-offs is shown in  Figure \@ref(fig:growth-rates), which shows the relationship between realised growth rate and the concentration in the environment of the respective inhibiting substance, e.g. reduced sulfur for the cyanobacteria. In these graphs only the least and most tolerant strains are shown. The lines cross due to the trade-off. At high concentrations of the inhibiting substance the more tolerant strain has higher realised growth rate, while at lower concentrations it is the less tolerant strain that has the higher realised growth rate.
 
 (ref:growth-rates) Response of realised growth rate to variation in concentration of the inhibiting substrate for two strains, namely the most and the least tolerant strain. As always colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains.
 
@@ -184,9 +183,9 @@ display_diversity(4,
 
 We now discuss two approaches for finding how the stable state of the system varies along the gradient of oxygen diffusivity when there exists the possibility of multiple stable states. In the main article we describe and report results of the method that we term the *Temporal method*.
 
-Here we also describe and give results of what we term the *Replication method*. In this, we made a separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
+Here we also describe and give results of what we term the *Replication method*. In this, we made separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method was used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
 
-As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as mentioned above, the initial conditions differ between the two approaches.
+As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as discussed below, the initial conditions differ between the two approaches.
 
 ### Replication method, no diversity
 
@@ -198,7 +197,7 @@ temp_meth <- readRDS(here("data", "0_ss_finding", "temporal_method", "ss_data_9s
 
 
 
-(ref:repl-meth2) Stable states found with the **replication method**. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
+(ref:repl-meth2) Stable states found with the **replication method**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
@@ -238,13 +237,14 @@ plot_ss_result6(repl_method_1,
 
 
 
-### Overal effects of diversity
+### Overall effects of diversity
 
 The replication method shows the same effects of functional diversity as those revealed by the temporal method (Figure \@ref(fig:div-repl-meth1)). Namely
 
--   Introducing functional diversity in all three functional groups increases the resilience of both the anoxic and oxic state.
--   Introducing functional diversity in only the cyanobacteria function group delays (with respect to the oxygen diffusivity it occurs at) the switch to the anoxic state as oxygen diffusivity is reduced, but has no effect on the oxygen diffusivity at which the anoxic to oxic transition occurs .
--   Introducing function diversity in only the sulfur bacteria delays (with respect to the oxygen diffusivity it occurs at) the switch from anoxic to oxic, and advances the switch from oxic to anoxic.
+-   Introducing functional diversity in only the cyanobacteria increases the resilience of the oxic state but has no effect on the resilience of the anoxic state. 
+-   Introducing functional diversity in only the sulfate-reducing bacteria increases the resilience of the anoxic state and reduces the resilience of the oxic state.
+-   Introducing functional diversity in only the phototrophic sulfur bacteria reduces the resilience of the anoxic state and has no effect on the resilience of the oxic state. 
+-   Introducing functional diversity in more than one functional group reduces, reverses, or does not change the effect of diversity in individual functional groups. For example, introducing functional diversity in all three functional groups reduces the resilience of the oxic state when trait variation is low but increases the resilience of the oxic state when trait variation is high. 
 
 (ref:div-repl-meth1) **Replication method results.** **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
@@ -258,7 +258,7 @@ plot_here <- all_stab %>%
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(sim_length,
-                                                           " sim. length,\n",
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
@@ -270,9 +270,9 @@ p1 + p2
 
 ### An example of stable states
 
-Figure \@ref(fig:repl-meth-ex1) shows an example of stable states along the oxygen diffusivity gradient produced by the replication method for finding stable states. The patterns are similar to those produced by the temporal method for finding the stable states (see Figure 3 in the main report), though differ in one respect: some of the more tolerant strains occur in the stable states found by the temporal method (Figure 3 in the main report), while they do not occur in stable states found by the replication method (Figure \@ref(fig:repl-meth-ex1) here). We understand that the appearance of these strains is transient, and the difference in their appearance in results of the two methods is due to differences in starting conditions of the two methods, and that this difference influences how long transients are present for. Transients close to a state change are likely longer for longer in the temporal method than the replication method.
+Figure \@ref(fig:repl-meth-ex1) shows an example of stable states along the oxygen diffusivity gradient produced by the replication method for finding stable states. The patterns are similar to those produced by the temporal method for finding the stable states (see Figure 4 in the main report), though they differ in one respect: close to the transition back to the state a group dominates, some of the more tolerant strains occur in the stable states found by the temporal method (Figure 4 in the main report), while they do not occur in stable states found by the replication method (Figure \@ref(fig:repl-meth-ex1) here). We understand that the appearance of these strains is transient, and the difference in their appearance results from the differences in starting conditions of the two methods. Specifically, in the temporal method, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the replication method the starting conditions are identical at each level of oxygen diffusivity. These differences in starting conditions apparently result in longer persistence of transients in the temporal method than the replication method.
 
-An interesting feature of these results is that although the position of the oxic to anoxic tipping point is affected by diversity (Figure \@ref(fig:div-repl-meth1) and Figure 3 in the main report) there is no evidence of more tolerant strains being present in the final system state (Figure \@ref(fig:repl-meth-ex1)). This phenomenon is explained in Section \@ref(SB2).
+An interesting feature of these results is that although the position of the oxic to anoxic tipping point is affected by diversity in the sulfate-reducing bacteria (Figure \@ref(fig:div-repl-meth1) and Figure 3 in the main report) there is no evidence of more tolerant strains of sulfate-reducing bacteria being present in the final system state (Figure \@ref(fig:repl-meth-ex1)). This phenomenon is explained in Section \@ref(SB2).
 
 (ref:repl-meth-ex1) Stable states found with the **replication method** with intermediate levels of diversity in all functional groups. Figure features are otherwise the same as those in Figure \@ref(fig:repl-meth2)).
 
@@ -285,7 +285,7 @@ fig_state_vs_o2diff_sidebyside_dots(repl_meth[94,])
 ## Effect of abundance change event
 
 
-As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours (a slightly different method produced the same results, see the Supplementary Information for details). We also test the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. any abundances that were lower than 1 unit were set to 1 unit, every 1,000 hours. As shown in Figure \@ref(fig:div-temp-eventdef1), the results with this floor abundance are similar as when 1 was added every 1,000 hours. Note that a coarser gradient of trait variation was used, hence the saw-tooth patterns. A further difference is the large decrease in resilience of the anoxic to oxic transition above moderate levels of diversity in the SB and SB-SB treatments. This pattern can also occur with addition of 1 abundance unit (e.g., see Figure \@ref(fig:div-temp-meth3), and is discussed in the section that concerns this below (section [SB diversity effects]).
+As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours. We here show that a slightly different method produced the same results. Specifically, we tested the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. every 1,000 hours, any abundances that were lower than 1 unit were set to 1 unit. As shown in Figure \@ref(fig:div-temp-eventdef1), the results with this floor abundance are similar as when 1 was added every 1,000 hours. Note that a coarser gradient of trait variation was used, hence the saw-tooth patterns. A further difference is the large decrease in resilience of the anoxic to oxic transition above moderate levels of diversity in the SB and CB-SB treatments. This pattern can also occur with addition of 1 abundance unit (e.g., see Figure \@ref(fig:div-temp-meth3)), and is discussed in the section that concerns this below (section [SB diversity effects]).
 
 (ref:div-temp-eventdef1) **Results with an abundance floor.** **Left column of panels**: the effect of response trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect of diversity on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
@@ -299,7 +299,7 @@ plot_here <- all_stab %>%
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(sim_length,
-                                                           " sim. length,\n",
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
@@ -315,9 +315,9 @@ p1 + p2
 
 Here we give some further thoughts regarding the comparison of the temporal and replication method for stable state finding.
 
-A particularly notable difference between the two approaches is in the initial condition. In the temporal approach, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the approach of Bush et al (2017) the initial conditions are fixed and arbitrary (though this approach is still useful for illustrating the bistability of the system). This difference in initial conditions increases the region of bistability in the temporal approach because as a tipping point approaches, the functional group that will dominate after the regime shift starts from much lower abundances than in the approach by Bush et al (2017) and thus requires stronger amelioration of the environment to take over. Nevertheless, our main conclusions about the effects of functional trait diversity are the same using either approach.
+A particularly notable difference between the two approaches is in the initial condition. In the temporal approach, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the approach of [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) the initial conditions are fixed and arbitrary (though this approach is still useful for illustrating the bistability of the system). This difference in initial conditions increases the region of bistability in the temporal approach because as a tipping point approaches, the functional group that will dominate after the regime shift starts from much lower abundances than in the approach by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) and thus requires stronger amelioration of the environment to take over. Nevertheless, our main conclusions about the effects of functional trait diversity are the same using either approach.
 
-The temporal approach is particularly useful when investigating the effects of strain richness. In preliminary simulations using the Bush et al (2017) approach, we found the counterintuitive result that higher strain richness led to lower resilience. We then recalled that we chose to divide the initial total abundance of the cyanobacterial (CB) functional group equally among the strains (termed a substitutive design in biodiversity manipulation experiments). This meant that the most tolerant CB strain in a three-strain simulation had higher initial abundance than the same most tolerant CB strain in a nine-strain simulation. The greater abundance of the most CB tolerant strain made it possible for a three-strain system to develop to be oxic, whereas the nine-strain system developed to be anoxic, despite identical range of trait variation. We could have chosen to do otherwise, for example start with the least tolerant strains of cyanobacteria as more abundant when the system started with high cyanobacterial abundance, and the most tolerant strain as more abundant when the system starts with low cyanobacterial abundance. Using the temporal approach removed the need to specify initial abundances (except the very first one), and therefore results were not so determined by the assumptions used to determine the initial conditions.
+The temporal approach is particularly useful when investigating the effects of strain richness. In preliminary simulations using the [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) approach, we found the counterintuitive result that higher strain richness led to lower resilience. We then recalled that we chose to divide the initial total abundance of the cyanobacterial (CB) functional group equally among the strains (termed a substitutive design in biodiversity manipulation experiments). This meant that the most tolerant CB strain in a three-strain simulation had higher initial abundance than the same most tolerant CB strain in a nine-strain simulation. The greater abundance of the most CB tolerant strain made it possible for a three-strain system to develop to be oxic, whereas the nine-strain system developed to be anoxic, despite identical range of trait variation. We could have chosen to do otherwise, for example start with the least tolerant strains of cyanobacteria as more abundant when the system started with high cyanobacterial abundance, and the most tolerant strain as more abundant when the system starts with low cyanobacterial abundance. Using the temporal approach removed the need to specify initial abundances (except the very first one), and therefore results were not so determined by the assumptions used to determine the initial conditions.
 
 
 # Effect of simulation duration
@@ -433,9 +433,9 @@ p1 + p2
 
 ## Example of transient dynamics at 1e6 hours
 
-The results below show the stable states as a function of oxygen diffusivity for a system with intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that except very close to the values of oxygen diffusitivity at which a state transition occurs, 1'000'000 hours duration of the simulations is sufficient to reach stable state, or very close to it. Very close to the transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
+The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except very close to state transitions on the trajectory of recovery (i.e.: cyanobacteria: trajectory up; sulfate-reducing bacteria: trajectory down). Very close to these transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
-(ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The right column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The left column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
+(ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
 single_1e6 <- readRDS(here("data", "0_ss_finding", "temporal_method", "single_1e6_result.RDS"))
@@ -454,11 +454,9 @@ fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
 
 # SB diversity effects
 
-## SB diversity effect anoxic to oxic transition
+## SB diversity effect on the anoxic to oxic transition
 
-Wait times of 1e5 (Figure \@ref(fig:div-temp-meth2) and 1e4 (Figure \@ref(fig:div-temp-meth4) produce qualitatively and often quantitatively very similar to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or CB-SB variation treatments with wait time of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6.
-
-However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift.  Suprisingly, when there is just a little more diversity in the SB then the anoxic to oxic transition happens earlier, i.e. there is large decrease in resilience \@ref(fig:ss-temp-meth2).
+We showed above that wait times of 1e5 (Figure \@ref(fig:div-temp-meth2)) and 1e4 (Figure \@ref(fig:div-temp-meth4)) produce qualitatively and often quantitatively very similar results to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or in CB-SB with wait times of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift to the oxic state.  Suprisingly, when there is just a little more diversity in the SB, then the anoxic to oxic transition happens earlier, i.e. there is a large decrease in resilience (Figure \@ref(fig:ss-temp-meth2)).
 
 (ref:ss-temp-meth1) Stable state of the system with **moderate** level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
@@ -495,18 +493,16 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[14,])
 ```
 
-We believe that this phenomenon is caused by an effect that we explain with reference to an anology of using stepping stones to cross a river. Increasing diversity in our simulations is akin to increasing the width of the river, but while keeping the number of stepping stones (strains) constant. So long as the river is not too wide, we can still cross it, but once the width of the river is such that the stepping stones are too far apart, we can't cross the river. And this happens suddenly, the width increases just a tiny bit more, and we suddenly can't cross the river when we could before.
+We believe that this phenomenon is caused by an effect that we explain with reference to an analogy of using stepping stones to cross a river. Increasing diversity in our simulations is akin to increasing the width of the river, but keeping the number of stepping stones (strains) constant. So long as the river is not too wide, we can still cross it, but once the width of the river is such that the stepping stones are too far apart, we can't cross the river. And this happens suddenly, the width increases just a tiny bit more, and we suddenly can't cross the river when we could before.
 
-In the simulated microbial ecosystem, the strains are the stepping stones, and it is much hard (takes longer) for strains to replace each other when there is greater distance (in trait space) between them. When they can no longer replace each other in the time available, the system behaves as if only the least tolerant, highest growth rate strain (lighted shade of colour) is present. In the case illustrated above, this leads to much lower resilience of the anoxic system state.
+In the simulated microbial ecosystem, the strains are the stepping stones, and it is much hard (takes longer) for strains to replace each other when there is greater distance (in trait space) between them. When they can no longer replace each other in the time available, the system behaves as if only the least tolerant, highest growth rate strain (lightest shade of colour) is present. In the case illustrated above, this leads to much lower resilience of the anoxic system state.
 
-This phenomena is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
+This phenomenon is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
-## SB diversity effect oxic to anoxic transition {#SB2}
+## SB diversity effect on the oxic to anoxic transition {#SB2}
 
 
-When the environment ameliorates for the sulphur bacteria, there can be limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. Indeed Uriah showed that the presence of only the most tolerant strain is sufficient to give an earlier switch, even though it is not present in the final state when less tolerant strains are present. And he showed that the presence of only the least tolerant strain creates a later switch than when there are more tolerant strains.
-
-The explanation is that the most tolerant strain does play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(a_O) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the sulphur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the environment ameliorates (temporally).
+When the environment ameliorates for the sulfate-reducing bacteria (i.e. trajectory down), there is only limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic state occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. We here show that the most tolerant strain do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(oxygen diffusivity) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the two groups of sulfur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the concentration of the inhibiting substrate (oxygen) declines.
 
 ```{r echo = FALSE}
 run_sims_this_section <- TRUE
@@ -600,7 +596,7 @@ saveRDS(sim_res_highvar1,here::here("data", "2_supplement", "puzzle1_2.RDS"))
 ```
 
 
-(ref:sb-div-effect4) Dynamics of the system with diversity in sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div_effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity.
+(ref:sb-div-effect4) Dynamics of the system with diversity in the two groups of sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div_effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity.
 
 ```{r sb-div-effect4, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect4)', fig.height=8, fig.width=8, fig.align="center"}
 sim_res_highvar1 <- readRDS(here("data", "2_supplement", "puzzle1_2.RDS"))
@@ -639,35 +635,35 @@ aO_flip_sim2 <- only_PB_stab[sim2,"hyst_max_log"]
 
 ```
 
-Increases in the diversity within the PB functional group leads to lower resilience of the anoxic state (Figure \@ref(fig:div-temp-meth1), Panel PB, blue line). For example, a small amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)` (Figure \@ref(fig:pbdiv-only-1)). Whereas, a moderate amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)` (Figure \@ref(fig:pbdiv-only-2)).
+Increases in the diversity within the PB functional group leads to lower resilience of the anoxic state (Figure \@ref(fig:div-temp-meth1), Panel PB, blue line). For example, a small amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)` (Figure \@ref(fig:pbdiv-only-1)). Whereas a moderate amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)` (Figure \@ref(fig:pbdiv-only-2)).
 
 
-(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a **low amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **low amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
 ```{r pbdiv-only-1, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-1)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim1,])
 ```
 
-(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity increases. The results here are for a **moderate amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **moderate amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
 ```{r pbdiv-only-2, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-2)', fig.height=8, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim2,])
 ```
 
 
-This result is different to the effect of diversity within the CB and SB functional groups, which both cause increases in resilience (Figure \@ref(fig:div-temp-meth1)). Why does diversity in the PB functional group reduce the resilience of the state it dominates?
+This result is different to the effect of diversity within the CB and SB functional groups, which both cause increases in resilience of the state that they dominate (Figure \@ref(fig:div-temp-meth1)). Why does diversity in the PB functional group reduce the resilience of the state it dominates?
 
-The phototrophic sulfur bacteria (PB) in the model ecosystem produce oxidised sulfur compounds (SO), and consume reduced sulfur compounds (SR). Since SR inhibits the cyanobacteria, PB can have a positive effect on CB via their consumption of SR. Hence, high growth rates of PB will have a positive effect on on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower SR and higher SO before the transition.
+The counter-intuitive effect of diversity in the phototrophic sulfur bacteria (PB) possibly results from their positive effects on the oxic state. The phototrophic sulfur bacteria oxidise reduced sulfur to oxidised sulfur. Since reduced sulfur inhibits the cyanobacteria (CB), PB can have a positive effect on CB via their consumption of reduced sulfur. Hence, high growth rates of PB will have a positive effect on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower concentrations of reduced sulfur and higher concentrations of oxidised sulfur before the transition.
 
-Another pathway by which higher PB growth rate can favour the oxic state is by PB inhibiting PB and SB (and thus favouring CB). This effect occurs because PB consumes SR, making less SR available for abiotic oxidation (SR + O -> SO). Reduced abiotic oxidation leaves greater amounts of O in the environment, and O inhibits. We would expect to see that higher diversity of PB is associated with higher O before the transition.
+Another pathway by which a higher growth rate of PB can favour the oxic state is by indirectly increasing the concentration of oxygen, thus inhibiting themselves and sulfate-reducing bacteria. This effect occurs because PB consume reduced sulfur, such that less reduced sulfur is available for abiotic oxidation. Consequently, a larger amount of oxygen remains in the environment and inhibits sulfur bacteria. We would expect to see that higher diversity of PB is associated with higher concentrations of oxygen before the transition.
 
-There is, however, at least one pathway by which PB can favour the anoxic state. PB produces SO which is consumed by SB, and SB produce SR, which inhibits CB.
+There is, however, at least one pathway by which PB can favour the anoxic state: PB produce oxidised sulfur which is consumed by SB, and SB produce reduced sulfur, which inhibits CB.
 
-Looking at the strain replacement that occurs across the oxygen diffusivity gradient, we see that as oxygen diffusivity increases, then the more oxygen tolerant strains of PB replace the less tolerant ones. This is because these more tolerant strains have higher realised growth rates under the prevailing environmental conditions (even though they have lower maximum growth rate than lower tolerance strains). Having an even more tolerant strain available (which is what happens when there is greater PB diversity) gives the opportunity for even higher realised growth rates, which via the effect pathways mentioned above, can favour the oxic state.
+Looking at the strain replacement that occurs across the oxygen diffusivity gradient, we see that as oxygen diffusivity increases, the more oxygen tolerant strains of PB replace the less tolerant ones because they have higher realised growth rates under the prevailing environmental conditions. Greater PB diversity leads to the availability of strains with higher oxygen tolerance and thus even higher realised growth rates, which via the pathways described above, can favour the oxic state.
 
-The expected effects of having a more PB tolerant strain (because there is higher PB diversity) is shown in Figure \@ref(fig:pbdiv-only-3)). As the transition is approached, higher PB diversity leads to higher oxygen concentration, higher SO concentration, and lower SR concentration, than in a simulation with lower PB diversity. All these differences in substrate concentrations are in the direction of favouring the oxic state, and thus the system transitions earlier to the oxic state.
+Substrate concentrations close to the anoxic-oxic transition in simulations with low and high PB diversity, respectively, corroborate the expected effects (Figure \@ref(fig:pbdiv-only-3)). As the transition is approached, higher PB diversity leads to higher concentration of oxygen, higher concentration of oxidised sulfur (SO), and lower concentration of reduced sulfur (SR), than a simulation with lower PB diversity. All these differences in substrate concentrations are in the direction of favouring the oxic state, resulting in the earlier transition to the oxic state.
 
-(ref:pbdiv-only-3) Concentrations of three substrates (one in each panel) in a low PB diversity simulation (x-axis) versus concentration in a high PB diversity simuation (y-axis). Only a small range of oxygen diffusivity is show, and result only shown for increasing oxygen diffusivity. The black line is the 1:1 line.
+(ref:pbdiv-only-3) Concentrations of three substrates (O: oxygen; SO: oxidised sulfur; SR: reduced sulfur) in a low PB diversity simulation (x-axis) versus substrate concentration in a high PB diversity simulation (y-axis). The figures show only a small range of oxygen diffusivity on the trajectory of increasing oxygen diffusivity. The black line is the 1:1 line.
 
 
 ```{r pbdiv-only-3, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-3)', fig.height=5, fig.width=8, fig.align="center"}
@@ -705,9 +701,9 @@ dd %>%
   #coord_trans(x = "log10", y = "log10") +
   facet_wrap( ~ State_variable, scales = "free") +
   geom_abline(intercept = 0, slope = 1) +
-  xlab("Log10(Concentration)\nLow PB diversity") +
-  ylab("Log10(Concentration)\nHigh PB diversity") +
-  labs(col="Log10(Oxygen diffusivity)") +
+  xlab("log10(concentration) (µM)\nLow PB diversity") +
+  ylab("log10(concentration) (µM)\nHigh PB diversity") +
+  labs(col=expression(paste("log"[10],"(oxygen diffusivity) (h"^{-1}, ")"))) +
   theme_bw() +
   theme(legend.position="top")
 
@@ -715,10 +711,12 @@ dd %>%
 
 ```
 
-There still remains the question of why the effect of PB diversity saturates. We don't currently have a good explanation for this, just as we don't have good explanations for other effects of diversity that are non-linear.
+
 
 
 # Effect of number of strains
+
+In the main text, we present results of simulations with nine strains per functional group. Here we also explore the effect of number of strains (2, 3, 6, 9) on the position of the two tipping points (Figure \@ref(fig:div-stab-multstrain1)). At low to moderate amounts of trait variation, the number of strains did not affect the position of the tipping points. However, at high amounts of trait variation, resilience was lower when the functional groups had only two or three strains rather than six or nine. This effect was particularly pronounced when there was high variation in only SB or in SB-CB: here, simulations with two or three strains led to dramatically lower resilience of the anoxic state than simulations with six or nine strains. We believe that this effect is due to the greater distance in trait space between strains in simulations with two or three strains than in simulations with more strains (also see Section 5). 
 
 (ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains.
 
@@ -737,10 +735,10 @@ fig_div_vs_o2diff_multistrain(all_stab, which_strains,
 
 # Finding the separatrix
 
-In the original publication ([Bush et al 2017](<https://www.nature.com/articles/s41467-017-00912-x>)) Figure 3a shows a separatrix in the cyanobacteria abundance - oxygen diffusivity dimensions of the system. If the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance increases, and the system goes to the oxic stable state. Conversely, if the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance decreases, and the system goes to the anoxic stable state.
+In the original publication ([Bush et al 2017](<https://www.nature.com/articles/s41467-017-00912-x>)) Figure 3a shows a separatrix in the cyanobacteria abundance - oxygen diffusivity dimensions of the system. If the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance increases, and the system goes to the oxic stable state. Conversely, if the system has initial cyanobacterial abundance lower than the value at the separatrix then the cyanobacterial abundance decreases, and the system goes to the anoxic stable state.
 
 It is critical to note, however, that the position of the separatrix depends on both the parameters of the system, and the initial conditions of variables other than cyanobacterial abundance. If the system were started with higher initial concentration, then the position of the separatrix would change (as would the values of oxygen diffusivity at which the system tipped from anoxic to oxic, and from oxic to anoxic).
 
 This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
 
-We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumption. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
+We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
