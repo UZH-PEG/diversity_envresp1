@@ -1,7 +1,6 @@
 ---
-title: Supplementary Content
-subtitle: ??????Insert ms title???????
-author: "Owen L Petchey, Rainer Krug, Marcel Suleiman, Romana Limberger, ???others???"
+title: Supplementary Content for the article *The role of functional diversity in ecosystem regime shifts*
+author: "Owen L Petchey, plus all authors of the main article"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::html_document2:
