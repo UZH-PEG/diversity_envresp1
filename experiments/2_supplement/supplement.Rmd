@@ -614,7 +614,24 @@ saveRDS(sim_res_highvar1,here::here("data", "2_supplement", "puzzle1_2.RDS"))
 
 ```{r sb-div-effect4, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect4)', fig.height=8, fig.width=8, fig.align="center"}
 sim_res_highvar1 <- readRDS(here("data", "2_supplement", "puzzle1_2.RDS"))
-plot_dynamics(sim_res_highvar1)
+
+p <- plot_dynamics(sim_res_highvar1)
+p[[1]] <- p[[1]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)(cells~L^{-1})))
+p[[2]] <- p[[2]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)(cells~L^{-1})))
+p[[3]] <- p[[3]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)(cells~L^{-1})))
+p[[4]] <- p[[4]] + 
+  xlab("time(h)") + 
+  ylab(expression(log[10](concentration)(µM))) + 
+  labs(colour = "substrate")
+  
+p
+
 #ggsave(here("simulations", "expt2", "figures", "switching_novar.pdf"), width = 10)
 ```
 
