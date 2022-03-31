@@ -390,16 +390,21 @@ display_diversity <- function(
   
   CB_TO1 <- ggplot(CBtraits) +
     geom_point(aes(x = h_SR_CB, y = g_max_CB, col = strain_name), size = ptsize) +
-    xlab("Tolerance\n(cyanobacteria to\nreduced sulphur)") +
-    ylab("Maximum growth rate\n(cyanobacteria)") +
+    xlab("Tolerance reduced sulphur(µM)") +
+    ylab(expression(Maximum~growth~rate~(h^{-1}))) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
-    theme(legend.position = "none")
+    theme_bw() +
+    theme(legend.position = "none") +
+    xlim(260, 340) +
+    ggtitle(waiver(), "Cyanobacteria")
   CB_TO2 <- ggplot() +
+    theme_bw() +
     geom_line(aes(x = log10(SR), y = gr_rateCB1), col = colfunc_CB(num_CB_strains)[1], size = linewd) +
     geom_line(aes(x = log10(SR), y = gr_rateCB9), col = colfunc_CB(num_CB_strains)[num_CB_strains], size = linewd) +
-    xlab("Reduced sulphur concentration\nin the environment\n(log10 uM per litre)") +
-    ylab("Realised growth rate\n(cyanobacteria)")
-
+    xlab(expression(atop(log[10](red.~sulfur~concentration),(µM)))) +
+    ylab(expression(Realised~growth~rate~(h^{-1}))) +
+    ggtitle(waiver(), "Cyanobacteria")
+  
 
 
   SBtraits <- var_expt$pars[[this_one]]$SB
@@ -415,15 +420,21 @@ display_diversity <- function(
 
   SB_TO1 <- ggplot(SBtraits) +
     geom_point(aes(x = h_O_SB, y = g_max_SB, col = strain_name), size = ptsize) +
-    xlab("Tolerance\n(sulphate reducing bacteria\nto oxygen)") +
-    ylab("Maximum growth rate\n(sulphate reducing bacteria)") +
+    xlab("Tolerance of oxygen (µM)") +
+    ylab(NULL) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
-    theme(legend.position = "none")
+    theme_bw() +
+    theme(legend.position = "none") +
+    xlim(0, 405) +
+    ggtitle(waiver(), "Sulfate-reducing bacteria")
   SB_TO2 <- ggplot() +
+    theme_bw() +
     geom_line(aes(x = log10(O), y = gr_rateSB1), col = colfunc_SB(num_SB_strains)[1], size = linewd) +
     geom_line(aes(x = log10(O), y = gr_rateSB9), col = colfunc_SB(num_SB_strains)[num_SB_strains], size = linewd) +
-    xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
-    ylab("Realised growth rate\n(sulphate reducing bacteria)")
+    xlab(expression(atop(log[10](red.~oxygen~concentration),(µM)))) +
+    ylab(NULL) +
+    ggtitle(waiver(), "Sulfate-reducing bacteria")
+  
 
   PBtraits <- var_expt$pars[[this_one]]$PB
   PBtraits$strain_name <- factor(PBtraits$strain_name, levels=PBtraits$strain_name)
@@ -437,17 +448,22 @@ display_diversity <- function(
     inhibition(O, PBtraits$h_O_PB[num_PB_strains])
 
   PB_TO1 <- ggplot(PBtraits) +
+    theme_bw() +
     geom_point(aes(x = h_O_PB, y = g_max_PB, col = strain_name), size = ptsize) +
-    xlab("Tolerance\n(phototrophic sulphur bacteria\nto oxygen)") +
-    ylab("Maximum growth rate\n(phototrophic sulphur bacteria") +
+    xlab("Tolerance of oxygen (µM)") +
+    ylab(NULL) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
-    theme(legend.position = "none")
+    theme(legend.position = "none") +
+    xlim(0, 405) +
+    ggtitle(waiver(), "Phototrophic sulfur bacteria")
   PB_TO2 <- ggplot() +
+    theme_bw() +
     geom_line(aes(x = log10(O), y = gr_ratePB1), col = colfunc_PB(num_SB_strains)[1], size = linewd) +
     geom_line(aes(x = log10(O), y = gr_ratePB9), col = colfunc_PB(num_SB_strains)[num_PB_strains], size = linewd) +
-    xlab("Oxygen concentration\nin the environment\n(log10 uM per litre)") +
-    ylab("Realised growth rate\n(phototrophic sulphur bacteria)")
-
+    xlab(expression(atop(log[10](red.~oxygen~concentration),(µM)))) +
+    ylab(NULL) +
+    ggtitle(waiver(), "Phototrophic sulfur bacteria")
+  
   if(which_graphs==1)
     p1 <- (CB_TO1 + SB_TO1 + PB_TO1)
   if(which_graphs==2)
@@ -1265,7 +1281,8 @@ plot_ss_result6 <- function(ss_result1,
         data = dplyr::filter(temp2, functional_group == fg_oi),
         linetype = "dashed", lwd = 1.5,
         col = species_colours[fg_oi]
-      )
+      ) +
+      theme_bw()
   }
   p_CB <- plot_fg_oi(temp1, temp2, "CB") + xlim(xlims[1], xlims[2])
   p_SB <- plot_fg_oi(temp1, temp2, "SB") + xlim(xlims[1], xlims[2])
@@ -1288,7 +1305,9 @@ plot_ss_result6 <- function(ss_result1,
       data = dplyr::filter(temp2, var_type == "Substrate"),
       linetype = "dashed", lwd = 1.5
     ) +
-    xlim(xlims[1], xlims[2])
+    xlim(xlims[1], xlims[2]) +
+    theme_bw()
+  
   # p4
   patchwork_graph <- p_CB / p_SB / p_PB / p_Substrate
   
