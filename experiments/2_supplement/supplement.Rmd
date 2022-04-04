@@ -198,16 +198,16 @@ temp_meth <- readRDS(here("data", "0_ss_finding", "temporal_method", "ss_data_9s
 
 (ref:repl-meth2) Stable states found with the **replication method**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
-```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=8, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_dots(repl_meth[1,])
+```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(repl_meth[1,])
 ```
 
 ### Temporal method, no diversity
 
 (ref:temp-meth2) Stable states found with the **temporal method**. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
-```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
+```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 ```
 
 
@@ -275,9 +275,9 @@ An interesting feature of these results is that although the position of the oxi
 
 (ref:repl-meth-ex1) Stable states found with the **replication method** with intermediate levels of diversity in all functional groups. Figure features are otherwise the same as those in Figure \@ref(fig:repl-meth2)).
 
-```{r repl-meth-ex1, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth-ex1)', fig.height=8, fig.width=8, fig.align="center"}
+```{r repl-meth-ex1, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth-ex1)', fig.height=10, fig.width=8, fig.align="center"}
 repl_meth <- readRDS(here("data", "0_ss_finding", "replication_method", "ss_data_9strains_sim_length1e+06_event_definition_2.RDS"))
-fig_state_vs_o2diff_sidebyside_dots(repl_meth[94,])
+fig_state_vs_o2diff_sidebyside_alternative(repl_meth[94,])
 ```
 
 
@@ -436,19 +436,19 @@ The results below show the stable states as a function of oxygen diffusivity for
 
 (ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
-```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=8, fig.width=8, fig.align="center"}
+```{r ss-temp-meth3, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=10, fig.width=8, fig.align="center"}
 single_1e6 <- readRDS(here("data", "0_ss_finding", "temporal_method", "single_1e6_result.RDS"))
 temp_meth[1,]$ssfind_result[[1]] <- single_1e6
-fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
+fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 ```
 
 
 (ref:ss-temp-meth4) Stable states found with the temporal method with duration at each oxygen diffusivity value of **2e6 hours**. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
-```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=8, fig.width=8, fig.align="center"}
+```{r ss-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=10, fig.width=8, fig.align="center"}
 single_2e6 <- readRDS(here("data", "0_ss_finding", "temporal_method", "single_2e6_result.RDS"))
 temp_meth[1,]$ssfind_result[[1]] <- single_2e6
-fig_state_vs_o2diff_sidebyside_dots(temp_meth[1,])
+fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 ```
 
 # SB diversity effects
@@ -459,7 +459,7 @@ We showed above that wait times of 1e5 (Figure \@ref(fig:div-temp-meth2)) and 1e
 
 (ref:ss-temp-meth1) Stable state of the system with **moderate** level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
-```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=8, fig.width=8, fig.align="center"}
+```{r ss-temp-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth1)', fig.height=10, fig.width=8, fig.align="center"}
 wait_time <- "1e+04"
 ss_9s <- readRDS(here::here("data", "0_ss_finding", "temporal_method", paste0("ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
 #stab_9s <- readRDS(here::here(\"data", "0_ss_finding", "temporal_method", paste0("stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS"))
@@ -478,8 +478,7 @@ only_SB_variable <- only_SB_variable[order(only_SB_variable$SB_var_gmax_s), ]
 
 #only_SB_variable$SB_var_gmax_s
 
-fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
-
+fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[13,])
 
 #fig_state_vs_o2diff(only_SB_variable[13,])
 ```
@@ -488,8 +487,8 @@ fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[13,])
 
 (ref:ss-temp-meth2)  Stable state of the system with **higher than moderate** level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth1).
 
-```{r ss-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth2)', fig.height=8, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_dots(only_SB_variable[14,])
+```{r ss-temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth2)', fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[14,])
 ```
 
 We believe that this phenomenon is caused by an effect that we explain with reference to an analogy of using stepping stones to cross a river. Increasing diversity in our simulations is akin to increasing the width of the river, but keeping the number of stepping stones (strains) constant. So long as the river is not too wide, we can still cross it, but once the width of the river is such that the stepping stones are too far apart, we can't cross the river. And this happens suddenly, the width increases just a tiny bit more, and we suddenly can't cross the river when we could before.
@@ -576,17 +575,24 @@ sim_res_novar1 <- readRDS(here::here("data", "2_supplement", "puzzle1_1.RDS"))
 p <- plot_dynamics(sim_res_novar1)
 p[[1]] <- p[[1]] + 
   xlab(NULL) + 
-  ylab(expression(log[10](density)(cells~L^{-1})))
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
 p[[2]] <- p[[2]] + 
   xlab(NULL) + 
-  ylab(expression(log[10](density)(cells~L^{-1})))
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
 p[[3]] <- p[[3]] + 
   xlab(NULL) + 
-  ylab(expression(log[10](density)(cells~L^{-1})))
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[4]]$data <- p[[4]]$data %>% 
+  dplyr::filter(species != "a") %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide")
 p[[4]] <- p[[4]] + 
-  xlab("time(h)") + 
-  ylab(expression(log[10](concentration)(µM))) + 
-  labs(colour = "substrate")
+  xlab("time (h)") + 
+  ylab(expression(log[10](concentration)~(µM))) + 
+  labs(colour = "substrate") +
+  theme_bw()
   
 p
 #ggsave(here("simulations", "expt2", "figures", "switching_novar.pdf"), width = 10)
@@ -618,17 +624,22 @@ sim_res_highvar1 <- readRDS(here("data", "2_supplement", "puzzle1_2.RDS"))
 p <- plot_dynamics(sim_res_highvar1)
 p[[1]] <- p[[1]] + 
   xlab(NULL) + 
-  ylab(expression(log[10](density)(cells~L^{-1})))
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
 p[[2]] <- p[[2]] + 
   xlab(NULL) + 
-  ylab(expression(log[10](density)(cells~L^{-1})))
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
 p[[3]] <- p[[3]] + 
   xlab(NULL) + 
-  ylab(expression(log[10](density)(cells~L^{-1})))
-p[[4]] <- p[[4]] + 
-  xlab("time(h)") + 
-  ylab(expression(log[10](concentration)(µM))) + 
-  labs(colour = "substrate")
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[4]]$data <- p[[4]]$data %>% dplyr::filter(species != "a")
+p[[4]] <- p[[4]] +
+  xlab("time (h)") + 
+  ylab(expression(log[10](concentration)~(µM))) + 
+  labs(colour = "substrate") +
+  theme_bw()
   
 p
 
@@ -671,14 +682,14 @@ Increases in the diversity within the PB functional group leads to lower resilie
 
 (ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **low amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
-```{r pbdiv-only-1, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-1)', fig.height=8, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim1,])
+```{r pbdiv-only-1, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-1)', fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim1,])
 ```
 
 (ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **moderate amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
 
-```{r pbdiv-only-2, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-2)', fig.height=8, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_dots(only_PB_variable[sim2,])
+```{r pbdiv-only-2, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-2)', fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim2,])
 ```
 
 

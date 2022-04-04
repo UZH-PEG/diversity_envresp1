@@ -390,7 +390,7 @@ display_diversity <- function(
   
   CB_TO1 <- ggplot(CBtraits) +
     geom_point(aes(x = h_SR_CB, y = g_max_CB, col = strain_name), size = ptsize) +
-    xlab("Tolerance reduced sulphur(µM)") +
+    xlab("Tolerance of sulfide\n(µM)") +
     ylab(expression(Maximum~growth~rate~(h^{-1}))) +
     scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
     theme_bw() +
@@ -401,7 +401,7 @@ display_diversity <- function(
     theme_bw() +
     geom_line(aes(x = log10(SR), y = gr_rateCB1), col = colfunc_CB(num_CB_strains)[1], size = linewd) +
     geom_line(aes(x = log10(SR), y = gr_rateCB9), col = colfunc_CB(num_CB_strains)[num_CB_strains], size = linewd) +
-    xlab(expression(atop(log[10](red.~sulfur~concentration),(µM)))) +
+    xlab(expression(atop(log[10](sulfide~concentration),(µM)))) +
     ylab(expression(Realised~growth~rate~(h^{-1}))) +
     ggtitle(waiver(), "Cyanobacteria")
   
@@ -420,7 +420,7 @@ display_diversity <- function(
 
   SB_TO1 <- ggplot(SBtraits) +
     geom_point(aes(x = h_O_SB, y = g_max_SB, col = strain_name), size = ptsize) +
-    xlab("Tolerance of oxygen (µM)") +
+    xlab("Tolerance of oxygen\n(µM)") +
     ylab(NULL) +
     scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
     theme_bw() +
@@ -431,7 +431,7 @@ display_diversity <- function(
     theme_bw() +
     geom_line(aes(x = log10(O), y = gr_rateSB1), col = colfunc_SB(num_SB_strains)[1], size = linewd) +
     geom_line(aes(x = log10(O), y = gr_rateSB9), col = colfunc_SB(num_SB_strains)[num_SB_strains], size = linewd) +
-    xlab(expression(atop(log[10](red.~oxygen~concentration),(µM)))) +
+    xlab(expression(atop(log[10](oxygen~concentration),(µM)))) +
     ylab(NULL) +
     ggtitle(waiver(), "Sulfate-reducing bacteria")
   
@@ -450,7 +450,7 @@ display_diversity <- function(
   PB_TO1 <- ggplot(PBtraits) +
     theme_bw() +
     geom_point(aes(x = h_O_PB, y = g_max_PB, col = strain_name), size = ptsize) +
-    xlab("Tolerance of oxygen (µM)") +
+    xlab("Tolerance of oxygen\n(µM)") +
     ylab(NULL) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     theme(legend.position = "none") +
@@ -460,7 +460,7 @@ display_diversity <- function(
     theme_bw() +
     geom_line(aes(x = log10(O), y = gr_ratePB1), col = colfunc_PB(num_SB_strains)[1], size = linewd) +
     geom_line(aes(x = log10(O), y = gr_ratePB9), col = colfunc_PB(num_SB_strains)[num_PB_strains], size = linewd) +
-    xlab(expression(atop(log[10](red.~oxygen~concentration),(µM)))) +
+    xlab(expression(atop(log[10](oxygen~concentration),(µM)))) +
     ylab(NULL) +
     ggtitle(waiver(), "Phototrophic sulfur bacteria")
   
