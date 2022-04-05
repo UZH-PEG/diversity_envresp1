@@ -586,8 +586,9 @@ p[[3]] <- p[[3]] +
   ylab(expression(log[10](density)~(cells~L^{-1}))) +
   theme_bw()
 p[[4]]$data <- p[[4]]$data %>% 
-  dplyr::filter(species != "a") %>%
-  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide")
+  dplyr::filter(species != "a")
+p[[4]]$data$species <- p[[4]]$data$species %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
 p[[4]] <- p[[4]] + 
   xlab("time (h)") + 
   ylab(expression(log[10](concentration)~(µM))) + 
@@ -635,6 +636,8 @@ p[[3]] <- p[[3]] +
   ylab(expression(log[10](density)~(cells~L^{-1}))) +
   theme_bw()
 p[[4]]$data <- p[[4]]$data %>% dplyr::filter(species != "a")
+p[[4]]$data$species <- p[[4]]$data$species %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
 p[[4]] <- p[[4]] +
   xlab("time (h)") + 
   ylab(expression(log[10](concentration)~(µM))) + 
@@ -727,8 +730,12 @@ rm(ss1, ss2, dd1, dd2)
 
 labs <- seq(-3.5, -3.3, by=0.05)
 
+dd$State_variable <- dd$State_variable %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
+
+
 dd %>%
-  filter(State_variable %in% c("O", "SR", "SO"),
+  filter(State_variable %in% c("Oxygen", "Sulfide", "Oxidised sulfur"),
          direction == "up",
          a_O < as.numeric(aO_flip_sim2),
          a_O > -3.5) %>%
