@@ -239,7 +239,7 @@ fig_div_vs_o2diff_multistrain <- function(all_stab,
                     fill = as.factor(num_strains)), alpha = 0.2) +
     facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
     xlab("Standardised amount of trait variation") +
-    ylab(expression(log[10](Oxygen~diffusivity)~(h^{-1}))) +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     guides(col = guide_legend(title="Number of strains"),
@@ -1019,7 +1019,8 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
     ylab("Effect on resilience") +
     xlab("Standardised amount of trait variation") +
     geom_text(aes(x = 0, y = 2.85, label = label), label.size = 0, colour = "black") +
-    scale_color_manual(values = c("#38ACC4", "#C43926"))
+    scale_color_manual(values = c("#38ACC4", "#C43926")) +
+    ylim(-0.9, 3.1)
   
   p1
   
