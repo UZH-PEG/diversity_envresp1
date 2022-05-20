@@ -70,6 +70,21 @@ ss_result <- ss_9s %>%
          abs(SB_var_gmax_s - 0.084764545) < 0.0001,
          abs(PB_var_gmax_s - 0.084764545) < 0.0001)
 
+## looking at strain parameters
+## ss_result$pars[[1]]$CB
+## ss_result$pars[[1]]$SB
+## ss_result$pars[[1]]$PB
+
+## look at strain parameter values for max variation
+ss_maxvar <- ss_9s %>%
+  filter(abs(CB_var_gmax_s - 0.031578948) < 0.0001,
+         abs(SB_var_gmax_s - 0.094736844) < 0.0001,
+         abs(PB_var_gmax_s - 0.094736844) < 0.0001)
+## ss_maxvar$pars[[1]]$CB
+## ss_maxvar$pars[[1]]$SB
+## ss_maxvar$pars[[1]]$PB
+
+
 
 
 fig_state_vs_o2diff_sidebyside_dots(ss_result)
