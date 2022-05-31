@@ -717,6 +717,7 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
   num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
   num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
   
+  
   line_width <- 0.2
   point_size <- 0.6
   arrow_lwd <- 1
@@ -863,14 +864,14 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
   
   
   ylab2 <- ggplot(data.frame(x = 1, y = 4.1)) +
-    geom_text(aes(x, y),label= expression('log'[10]*"(density) ("*mu*"M)"),
+    geom_text(aes(x, y),label= expression('log'[10]*"(concentration) ("*mu*"M)"),
               angle = 90, size=4.5) + 
     theme_void() +
     coord_cartesian(clip = "off") +
     theme(plot.margin = margin(t=-1, b=-1, l=-1))
   
   
-  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Down","Up"))) +
+  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Decreasing oxygen diffusivity","Increasing oxygen diffusivity"))) +
     geom_text(aes(x, y, label = direction), size=4.5) +
     facet_wrap(~direction)+
     theme_bw()+
