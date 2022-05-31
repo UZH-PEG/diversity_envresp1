@@ -1013,6 +1013,47 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
   resilience$label[resilience$var_treat == "SB-PB"] <- "m"
   resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
 
+  ## remove horizontal unless all 0 ----
+  
+  res <- split(resilience, resilience$var_treat)
+  res <- lapply(
+    res,
+    function(x){
+      x <- x %>% arrange(x$stand_var)
+      ao <- which(x$which_transition == "rel_trans_pos_ao")
+      oa <- which(x$which_transition == "rel_trans_pos_oa")
+      
+      for (i in (length(ao):2)){
+        if (x[ao[i],]$rel_log_trans_pos == 0){
+          break()
+        }
+        if (x[ao[i],]$rel_log_trans_pos == x[ao[i-1],]$rel_log_trans_pos) {
+          x[ao[i],]$rel_log_trans_pos <- NA
+        } else {
+          break
+        }      
+      }
+      
+      for (i in (length(oa):2)){
+        if (x[oa[i],]$rel_log_trans_pos == 0){
+          break()
+        }
+        if (x[oa[i],]$rel_log_trans_pos == x[oa[i-1],]$rel_log_trans_pos) {
+          x[oa[i],]$rel_log_trans_pos <- NA
+        } else {
+          break
+        }      
+      }
+      
+      return(x)
+    }
+  )
+  
+  resilience <- do.call(rbind, res)
+  
+
+  ## plot ----
+  
   p1 <- resilience %>%
     ggplot(aes(x = stand_var, y = rel_log_trans_pos, col = which_transition)) +
     geom_line(show.legend = FALSE) +
