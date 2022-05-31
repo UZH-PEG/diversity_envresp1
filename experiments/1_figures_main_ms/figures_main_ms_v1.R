@@ -88,6 +88,7 @@ ss_maxvar <- ss_9s %>%
 
 
 fig_state_vs_o2diff_sidebyside_dots(ss_result)
+
 ggsave(here("experiments/1_figures_main_ms/figure_4.pdf"),
        width = 10, height = 10)
 
