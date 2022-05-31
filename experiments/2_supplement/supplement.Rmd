@@ -788,3 +788,213 @@ It is critical to note, however, that the position of the separatrix depends on 
 This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
 
 We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
+
+# Previously figure 5 Main Manuscript
+```{r fig_5_log, echo = FALSE,  include=TRUE, fig.cap='Previously figure 5 Main Manuscript log', fig.height=8, fig.width=8, fig.align="center"}
+## Figure 5 ----
+## Assessing additivity of diversity effect sizes
+## By Uriah
+## Owen switched to SB_tot
+
+all_stab_results_small <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
+
+wait_time <- 1e6
+all_stab_results9 <- all_stab_results_small %>%
+  distinct() %>%  #there are some duplicated rows....? yes, some treatment combs were repeated when sub1 was made
+  filter(num_strains == 9,
+         Species == "SB_tot",
+         waittime == wait_time) 
+
+all_stab_results9 <- all_stab_results9[with(all_stab_results9, order(var_treat, var_gmax)),]
+
+all_stab_results9$method <- "Simulated"
+
+
+### Things used for plotting ----
+
+
+
+### Fig 5 - log ----
+
+agg_stab_strain9 <- combine_fct("EF_log")
+
+agg_stab_strain9_temp <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat=="CB-SB-PB")
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat!="CB-SB-PB")
+
+agg_stab_strain9 <- rbind(agg_stab_strain9,
+                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SBPB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CBSB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CBPB"))
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  mutate(method2 = ifelse(agg_stab_strain9$method=="Simulated","Simulated","Calculated")) %>%
+  rename(Calculation=method, Method=method2)%>%
+  mutate(Calculation = factor(Calculation, levels = c("Simulated","CB+SB","CB+PB","SB+PB",
+                                                      "CB+SBPB","PB+CBSB","SB+CBPB")),
+         Method = factor(Method, levels = c("Simulated","Calculated")))
+
+
+
+# the legend
+fig5legend <- agg_stab_strain9 %>%
+  filter(Species == "SB_tot", num_strains==9) %>%
+  ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+  geom_line(aes(y = hyst_min_log), size = 1) +
+  geom_line(aes(y = hyst_max_log), size = 1) +
+  scale_color_manual(values = c("black","#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#a65628")) +
+  scale_linetype_manual(values = c(1,2))+
+  coord_flip() +
+  theme_bw() +
+  theme(legend.position="right")
+
+fig5legend <- ggpubr::get_legend(fig5legend)
+
+# the y and x labels
+# ylab <- ggplot(data.frame(l = "            Standardised amount of trait variation", x = 1, y = 4.1)) +
+ylab <- ggplot(data.frame(l = "Standardised amount of trait variation", x = 1, y = 4.1)) +
+  geom_text(aes(x, y, label = l), angle = 90, size=4.5) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+xlab <- ggplot(data.frame(x = 1, y = 1)) +
+  geom_text(aes(x, y), label = expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"), size=4.5) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+# colours and tags used
+colours <- c(Simulated="black",`CB+SB`="#e41a1c",`CB+PB`="#377eb8",
+             `SB+PB`="#4daf4a",`CB+SBPB`="#984ea3",`PB+CBSB`="#ff7f00",
+             `SB+CBPB`="#a65628")
+
+tags <- c(`CB`="a",`SB`="b",`PB`="c",
+          `CB-SB`="d",`CB-PB`="e",`SB-PB`="f",
+          `CB-SB-PB & CB+SBPB`="g",`CB-SB-PB & PB+CBSB`="h",`CB-SB-PB & SB+CBPB`="i")
+
+
+
+# The figure
+
+fig5_log <- split(agg_stab_strain9, f=agg_stab_strain9$var_treat, drop = T)
+
+fig5_log <- lapply(fig5_log, function(df){
+  tag <- tags[as.character(unique(df$var_treat))]
+  plot <- df %>%
+    filter(Species == "SB_tot", num_strains==9) %>%
+    ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+    geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
+    geom_line(aes(y = hyst_min_log), size = 1) +
+    geom_line(aes(y = hyst_max_log), size = 1) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+         x="Amount of trait variation\n[see text for units]",
+         linetype="Method",col="Calculation", tag=tag) +
+    scale_color_manual(values = colours[unique(df$Calculation)]) +
+    scale_linetype_manual(values = c(1,2))+
+    coord_flip() +
+    theme_bw()+
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
+  
+  if(tag %in% c("a","d")){
+    plot <- plot + theme(axis.text.y = element_text(),
+                         axis.ticks.y = element_line())
+  }
+  if(tag %in% c("h","i")){
+    plot <- plot + theme(axis.text.x = element_text(),
+                         axis.ticks.x = element_line())
+  }
+  if(tag == "g"){
+    plot <- plot + theme(axis.text = element_text(),
+                         axis.ticks = element_line())
+  }
+  plot
+})
+
+
+ylab + Reduce("+",fig5_log) + fig5legend +
+  plot_spacer() + xlab + plot_spacer() +
+  plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
+
+# ggsave(here("experiments/1_figures_main_ms/Figure_5_log.pdf"),
+#        width = 8, height = 8)
+
+
+```
+
+```{r fig_5_linear, echo = FALSE,  include=TRUE, fig.cap='Previously figure 5 Main Manuscript linear', fig.height=8, fig.width=8, fig.align="center"}
+
+### Fig 5 - linear ----
+
+agg_stab_strain9 <- combine_fct("EF_lin")
+
+agg_stab_strain9_temp <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat=="CB-SB-PB")
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  dplyr::filter(var_treat!="CB-SB-PB")
+
+agg_stab_strain9 <- rbind(agg_stab_strain9,
+                          agg_stab_strain9_temp %>% filter(method %in% c("CB+SBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & CB+SBPB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("PB+CBSB","Simulated")) %>% mutate(var_treat="CB-SB-PB & PB+CBSB"),
+                          agg_stab_strain9_temp %>% filter(method %in% c("SB+CBPB","Simulated")) %>% mutate(var_treat="CB-SB-PB & SB+CBPB"))
+
+agg_stab_strain9 <- agg_stab_strain9 %>%
+  mutate(method2 = ifelse(agg_stab_strain9$method=="Simulated","Simulated","Calculated")) %>%
+  rename(Calculation=method, Method=method2)%>%
+  mutate(Calculation = factor(Calculation, levels = c("Simulated","CB+SB","CB+PB","SB+PB",
+                                                      "CB+SBPB","PB+CBSB","SB+CBPB")),
+         Method = factor(Method, levels = c("Simulated","Calculated")))
+
+
+
+fig5_lin <- split(agg_stab_strain9, f=agg_stab_strain9$var_treat, drop = T)
+
+fig5_lin <- lapply(fig5_lin, function(df){
+  tag <- tags[as.character(unique(df$var_treat))]
+  plot <- df %>%
+    filter(Species == "SB_tot", num_strains==9) %>%
+    ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+    geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
+    geom_line(aes(y = hyst_min_log), size = 1) +
+    geom_line(aes(y = hyst_max_log), size = 1) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+         x="Amount of trait variation\n[see text for units]",
+         linetype="Method",col="Calculation", tag=tag) +
+    scale_color_manual(values = colours[unique(df$Calculation)]) +
+    scale_linetype_manual(values = c(1,2))+
+    coord_flip() +
+    theme_bw()+
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
+  
+  if(tag %in% c("a","d")){
+    plot <- plot + theme(axis.text.y = element_text(),
+                         axis.ticks.y = element_line())
+  }
+  if(tag %in% c("h","i")){
+    plot <- plot + theme(axis.text.x = element_text(),
+                         axis.ticks.x = element_line())
+  }
+  if(tag == "g"){
+    plot <- plot + theme(axis.text = element_text(),
+                         axis.ticks = element_line())
+  }
+  plot
+})
+
+ylab + Reduce("+",fig5_lin) + fig5legend +
+  plot_spacer() + xlab + plot_spacer() +
+  plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
+
+
+# ggsave(here("experiments/1_figures_main_ms/Figure_5_lin.pdf"),
+#        width = 8, height = 8)
+```
