@@ -522,6 +522,11 @@ fig_state_vs_o2diff_sidebyside_dots <- function(ss_result){
   point_size <- 0.6
   arrow_lwd <- 1
 
+  temp$direction[temp$direction == "up"] <- "Increasing oxygen diffusivity"
+  temp$direction[temp$direction == "down"] <- "Decreasing oxygen diffusivity"
+  stab_measures$direction[stab_measures$direction == "up"] <- "Increasing oxygen diffusivity"
+  stab_measures$direction[stab_measures$direction == "down"] <- "Decreasing oxygen diffusivity"
+  
   p1 <- temp %>%
     dplyr::filter(functional_group == "CB")  %>%
     mutate(species = factor(species, levels = unique(species))) %>%
@@ -712,6 +717,7 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
   num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
   num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
   
+  
   line_width <- 0.2
   point_size <- 0.6
   arrow_lwd <- 1
@@ -770,8 +776,7 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
     facet_grid(functional_group2 ~ direction)
   
   
-  p3PB <-
-    temp %>%
+  p3PB <- temp %>%
     dplyr::filter(functional_group == "PB")  %>%
     ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
     geom_segment(data = stab_measures,
@@ -784,11 +789,12 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
     geom_point(size = point_size) +
     scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
     guides(colour = guide_legend(ncol = 3)) +
-    labs(tag="c", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
+    labs(tag="c") +
     theme_bw() +
     theme(legend.position="none",
-          axis.title.y = element_blank(),
-          axis.title.x = element_text(size=13),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title = element_blank(),
           strip.background = element_rect(fill = "white"),
           strip.background.x = element_blank(),
           strip.text.x = element_blank(),
@@ -865,7 +871,7 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
     theme(plot.margin = margin(t=-1, b=-1, l=-1))
   
   
-  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Down","Up"))) +
+  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Decreasing oxygen diffusivity","Increasing oxygen diffusivity"))) +
     geom_text(aes(x, y, label = direction), size=4.5) +
     facet_wrap(~direction)+
     theme_bw()+
@@ -1007,6 +1013,47 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
   resilience$label[resilience$var_treat == "SB-PB"] <- "m"
   resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
 
+  ## remove horizontal unless all 0 ----
+  
+  res <- split(resilience, resilience$var_treat)
+  res <- lapply(
+    res,
+    function(x){
+      x <- x %>% arrange(x$stand_var)
+      ao <- which(x$which_transition == "rel_trans_pos_ao")
+      oa <- which(x$which_transition == "rel_trans_pos_oa")
+      
+      for (i in (length(ao):2)){
+        if (x[ao[i],]$rel_log_trans_pos == 0){
+          break()
+        }
+        if (x[ao[i],]$rel_log_trans_pos == x[ao[i-1],]$rel_log_trans_pos) {
+          x[ao[i],]$rel_log_trans_pos <- NA
+        } else {
+          break
+        }      
+      }
+      
+      for (i in (length(oa):2)){
+        if (x[oa[i],]$rel_log_trans_pos == 0){
+          break()
+        }
+        if (x[oa[i],]$rel_log_trans_pos == x[oa[i-1],]$rel_log_trans_pos) {
+          x[oa[i],]$rel_log_trans_pos <- NA
+        } else {
+          break
+        }      
+      }
+      
+      return(x)
+    }
+  )
+  
+  resilience <- do.call(rbind, res)
+  
+
+  ## plot ----
+  
   p1 <- resilience %>%
     ggplot(aes(x = stand_var, y = rel_log_trans_pos, col = which_transition)) +
     geom_line(show.legend = FALSE) +
@@ -1016,7 +1063,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
       panel.background = element_blank(),
       #strip.text.x = element_blank()
       ) +
-    ylab("Effect on resilience") +
+    ylab(expression(atop(Effect~size~of~trait~variation~on~resilience, (log[10](oxygen~diffusivity)~(h^{-1}))))) +
     xlab("Standardised amount of trait variation") +
     geom_text(aes(x = 0, y = 2.85, label = label), label.size = 0, colour = "black") +
     scale_color_manual(values = c("#38ACC4", "#C43926")) +
