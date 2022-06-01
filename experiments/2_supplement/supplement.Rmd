@@ -225,11 +225,10 @@ repl_method_1 <- repl_meth$ss_res[[1]] %>%
 ss_result1 <- repl_method_1
 ss_result2 <- temp_meth$ssfind_result[[1]]
 
-plot_ss_result6(repl_method_1,
-                temp_meth$ssfind_result[[1]],
-                xlims = c(-8, 0))
+plot_ss_result6_new(repl_method_1,
+                    temp_meth$ssfind_result[[1]],
+                    xlims = c(-8, 0))
 ```
-
 
 
 ## Effect of diversity, replication method

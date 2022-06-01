@@ -1314,6 +1314,193 @@ plot_ss_result6 <- function(ss_result1,
   patchwork_graph
 }
 
+
+
+
+plot_ss_result6_new <- function(ss_result1, ss_result2, xlims = c(-8, 0)) {
+
+  species_colours <- c(CB = "#024F17", SB = "#7D1402", PB = "#6E0172")
+  
+  temp1 <- ss_result1 %>%
+    mutate(a = a_O) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+           functional_group = case_when(
+             str_detect(species, "CB_") ~ "CB",
+             str_detect(species, "SB_") ~ "SB",
+             str_detect(species, "PB_") ~ "PB"),
+           functional_group = ifelse(is.na(functional_group), species, functional_group)) %>%
+    group_by(a, direction, var_type, functional_group) %>%
+    summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
+    mutate(log10_total_quantity = log10(total_quantity + 1),
+           functional_group2 = case_when(
+             functional_group == "CB" ~ "Cyanobacteria",
+             functional_group == "SB" ~ "Sulfate-reducing\nbacteria",
+             functional_group == "PB" ~ "Phototrophic\nsulfur bacteria"),
+           substrate2 = case_when(
+             var_type == "Substrate" & functional_group == "SR" ~ "Sulfide\nconcentration",
+             var_type == "Substrate" & functional_group == "O" ~ "Oxygen\nconcentration"))
+  
+  temp2 <- ss_result2 %>%
+    mutate(a = 10^a_O) %>%
+    gather(species, quantity, 2:(ncol(.) - 2)) %>%
+    mutate(var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+           functional_group = case_when(
+             str_detect(species, "CB_") ~ "CB",
+             str_detect(species, "SB_") ~ "SB",
+             str_detect(species, "PB_") ~ "PB"),
+           functional_group = ifelse(is.na(functional_group), species, functional_group)) %>%
+    group_by(a, direction, var_type, functional_group) %>%
+    summarise(total_quantity = sum(quantity, na.rm = TRUE)) %>%
+    mutate(log10_total_quantity = log10(total_quantity + 1),
+           log1 = log10(a),
+           functional_group2 = case_when(
+             functional_group == "CB" ~ "Cyanobacteria",
+             functional_group == "SB" ~ "Sulfate-reducing\nbacteria",
+             functional_group == "PB" ~ "Phototrophic\nsulfur bacteria"),
+           substrate2 = case_when(
+             var_type == "Substrate" & functional_group == "SR" ~ "Sulfide\nconcentration",
+             var_type == "Substrate" & functional_group == "O" ~ "Oxygen\nconcentration")
+    )
+  
+  
+  
+  
+  num_CB_strains <- 1
+  num_SB_strains <- 1
+  num_PB_strains <- 1
+  
+  plot_fg_oi <- function(temp1, temp2, fg_oi) {
+    temp1 %>%
+      dplyr::filter(functional_group == fg_oi) %>%
+      arrange(a, direction) %>%
+      ggplot(aes(x = log10(a), y = log10_total_quantity, group = direction)) +
+      geom_path(col = species_colours[fg_oi]) +
+      guides(colour = guide_legend(ncol = 3)) +
+      geom_path(
+        data = dplyr::filter(temp2, functional_group == fg_oi),
+        linetype = "dashed", lwd = 1.5,
+        col = species_colours[fg_oi]
+      ) +
+      
+      theme_bw() +
+      theme(legend.position="none",
+            axis.title = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.text.x = element_blank(),
+            strip.background = element_rect(fill = "white"),
+            strip.background.x = element_blank(),
+            strip.text.x = element_blank(),
+            strip.text.y = element_text(size=12),
+            plot.margin = margin(t=-1, b=-1)) +
+      facet_grid(functional_group2 ~ direction)
+  }
+  
+  p_CB <- plot_fg_oi(temp1, temp2, "CB") + 
+    xlim(xlims[1], xlims[2]) +
+    labs(tag="a") +
+    theme(strip.text.y = element_text(size=12, margin = margin(l=11, r=11)))
+    
+  p_SB <- plot_fg_oi(temp1, temp2, "SB") + 
+    xlim(xlims[1], xlims[2]) +
+    labs(tag="b")
+  
+  p_PB <- plot_fg_oi(temp1, temp2, "PB") + 
+    xlim(xlims[1], xlims[2]) +
+    labs(tag="c")
+  
+  
+  p_0 <- temp1 %>%
+    dplyr::filter(var_type == "Substrate", functional_group == "O") %>%
+    arrange(functional_group, a, direction) %>%
+    ggplot(aes(
+      x = log10(a), y = log10_total_quantity,
+      col = functional_group, group = paste(direction, functional_group)
+    )) +
+    geom_path() +
+    labs(tag="d")+
+    geom_path(
+      data = dplyr::filter(temp2, var_type == "Substrate", functional_group == "O"),
+      linetype = "dashed", lwd = 1.5
+    ) +
+    xlim(xlims[1], xlims[2]) +
+    theme_bw()+
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(substrate2 ~ direction)
+  
+  p_SR <- temp1 %>%
+    dplyr::filter(var_type == "Substrate", functional_group == "SR") %>%
+    arrange(functional_group, a, direction) %>%
+    ggplot(aes(
+      x = log10(a), y = log10_total_quantity,
+      group = paste(direction, functional_group)
+    )) +
+    geom_path(col = 6) +
+    labs(tag="e", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
+    geom_path(
+      data = dplyr::filter(temp2, var_type == "Substrate", functional_group == "SR"),
+      linetype = "dashed", lwd = 1.5, col = 6) +
+    xlim(xlims[1], xlims[2]) +
+    theme_bw()+
+    theme(legend.position="none",
+          axis.title.y = element_blank(),
+          axis.title.x = element_text(size=13),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(substrate2 ~ direction)
+  
+  
+  ylab1 <- ggplot(data.frame(x = 1, y = 4.1)) +
+    geom_text(aes(x, y),label= expression('log'[10]*"(density) (cells L"^{-1}*")"),
+              angle = 90, size=4.5) + 
+    theme_void() +
+    coord_cartesian(clip = "off") +
+    theme(plot.margin = margin(t=-1, b=-1, l=-1))
+  
+  
+  ylab2 <- ggplot(data.frame(x = 1, y = 4.1)) +
+    geom_text(aes(x, y),label= expression('log'[10]*"(concentration) ("*mu*"M)"),
+              angle = 90, size=4.5) + 
+    theme_void() +
+    coord_cartesian(clip = "off") +
+    theme(plot.margin = margin(t=-1, b=-1, l=-1))
+  
+  
+  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Decreasing oxygen diffusivity","Increasing oxygen diffusivity"))) +
+    geom_text(aes(x, y, label = direction), size=4.5) +
+    facet_wrap(~direction)+
+    theme_bw()+
+    theme(strip.background = element_blank(),
+          strip.text = element_blank(),
+          panel.grid = element_blank(),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank(),
+          plot.margin = margin(t=-2, b=-1))
+  
+  
+  patchwork <- plot_spacer() + direction.facet +
+    ylab1 + (p_CB/p_SB/p_PB) +
+    ylab2 + (p_0/p_SR) +
+    plot_layout(ncol = 2, heights = c(1,15,10), widths = c(1,30))
+  
+  return(patchwork)
+}
+
+
+
+
 get_total_bio <- function(result) {
   res <- result %>%
     mutate(CB_tot = rowSums(across(starts_with("CB"))),

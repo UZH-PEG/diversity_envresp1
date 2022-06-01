@@ -900,110 +900,27 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
 
 
 fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
-  
-  # CB_vars <- unique(all_stab$CB_var_gmax_s)
-  # SB_vars <- unique(all_stab$SB_var_gmax_s)
-  # PB_vars <- unique(all_stab$PB_var_gmax_s)
-  # 
-  # CB_all_stab <- all_stab %>%
-  #   filter(SB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0) %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # SB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # PB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          SB_var_gmax_s == 0) %>%
-  #   ungroup()  %>%
-  #   mutate(var_treat = "PB",
-  #          var_gmax = PB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars))
-  # CBSB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(PB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(SB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # SBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB-PB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(CB_var_gmax_s == 0)
-  # 
-  # 
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBSBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # all_stab_results <- CB_all_stab %>%
-  #   bind_rows(SB_all_stab) %>%
-  #   bind_rows(PB_all_stab) %>%
-  #   bind_rows(CBSB_all_stab) %>%
-  #   bind_rows(CBPB_all_stab) %>%
-  #   bind_rows(SBPB_all_stab) %>%
-  #   bind_rows(CBSBPB_all_stab)
-  # 
-  # all_stab_results <- all_stab_results %>%
-  #   mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB",
-  #                                                                 "SB",
-  #                                                                 "PB",
-  #                                                                 "CB-SB",
-  #                                                                 "CB-PB",
-  #                                                                 "SB-PB",
-  #                                                                 "CB-SB-PB")))
-  # 
-  #all_stab_results_small <- select(all_stab_results, -7:-12)
-  
-  #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
-  
-  
+
   resilience <- all_stab %>%
-    #filter(var_treat == "CB") %>%
+    arrange(stand_var)%>%
     filter(num_strains == which_strain) %>%
     filter(Species == "SB_tot") %>%
     select(1:7, 16, 17, 20:24) %>%
     group_by(var_treat) %>%
     mutate(rel_trans_pos_ao = hyst_max_log-hyst_max_log[stand_var==0],
-           rel_trans_pos_oa = -hyst_min_log+hyst_min_log[stand_var==0]) %>%
-    select(-8:-9) %>%
+           rel_trans_pos_oa = -hyst_min_log+hyst_min_log[stand_var==0],
+           rel_trans_pos_ao_diff = rel_trans_pos_ao - lag(rel_trans_pos_ao),
+           rel_trans_pos_oa_diff = rel_trans_pos_oa - lag(rel_trans_pos_oa),
+           rel_trans_pos_ao = case_when(hyst_max_log==0 & rel_trans_pos_ao_diff==0 ~ NA_real_,
+                                        T ~ rel_trans_pos_ao),
+           rel_trans_pos_oa = case_when(hyst_min_log==-8 & rel_trans_pos_oa_diff==0 ~ NA_real_,
+                                        T ~ rel_trans_pos_oa),
+           ) %>%
+    select(-hyst_max_log,-hyst_min_log,-rel_trans_pos_ao_diff,-rel_trans_pos_oa_diff) %>%
     pivot_longer(names_to = "which_transition",
                  values_to = "rel_log_trans_pos",
                  13:14)
-    
+  
   resilience$label <- NA
   resilience$label[resilience$var_treat == "CB"] <- "b"
   resilience$label[resilience$var_treat == "SB"] <- "d"
@@ -1012,45 +929,6 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
   resilience$label[resilience$var_treat == "CB-PB"] <- "k"
   resilience$label[resilience$var_treat == "SB-PB"] <- "m"
   resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
-
-  ## remove horizontal unless all 0 ----
-  
-  res <- split(resilience, resilience$var_treat)
-  res <- lapply(
-    res,
-    function(x){
-      x <- x %>% arrange(x$stand_var)
-      ao <- which(x$which_transition == "rel_trans_pos_ao")
-      oa <- which(x$which_transition == "rel_trans_pos_oa")
-      
-      for (i in (length(ao):2)){
-        if (x[ao[i],]$rel_log_trans_pos == 0){
-          break()
-        }
-        if (x[ao[i],]$rel_log_trans_pos == x[ao[i-1],]$rel_log_trans_pos) {
-          x[ao[i],]$rel_log_trans_pos <- NA
-        } else {
-          break
-        }      
-      }
-      
-      for (i in (length(oa):2)){
-        if (x[oa[i],]$rel_log_trans_pos == 0){
-          break()
-        }
-        if (x[oa[i],]$rel_log_trans_pos == x[oa[i-1],]$rel_log_trans_pos) {
-          x[oa[i],]$rel_log_trans_pos <- NA
-        } else {
-          break
-        }      
-      }
-      
-      return(x)
-    }
-  )
-  
-  resilience <- do.call(rbind, res)
-  
 
   ## plot ----
   
@@ -1061,13 +939,12 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
     theme_bw() +
     theme(legend.position="top",
       panel.background = element_blank(),
-      #strip.text.x = element_blank()
       ) +
     ylab(expression(atop(Effect~size~of~trait~variation~on~resilience, (log[10](oxygen~diffusivity)~(h^{-1}))))) +
     xlab("Standardised amount of trait variation") +
-    geom_text(aes(x = 0, y = 2.85, label = label), label.size = 0, colour = "black") +
-    scale_color_manual(values = c("#38ACC4", "#C43926")) +
-    ylim(-0.9, 3.1)
+    geom_text(aes(x = 0, y = 2.9, label = label), colour = "black") +
+    scale_color_manual(values = c("#38ACC4", "#C43926")) 
+    # ylim(-1.7, 4)
   
   p1
   
