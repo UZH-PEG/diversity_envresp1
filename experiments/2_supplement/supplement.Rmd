@@ -1,6 +1,6 @@
 ---
 title: Supplementary Content for the article *The role of functional diversity in ecosystem regime shifts*
-author: "Owen L Petchey, plus all authors of the main article"
+author: "Owen L Petchey, Uriah Daugaard, Anubhav Gupta, Rainer M. Krug, Kimberley D. Lemmen, Sofia J. van Moorsel, Marcel Suleiman, Debra Zuppinger-Dingley, Romana Limberger"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::html_document2:
@@ -788,7 +788,11 @@ This issue of dependence of the position of the separatrix on the value of initi
 
 We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
 
-# Previously figure 5 Main Manuscript
+# (Non-)additivity
+
+We investigated if the effects of trait variation of individual functional groups were additive. We compared the tipping point positions as determined by our simulations with the expected position of the respective tipping point if effects of diversity in different functional groups were additive. The expected tipping point was calculated by adding the effect sizes (i.e. the difference in tipping point position between the no-diversity scenario and a given amount of trait variation) on a linear scale. 
+
+
 ```{r fig_5_log, echo = FALSE,  include=TRUE, fig.cap='Previously figure 5 Main Manuscript log', fig.height=8, fig.width=8, fig.align="center"}
 ## Figure 5 ----
 ## Assessing additivity of diversity effect sizes
@@ -878,46 +882,46 @@ tags <- c(`CB`="a",`SB`="b",`PB`="c",
 
 fig5_log <- split(agg_stab_strain9, f=agg_stab_strain9$var_treat, drop = T)
 
-fig5_log <- lapply(fig5_log, function(df){
-  tag <- tags[as.character(unique(df$var_treat))]
-  plot <- df %>%
-    filter(Species == "SB_tot", num_strains==9) %>%
-    ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
-    geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
-    geom_line(aes(y = hyst_min_log), size = 1) +
-    geom_line(aes(y = hyst_max_log), size = 1) +
-    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-    labs(y="Oxygen diffusivity\n[log10 uM per hour]",
-         x="Amount of trait variation\n[see text for units]",
-         linetype="Method",col="Calculation", tag=tag) +
-    scale_color_manual(values = colours[unique(df$Calculation)]) +
-    scale_linetype_manual(values = c(1,2))+
-    coord_flip() +
-    theme_bw()+
-    theme(legend.position="none",
-          axis.title = element_blank(),
-          axis.ticks = element_blank(),
-          axis.text = element_blank())
-  
-  if(tag %in% c("a","d")){
-    plot <- plot + theme(axis.text.y = element_text(),
-                         axis.ticks.y = element_line())
-  }
-  if(tag %in% c("h","i")){
-    plot <- plot + theme(axis.text.x = element_text(),
-                         axis.ticks.x = element_line())
-  }
-  if(tag == "g"){
-    plot <- plot + theme(axis.text = element_text(),
-                         axis.ticks = element_line())
-  }
-  plot
-})
-
-
-ylab + Reduce("+",fig5_log) + fig5legend +
-  plot_spacer() + xlab + plot_spacer() +
-  plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
+# fig5_log <- lapply(fig5_log, function(df){
+#   tag <- tags[as.character(unique(df$var_treat))]
+#   plot <- df %>%
+#     filter(Species == "SB_tot", num_strains==9) %>%
+#     ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
+#     geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
+#     geom_line(aes(y = hyst_min_log), size = 1) +
+#     geom_line(aes(y = hyst_max_log), size = 1) +
+#     facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+#     labs(y="Oxygen diffusivity\n[log10 uM per hour]",
+#          x="Amount of trait variation\n[see text for units]",
+#          linetype="Method",col="Calculation", tag=tag) +
+#     scale_color_manual(values = colours[unique(df$Calculation)]) +
+#     scale_linetype_manual(values = c(1,2))+
+#     coord_flip() +
+#     theme_bw()+
+#     theme(legend.position="none",
+#           axis.title = element_blank(),
+#           axis.ticks = element_blank(),
+#           axis.text = element_blank())
+#   
+#   if(tag %in% c("a","d")){
+#     plot <- plot + theme(axis.text.y = element_text(),
+#                          axis.ticks.y = element_line())
+#   }
+#   if(tag %in% c("h","i")){
+#     plot <- plot + theme(axis.text.x = element_text(),
+#                          axis.ticks.x = element_line())
+#   }
+#   if(tag == "g"){
+#     plot <- plot + theme(axis.text = element_text(),
+#                          axis.ticks = element_line())
+#   }
+#   plot
+# })
+# 
+# 
+# ylab + Reduce("+",fig5_log) + fig5legend +
+#   plot_spacer() + xlab + plot_spacer() +
+#   plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
 
 # ggsave(here("experiments/1_figures_main_ms/Figure_5_log.pdf"),
 #        width = 8, height = 8)
@@ -925,7 +929,7 @@ ylab + Reduce("+",fig5_log) + fig5legend +
 
 ```
 
-```{r fig_5_linear, echo = FALSE,  include=TRUE, fig.cap='Previously figure 5 Main Manuscript linear', fig.height=8, fig.width=8, fig.align="center"}
+```{r fig_5_linear, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center"}
 
 ### Fig 5 - linear ----
 
@@ -997,3 +1001,12 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 # ggsave(here("experiments/1_figures_main_ms/Figure_5_lin.pdf"),
 #        width = 8, height = 8)
 ```
+
+(ref:fig_5_linear)  Figure 9. Assessing the additivity or non-additivity of the effects of trait variation. Solid black lines depict the position of the two tipping points at different levels of trait variation, as simulated with the model. The colored, dashed lines show the expected position of tipping points if effects of diversity in different functional groups were additive. The expected tipping point was calculated by adding the effect sizes of trait variation of different functional groups on a linear scale. For example, in (d) the effect size of variation in only CB was added to the effect size of variation in only SB. In (g), the effect size of variation in only CB was added to the effect size of simultaneous variation in both SB and PB.  (CB: cyanobacteria, SB: sulfate-reducing bacteria, PB: phototrophic sulfur bacteria). The dotted vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
+
+When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. 9 a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. 9d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at lower oxygen diffusivity than expected by additivity (Fig. 9f). 
+
+When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. 9g-i). Both tipping points occurred at lower levels of oxygen diffusivity than expected by additivity. Interestingly, diversity in the cyanobacteria moved the shift to the oxic state to lower levels of oxygen diffusivity although independent variation in the cyanobacteria had no effect on this tipping point. 
+
+
+
