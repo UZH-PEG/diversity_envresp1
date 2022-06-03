@@ -38,12 +38,11 @@ unity <- 1
 
 # Introduction
 
-This document contains the Supplementary Content for the report *?????????????*.
+This document contains the Supplementary Content for the report *information to be added once final*.
 
 # Creating among strain diversity
 
-Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant sections of the main text. 
-We generated variation in maximum growth rate $G_{max}$ and tolerance to reduced sulfur $h_{SR}$ or oxygen $h_{O}$ by varying the range of trait values around a reference trait value. Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $G_{max,CB}$ and a reference tolerance parameter $h_{SR,CB}$. Recall that amount of among strain variation is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a trade-off, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{G_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $G_{max,CB} = 0.05$, among strain variation of $Div_{G_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $G_{max,i} = D_i * G_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{G_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
+Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant text in the main report.  We generated variation in maximum growth rate $G_{max}$ and tolerance to reduced sulfur $h_{SR}$ or oxygen $h_{O}$ by varying the range of trait values around a reference trait value. Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $G_{max,CB}$ and a reference tolerance parameter $h_{SR,CB}$. Recall that amount of among strain variation is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a trade-off, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{G_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $G_{max,CB} = 0.05$, among strain variation of $Div_{G_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $G_{max,i} = D_i * G_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{G_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
 
 This procedure ensures that the range of trait values is independent of the number of strains. When there were only two strains, the two strains took the minimum and maximum traits values, as defined by the $Div$ variable for that trait. When there were three strains, one had the minimum trait value, one the maximum, and one the mean. With nine strains, one had the minimum trait value, one the maximum, one the mean, and three were equally spaced (on log scale) between the minimum and the mean, and the remaining three between the maximum and the mean.
 
@@ -492,14 +491,14 @@ fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[14,])
 
 We believe that this phenomenon is caused by an effect that we explain with reference to an analogy of using stepping stones to cross a river. Increasing diversity in our simulations is akin to increasing the width of the river, but keeping the number of stepping stones (strains) constant. So long as the river is not too wide, we can still cross it, but once the width of the river is such that the stepping stones are too far apart, we can't cross the river. And this happens suddenly, the width increases just a tiny bit more, and we suddenly can't cross the river when we could before.
 
-In the simulated microbial ecosystem, the strains are the stepping stones, and it is much hard (takes longer) for strains to replace each other when there is greater distance (in trait space) between them. When they can no longer replace each other in the time available, the system behaves as if only the least tolerant, highest growth rate strain (lightest shade of colour) is present. In the case illustrated above, this leads to much lower resilience of the anoxic system state.
+In the simulated microbial ecosystem, the strains are the stepping stones, and it is harder (takes longer) for strains to replace each other when there is greater distance (in trait space) between them. When they can no longer replace each other in the time available, the system behaves as if only the least tolerant, highest growth rate strain (lightest shade of colour) is present. In the case illustrated above, this leads to much lower resilience of the anoxic system state.
 
 This phenomenon is dependent on having static trait values for the strains. If strain traits were dynamic (e.g. due to evolution), then we expect this result to not occur, and rather for the effects of diversity with two or three strains to be the same as those with six or nine.
 
 ## SB diversity effect on the oxic to anoxic transition {#SB2}
 
 
-When the environment ameliorates for the sulfate-reducing bacteria (i.e. trajectory down), there is only limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic state occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. We here show that the most tolerant strain do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(oxygen diffusivity) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the two groups of sulfur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the concentration of the inhibiting substrate (oxygen) declines.
+When the environment ameliorates for the sulfate-reducing bacteria (i.e. trajectory down), there is only limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain SB9 dominates. And yet the switch to anoxic state occurs earlier than when there is no diversity, which suggests there is some role of the more tolerant strains. We here show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(oxygen diffusivity) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the two groups of sulfur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the concentration of the inhibiting substrate (oxygen) declines.
 
 ```{r echo = FALSE}
 run_sims_this_section <- TRUE
@@ -616,7 +615,7 @@ saveRDS(sim_res_highvar1,here::here("data", "2_supplement", "puzzle1_2.RDS"))
 ```
 
 
-(ref:sb-div-effect4) Dynamics of the system with diversity in the two groups of sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div_effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity.
+(ref:sb-div-effect4) Dynamics of the system with diversity in the two groups of sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div-effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity.
 
 ```{r sb-div-effect4, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect4)', fig.height=8, fig.width=8, fig.align="center"}
 sim_res_highvar1 <- readRDS(here("data", "2_supplement", "puzzle1_2.RDS"))
@@ -697,7 +696,7 @@ fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim2,])
 
 This result is different to the effect of diversity within the CB and SB functional groups, which both cause increases in resilience of the state that they dominate (Figure \@ref(fig:div-temp-meth1)). Why does diversity in the PB functional group reduce the resilience of the state it dominates?
 
-The counter-intuitive effect of diversity in the phototrophic sulfur bacteria (PB) possibly results from their positive effects on the oxic state. The phototrophic sulfur bacteria oxidise reduced sulfur to oxidised sulfur. Since reduced sulfur inhibits the cyanobacteria (CB), PB can have a positive effect on CB via their consumption of reduced sulfur. Hence, high growth rates of PB will have a positive effect on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower concentrations of reduced sulfur and higher concentrations of oxidised sulfur before the transition.
+The counter-intuitive effect of diversity in the phototrophic sulfur bacteria (PB) possibly results from their positive effects on conditions and processes that favour the oxic state. The phototrophic sulfur bacteria oxidise reduced sulfur to oxidised sulfur. Since reduced sulfur inhibits the cyanobacteria (CB), PB can have a positive effect on CB via their consumption of reduced sulfur. Hence, high growth rates of PB will have a positive effect on CB, and therefore favour the oxic state. We would expect to see that higher diversity of PB is associated with lower concentrations of reduced sulfur and higher concentrations of oxidised sulfur before the transition.
 
 Another pathway by which a higher growth rate of PB can favour the oxic state is by indirectly increasing the concentration of oxygen, thus inhibiting themselves and sulfate-reducing bacteria. This effect occurs because PB consume reduced sulfur, such that less reduced sulfur is available for abiotic oxidation. Consequently, a larger amount of oxygen remains in the environment and inhibits sulfur bacteria. We would expect to see that higher diversity of PB is associated with higher concentrations of oxygen before the transition.
 
@@ -786,14 +785,14 @@ It is critical to note, however, that the position of the separatrix depends on 
 
 This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
 
-We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in the own right.
+We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in their own right.
 
 # (Non-)additivity
 
 We investigated if the effects of trait variation of individual functional groups were additive. We compared the tipping point positions as determined by our simulations with the expected position of the respective tipping point if effects of diversity in different functional groups were additive. The expected tipping point was calculated by adding the effect sizes (i.e. the difference in tipping point position between the no-diversity scenario and a given amount of trait variation) on a linear scale. 
 
 
-```{r fig_5_log, echo = FALSE,  include=TRUE, fig.cap='Previously figure 5 Main Manuscript log', fig.height=8, fig.width=8, fig.align="center"}
+```{r fig-5-log, echo = FALSE,  include=TRUE, fig.cap='Previously figure 5 Main Manuscript log', fig.height=8, fig.width=8, fig.align="center"}
 ## Figure 5 ----
 ## Assessing additivity of diversity effect sizes
 ## By Uriah
@@ -882,54 +881,13 @@ tags <- c(`CB`="a",`SB`="b",`PB`="c",
 
 fig5_log <- split(agg_stab_strain9, f=agg_stab_strain9$var_treat, drop = T)
 
-# fig5_log <- lapply(fig5_log, function(df){
-#   tag <- tags[as.character(unique(df$var_treat))]
-#   plot <- df %>%
-#     filter(Species == "SB_tot", num_strains==9) %>%
-#     ggplot(aes(x = stand_var, linetype=Method, col=Calculation)) +
-#     geom_hline(yintercept = c(-8, 0), col = "black", linetype=3) +
-#     geom_line(aes(y = hyst_min_log), size = 1) +
-#     geom_line(aes(y = hyst_max_log), size = 1) +
-#     facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-#     labs(y="Oxygen diffusivity\n[log10 uM per hour]",
-#          x="Amount of trait variation\n[see text for units]",
-#          linetype="Method",col="Calculation", tag=tag) +
-#     scale_color_manual(values = colours[unique(df$Calculation)]) +
-#     scale_linetype_manual(values = c(1,2))+
-#     coord_flip() +
-#     theme_bw()+
-#     theme(legend.position="none",
-#           axis.title = element_blank(),
-#           axis.ticks = element_blank(),
-#           axis.text = element_blank())
-#   
-#   if(tag %in% c("a","d")){
-#     plot <- plot + theme(axis.text.y = element_text(),
-#                          axis.ticks.y = element_line())
-#   }
-#   if(tag %in% c("h","i")){
-#     plot <- plot + theme(axis.text.x = element_text(),
-#                          axis.ticks.x = element_line())
-#   }
-#   if(tag == "g"){
-#     plot <- plot + theme(axis.text = element_text(),
-#                          axis.ticks = element_line())
-#   }
-#   plot
-# })
-# 
-# 
-# ylab + Reduce("+",fig5_log) + fig5legend +
-#   plot_spacer() + xlab + plot_spacer() +
-#   plot_layout(ncol = 3, heights = c(25,1), widths = c(1,21,3))
-
-# ggsave(here("experiments/1_figures_main_ms/Figure_5_log.pdf"),
-#        width = 8, height = 8)
 
 
 ```
 
-```{r fig_5_linear, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center"}
+(ref:fig-add-linear) Assessing the additivity or non-additivity of the effects of trait variation. Solid black lines depict the position of the two tipping points at different levels of trait variation, as simulated with the model. The colored, dashed lines show the expected position of tipping points if effects of diversity in different functional groups were additive. The expected tipping point was calculated by adding the effect sizes of trait variation of different functional groups on a linear scale. For example, in (d) the effect size of variation in only CB was added to the effect size of variation in only SB. In (g), the effect size of variation in only CB was added to the effect size of simultaneous variation in both SB and PB.  (CB: cyanobacteria, SB: sulfate-reducing bacteria, PB: phototrophic sulfur bacteria). The dotted vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
+
+```{r fig-add-linear, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center", fig.cap='(ref:fig-add-linear)'}
 
 ### Fig 5 - linear ----
 
@@ -1002,11 +960,11 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 #        width = 8, height = 8)
 ```
 
-(ref:fig_5_linear)  Figure 9. Assessing the additivity or non-additivity of the effects of trait variation. Solid black lines depict the position of the two tipping points at different levels of trait variation, as simulated with the model. The colored, dashed lines show the expected position of tipping points if effects of diversity in different functional groups were additive. The expected tipping point was calculated by adding the effect sizes of trait variation of different functional groups on a linear scale. For example, in (d) the effect size of variation in only CB was added to the effect size of variation in only SB. In (g), the effect size of variation in only CB was added to the effect size of simultaneous variation in both SB and PB.  (CB: cyanobacteria, SB: sulfate-reducing bacteria, PB: phototrophic sulfur bacteria). The dotted vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations.
 
-When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. 9 a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. 9d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at lower oxygen diffusivity than expected by additivity (Fig. 9f). 
 
-When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. 9g-i). Both tipping points occurred at lower levels of oxygen diffusivity than expected by additivity. Interestingly, diversity in the cyanobacteria moved the shift to the oxic state to lower levels of oxygen diffusivity although independent variation in the cyanobacteria had no effect on this tipping point. 
+When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at lower oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
+
+When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). Both tipping points occurred at lower levels of oxygen diffusivity than expected by additivity. Interestingly, diversity in the cyanobacteria moved the shift to the oxic state to lower levels of oxygen diffusivity although independent variation in the cyanobacteria had no effect on this tipping point. 
 
 
 
