@@ -2,8 +2,8 @@
 title: "README File"
 format:
   html:
-    self-contained: true
-    toc: true
+    self-contained: yes
+    toc: yes
     toc-location: left
 ---
 
@@ -114,3 +114,8 @@ Beware that running simulations can take a long time (days). All data generated 
 -   `2_supplement/`
 
     -   `2_supplement/supplement.Rmd`: RMarkdown file used to generate the supplement to the publication **TO DO: add publication ref**
+    
+-   `3_animate/`
+
+    -   Various code files to make animations of results. `report.RmD` puts the animations together into `report.html`.
+
