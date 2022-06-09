@@ -1,5 +1,5 @@
 ---
-title: Supplementary Content for the article *Functional diversity can facilitate the collapse of an undesirable ecosystem state*
+title: Supplementary Report for the article *Functional diversity can facilitate the collapse of an undesirable ecosystem state*
 author: "Owen L Petchey, Uriah Daugaard, Anubhav Gupta, Rainer M. Krug, Kimberley D. Lemmen, Sofia J. van Moorsel, Marcel Suleiman, Debra Zuppinger-Dingley, Romana Limberger"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -38,7 +38,7 @@ unity <- 1
 
 # Introduction
 
-This document contains the Supplementary Content for the report *information to be added once final*.
+This document is the Supplementary Report for the report *Functional diversity can facilitate the collapse of an undesirable ecosystem state*.
 
 # Creating among strain diversity
 
@@ -198,7 +198,7 @@ temp_meth <- readRDS(here("data", "0_ss_finding", "temporal_method", "ss_data_9s
 (ref:repl-meth2) Stable states found with the **replication method**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(repl_meth[1,])
+fig_state_vs_o2diff_sidebyside_alternative_repmeth(repl_meth[1,])
 ```
 
 ### Temporal method, no diversity
@@ -498,7 +498,7 @@ This phenomenon is dependent on having static trait values for the strains. If s
 ## SB diversity effect on the oxic to anoxic transition {#SB2}
 
 
-When the environment ameliorates for the sulfate-reducing bacteria (i.e. trajectory of decreasing oxygen diffusivity), there is only limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain dominates. And yet the switch to anoxic state occurs at higher oxygen diffusivity than when there is no diversity, which suggests there is some role of the more tolerant strains. We here show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(oxygen diffusivity) = -4.8) for which the system remains oxic if there is no diversity (Figure \@ref(fig:sb-div-effect3)), but switches to anoxic if there is diversity (Figure \@ref(fig:sb-div-effect4)). There is only diversity in the two groups of sulfur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the concentration of the inhibiting substrate (oxygen) declines.
+When the environment ameliorates for the sulfate-reducing bacteria (i.e. trajectory of decreasing oxygen diffusivity), there is only limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain dominates. And yet the switch to anoxic state occurs at higher oxygen diffusivity than when there is no diversity, which suggests there is some role of the more tolerant strains. We here show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(oxygen diffusivity) = -4.8). When there is no diversity within functional groups (i.e. two strains that are identical) the system remains oxic (Figure \@ref(fig:sb-div-effect3)). When there is diversity (i.e. the two strains differ) then the system switches to the anoxic state (Figure \@ref(fig:sb-div-effect4)). In these examples there is only diversity in the two groups of sulfur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the concentration of the inhibiting substrate (oxygen) declines.
 
 ```{r echo = FALSE}
 run_sims_this_section <- TRUE
@@ -566,7 +566,7 @@ dir.create(here::here("data", "2_supplement"), recursive = TRUE, showWarnings = 
 saveRDS(sim_res_novar1, here::here("data", "2_supplement", "puzzle1_1.RDS"))
 ```
 
-(ref:sb-div-effect3)  Dynamics of the system with no diversity in any functional group, and log10(oxygen diffusivity) = -4.8. The system remains oxic when starting in the oxic state.
+(ref:sb-div-effect3)  Dynamics of the system **with no diversity** in any functional group, and log10(oxygen diffusivity) = -4.8. The system remains oxic when starting in the oxic state. Although two strains are shown in the legend, they have identical parameters, and so their dynamics are identical and only one is visible in the dynamics.
 
 ```{r  sb-div-effect3, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect3)', fig.height=8, fig.width=8, fig.align="center"}
 sim_res_novar1 <- readRDS(here::here("data", "2_supplement", "puzzle1_1.RDS"))
@@ -615,7 +615,7 @@ saveRDS(sim_res_highvar1,here::here("data", "2_supplement", "puzzle1_2.RDS"))
 ```
 
 
-(ref:sb-div-effect4) Dynamics of the system with diversity in the two groups of sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div-effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity.
+(ref:sb-div-effect4) Dynamics of the system **with diversity** in the two groups of sulfur bacteria and otherwise exactly the same conditions as in Figure \@ref(fig:sb-div-effect3). The system flips from oxic to anoxic, whereas it did not when there was no diversity.
 
 ```{r sb-div-effect4, echo = FALSE,  include=TRUE, fig.cap='(ref:sb-div-effect4)', fig.height=8, fig.width=8, fig.align="center"}
 sim_res_highvar1 <- readRDS(here("data", "2_supplement", "puzzle1_2.RDS"))
@@ -970,6 +970,7 @@ When all three groups varied in traits, only the diversity effect in phototrophi
 
 
 # References
+
 Bush, T., Diao, M., Allen, R.J., Sinnige, R., Muyzer, G. & Huisman, J. (2017). Oxic-anoxic regime shifts mediated by feedbacks between biogeochemical processes and microbial community dynamics. Nat. Commun., 8, 789.
 
 Luther, G.W., Findlay, A., MacDonald, D., Owings, S., Hanson, T., Beinart, R., et al. (2011). Thermodynamics and kinetics of sulfide oxidation by oxygen: a look at inorganically controlled reactions and biologically mediated processes in the environment. Front. Microbiol., 2, 62.
