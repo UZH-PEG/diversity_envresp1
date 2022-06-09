@@ -1,0 +1,8 @@
+---
+title: "Index"
+author: "Owen Petchey"
+date: "6/9/2022"
+output: html_document
+---
+
+[supplement](./experiments/2_supplement/supplement.html)
