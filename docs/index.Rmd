@@ -1,0 +1,15 @@
+---
+title: "Guide to repository of supplementary resources"
+date: ""`r format(Sys.time(), '%d %B, %Y')`""
+output: html_document
+---
+
+This is a guide to a repository containing various resources associated with the publication **Functional diversity can facilitate the collapse of an undesirable ecosystem state**.
+
+[The repository on github.](https://github.com/UZH-PEG/diversity_envresp1)
+
+[The Supplementary Report (HTML page)](../experiments/2_supplement/supplement.html)
+
+[HTML page about how to reproduce the research.](./docs/How_to_reproduce.html)
+
+[Some animations of results (HTML page)](../experiments/3_animate/report.html)
