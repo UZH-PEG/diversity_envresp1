@@ -8,7 +8,7 @@ This is a guide to a repository containing various resources associated with the
 
 [The repository on github.](https://github.com/UZH-PEG/diversity_envresp1)
 
-[The Supplementary Report (HTML page)](./experiments/2_supplement/supplement.html)
+[The Supplementary Report (HTML page)](../experiments/2_supplement/supplement.html)
 
 [HTML page about how to reproduce the research.](./docs/How_to_reproduce.html)
 
