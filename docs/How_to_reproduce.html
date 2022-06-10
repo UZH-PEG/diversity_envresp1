@@ -173,52 +173,67 @@ pre code {
 <p>TO DO: Search for XXX for items to update.</p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Reproducing the research requires: the <em>microxanox</em> R package (location given below) and the code to run simulation, analysis, and visualisations in <a href="https://github.com/UZH-PEG/diversity_envresp1">this repository</a>. There is also the option to get the data produced by the simulations (see below), rather than having to produce it by running the simulations (which can take a long time).</p>
+<p>Please note that we did not design and write all scripts with other users primarily in mind. Reproducing the work will require some commitment! Please get in touch via Issues on github if you need any assistance.</p>
+<p>Reproducing the research requires: the <em>microxanox</em> R package (location given below) and the code to run simulation, analysis, and visualisations in <a href="https://github.com/UZH-PEG/diversity_envresp1">this <code>diversity_envresp1</code> repository</a>. There is also the option to get the data produced by the simulations (see below), rather than having to produce it by running the simulations (which can take a long time).</p>
 </div>
 <div id="step-1-get-acquainted-with-the-microxanox-r-package" class="section level1">
-<h1>Step 1 – Get acquainted with the <em>microxanox</em> R package</h1>
-<p>Familarise yourself with the <a href="https://uzh-peg.r-universe.dev/ui#package:microxanox"><em>microxanox</em> R package</a> that was created to facilitate the research. The two vignettes in that package should be useful. The package is also described in this article (link to follow XXX).</p>
-<div id="step-1.1-get-the-microxanox-r-package" class="section level2">
-<h2>Step 1.1 Get the <em>microxanox</em> R package</h2>
-<p>To reproduce the research, the package <code>microxanox</code> version <code>1.0.0</code> is needed. <strong>Compatibility with newer versions can not be guaranteed. Of the same main release (1.x.x), compatibility is very likely, with other main releases (2.x.x, 3.x.x, …) extremely unlikely!</strong></p>
-<p>This repository contains a file called <code>microxanox_1.0.0.tar.gz</code> which contains the R package in the correct version.</p>
+<h1>Step 1: Get acquainted with the <em>microxanox</em> R package</h1>
+<p>To reproduce the research, the package <code>microxanox</code> version <code>1.0.0</code> is needed. Familarise yourself with the <a href="https://uzh-peg.r-universe.dev/ui#package:microxanox"><em>microxanox</em> R package</a> that was created to facilitate the research. The two vignettes in that package should be useful. The package is also described in this article (link to follow XXX).</p>
+<p><a href="https://github.com/UZH-PEG/diversity_envresp1">The <code>diversity_envresp1</code> repository</a> contains a file called <code>microxanox_1.0.0.tar.gz</code> which contains the R package in the correct version.</p>
 <p>The R package can be installed by either installing from this file by using</p>
-<pre class="{r}"><code>remotes::install_local(&quot;./microxanox_0.9.0.tar.gz&quot;, upgrade = FALSE)</code></pre>
+<pre class="r"><code>remotes::install_local(&quot;./microxanox_0.9.0.tar.gz&quot;, upgrade = FALSE)</code></pre>
 <p>You can also install it from the github repository by using</p>
-<pre class="{r}"><code>remotes::install_github( &quot;UZH-PEG/microxanox&quot;, ref = &quot;v0.9.0&quot;, build_vignettes = TRUE, upgrade = FALSE)</code></pre>
-<p>The newest version csan also be installer from the <a href="https://r-universe.dev">R-Universe</a> as follows:</p>
-<pre><code>install.packages(&quot;microxanox&quot;, repos = c(&#39;https://XXX.r-universe.dev&#39;, &#39;https://cloud.r-project.org&#39;))</code></pre>
-<p>To re-iterate: there is a good chance that the versions on the <a href="https://r-universe.dev">R-Universe</a> are not compatible with the one used in this code!</p>
+<pre class="r"><code>remotes::install_github( &quot;UZH-PEG/microxanox&quot;, ref = &quot;v0.9.0&quot;, build_vignettes = TRUE, upgrade = FALSE)</code></pre>
+<p>The newest version csan also be installed from the <a href="https://r-universe.dev">R-Universe</a> as follows:</p>
+<pre class="r"><code>install.packages(&quot;microxanox&quot;, repos = c(&#39;https://XXX.r-universe.dev&#39;, &#39;https://cloud.r-project.org&#39;))</code></pre>
+<p>(Compatibility with any newer versions is not guaranteed. Of the same main release (1.x.x), compatibility is likely; with other main releases (2.x.x, 3.x.x, …) is unlikely!)</p>
 </div>
-</div>
-<div id="step-2---get-the-repository-containing-the-reproduction-code" class="section level1">
-<h1>Step 2 - Get the repository containing the reproduction code</h1>
-<p>The code to run simulation, analysis, and visualisations in <a href="https://github.com/UZH-PEG/diversity_envresp1">this repository</a> from where it can be downloaded. It contains:</p>
+<div id="step-2-get-the-code" class="section level1">
+<h1>Step 2: Get the code</h1>
+<p>The code to run simulation, analysis, and visualisations in <a href="https://github.com/UZH-PEG/diversity_envresp1">the <code>diversity_envresp1</code> repository</a> from where it can be downloaded. It is also available on Zenodo <a href="https://doi.org/10.5281/zenodo.6334544">https://doi.org/10.5281/zenodo.6334544</a>. It includes:</p>
 <ol style="list-style-type: decimal">
 <li><code>R</code> – a folder of containing a file or files of useful R functions. The files are sourced from other scripts; there is no need to directly work with them.</li>
-<li><code>experiments</code> – code for running simulations, processing the data produces, and visualising the results.</li>
+<li><code>experiments</code> – a folder contain folders of code for running simulations, processing the data produces, and visualising the results.</li>
 </ol>
-<p>A third folder named <code>data</code> is created or populated by either running the experiments or downloading the data from a repository (see <a href="#getting-the-data">below for details</a>). It will contain the data in <code>.RDS</code> format readable from R.</p>
+<p>A third folder named <code>data</code> is created or populated by either running the experiments or downloading the data from a repository (see below for details). It will contain the data in <code>.RDS</code> format readable from R.</p>
 </div>
-<div id="step-3---getting-the-data" class="section level1">
-<h1>Step 3 - Getting the data</h1>
-<p>To get the data, you have two options: either run experiments (i.e. simulations) yourself (which takes many days) or use the data as used for the publication <strong>TO DO - publication information</strong>.</p>
-<p>The data used is available as a 10GB compressed zip file under the DOI <a href="https://doi.org/10.5281/zenodo.6334147">10.5281/zenodo.6334147</a> on <a href="https://zenodo.org">Zenodo</a> (the latest version). This zip file contains the data folder which should be placed in the same directory which contains the folder <code>R</code> and <code>experiments</code>. Extraction of the zip file will create a folder named <code>data</code> in the same directory with the data generated by the scripts in the <code>experiment</code> folder.</p>
-<p>Ensure that the first folder in this directory is <code>0_ss_finding</code> and not <code>data</code>.</p>
-<p>You can download and extract the data automatically by executing the commands below, which will install the package <code>zen4R</code> if not installed yet, download the data package to the working directory (this will take some time, since the file is 10 GB), unzip it, and delete the downloaded file “data.zip”:</p>
-<p><code>{r, eval = FALSE} if (system.file(package = &quot;zen4R&quot;) == &quot;&quot;) { install.packages(&quot;zen4R&quot;) } zen4R::download_zenodo(&quot;10.5281/zenodo.6334147&quot;) unzip(&quot;data.zip&quot;) rm(&quot;data.zip&quot;)</code></p>
+<div id="step-3-get-the-data" class="section level1">
+<h1>Step 3: Get the data</h1>
+<p>To get the data, there are two options: either run experiments (i.e. simulations) yourself (which may take many days) or get the copy of the data that is available as a 10GB compressed zip file under the DOI <a href="https://doi.org/10.5281/zenodo.6334147">10.5281/zenodo.6334147</a> (the latest version). This zip file contains the data folder which should be placed in the same directory which contains the folder <code>R</code> and <code>experiments</code>. Extraction of the zip file will create a folder named <code>data</code> in the same directory with the data generated by the scripts in the <code>experiment</code> folder. (Ensure that the first folder in the <code>data</code> folder <code>0_ss_finding</code> and not <code>data</code>.</p>
+<p>Alternatively, the data can be downloaded and extracted by executing the commands below, which will install the package <code>zen4R</code> if not installed yet, download the data package to the working directory (this will take some time, since the file is 10 GB), unzip it, and delete the downloaded file “data.zip”:</p>
+<pre class="r"><code>if (system.file(package = &quot;zen4R&quot;) == &quot;&quot;) {
+install.packages(&quot;zen4R&quot;)
+}
+zen4R::download_zenodo(&quot;10.5281/zenodo.6334147&quot;)
+unzip(&quot;data.zip&quot;)
+rm(&quot;data.zip&quot;)</code></pre>
 <p>or with base R:</p>
-<p>```{r, eval = FALSE} # Increase the timeout if it does not download correctly opt &lt;- options(timeout = 6000) download.file(“<a href="https://zenodo.org/record/6334147/files/data.zip?download=1" class="uri">https://zenodo.org/record/6334147/files/data.zip?download=1</a>”, “data.zip”) options(timeout = opt)</p>
-<p>chksum &lt;- tools::md5sum(“./data.zip”) if (chksum != “e96386282fb57b58ebeb23b217ac96f6”) { stop( “Checksums are not identical, download likely corrupted!”, “Please try to re-download!”, “If the error persists, try to download from the URL given above!”, “Checksum:”, chksum, “”, “Expected: e96386282fb57b58ebeb23b217ac96f6” ) }</p>
-<p>unzip(“data.zip”) unlink(“./data.zip”) ```</p>
+<pre class="r"><code># Increase the timeout if it does not download correctly
+opt &lt;- options(timeout = 6000)
+download.file(&quot;https://zenodo.org/record/6334147/files/data.zip?download=1&quot;, &quot;data.zip&quot;)
+options(timeout = opt)
+
+chksum &lt;- tools::md5sum(&quot;./data.zip&quot;)
+if (chksum != &quot;e96386282fb57b58ebeb23b217ac96f6&quot;) {
+  stop(
+    &quot;Checksums are not identical, download likely corrupted!\n&quot;,
+    &quot;Please try to re-download!\n&quot;,
+    &quot;If the error persists, try to download from the URL given above!\n&quot;,
+    &quot;Checksum: &quot;, chksum, &quot;\n&quot;,
+    &quot;Expected: e96386282fb57b58ebeb23b217ac96f6&quot;
+  )
+}
+
+unzip(&quot;data.zip&quot;)
+unlink(&quot;./data.zip&quot;)</code></pre>
 <p>To understand the structure of the data repository and data files therein please work through the <em>microxanox</em> package vignettes, and the various codes in this repository. Of course, please also get in touch with the authors, preferably via submitting and Issue in the github repo.</p>
 </div>
-<div id="running-reproduction-scripts" class="section level1">
-<h1>Running reproduction scripts</h1>
+<div id="step-4-use-the-reproduction-scripts" class="section level1">
+<h1>Step 4: Use the reproduction scripts</h1>
 <p>In the text below, the <strong>bold</strong> scripts need to be run, the non-bold are called from the <strong>bold</strong> scripts. The scripts in <strong>bold</strong> need to be executed in the order of their appearance in the subfolders.</p>
 <div id="running-simulations-and-processing-data" class="section level2">
 <h2>Running simulations and processing data</h2>
-<p>Beware that running simulations can take a long time (days). All data generated by the scripts and RMarkdown files is contained in the data deposit with the DOI <a href="https://doi.org/10.5281/zenodo.6334147">10.5281/zenodo.6334147</a>. See the section on <a href="#getting-the-data">Getting the Data</a> to learn how you can get the data, if not done already.</p>
+<p>Be aware that running simulations can take a long time (days). All data generated by the scripts and RMarkdown files is contained in the data deposit with the DOI <a href="https://doi.org/10.5281/zenodo.6334147">10.5281/zenodo.6334147</a>. See the section above about getting the data, if not done already.</p>
 <p>To find stable states by the replication method:</p>
 <ul>
 <li><p><code>experiments/replication_method</code></p>
@@ -234,7 +249,7 @@ pre code {
 <ul>
 <li><code>check_microxanox_version.R</code>: Check the version of the installed <code>microxanox</code> package.</li>
 <li><code>setup_experiment.R</code>: Setup the experiment including all parameters needed</li>
-<li><strong><code>run_single_sim.R</code></strong>: Run a single simulation.</li>
+<li><strong><code>run_single_sim.R</code></strong>: Run a single simulation, if needed.</li>
 <li><strong><code>run_experiment.R</code></strong>: Run the experiment.</li>
 <li><strong><code>data_processing.R</code></strong>: Process the data for further processing and analysis.</li>
 <li><strong><code>get_div_effects.R</code></strong>: Calculate the effects of diversity in each of the combinations of diversity treatments</li>
@@ -243,16 +258,16 @@ pre code {
 </div>
 <div id="making-visualisations-and-the-supplement" class="section level2">
 <h2>Making visualisations and the supplement</h2>
-<p>To make data-based figures of the research report:</p>
+<p>To make the data-based figures of the research report:</p>
 <ul>
 <li><strong><code>experiments/1_figures_main_ms/figures_main_ms_v1.R</code></strong></li>
 </ul>
 <p>To make the supplementary report:</p>
 <ul>
-<li><p><code>experiments/2_supplement/supplement.Rmd</code>: RMarkdown file used to generate the supplement to the publication <strong>XXXTO DO: add publication ref</strong></p></li>
+<li><p><code>experiments/2_supplement/supplement.Rmd</code>: RMarkdown file used to generate <a href="https://uzh-peg.github.io/diversity_envresp1/experiments/2_supplement/supplement.html">the supplementary report (HTML page)</a> to the publication <strong>XXXTO DO: add publication ref</strong>.</p></li>
 <li><p><code>experiments/3_animate/</code></p>
 <ul>
-<li>Various code files to make animations of results. <code>report.RmD</code> puts the animations together into <code>report.html</code>.</li>
+<li>Various code files to make animations of results. <code>report.RmD</code> puts the animations together into <a href="https://uzh-peg.github.io/diversity_envresp1/experiments/3_animate/report.html"><code>report.html</code> HTML page.</a></li>
 </ul></li>
 </ul>
 </div>
