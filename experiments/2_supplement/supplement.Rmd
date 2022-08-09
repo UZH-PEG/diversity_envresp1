@@ -8,6 +8,7 @@ output:
     toc_float:
       collapsed: true
       smooth_scroll: true
+    code_folding: hide
 ---
 
 ```{r include = FALSE, echo = FALSE}
