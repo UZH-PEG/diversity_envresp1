@@ -1459,3 +1459,47 @@ combine_fct <- function(Method="arithmetic"){
                             agg_stab_strain9_CB_SBPB, agg_stab_strain9_CBSB_PB, agg_stab_strain9_CBPB_SB)
   return(agg_stab_strain9)
 }
+
+
+fig_div_vs_o2diff_maxtolcomp <- function(all_stab,
+                                          which_strains,
+                                          which_wait_time,
+                                          figure_title) {
+  
+  all_stab <- all_stab %>%
+    mutate(Treatment = ifelse(num_strains == -1,
+                              "Only most tolerant strain",
+                              "All strains"))
+  
+  p1 <- all_stab %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains %in% which_strains, 
+           waittime == which_wait_time) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var,
+               col = Treatment)) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    geom_line(aes(y = hyst_min_log, col = Treatment), lwd = 0.5, alpha = 0.8) +
+    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+    geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log,
+                    col = Treatment,
+                    fill = Treatment), alpha = 0.2) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    guides(col = guide_legend(title="Strains present"),
+           fill = guide_none()) +
+    theme_bw() +
+    theme(
+      legend.position="top",
+      panel.background = element_blank(),
+      #strip.text.x = element_blank()
+    ) +
+    geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    ggtitle(figure_title)
+  
+  p1
+  
+}

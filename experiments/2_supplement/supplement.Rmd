@@ -778,7 +778,22 @@ fig_div_vs_o2diff_multistrain(all_stab, which_strains,
 ```
 
 
+# Is it really functional diversity?
 
+```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
+all_stab <- readRDS(here("data", "0_ss_finding", "temporal_method", "processed_data", "stab_data_temporal_method_ELErevision1.RDS"))
+
+## a fudge to test a test dataset, should be removed when final dataset is available
+all_stab <- all_stab %>%
+  mutate(waittime = ifelse(num_strains == -1, 1e6, waittime))
+
+which_strains <- c(-1, 9)
+which_wait_time <- 1e6
+figure_title <- " "
+
+fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
+                              which_wait_time, figure_title)
+```
 
 # Finding the separatrix
 
