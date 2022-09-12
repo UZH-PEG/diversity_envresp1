@@ -782,9 +782,9 @@ fig_div_vs_o2diff_multistrain(all_stab, which_strains,
 
 Reviewer 1: "This made me wonder whether the same (or at least a very similar) results regarding the change in resilience of the system states could also be obtained with just a single strain per functional group, whose tolerance to the inhibiting substance is systematically increased. This could be tested fairly easily by re-running the simulations behind Fig. 3 with just the most tolerant (and slowest growing) strain of each functional group present."
 
-We made new simulations with communities composed of functional groups all containing nine strains just as before, but then only retained in each functional group the one strain with the greatest tolerance. E.g., in a simulation with variation in the only the SB group (and no variation in the CB or PB groups) then the CB and PB groups (as before) each had only one strain with the mean tolerance value (which is also the maximum there), whereas the SB group contained one strain with higher tolerance. We also performed simulations in which we retained 9 strains in each functional group, but set the tolerance of all nine to the maximum tolerance value. Results were the same as those presented below
+We made new simulations with communities composed of functional groups all containing only the strain with the greatest tolerance. E.g., in a simulation to be compared with variation in the only the SB group (and no variation in the CB or PB groups) then the CB and PB groups (as before) each had only one strain with the mean tolerance value (which is also the maximum there), whereas the SB group contained one strain with higher tolerance. (We also performed simulations in which we retained 9 strains in each functional group, but set the tolerance of all nine to the maximum tolerance value. Results were the same as those presented below.)
 
-For most of the explored combinations and values of functional diversity the results are the same (Figure \@ref(fig:max-tol1)). There are differences when there is high functional diversity / high tolerance in the SB, in the CB-SB, and in the CB-SB-PB combinations. (These are also the situations in which we had already found that number of strains can be important (Fig. 7.1 in the original version of the Supplement).) We look at these more closely below.
+For most of the explored combinations and amounts of functional diversity the results are the same (Figure \@ref(fig:max-tol1)). There are differences when there is high functional diversity / high tolerance in the SB, in the CB-SB, and in the CB-SB-PB combinations.  We look at these more closely below.
 
 
 (ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present.
@@ -976,7 +976,7 @@ filter(maxtolonly_strains,
 
 ### Why only at high diversity?
 
-Why do these effects only occur at high diversities? The likely reason is that at high diversities then the most tolerant strain has particularly low growth rate, and so it may have the tolerance required to persist, it does not have the growth rate required to dominate.
+Why do these effects only occur at high diversities? The likely reason is that at high diversities then the most tolerant strain has particularly low growth rate, and so it may have the tolerance required to increase and persist, it does not have the growth rate required to dominate.
 
 
 # Finding the separatrix
