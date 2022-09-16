@@ -778,11 +778,57 @@ fig_div_vs_o2diff_multistrain(all_stab, which_strains,
 ```
 
 
-# Is it really functional diversity?
+# Are the results driven by functional diversity?
 
-Reviewer 1: "This made me wonder whether the same (or at least a very similar) results regarding the change in resilience of the system states could also be obtained with just a single strain per functional group, whose tolerance to the inhibiting substance is systematically increased. This could be tested fairly easily by re-running the simulations behind Fig. 3 with just the most tolerant (and slowest growing) strain of each functional group present."
+During the review process we received the following comment: *I think the authors have not shown sufficiently clearly that their results are actually driven by functional diversity. Fig. 4 shows that on the collapse trajectory, the dominating functional group is itself dominated by the most tolerant strain. This is also true for the suppressed group on its recovery trajectory shortly before the tipping point. This made me wonder whether the same (or at least a very similar) results regarding the change in resilience of the system states could also be obtained with just a single strain per functional group, whose tolerance to the inhibiting substance is systematically increased. This could be tested fairly easily by re-running the simulations behind Fig. 3 with just the most tolerant (and slowest growing) strain of each functional group present.* In this section we discuss this matter.
 
-We made new simulations with communities composed of functional groups all containing only the strain with the greatest tolerance. E.g., in a simulation to be compared with variation in the only the SB group (and no variation in the CB or PB groups) then the CB and PB groups (as before) each had only one strain with the mean tolerance value (which is also the maximum there), whereas the SB group contained one strain with higher tolerance. (We also performed simulations in which we retained 9 strains in each functional group, but set the tolerance of all nine to the maximum tolerance value. Results were the same as those presented below.)
+Our first realisation was that we had not adequately stated what component of functional diversity we manipulated. We revised to state *Functional diversity has multiple components, and we manipulate only one of these, namely the range of trait space represented, which has been termed functional richness, and measured as the convex hull volume ([Villéger et al. 2008](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/07-1206.1)).* 
+
+Since we manipulated the range of trait space represented (sensu [Villéger et al 2008](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/07-1206.1)), and manipulated nothing else, we manipulated only functional diversity. Logically then, any effects of this manipulation must be due to the functional diversity manipulation. That is, regardless of the process / mechanism by which functional diversity causes an effect, it is appropriate to state that functional diversity drives the results.
+
+The reviewer’s comment motivated us to consider two questions:
+
+1. By what mechanism does functional diversity affect ecosystem stability in this study? 
+2. Could the observed effects of functional diversity also be created by manipulations of trait values that do not alter functional diversity? 
+
+Question 1. In research concerning biodiversity and ecosystem functioning there was considerable debate about the phenomenon that high yielding species are more likely to be present in more diverse communities. This phenomenon was sometimes responsible for a large proportion of observed effects of biodiversity on ecosystem function. The debate was to a large extent resolved by recognising that biodiversity effects can result from two sources: a selection/sampling effect, and a complementarity effect. Both are now considered valid and important mechanisms by which diversity (including functional diversity) affects ecosystem functioning. We view the presence of more extreme trait values in more functionally diverse communities as an analogue of the sampling/selection effect of biodiversity, and a valid mechanism by which increased functional diversity can affect ecosystem stability. For example, let us assume for the moment that, indeed, only the single maximum tolerance strain present in each functional group of an ecosystem determines the resilience of that ecosystem. Then we would say that variation in resilience with diversity operates only by the "sampling effect". If we also assume that higher tolerance causes higher ecosystem resilience, then a more functionally diverse ecosystem will have higher maximum tolerance trait, and so higher resilience. And an ecosystem with more strains per functional group will have higher resilience (Figure \@ref(fig:samp-effect1)).
+
+Hence, even if all of the observed effects of our functional diversity manipulation were only due to presence of one strain (e.g. the most tolerant one), this can be considered an effect of functional diversity.
+
+
+(ref:samp-effect1) A simple phenomenological model of the effect of number of strains in an ecosystem on the resilience of that ecosystem, when the resilience of a ecosystem is determined only by the maximum trait value of the strains present in that ecosystem. Each data point is a different ecosystem, with the strains in each ecosystem drawn at random from a pool of 20 strains. Each of the 20 strains was assigned a trait value drawn at random from a uniform distribution with minimum 0 and maximum 1. The blue line is the fit of a generalised additive model and the grey ribbon shows the 1 standard error confidence range.
+
+
+```{r samp-effect1, echo = FALSE,  include=TRUE, fig.cap='(ref:samp-effect1)', fig.height=5, fig.width=6, fig.align="center"}
+if(!("tidyverse" %in% .packages()))
+  library(tidyverse)
+
+number_of_species <- 20
+species_trait <- tibble(species_name = paste0("Species-", letters[1:20]),
+                        trait_value = runif(number_of_species))
+
+richness_levels <- seq(1, 10, 1)
+compositions_per_richness_level <- 10
+expt <- crossing(richness = richness_levels,
+                 composition = paste0("Comp-", 1:compositions_per_richness_level)) %>%
+  mutate(composition = paste0(composition, "-", richness),
+         resilience_max_trait = NA)
+
+for(i in 1:nrow(expt))
+  expt$resilience_max_trait[i] = max(sample(species_trait$trait_value, expt$richness[i]))
+
+ggplot(expt, aes(x = richness, y = resilience_max_trait)) +
+  geom_point() +
+  xlab("Number of strains") +
+  ylab("Resilience if only the tolerance of\nthe most tolerant strain determines resilience.") +
+  geom_smooth(method = "gam")
+
+
+```
+
+**Question 2. It is possible that all of the observed effects of functional diversity operate via this sampling effect, and thus could also be created when there is only one maximum tolerance strain in each functional group?.**
+
+We made new simulations with communities composed of functional groups all containing only the strain with the greatest tolerance. E.g., in a simulation to be compared with variation in the only the SB group (and no variation in the CB or PB groups) then the CB and PB groups (as before) each had only one strain with the mean tolerance value, whereas the SB group contained one strain with higher tolerance. (We also performed simulations in which we retained 9 strains in each functional group, but set the tolerance of all nine to the maximum tolerance value. Results were the same as those presented below.)
 
 For most of the explored combinations and amounts of functional diversity the results are the same (Figure \@ref(fig:max-tol1)). There are differences when there is high functional diversity / high tolerance in the SB, in the CB-SB, and in the CB-SB-PB combinations.  We look at these more closely below.
 
@@ -826,11 +872,11 @@ maxtolonly_strains <- readRDS(here("data",
 
 With only the most tolerance SB strain, the position of the oxic to anoxic tipping point at high SB diversity appears to be at very low oxygen diffusivity, compared to when all nine strains are present (Figure \@ref(fig:max-tol1)). A corresponding simulations from which the position of the tipping points are calculated are shown in Figures \@ref(fig:max-tol2) (nine strains) and \@ref(fig:max-tol3) (most tolerant strain only). We see that the effect of oxygen diffusivity on the stable state is quite different in the case of only the most tolerant strain only--at low oxygen diffusivity there is variation around a stable state with all three functional groups coexisting--this never occured when there were multiple strains varying in tolerance, or when there was only one strain with mean tolerance. Furthermore, the state of the system is independent of the direction of change in oxygen diffusivity. I.e. there is no region of bistability (no alternate stable states).
 
-The algorithm used to detect state changes is working incorrectly in this specific situation. Here is the description of the algorithm from the main text: "We calculated the tipping point position of the oxic to anoxic (anoxic-oxic transition as the minimum (maximum) level of oxygen diffusivity at which the total density of sulfate-reducing bacteria was greater than 1000 abundance units different between the increasing and decreasing oxygen diffusivity simulation." This is not of great concern, however, as there are no state transitions to detect.
+
 
 We now wish to return to an aspect of the reviewer comment: It is correct that in Fig. 4 when oxygen diffusivity increased, the two dominant functional groups (the sulfur bacteria groups) are dominated by the most tolerant strain before the state transition. And when oxygen diffusivity decreased, the dominant functional group (the cyanobacteria) is dominated by the most tolerant strain before the state transition. It is worth noting, however, that the transitions that occur are to states dominated by the least tolerant-highest growth rate strain. This raises the possibility that less tolerant strains may influence the results.
 
-Indeed, in the SB case, absence of the high growth rate SB strain precludes the formation of a stable state that does not include cyanobacteria. It seems that the most tolerant SB strain does not have a high enough growth rate to itself exclude the cyanobacteria. Cyanobacteria are therefore always present, regardless of the oxygen diffusivity. (The stable states of the system then display a complex relationship with oxygen diffusivity that our algorithm for detecting tipping points is not well suited to, hence the rather odd positions of the tipping points.)
+Indeed, in the SB case, absence of the high growth rate SB strain precludes the formation of a stable state that does not include cyanobacteria. It seems that the most tolerant SB strain does not have a high enough growth rate to itself exclude the cyanobacteria. Cyanobacteria are therefore always present, regardless of the oxygen diffusivity. The stable states of the system then display a complex relationship with oxygen diffusivity that our algorithm for detecting tipping points is not well suited to, hence the rather odd positions of the indicated tipping points.
 
 (ref:max-tol2) Stable states found with nine strains of SB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -843,7 +889,7 @@ nine_strain_one <- filter(nine_strains,
 fig_state_vs_o2diff_sidebyside_alternative(nine_strain_one)
 ```
 
-(ref:max-tol3) Stable states found with the single most tolerant SB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol3) Stable states found with the single most tolerant SB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). As mentioned in the text, the algorithm used to detect the position of the tipping points is not working correctly here, and so the grey arrows should be ignored.
 
 ```{r max-tol3, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol3)', fig.height=10, fig.width=8, fig.align="center"}
 max_tol_one <- filter(maxtolonly_strains,
@@ -881,7 +927,30 @@ test1 <- run_simulation(parameter)
 (ref:SB-maxtol-dyn1) Temporal dynamics of an ecosystem with a single SB strain with high tolerance, the same one as in Figure \@ref(fig:max-tol3) simulated with constant $log_{10}(oxygen diffusivity) of -6.
 
 ```{r SB-maxtol-dyn1, echo = FALSE,  include=TRUE, fig.cap='(ref:SB-maxtol-dyn1)', fig.height=10, fig.width=8, fig.align="center"}
-plot_dynamics(test1)
+p <- plot_dynamics(test1)
+p[[1]] <- p[[1]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[2]] <- p[[2]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[3]] <- p[[3]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[4]]$data <- p[[4]]$data %>% 
+  dplyr::filter(species != "a")
+p[[4]]$data$species <- p[[4]]$data$species %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
+p[[4]] <- p[[4]] + 
+  xlab("time (h)") + 
+  ylab(expression(log[10](concentration)~(µM))) + 
+  labs(colour = "substrate") +
+  theme_bw()
+  
+p
 ```
 
 
@@ -901,7 +970,7 @@ filter(nine_strains,
   fig_state_vs_o2diff_sidebyside_alternative()
 ```
 
-(ref:max-tol5)  Stable states found with the single most tolerant CB strain and SB strain and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol5)  Stable states found with the single most tolerant CB strain and SB strain and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). As mentioned in the text, the algorithm used to detect the position of the tipping points is not working correctly here, and so the grey arrows should be ignored.
 
 ```{r max-tol5, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol5)', fig.height=10, fig.width=8, fig.align="center"}
 max_tol_one_CBSB <- filter(maxtolonly_strains,
@@ -940,7 +1009,30 @@ test1 <- run_simulation(parameter)
 (ref:CBSB-maxtol-dyn1) Temporal dynamics of an ecosystem with a single CB strain with high tolerance and a single SB strain with high tolerance, the same one as in Figure \@ref(fig:max-tol5) simulated with constant $log_{10}(oxygen diffusivity) of -6.
 
 ```{r CBSB-maxtol-dyn1, echo = FALSE,  include=TRUE, fig.cap='(ref:CBSB-maxtol-dyn1)', fig.height=10, fig.width=8, fig.align="center"}
-plot_dynamics(test1)
+p <- plot_dynamics(test1)
+p[[1]] <- p[[1]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[2]] <- p[[2]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[3]] <- p[[3]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[4]]$data <- p[[4]]$data %>% 
+  dplyr::filter(species != "a")
+p[[4]]$data$species <- p[[4]]$data$species %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
+p[[4]] <- p[[4]] + 
+  xlab("time (h)") + 
+  ylab(expression(log[10](concentration)~(µM))) + 
+  labs(colour = "substrate") +
+  theme_bw()
+  
+p
 ```
 
 
@@ -1167,6 +1259,19 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at lower oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
 
 When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). Both tipping points occurred at lower levels of oxygen diffusivity than expected by additivity. Interestingly, diversity in the cyanobacteria moved the shift to the oxic state to lower levels of oxygen diffusivity although independent variation in the cyanobacteria had no effect on this tipping point. 
+
+# Growth and inhibition functions
+
+Bush et al. (2018) used the Monod equation for growth, with multiplicative kinetics when two substrates determine growth rate:
+
+$g_j(X, Y) = g_{max,j} (\frac{X}{K_{j,X} + X})(\frac{Y}{K_{j,Y} + Y})$
+
+g_{max,j} is the maximum specific growth rate of strain $j$
+
+$X$ is the concentration of substrate 1, and $Y$ is the concentration of substrate 2.
+
+K_{j,X} and K_{j,Y} are the half-saturation constants of species $j$ on substrates $X$ and $Y$.
+
 
 
 # References
