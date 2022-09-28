@@ -41,6 +41,25 @@ unity <- 1
 
 This document is the Supplementary Report for the report *Functional diversity can facilitate the collapse of an undesirable ecosystem state*.
 
+
+# Growth and inhibition functions
+
+The rate of change in population densities is given by the growth rate - death rate [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). Growth rate is the growth rate in absence of any inhibition multiplied by the amount of inhibition. 
+
+Growth rate in the absence of inhibition was modeled with the Monod equation with multiplicative kinetics when two substrates determine growth rate:
+
+$g_j(X, Y) = g_{max,j} (\frac{X}{K_{j,X} + X})(\frac{Y}{K_{j,Y} + Y})$
+
+$g_{max,j}$ is the maximum specific growth rate of strain $j$. $X$ is the concentration of substrate 1, and $Y$ is the concentration of substrate 2. $K_{j,X}$ and $K_{j,Y}$ are the half-saturation constants of species $j$ on substrates $X$ and $Y$.
+
+Inhibition of growth by a substrate was modelled with the Haldane equation:
+
+$h_j(X) = \frac{1}{1+ (X / H_{j,X})}$
+
+$H_{j,X}$ can be thought of as a half-inhibition constant: the concentration of $X$ at which the growth rate of species $j$ is reduced by 50%.
+
+For further information details of the functions used to model system, please see the original publication by Bush *et al.* (2018)
+
 # Creating among strain diversity
 
 Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant text in the main report.  We generated variation in maximum growth rate $G_{max}$ and tolerance to reduced sulfur $h_{SR}$ or oxygen $h_{O}$ by varying the range of trait values around a reference trait value. To manipulate the amount of variation in a given trait and functional group, we introduced the meta-parameter $Div$ subscripted by the trait and the functional group. Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $G_{max,CB}$ and a reference tolerance parameter $h_{SR,CB}$. The amount of among strain variation in the cyanobacteria is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a trade-off, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{G_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $G_{max,CB} = 0.05$, among strain variation of $Div_{G_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $G_{max,i} = D_i * G_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{G_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
@@ -796,13 +815,13 @@ Question 1. In research concerning biodiversity and ecosystem functioning there 
 Hence, even if all of the observed effects of our functional diversity manipulation were only due to presence of one strain (e.g. the most tolerant one), this can be considered an effect of functional diversity.
 
 
-(ref:samp-effect1) A simple phenomenological model of the effect of number of strains in an ecosystem on the resilience of that ecosystem, when the resilience of a ecosystem is determined only by the maximum trait value of the strains present in that ecosystem. Each data point is a different ecosystem, with the strains in each ecosystem drawn at random from a pool of 20 strains. Each of the 20 strains was assigned a trait value drawn at random from a uniform distribution with minimum 0 and maximum 1. The blue line is the fit of a generalised additive model and the grey ribbon shows the 1 standard error confidence range.
+(ref:samp-effect1) A simple phenomenological model of the effect of number of strains in an ecosystem on the resilience of that ecosystem, when the resilience of a ecosystem is linearly proportional to the maximum trait value of the strains present in that ecosystem. Each data point is a different ecosystem, with the strains in each ecosystem drawn at random from a pool of 20 strains. Each of the 20 strains was assigned a trait value drawn at random from a uniform distribution with minimum 0 and maximum 1. The blue line is the fit of a generalised additive model and the grey ribbon shows the 1 standard error confidence range.
 
 
 ```{r samp-effect1, echo = FALSE,  include=TRUE, fig.cap='(ref:samp-effect1)', fig.height=5, fig.width=6, fig.align="center"}
 if(!("tidyverse" %in% .packages()))
   library(tidyverse)
-
+set.seed(12345)
 number_of_species <- 20
 species_trait <- tibble(species_name = paste0("Species-", letters[1:20]),
                         trait_value = runif(number_of_species))
@@ -848,8 +867,11 @@ which_strains <- c(-1, 9)
 which_wait_time <- 1e6
 figure_title <- " "
 
-fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
+plot_1 <- fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
                               which_wait_time, figure_title)
+plot_1 +
+  xlab("Standardised amount of trait variation used to create nine strains\nof which either all nine are retained, or only the most tolerant is retained.") +
+  guides(col=guide_legend(title="Which strains are retained", title.position = "top"))
 ```
 
 
@@ -1259,18 +1281,6 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at lower oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
 
 When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). Both tipping points occurred at lower levels of oxygen diffusivity than expected by additivity. Interestingly, diversity in the cyanobacteria moved the shift to the oxic state to lower levels of oxygen diffusivity although independent variation in the cyanobacteria had no effect on this tipping point. 
-
-# Growth and inhibition functions
-
-Bush et al. (2018) used the Monod equation for growth, with multiplicative kinetics when two substrates determine growth rate:
-
-$g_j(X, Y) = g_{max,j} (\frac{X}{K_{j,X} + X})(\frac{Y}{K_{j,Y} + Y})$
-
-g_{max,j} is the maximum specific growth rate of strain $j$
-
-$X$ is the concentration of substrate 1, and $Y$ is the concentration of substrate 2.
-
-K_{j,X} and K_{j,Y} are the half-saturation constants of species $j$ on substrates $X$ and $Y$.
 
 
 
