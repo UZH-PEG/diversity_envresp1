@@ -852,7 +852,7 @@ We made new simulations with communities composed of functional groups all conta
 For most of the explored combinations and amounts of functional diversity the results are the same (Figure \@ref(fig:max-tol1)). There are differences when there is high functional diversity / high tolerance in the SB, in the CB-SB, and in the CB-SB-PB combinations.  We look at these more closely below.
 
 
-(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present.
+(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present. In the SB and CB-SB treatments there is missing data in the case with only the most tolerant strain when there were no alternate stable states and therefore no tipping points.
 
 
 ```{r max-tol1, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol1)', fig.height=8, fig.width=8, fig.align="center"}
@@ -866,6 +866,12 @@ all_stab <- readRDS(here("data", "0_ss_finding", "temporal_method",
 which_strains <- c(-1, 9)
 which_wait_time <- 1e6
 figure_title <- " "
+
+## remove data where there are no stable states
+## this subset is identified by inspection of the figure
+all_stab <- all_stab %>%
+  filter(!(var_treat == "SB" & stand_var > 0.88 & num_strains == -1),
+         !(var_treat == "CB-SB" & stand_var > 0.84 & num_strains == -1))
 
 plot_1 <- fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
                               which_wait_time, figure_title)
@@ -908,7 +914,8 @@ nine_strain_one <- filter(nine_strains,
        CB_var_gmax_s == 0,
        abs(SB_var_gmax_s - 0.09473684) < 0.001,
        PB_var_gmax_s == 0)
-fig_state_vs_o2diff_sidebyside_alternative(nine_strain_one)
+ss_result <- nine_strain_one
+fig_state_vs_o2diff_sidebyside_alternative_leftfliponly(nine_strain_one)
 ```
 
 (ref:max-tol3) Stable states found with the single most tolerant SB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). As mentioned in the text, the algorithm used to detect the position of the tipping points is not working correctly here, and so the grey arrows should be ignored.
@@ -918,7 +925,7 @@ max_tol_one <- filter(maxtolonly_strains,
        CB_var_gmax_s == 0,
        abs(SB_var_gmax_s - 0.09473684) < 0.001,
        PB_var_gmax_s == 0)
-fig_state_vs_o2diff_sidebyside_alternative(max_tol_one)
+fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one)
 ```
 
 ### What causes variation in response to oxygen diffusivity (SB)?
@@ -989,7 +996,7 @@ filter(nine_strains,
        abs(CB_var_gmax_s - 0.026592798) < 0.001,
        abs(SB_var_gmax_s - 0.079778395) < 0.001,
        PB_var_gmax_s == 0) %>%
-  fig_state_vs_o2diff_sidebyside_alternative()
+fig_state_vs_o2diff_sidebyside_alternative_leftfliponly()
 ```
 
 (ref:max-tol5)  Stable states found with the single most tolerant CB strain and SB strain and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). As mentioned in the text, the algorithm used to detect the position of the tipping points is not working correctly here, and so the grey arrows should be ignored.
@@ -999,7 +1006,7 @@ max_tol_one_CBSB <- filter(maxtolonly_strains,
        abs(CB_var_gmax_s - 0.026592798) < 0.001,
        abs(SB_var_gmax_s - 0.079778395) < 0.001,
        PB_var_gmax_s == 0)
-fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
+fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one_CBSB)
 ```
 
 
