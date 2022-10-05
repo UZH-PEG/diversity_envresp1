@@ -926,7 +926,7 @@ max_tol_one <- filter(maxtolonly_strains,
 fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one)
 ```
 
-### What causes variation in response to oxygen diffusivity (SB)?
+### What causes the variation in response to oxygen diffusivity (SB)?
 
 In the ecosystem shown in Figure \@ref(fig:max-tol3), where the SB contained one strain with very high tolerance, there was large variation in state variables along the oxygen diffusivity gradient at values less than about -4.5. To examine what might be causing this, we simulated the ecosystem at a constant oxygen diffusivity of $log_{10}$ oxygen diffusivity of -6 (Figure \@ref(fig:SB-maxtol-dyn1)). We see that the dynamics are qualitatively different from other cases in which there is a stable state reached in such a simulation (Figure \@ref(fig:sb-div-effect4)). It appears that the high tolerance SB strain is able to initiate a transition to an anoxic state, but is not able to create a stable anoxic state. This dynamical situation was not present in the ecosystem in which high tolerance and low tolerance strains were present.
 
@@ -1008,9 +1008,9 @@ fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one_CBSB)
 ```
 
 
-### What causes variation in response to oxygen diffusivity (CB-SB)?
+### What causes the variation in response to oxygen diffusivity (CB-SB)?
 
-In the ecosystem shown in Figure \@ref(fig:max-tol5), where CB and SB each contained only one strain with very high tolerance, there was large variation in state variables along the oxygen diffusivity gradient at values less than about -6.5. To examine what might be causing this, we simulated the ecosystem at a constant oxygen diffusivity of $log_{10}$ oxygen diffusivity of -6 (Figure \@ref(fig:CBSB-maxtol-dyn1)). We see that the dynamics are qualitatively different from other cases in which there is a stable state reached in such a simulation (Figure \@ref(fig:sb-div-effect4)). It appears that the SB strain with high tolerance is able to initiate a transition to an anoxic state, but is not able to create a stable anoxic state. 
+In the ecosystem shown in Figure \@ref(fig:max-tol5), where CB and SB each contained only one strain with very high tolerance, there was large variation in state variables along the oxygen diffusivity gradient at values less than about -6.5. To examine what might be causing this, we simulated the ecosystem at a constant oxygen diffusivity of $log_{10}$ oxygen diffusivity of -7 (Figure \@ref(fig:CBSB-maxtol-dyn1)). We see that the dynamics are qualitatively different from other cases in which there is a stable state reached in such a simulation (Figure \@ref(fig:sb-div-effect4)). It appears that the SB strain with high tolerance is able to initiate a transition to an anoxic state, but is not able to create a stable anoxic state. 
 
 ```{r echo = FALSE}
 #nine_strain_one$pars[[1]]
@@ -1033,7 +1033,7 @@ parameter$sim_sample_interval <- 10
 test1 <- run_simulation(parameter)
 ```
 
-(ref:CBSB-maxtol-dyn1) Temporal dynamics of an ecosystem with a single CB strain with high tolerance and a single SB strain with high tolerance, the same one as in Figure \@ref(fig:max-tol5) simulated with constant $log_{10}(oxygen diffusivity) of -6.
+(ref:CBSB-maxtol-dyn1) Temporal dynamics of an ecosystem with a single CB strain with high tolerance and a single SB strain with high tolerance, the same one as in Figure \@ref(fig:max-tol5) simulated with constant $log_{10}(oxygen diffusivity)$ of -6.
 
 ```{r CBSB-maxtol-dyn1, echo = FALSE,  include=TRUE, fig.cap='(ref:CBSB-maxtol-dyn1)', fig.height=10, fig.width=8, fig.align="center"}
 p <- plot_dynamics(test1)
