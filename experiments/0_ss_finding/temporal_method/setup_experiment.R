@@ -1,7 +1,7 @@
 ## see file R/how_to_install_microxanox for (surprise) how to install the microxanox package
 
 library(here)
-microxanox_release <- "0.4.9"
+microxanox_release <- "0.9.1"
 library(microxanox)
 source(here::here("experiments/0_ss_finding/temporal_method/check_microxanox_version.R"))
 library(tidyverse)

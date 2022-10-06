@@ -37,6 +37,10 @@ source(here("R/ms_figure_functions.R"))
 
 all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method.RDS"))
 
+## ele_rev1.3
+all_stab <- readRDS(here("data/0_ss_finding/temporal_method/processed_data/stab_data_temporal_method_ELErevision1.3.RDS"))
+
+
 wait_time <- 1e6
 num_strains <- 9
 plot_here <- all_stab %>%
