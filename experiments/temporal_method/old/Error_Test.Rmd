@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 
 library(here)
-source(here("R/various_useful_functions.r"))
+source(here("R/various_useful_functions.R"))
 
 num_strains <- 9
 num_CB_strains <- num_strains

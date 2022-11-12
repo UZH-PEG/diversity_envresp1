@@ -7,7 +7,7 @@ microxanox_release <- "0.4.9"
 library(microxanox)
 source(here::here("experiments/0_ss_finding/temporal_method/check_microxanox_version.R"))
 library(tidyverse)
-source(here("R/various_useful_functions.r"))
+source(here("R/various_useful_functions.R"))
 max_cores <- benchmarkme::get_cpu()$no_of_cores
 
 wait_time <- 1e6

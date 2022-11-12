@@ -16,7 +16,7 @@ source(here::here("experiments/0_ss_finding/temporal_method/check_microxanox_ver
 library(tidyverse)
 library(patchwork)
 library(here)
-source(here("R/various_useful_functions.r"))
+source(here("R/various_useful_functions.R"))
 zero <- 0 ## don't change
 unity <- 1 ## don't change!!!
 

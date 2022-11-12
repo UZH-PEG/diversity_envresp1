@@ -24,8 +24,8 @@ library(tidyverse)
 library(microxanox)
 library(patchwork)
 library(here)
-source(here("r", "various_useful_functions.R"))
-# source(here("experiments", "1_figures_main_ms", "ms_figure_functions.R"))
+source(here("r", "various_useful_functions.r"))
+# source(here("experiments", "1_figures_main_ms", "ms_figure_functions.r"))
 source(here("R/ms_figure_functions.R"))
 
 #print(fig_div_vs_o2diff_1strain_7row)
@@ -213,7 +213,7 @@ We now discuss two approaches for finding how the stable state of the system var
 
 Here we also describe and give results of what we term the *Replication method*. In this, we made separate simulations for each of many values of oxygen diffusivity, ran the simulations for long enough to ensure transients had passed, and recorded the state. We ran multiple simulations per value of oxygen diffusivity, and started them with different initial conditions (either low or high total cyanobacterial abundance), so as to check for presence of alternate stable states. This method was used by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x). We term it the replication method since it is achieved by having many independent replicates of the ecosystem, each with a different oxygen diffusivity, and also a separate replicate for each of the different chosen initial conditions.
 
-As is shown in the figures below, the temporal and replication methods result in very similar regions of bistability.
+As is shown in the figures below, the temporal method results in a larger region of bistability than the replication method, but only during increasing oxygen diffusivities. The difference in results occurs because, as discussed below, the initial conditions differ between the two approaches.
 
 ### Replication method, no diversity
 
@@ -274,9 +274,9 @@ plot_ss_result6_new(repl_method_1,
 
 ### Overall effects of diversity
 
-The replication method shows qualitatively the same effects of functional diversity (Figure \@ref(fig:div-repl-meth1)) as those revealed by the temporal method. Namely
+The replication method shows the same effects of functional diversity as those revealed by the temporal method (Figure \@ref(fig:div-repl-meth1)). Namely
 
--   Introducing functional diversity in only the cyanobacteria increases the resilience of the oxic state and slightly decreases the resilience of the anoxic state. 
+-   Introducing functional diversity in only the cyanobacteria increases the resilience of the oxic state but has no effect on the resilience of the anoxic state. 
 -   Introducing functional diversity in only the sulfate-reducing bacteria increases the resilience of the anoxic state and reduces the resilience of the oxic state.
 -   Introducing functional diversity in only the phototrophic sulfur bacteria reduces the resilience of the anoxic state and has no effect on the resilience of the oxic state. 
 -   Introducing functional diversity in more than one functional group reduces, reverses, or does not change the effect of diversity in individual functional groups. For example, introducing functional diversity in all three functional groups reduces the resilience of the oxic state when trait variation is low but increases the resilience of the oxic state when trait variation is high. 
@@ -310,7 +310,7 @@ p1 + p2
 
 ### An example of stable states
 
-Figure \@ref(fig:repl-meth-ex1) shows an example of stable states along the oxygen diffusivity gradient produced by the replication method for finding stable states. The patterns are similar to those produced by the temporal method for finding the stable states (see Figure 4 in the main report), though they differ in one respect: close to the transition back to the state a group dominates, some of the more tolerant strains occur in the stable states found by the temporal method (Figure 4 in the main report), while they do not occur in stable states found by the replication method (Figure \@ref(fig:repl-meth-ex1) here). We understand that the appearance of these strains is transient, and the difference in their appearance results from the differences in starting conditions of the two methods. Specifically, in the temporal method, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the replication method the starting conditions are identical at each level of oxygen diffusivity. These differences in starting conditions apparently result in longer duration of transients in the temporal method than the replication method.
+Figure \@ref(fig:repl-meth-ex1) shows an example of stable states along the oxygen diffusivity gradient produced by the replication method for finding stable states. The patterns are similar to those produced by the temporal method for finding the stable states (see Figure 4 in the main report), though they differ in one respect: close to the transition back to the state a group dominates, some of the more tolerant strains occur in the stable states found by the temporal method (Figure 4 in the main report), while they do not occur in stable states found by the replication method (Figure \@ref(fig:repl-meth-ex1) here). We understand that the appearance of these strains is transient, and the difference in their appearance results from the differences in starting conditions of the two methods. Specifically, in the temporal method, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the replication method the starting conditions are identical at each level of oxygen diffusivity. These differences in starting conditions apparently result in longer persistence of transients in the temporal method than the replication method.
 
 An interesting feature of these results is that although the position of the oxic to anoxic tipping point is affected by diversity in the sulfate-reducing bacteria (Figure \@ref(fig:div-repl-meth1) and Figure 3 in the main report) there is no evidence of more tolerant strains of sulfate-reducing bacteria being present in the final system state (Figure \@ref(fig:repl-meth-ex1)). This phenomenon is explained in Section \@ref(SB2).
 
@@ -334,7 +334,7 @@ As mentioned in the main report, to avoid very low strain densities, we added 1 
 (ref:div-temp-eventdef1) **Results with an abundance floor.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
 
-```{r div-temp-eventdef1, eval = TRUE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
+```{r div-temp-eventdef1, eval = FALSE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("data",
                           microxanox_version_path,
                           "temporal_method",
@@ -342,14 +342,14 @@ all_stab <- readRDS(here("data",
                           "processed_data",
                          "all_stab_data.RDS"))
 
-wait_time <- 1e6
+sim_length <- 1e6
 num_strains <- 9
 plot_here <- all_stab %>%
   filter(waittime == wait_time)
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
@@ -365,7 +365,7 @@ p1 + p2
 
 Here we give some further thoughts regarding the comparison of the temporal and replication method for stable state finding.
 
-A particularly notable difference between the two approaches is in the initial condition. In the temporal approach, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the approach of [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) the initial conditions are fixed and arbitrary (though this approach is still useful for illustrating the bistability of the system).
+A particularly notable difference between the two approaches is in the initial condition. In the temporal approach, the initial condition at a new level of oxygen diffusivity is the stable state at the previous level of oxygen diffusivity, while in the approach of [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) the initial conditions are fixed and arbitrary (though this approach is still useful for illustrating the bistability of the system). This difference in initial conditions increases the region of bistability in the temporal approach because as a tipping point approaches, the functional group that will dominate after the regime shift starts from much lower abundances than in the approach by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) and thus requires stronger amelioration of the environment to take over. Nevertheless, our main conclusions about the effects of functional trait diversity are the same using either approach.
 
 The temporal approach is particularly useful when investigating the effects of strain richness. In preliminary simulations using the [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) approach, we found the counterintuitive result that higher strain richness led to lower resilience. We then recalled that we chose to divide the initial total abundance of the cyanobacterial (CB) functional group equally among the strains (termed a substitutive design in biodiversity manipulation experiments). This meant that the most tolerant CB strain in a three-strain simulation had higher initial abundance than the same most tolerant CB strain in a nine-strain simulation. The greater abundance of the most CB tolerant strain made it possible for a three-strain system to develop to be oxic, whereas the nine-strain system developed to be anoxic, despite identical range of trait variation. We could have chosen to do otherwise, for example start with the least tolerant strains of cyanobacteria as more abundant when the system started with high cyanobacterial abundance, and the most tolerant strain as more abundant when the system starts with low cyanobacterial abundance. Using the temporal approach removed the need to specify initial abundances (except the very first one), and therefore results were not so determined by the assumptions used to determine the initial conditions.
 
@@ -488,20 +488,14 @@ p1 + p2
 
 ## Example of transient dynamics at 1e6 hours
 
-The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except very close to state transitions on the trajectory of recovery (i.e.: cyanobacteria: trajectory of increasing oxygen diffusivity; sulfate-reducing bacteria: trajectory of decreasing oxygen diffusivity). Very close to these transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
+The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except very close to state transitions on the trajectory of recovery (i.e.: cyanobacteria: trajectory of increasing oxygen diffusivity; sulfate-reducing bacteria: trajectory of decreasing oxygen diffusivit). Very close to these transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
 
 (ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 
-```{r ss-temp-meth3, eval = TRUE, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=10, fig.width=8, fig.align="center"}
+```{r ss-temp-meth3, eval = FALSE, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth3)', fig.height=10, fig.width=8, fig.align="center"}
 
-temp_meth <- readRDS(here("data",
-                          microxanox_version_path,
-                          "temporal_method",
-                          "event_definition_2",
-                          "ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
-
-## data made with the "run_single_sim.R" file in the ss_find, temporal method folder.
+## data made with the "run_single_sim.r" file in the ss_find, temporal method folder.
 
 single_1e6 <- readRDS(here("data",
                            microxanox_version_path, 
@@ -516,7 +510,7 @@ fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 (ref:ss-temp-meth4) Stable states found with the temporal method with duration at each oxygen diffusivity value of **2e6 hours**. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
 
-```{r ss-temp-meth4, eval = TRUE, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=10, fig.width=8, fig.align="center"}
+```{r ss-temp-meth4, eval = FALSE, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-temp-meth4)', fig.height=10, fig.width=8, fig.align="center"}
 single_2e6 <- readRDS(here("data",
                            microxanox_version_path, 
                            "temporal_method",
@@ -895,11 +889,12 @@ fig_div_vs_o2diff_multistrain(all_stab, which_strains,
 
 In the main text we show that trait variation can affect resilience. In this supplementary section, we discuss the mechanism(s) underlying the observed diversity effects. We first explain the two major classes of mechanisms known to drive diversity effects, and then use additional simulations to elucidate the mechanisms operating in our study.
 
-## Complementarity and sampling effect
+## Complementarity versus sampling effect
 
 Research about the relationship between biodiversity and ecosystem functioning has identified two major mechanisms by which diversity affects ecosystem functioning: the selection/sampling effect and the complementarity effect (Loreau & Hector 2001). The sampling effect occurs when more diverse communities have higher functioning because they have a higher probability of containing the best-performing species, i.e. the diversity effect is driven by only one (or few) species (Cardinale et al. 2011). In contrast, the complementarity effect occurs when higher ecosystem functioning in more diverse communities is due to niche differences or positive interactions among species, i.e. the diversity effect is driven by many species (Cardinale et al. 2011). Both effects are considered valid and important mechanisms by which diversity affects ecosystem functioning (Cardinale et al. 2006, 2011, 2012; Fargione et al. 2007).
 
 Similarly, the complementarity effect and the sampling effect are important mechanisms by which diversity affects stability (Loreau & Mazancourt 2013; Loreau et al. 2021) and resilience (Steiner et al. 2006; Hughes & Stachowicz 2011). For example, diversity can stabilize aggregate ecosystem properties (e.g. community biomass) when species differ in their responses to environmental factors and therefore respond asynchronously to environmental fluctuations (temporal complementarity effect; Loreau & Mazancourt 2013). However, when considering ecosystem responses to directional environmental change or pulse disturbances rather than to environmental fluctuations, the sampling effect might be of particular importance (Steiner et al. 2006): more diverse systems might absorb a greater amount of change by having a higher chance of containing species with high environmental tolerance. In this scenario, the positive diversity effect on resilience is driven by one (or few) species. From a conservation perspective, however, one would nevertheless strive to maintain diversity and not only the most tolerant species because of the uncertainties associated with environmental change: we do not know with sufficient certainty which stressors will change in a given ecosystem and which traits will therefore be relevant in the future.
+
 
 
 (ref:samp-effect1) A simple phenomenological model of the effect of number of strains in an ecosystem on the resilience of that ecosystem, when the resilience of a ecosystem is linearly proportional to the maximum trait value of the strains present in that ecosystem. Each data point is a different ecosystem, with the strains in each ecosystem drawn at random from a pool of 20 strains. Each of the 20 strains was assigned a trait value drawn at random from a uniform distribution with minimum 0 and maximum 1. The blue line is the fit of a generalised additive model and the grey ribbon shows the 1 standard error confidence range.
@@ -938,10 +933,10 @@ We investigated if the diversity effects observed in our study were in line with
 
 To exclude that differences between the tolerance manipulation and the diversity manipulation were driven by the difference in number of strains, we also performed simulations in which we retained nine strains in each functional group but set the tolerance of all nine strains to the maximum tolerance value. Results were the same as those presented below from simulations with one strain. 
 
-For most of the explored combinations and amounts of functional diversity/tolerance the tipping point positions did not differ between the diversity manipulation and the tolerance manipulation (Figure \@ref(fig:max-tol1)). However, the tipping point positions did differ between the diversity manipulation and the tolerance manipulation in some cases when at least SB contained variation, and when variation was high, e.g. SB (though only a very small difference), CB-SB, and SB-SB-PB. We explore these cases in the following section. 
+For most of the explored combinations and amounts of functional diversity/tolerance the tipping point positions did not differ between the diversity manipulation and the tolerance manipulation (Figure \@ref(fig:max-tol1)). However, the tipping point positions did differ between the diversity manipulation and the tolerance manipulation when diversity/tolerance in the SB group was high (i.e. in the combinations SB only, CB-SB, and CB-SB-PB). We show below that...(TO DO: Summarize results).
 
 
-(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present. In the CB-SB treatments there is missing data in the case with only the most tolerant strain when the algorithm for detecting tippings did not work appropriately due to qualitatively different dynamics (see below for details).
+(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present. In the SB and CB-SB treatments there is missing data in the case with only the most tolerant strain when there were no alternate stable states and therefore no tipping points.
 
 
 ```{r max-tol1, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol1)', fig.height=8, fig.width=8, fig.align="center"}
@@ -962,7 +957,8 @@ figure_title <- " "
 ## remove data where there are no stable states
 ## this subset is identified by inspection of the figure
 all_stab <- all_stab %>%
-  filter(!(var_treat == "CB-SB" & stand_var > 0.84 & num_strains == -1))
+  filter(!(var_treat == "SB" & stand_var > 0.88 & num_strains == -1),
+         !(var_treat == "CB-SB" & stand_var > 0.84 & num_strains == -1))
 
 plot_1 <- fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
                               which_wait_time, figure_title)
@@ -990,7 +986,7 @@ maxtolonly_strains <- readRDS(here("data",
 
 ## High tolerance vs. high diversity in only the SB
 
-We see a slight difference in the position of the oxic to anoxic tipping point with only high diversity in SB. When the SB contained only one strain with very high tolerance and low maximum growth rate, the system varied around a stable state with all three functional groups coexisting (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple strains varying in tolerance (Figure \@ref(fig:max-tol2)), or when there was only one strain with mean tolerance.
+When the SB contained only one strain with very high tolerance and low maximum growth rate, there were no alternate stable states, i.e. the state of the system was independent of the direction of change in oxygen diffusivity (Figure \@ref(fig:max-tol3)). Furthermore, at low oxygen diffusivity the system varied around a stable state with all three functional groups coexisting –this never occurred when there were multiple strains varying in tolerance (Figure \@ref(fig:max-tol2)), or when there was only one strain with mean tolerance.
 
 Apparently, absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. It seems that the most tolerant SB strain does not have a high enough growth rate to itself exclude the cyanobacteria. Cyanobacteria are therefore always present, regardless of the oxygen diffusivity.
 
@@ -1075,7 +1071,7 @@ p
 
 ## High tolerance vs. high diversity in CB and SB
 
-As in the SB only case, the absence of lower tolerance-higher growth rate strains changes the system to a parameter space where cyanobacteria can coexist with sulfur bacteria when there is only one strain with high tolerance (and low growth rate) in each of the CB and SB functional groups (Figure \@ref(fig:max-tol5)).
+As in the SB only case, the absence of lower tolerance-higher growth rate strains changes the system to a parameter space where it does not display alternate states, at least within the range of oxygen diffusivities simulated (Figure \@ref(fig:max-tol5)).
 
 (ref:max-tol4)  Stables states found when there is high trait variation among nine strains of CB and SB. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -1157,7 +1153,7 @@ p
 
 ## High tolerance vs. high diversity in CB-SB-PB
 
-When in each of the three functional groups only the most tolerant strain is present, the resilience of the oxic state is greater than when there is variation in strain tolerance within groups. It is not entirely clear why this effect only occurs in this case. 
+When in each of the three functional groups only the most tolerant strain is present, the resilience of the oxic state is greater than when there is variation in strain tolerance within groups. Looked at from another perspective, comparing CB-SB and CB-SB-PB both with only the most tolerant strains, presence of a high tolerance PB strain (in CB-SB-PB) allows the formation of an anoxic cyanobacteria-free stable state (whereas there was no such state in CB-SB). We interpret this as presence of a high tolerance PB strain stabilising the anoxic state, perhaps by increasing the availability of oxidised sulfur which is a resource for SB. Nevertheless, absence of SB strains with high growth rate seems to shift the oxic-anoxic tipping point to lower oxygen diffusivity. 
 
 (ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -1377,61 +1373,9 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 
 
 
-When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at higher oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
+When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at lower oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
 
-When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). 
-
-
-# Comparing the effects of different treatments
-
-(ref:comp-comb) Another method for comparing the effects of different diversity treatments. Some lines (treatment combinations) are over-plotted and therefore show identical effects of some combinations.
-
-```{r comp-comb, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center", fig.cap='(ref:comp-comb)'}
-
-all_stab <- readRDS(here("data",
-                         microxanox_version_path,
-                         "temporal_method",
-                         "event_definition_2",
-                         "processed_data",
-                         "all_stab_data.RDS"))
-wait_time <- 1e6
-which_strain <- 9
-plot_here <- all_stab %>%
-  filter(waittime == wait_time)
-
-  p1 <- plot_here %>%
-    #filter(var_treat == "CB") %>%
-    filter(num_strains == which_strain) %>%
-    filter(Species == "SB_tot") %>%
-    ggplot(aes(x = stand_var
-               #col = as.factor(num_strains))
-    )) +
-    geom_line(aes(y = hyst_min_log, col=var_treat), lwd = 1, alpha = 0.8) +
-    geom_line(aes(y = hyst_max_log, col=var_treat), lwd = 1, alpha = 0.8) +
-    #geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log),
-    #            fill = "green", alpha = 0.1) +
-    #facet_grid(var_treat ~ ., scales = "fixed") +
-    xlab("Standardised amount of trait variation") +
-    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
-    #labs(fill = "Variation in\nonly these\nfunctional groups") +
-    coord_flip() +
-    #guides(col = guide_legend(title="Number of strains"),
-    #       fill = guide_none()) +
-    theme_bw() +
-    theme(
-      legend.position="top",
-      panel.background = element_blank(),
-      #strip.text.x = element_blank()
-    ) +
-    geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) #+
-    #geom_text(aes(x = 0.95, y = -8.1, label = label), colour = "black") +
-    #ggtitle(figure_title)
-
-  p1
- 
-```
-
-
+When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). Both tipping points occurred at lower levels of oxygen diffusivity than expected by additivity. Interestingly, diversity in the cyanobacteria moved the shift to the oxic state to lower levels of oxygen diffusivity although independent variation in the cyanobacteria had no effect on this tipping point. 
 
 
 

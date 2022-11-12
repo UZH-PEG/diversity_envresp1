@@ -29,6 +29,12 @@ if(!dir.exists(here("data",
                           microxanox_path,
                           "temporal_method",
                           "single_sims"))
-  if(res1 & res2 & res3 & res4)
+  res5 <- dir.create(here("data",
+                          microxanox_path,
+                          "replication_method",
+                          "event_definition_2",
+                          "processed_data"),
+                     recursive = TRUE)
+  if(res1 & res2 & res3 & res4 & res5)
     result <- paste0("New folders created for results using ", microxanox_path)
 }
