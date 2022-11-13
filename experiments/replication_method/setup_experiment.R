@@ -52,6 +52,11 @@ num_div_treatment_levels <- 20
 ## resolution for sub1
 #num_div_treatment_levels <- 50
 
+## for testing
+if(test_mode)
+  num_div_treatment_levels <- 5
+
+
 ## Create diversity
 var_expt <- create_diversity_factorial2(
   zero = zero, unity = unity,
@@ -70,8 +75,9 @@ var_expt <- create_diversity_factorial2(
 minimum_abundances <- rep(1, 3)
 names(minimum_abundances) <- c("CB", "PB", "SB")
 
-grid_num_a <- 300 #usually 1000 ## number of a_0 values
-grid_num_a <- 3 ## FOR TEST
+grid_num_a <- 300 # number of a_0 values
+if(test_mode)
+  grid_num_a <- 30 ## FOR TEST
 a_Os <- 10^seq(-8, -0, length=grid_num_a) ## sequence of a_0 values
 grid_num_N <- 2 ## number of N values
 initial_CBs <- 10^seq(0, 10, length=grid_num_N) ## sequence of N values

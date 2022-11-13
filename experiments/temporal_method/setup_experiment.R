@@ -54,6 +54,9 @@ num_div_treatment_levels <- 20
 ## resolution for sub1
 #num_div_treatment_levels <- 50
 
+## for testing only, comment out to make a complete run
+if(test_mode)
+  num_div_treatment_levels <- 5
 
 
 ## Create diversity
@@ -114,9 +117,12 @@ var_expt <- create_diversity_factorial2(
 
 #wait_time <- 1e3 ## set in run_all.r
 parameter$log10a_series <- seq(-8, 0, length = 300)
-##### next two lines for testing purposes
+
+##### next two lines for testing purposes, comment out to make a complete run
 #wait_time <- 1e2 ## for testing
-#parameter$log10a_series <- seq(-8, 0, length = 30) ## for testing
+if(test_mode)
+  parameter$log10a_series <- seq(-8, 0, length = 30) ## for testing
+
 ##### end of lines for testing
 parameter$minimum_abundances["CB"] <- 1
 parameter$minimum_abundances["SB"] <- 1
@@ -125,6 +131,6 @@ parameter$event_interval <- 1000
 parameter$sim_duration <- wait_time * length(parameter$log10a_series)
 parameter$sim_sample_interval <- wait_time
 total_initial_abundances <- 10^5
-event_def <- event_definition
-parameter$event_definition <- eval(parse(text = event_def))
+#event_def <- event_definition
+parameter$event_definition <- eval(parse(text = event_definition))
 

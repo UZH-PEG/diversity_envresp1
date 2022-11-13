@@ -22,12 +22,12 @@ options(mc.cores = max_cores)
                                 paste0("ss_data_",
                                        num_strains, "strains_sim_length",
                                        formatC(sim_length, format = "e", digits = 0),
-                                       "_", event_def,".RDS"))
+                                       "_", event_definition,".RDS"))
   stab_data_filename <- file.path(datadir,
                                   paste0("stab_data_",
                                          num_strains, "strains_sim_length",
                                          formatC(sim_length, format = "e", digits = 0),
-                                         "_", event_def,".RDS"))
+                                         "_", event_definition,".RDS"))
 
   #var_expt <- var_expt[1,]
 

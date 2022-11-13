@@ -5,7 +5,7 @@ max_cores <- benchmarkme::get_cpu()$no_of_cores-2
 
 ## setup experiment with two strains
 num_strains <- 2
-source(here::here("experiments/0_ss_finding/temporal_method/setup_experiment.R"))
+source(here::here("experiments/temporal_method/setup_experiment.R"))
 
 ## keep only the most tolerant strain
 #var_expt <- var_expt[1:2,]
@@ -24,7 +24,8 @@ num_strains <- -1 ## use this to label that only the most tolerant strain is kep
 
 datadir <- here::here("data",
                       microxanox_path,
-                      "temporal_method")
+                      "temporal_method",
+                      event_definition)
 #dir.create(datadir, recursive = TRUE, showWarnings = FALSE)
 
 ss_data_filename <- file.path(datadir,

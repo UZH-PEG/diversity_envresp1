@@ -22,12 +22,12 @@ for(num_strains in c(2, 3, 6, 9)) {
                                 paste0("ss_data_",
                                        num_strains, "strains_waittime",
                                        formatC(wait_time, format = "e", digits = 0),
-                                       "_", event_def,".RDS"))
+                                       "_", event_definition,".RDS"))
   stab_data_filename <- file.path(datadir,
                                   paste0("stab_data_",
                                          num_strains, "strains_waittime",
                                          formatC(wait_time, format = "e", digits = 0),
-                                         "_", event_def,".RDS"))
+                                         "_", event_definition,".RDS"))
   
   ## Estimate time require ----
   nrow(var_expt)

@@ -32,7 +32,7 @@ keep_tbl1 <- tbl1
 
 all_stab <- tbl1 %>%
   select(-data, -pars, -ss_by_a_N_result, -ss_res) %>%
-  separate(filename , sep = "_", into = c(paste0("junk", 1:9), "simlength", paste0("junk", 10:12))) %>%
+  separate(filename , sep = "_", into = c(paste0("junk", 1:12), "simlength", paste0("junk", 14:16))) %>%
   select(-starts_with("junk")) %>%
   mutate(simlength = parse_number(simlength))
 
