@@ -526,6 +526,8 @@ temp_meth[1,]$ssfind_result[[1]] <- single_2e6
 fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 ```
 
+
+
 # SB diversity effects
 
 ## SB diversity effect on the anoxic to oxic transition
@@ -938,11 +940,10 @@ We investigated if the diversity effects observed in our study were in line with
 
 To exclude that differences between the tolerance manipulation and the diversity manipulation were driven by the difference in number of strains, we also performed simulations in which we retained nine strains in each functional group but set the tolerance of all nine strains to the maximum tolerance value. Results were the same as those presented below from simulations with one strain. 
 
-For most of the explored combinations and amounts of functional diversity/tolerance the tipping point positions did not differ between the diversity manipulation and the tolerance manipulation (Figure \@ref(fig:max-tol1)). However, the tipping point positions did differ between the diversity manipulation and the tolerance manipulation in some cases when at least SB contained variation, and when variation was high, e.g. SB (though only a very small difference), CB-SB, and SB-SB-PB. We explore these cases in the following section. 
+For most of the explored combinations and amounts of functional diversity/tolerance the tipping point positions did not differ between the diversity manipulation and the tolerance manipulation (Figure \@ref(fig:max-tol1)). However, in some cases there were effects, three of which are described in the follow sections.
 
 
-(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present. In the CB-SB treatments there is missing data in the case with only the most tolerant strain when the algorithm for detecting tippings did not work appropriately due to qualitatively different dynamics (see below for details).
-
+(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present.
 
 ```{r max-tol1, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol1)', fig.height=8, fig.width=8, fig.align="center"}
 #all_stab <- readRDS(here("data", "0_ss_finding", "temporal_method", "processed_data", "stab_data_temporal_method_ELErevision1.2.RDS"))
@@ -961,8 +962,8 @@ figure_title <- " "
 
 ## remove data where there are no stable states
 ## this subset is identified by inspection of the figure
-all_stab <- all_stab %>%
-  filter(!(var_treat == "CB-SB" & stand_var > 0.84 & num_strains == -1))
+#all_stab <- all_stab %>%
+#  filter(!(var_treat == "CB-SB" & stand_var > 0.84 & num_strains == -1))
 
 plot_1 <- fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
                               which_wait_time, figure_title)
@@ -990,9 +991,9 @@ maxtolonly_strains <- readRDS(here("data",
 
 ## High tolerance vs. high diversity in only the SB
 
-We see a slight difference in the position of the oxic to anoxic tipping point with only high diversity in SB. When the SB contained only one strain with very high tolerance and low maximum growth rate, the system varied around a stable state with all three functional groups coexisting (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple strains varying in tolerance (Figure \@ref(fig:max-tol2)), or when there was only one strain with mean tolerance.
+When SB contained multiple strains varying in growth rate (and tolerance) there were only two stable states (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, there three stable states: the two previously found, and another where all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple strains varying in tolerance.
 
-Apparently, absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. It seems that the most tolerant SB strain does not have a high enough growth rate to itself exclude the cyanobacteria. Cyanobacteria are therefore always present, regardless of the oxygen diffusivity.
+Apparently, at low oxygen diffusivity levels, the absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. It seems that the most tolerant SB strain does not have a high enough growth rate to itself exclude the cyanobacteria. Cyanobacteria are therefore always present, regardless of the oxygen diffusivity. We do not have an explanation of why the cyanobacteria are, however, excluded at intermediate oxygen diffusivities.
 
 (ref:max-tol2) Stable states found when there is variation among nine strains of SB and the amount of variation is high. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -1013,10 +1014,8 @@ max_tol_one <- filter(maxtolonly_strains,
        CB_var_gmax_s == 0,
        abs(SB_var_gmax_s - 0.09473684) < 0.001,
        PB_var_gmax_s == 0)
-fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one)
+fig_state_vs_o2diff_sidebyside_alternative(max_tol_one)
 ```
-
-### What causes the variation in response to oxygen diffusivity (SB)?
 
 In the ecosystem shown in Figure \@ref(fig:max-tol3), where the SB contained one strain with very high tolerance, there was large variation in state variables along the oxygen diffusivity gradient at values less than about -4.5. To examine what might be causing this, we simulated the ecosystem at a constant oxygen diffusivity of $log_{10}$ oxygen diffusivity of -6 (Figure \@ref(fig:SB-maxtol-dyn1)). We see that the dynamics are qualitatively different from other cases in which there is a stable state reached in such a simulation (Figure \@ref(fig:sb-div-effect4)). It appears that the high tolerance SB strain is able to initiate a transition to an anoxic state, but is not able to create a stable anoxic state. This dynamical situation was not present in the ecosystem in which high tolerance and low tolerance strains were present.
 
@@ -1073,19 +1072,9 @@ p
 
 
 
-## High tolerance vs. high diversity in CB and SB
+## High tolerance vs. high diversity in CB-SB
 
-As in the SB only case, the absence of lower tolerance-higher growth rate strains changes the system to a parameter space where cyanobacteria can coexist with sulfur bacteria when there is only one strain with high tolerance (and low growth rate) in each of the CB and SB functional groups (Figure \@ref(fig:max-tol5)).
-
-(ref:max-tol4)  Stables states found when there is high trait variation among nine strains of CB and SB. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
-
-```{r max-tol4, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol4)', fig.height=10, fig.width=8, fig.align="center"}
-filter(nine_strains,
-       abs(CB_var_gmax_s - 0.026592798) < 0.001,
-       abs(SB_var_gmax_s - 0.079778395) < 0.001,
-       PB_var_gmax_s == 0) %>%
-fig_state_vs_o2diff_sidebyside_alternative_leftfliponly()
-```
+In the SB-SB case, presence of only the high tolerance strain could cause the system to not display any alternate stable states (Figure \@ref(fig:max-tol5)).
 
 (ref:max-tol5)  Stable states found when CB and SB each contain only the single most tolerant strain with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -1094,62 +1083,13 @@ max_tol_one_CBSB <- filter(maxtolonly_strains,
        abs(CB_var_gmax_s - 0.026592798) < 0.001,
        abs(SB_var_gmax_s - 0.079778395) < 0.001,
        PB_var_gmax_s == 0)
-fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one_CBSB)
-```
+max_tol_one_CBSB <- filter(maxtolonly_strains,
+       abs(CB_var_gmax_s - 0.028254848) < 0.001,
+       abs(SB_var_gmax_s - 0.084764545) < 0.001,
+       PB_var_gmax_s == 0)
 
 
-### What causes the variation in response to oxygen diffusivity (CB-SB)?
-
-In the ecosystem shown in Figure \@ref(fig:max-tol5), where CB and SB each contained only one strain with very high tolerance, there was large variation in state variables along the oxygen diffusivity gradient at values less than about -6.5. To examine what might be causing this, we simulated the ecosystem at a constant oxygen diffusivity of $log_{10}$ oxygen diffusivity of -7 (Figure \@ref(fig:CBSB-maxtol-dyn1)). We see that the dynamics are qualitatively different from other cases in which there is a stable state reached in such a simulation (Figure \@ref(fig:sb-div-effect4)). It appears that the SB strain with high tolerance is able to initiate a transition to an anoxic state, but is not able to create a stable anoxic state. 
-
-```{r echo = FALSE}
-#nine_strain_one$pars[[1]]
-#max_tol_one$pars[[1]]
-#fig_state_vs_o2diff_sidebyside_alternative(nine_strain_one)
-#fig_state_vs_o2diff_sidebyside_alternative(max_tol_one)
-parameter <- max_tol_one_CBSB$parameter[[1]]
-parameter$strain_parameter <- max_tol_one$pars[[1]]
-#parameter$strain_parameter <- ss_result$pars[[1]]
-total_initial_abundances <- 10^5
-parameter <- set_temporal_ssfind_initial_state(parameter,
-                                               total_initial_abundances,
-                                               total_initial_abundances,
-                                               total_initial_abundances)
-parameter$log10a_series <- c(-7, -7)
-wait_time <-  1e5
-parameter$sim_duration <- wait_time * length(parameter$log10a_series)
-parameter$sim_sample_interval <- 10
-#parameter$sim_duration
-test1 <- run_simulation(parameter)
-```
-
-(ref:CBSB-maxtol-dyn1) Temporal dynamics of an ecosystem with a single CB strain with high tolerance and a single SB strain with high tolerance, the same one as in Figure \@ref(fig:max-tol5) simulated with constant $log_{10}(oxygen diffusivity)$ of -6.
-
-```{r CBSB-maxtol-dyn1, echo = FALSE,  include=TRUE, fig.cap='(ref:CBSB-maxtol-dyn1)', fig.height=10, fig.width=8, fig.align="center"}
-p <- plot_dynamics(test1)
-p[[1]] <- p[[1]] + 
-  xlab(NULL) + 
-  ylab(expression(log[10](density)~(cells~L^{-1}))) +
-  theme_bw()
-p[[2]] <- p[[2]] + 
-  xlab(NULL) + 
-  ylab(expression(log[10](density)~(cells~L^{-1}))) +
-  theme_bw()
-p[[3]] <- p[[3]] + 
-  xlab(NULL) + 
-  ylab(expression(log[10](density)~(cells~L^{-1}))) +
-  theme_bw()
-p[[4]]$data <- p[[4]]$data %>% 
-  dplyr::filter(species != "a")
-p[[4]]$data$species <- p[[4]]$data$species %>%
-  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
-p[[4]] <- p[[4]] + 
-  xlab("time (h)") + 
-  ylab(expression(log[10](concentration)~(µM))) + 
-  labs(colour = "substrate") +
-  theme_bw()
-  
-p
+fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
 ```
 
 
@@ -1157,7 +1097,7 @@ p
 
 ## High tolerance vs. high diversity in CB-SB-PB
 
-When in each of the three functional groups only the most tolerant strain is present, the resilience of the oxic state is greater than when there is variation in strain tolerance within groups. It is not entirely clear why this effect only occurs in this case. 
+When in each of the three functional groups only the most tolerant strain is present, the resilience of the oxic state is greater than when there is variation in strain tolerance within groups. It is not entirely clear why this effect only occurs only in this combination. 
 
 (ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -1432,6 +1372,51 @@ plot_here <- all_stab %>%
 ```
 
 
+
+# CB diversity effects
+
+Increased CB diversity causes a slight decrease in the resilience of the anoxic state. The following two figures show the state responses to oxygen diffusivity with low Figure \@ref(fig:ss-CB-only1) and high Figure \@ref(fig:ss-CB-only2) levels of CB diversity.
+
+The difference in the position of the anoxic to oxic tipping point is small. It is, in fact the smallest it could be, as it is the smallest step size in oxygen diffusivity used in the simulations. Furthermore, we think the presence of higher strain diversity can increase the rate of response of the system (since there is a strain with higher growth rate than in low diversity levels) and that this difference in response rates is likely responsible for the very small difference in resilience.
+
+(ref:ss-CB-only1) Stable state of the system with **low** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
+
+```{r ss-CB-only1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only1)', fig.height=10, fig.width=8, fig.align="center"}
+wait_time <- "1e+06"
+ss_9s <- readRDS(here::here("data",
+                            microxanox_version_path, 
+                            "temporal_method",
+                            "event_definition_2",
+                            paste0("ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+#stab_9s <- readRDS(here::here(\"data", "0_ss_finding", "temporal_method", microxanox_version_path, paste0("stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS"))
+
+
+#max <- max(ss_3s$PB_var_gmax_s)
+#f <- 0.625
+#fv <- f*max
+
+only_CB_variable <- ss_9s %>%
+  filter(
+    abs(SB_var_gmax_s) < 0.0001,
+    abs(PB_var_gmax_s) < 0.0001
+  )
+only_CB_variable <- only_CB_variable[order(only_CB_variable$CB_var_gmax_s), ]
+
+#only_CB_variable$CB_var_gmax_s
+
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[2,])
+
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+(ref:ss-CB-only2) Stable state of the system with **high** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
+
+```{r ss-CB-only2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only2)', fig.height=10, fig.width=8, fig.align="center"}
+
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[20,])
+
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
 
 
 
