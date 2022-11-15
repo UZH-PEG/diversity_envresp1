@@ -21,13 +21,13 @@ library(here)
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/CB_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/CB_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/CB_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/CB_medium_div.mp4"))
 ```
 
 # Sulfate reducing bacteria
@@ -35,13 +35,13 @@ include_graphics(here("experiments/3_animate/mp4s/CB_medium_div.mp4"))
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/SB_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/SB_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/SB_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/SB_medium_div.mp4"))
 ```
 
 # Phototrophic sulfur bacteria
@@ -49,13 +49,13 @@ include_graphics(here("experiments/3_animate/mp4s/SB_medium_div.mp4"))
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/PB_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/PB_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/PB_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/PB_medium_div.mp4"))
 ```
 
 # Oxygen concentration
@@ -63,13 +63,13 @@ include_graphics(here("experiments/3_animate/mp4s/PB_medium_div.mp4"))
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/O_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/O_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/O_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/O_medium_div.mp4"))
 ```
 
 # Reduced sulfur concentration
@@ -77,13 +77,13 @@ include_graphics(here("experiments/3_animate/mp4s/O_medium_div.mp4"))
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/SR_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/SR_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/SR_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/SR_medium_div.mp4"))
 ```
 
 # Sulfate concentration
@@ -91,13 +91,13 @@ include_graphics(here("experiments/3_animate/mp4s/SR_medium_div.mp4"))
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/SO_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/SO_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/SO_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/SO_medium_div.mp4"))
 ```
 
 # Phospate concentration
@@ -105,11 +105,11 @@ include_graphics(here("experiments/3_animate/mp4s/SO_medium_div.mp4"))
 ## No diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/P_no_div.mp4"))
+include_graphics(here("reports/animations/mp4s/P_no_div.mp4"))
 ```
 
 ## Some diversity
 
 ```{r}
-include_graphics(here("experiments/3_animate/mp4s/P_medium_div.mp4"))
+include_graphics(here("reports/animations/mp4s/P_medium_div.mp4"))
 ```

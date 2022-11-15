@@ -2,7 +2,7 @@
 
 anim_save_wrap <- function(plot_anim, this_fg, this_div, this_substrate = NA) {
   if(is.na(this_substrate))
-  anim_save(here::here(paste0("experiments/3_animate/",
+  anim_save(here::here(paste0("reports/animations/gifs/",
                              this_fg ,"_", this_div, ".gif")),
             p1_ann,
             nframes = nframes,
@@ -10,7 +10,7 @@ anim_save_wrap <- function(plot_anim, this_fg, this_div, this_substrate = NA) {
             height = height, width = width, units = units,
             res = res)
   if(!is.na(this_substrate))
-    anim_save(here::here(paste0("experiments/3_animate/",
+    anim_save(here::here(paste0("reports/animations/gifs/",
                                 this_substrate ,"_", this_div, ".gif")),
               p1_ann,
               nframes = nframes,

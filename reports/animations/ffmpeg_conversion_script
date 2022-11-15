@@ -1,5 +1,4 @@
-
-ffmpeg -f gif -i CB_no_div.gif -vf scale=1000:-1 CB_no_div.mp4
+In terminal, navigate to the gif folder, then run the following:
 
 for i in *.gif; do ffmpeg -f gif -i "$i" -vf scale=1000:-1 "../mp4s/${i%.*}.mp4"; done
 

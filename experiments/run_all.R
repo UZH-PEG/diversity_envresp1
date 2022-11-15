@@ -28,7 +28,7 @@ result
 
 
 # Run temporal method stable state finding ----
-run_flag_1 <- TRUE
+run_flag_1 <- FALSE
 if(run_flag_1) {
   
   ## event_definition_2 ----
@@ -61,14 +61,14 @@ if(run_flag_1) {
 
 
 ### Make a couple of individual simulations, one with longer duration ----
-run_flag_2 <- TRUE
+run_flag_2 <- FALSE
 if(run_flag_2) {
   source(here("experiments/temporal_method/run_single_sims.R"))
 }
 
 
 ## event_definition_1 ----
-run_flag_3 <- TRUE
+run_flag_3 <- FALSE
 if(run_flag_3) {
   event_definition <- "event_definition_1"
   ### Only one wait time ----
@@ -80,7 +80,7 @@ if(run_flag_3) {
 
 
 # Run replication method stable state finding ----
-run_flag_4 <- TRUE
+run_flag_4 <- FALSE
 if(run_flag_4) {
   event_definition <- "event_definition_2"
   sim_length <- 1e6
