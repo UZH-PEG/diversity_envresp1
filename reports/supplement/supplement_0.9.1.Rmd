@@ -1427,4 +1427,105 @@ Bush, T., Diao, M., Allen, R.J., Sinnige, R., Muyzer, G. & Huisman, J. (2017). O
 Luther, G.W., Findlay, A., MacDonald, D., Owings, S., Hanson, T., Beinart, R., et al. (2011). Thermodynamics and kinetics of sulfide oxidation by oxygen: a look at inorganically controlled reactions and biologically mediated processes in the environment. Front. Microbiol., 2, 62.
 
 
+# ADDED BY RAINER Issue #27
+
+## 
+```{r}
+
+## PB
+only_PB_variable <- ss_9s %>%
+  filter(
+    abs(CB_var_gmax_s) < 0.0001,
+    abs(SB_var_gmax_s) < 0.0001
+  )
+only_PB_variable <- only_PB_variable[order(only_PB_variable$PB_var_gmax_s), ]
+
+## CB
+only_CB_variable <- ss_9s %>%
+  filter(
+    abs(PB_var_gmax_s) < 0.0001,
+    abs(SB_var_gmax_s) < 0.0001
+  )
+only_CB_variable <- only_CB_variable[order(only_CB_variable$CB_var_gmax_s), ]
+
+## SB
+only_SB_variable <- ss_9s %>%
+  filter(
+    abs(PB_var_gmax_s) < 0.0001,
+    abs(CB_var_gmax_s) < 0.0001
+  )
+only_SB_variable <- only_SB_variable[order(only_SB_variable$SB_var_gmax_s), ]
+
+
+## PB_CB
+only_PB_CB_variable <- ss_9s %>%
+  filter(
+    abs(SB_var_gmax_s) < 0.0001
+  )
+only_PB_CB_variable <- only_PB_CB_variable[order(only_PB_CB_variable$PB_var_gmax_s), ]
+
+## CB_SB
+only_CB_SB_variable <- ss_9s %>%
+  filter(
+    abs(PB_var_gmax_s) < 0.0001
+  )
+only_CB_SB_variable <- only_CB_SB_variable[order(only_CB_SB_variable$PB_var_gmax_s), ]
+
+## PB_SB
+only_PB_SB_variable <- ss_9s %>%
+  filter(
+    abs(CB_var_gmax_s) < 0.0001
+  )
+only_PB_SB_variable <- only_PB_SB_variable[order(only_PB_SB_variable$PB_var_gmax_s), ]
+
+
+## CB_PB_SB
+only_CB_PB_SB_variable <- ss_9s
+only_CB_PB_SB_variable <- only_CB_PB_SB_variable[order(only_CB_PB_SB_variable$PB_var_gmax_s), ]
+
+```
+
+## PB
+```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim2,])
+```
+
+## CB
+```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
+sim3 <- 19
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[sim2,])
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[sim3,])
+```
+
+## SB
+```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[sim2,])
+```
+
+## PB & CB
+```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_CB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_CB_variable[sim2,])
+```
+
+## CB & SB
+```{r echo = FALSE,  include=TRUE,, fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_SB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_SB_variable[sim2,])
+```
+
+## PB & SB
+```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_SB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_PB_SB_variable[sim2,])
+```
+
+## CB & PB & SB
+```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_PB_SB_variable[sim1,])
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_PB_SB_variable[sim2,])
+```
 
