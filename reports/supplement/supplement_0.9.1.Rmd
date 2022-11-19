@@ -530,7 +530,7 @@ fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 
 # SB diversity effects
 
-## SB diversity effect on the anoxic to oxic transition
+## SB diversity effect on the anoxic to oxic transition for short wait times (1e4)
 
 We showed above that wait times of 1e5 (Figure \@ref(fig:div-temp-meth2)) and 1e4 (Figure \@ref(fig:div-temp-meth4)) produce qualitatively and often quantitatively very similar results to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or in CB-SB with wait times of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift to the oxic state.  Suprisingly, when there is just a little more diversity in the SB, then the anoxic to oxic transition happens earlier, i.e. there is a large decrease in resilience (Figure \@ref(fig:ss-temp-meth2)).
 
@@ -580,8 +580,7 @@ This phenomenon is dependent on having static trait values for the strains. If s
 
 ## SB diversity effect on the oxic to anoxic transition {#SB2}
 
-
-When the environment ameliorates for the sulfate-reducing bacteria (i.e. trajectory of decreasing oxygen diffusivity), there is only limited evidence of strain replacement (in final state) along the oxygen diffusivity gradient -- either the system is oxic or the least tolerant strain dominates. And yet the switch to anoxic state occurs at higher oxygen diffusivity than when there is no diversity, which suggests there is some role of the more tolerant strains. We here show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity (log10(oxygen diffusivity) = -4.8). When there is no diversity within functional groups (i.e. two strains that are identical) the system remains oxic (Figure \@ref(fig:sb-div-effect3)). When there is diversity (i.e. the two strains differ) then the system switches to the anoxic state (Figure \@ref(fig:sb-div-effect4)). In these examples there is only diversity in the two groups of sulfur bacteria. The most tolerant strain does at first grow, but is then outcompeted by less tolerant strains as the concentration of the inhibiting substrate (oxygen) declines.
+We show in the main text that diversity in the sulfate-reducing bacteria results in earlier recovery of the anoxic state (Figure 3 c). However, there is only limited evidence of strain replacement on the trajectory of decreasing oxygen diffusivity: the most tolerant strain does increase in density prior to the tipping point but never reaches dominance – it is the strain with lowest tolerance that dominates immediately after the shift to the anoxic state. We here analyze temporal dynamics rather than the final state and show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity $log_{10}$(oxygen diffusivity) = -4.8. When there is no diversity within functional groups (i.e. two strains that are identical) the system remains oxic (Figure \@ref(fig:sb-div-effect3)). When there is diversity in the two groups of sulfur bacteria (i.e. the two strains differ) the system switches to the anoxic state (Figure \@ref(fig:sb-div-effect4)). The more tolerant strain of sulfate-reducing bacteria increases in density in the early phase of the simulation, reduces the concentration of oxygen by inhibiting cyanobacteria, and thus generates an environment in which the less tolerant strain is able to grow. Then, the more tolerant strain is outcompeted by the less tolerant strain as the concentration of the inhibiting substrate (oxygen) declines. 
 
 ```{r echo = FALSE}
 run_sims_this_section <- TRUE
@@ -749,6 +748,7 @@ p
 
 # PB diversity effects
 
+## Effect of low to moderate PB diversity
 
 ```{r echo = FALSE}
 ss_9s <- readRDS(here("data",
@@ -868,6 +868,24 @@ dd %>%
   theme_bw() +
   theme(legend.position="top")
 ```
+
+
+## Effect of medium to high PB diversity
+
+
+When there was medium to high variation in only the phototrophic sulfur bacteria, the dynamics of strains and substrates deviated from the standard pattern: at low oxygen diffusivity, all three groups coexisted. On the trajectory of decreasing oxygen diffusivity, cyanobacteria reappeared after their collapse (medium variation in PB, Figure xy) or never collapsed (high variation in PB, Figure xy). On the trajectory of increasing oxygen diffusivity, cyanobacteria coexisted with the two groups of sulfur bacteria at low oxygen diffusivity, collapsed at medium levels of oxygen diffusivity, and then increased to sole dominance at the tipping point to the oxic state. 
+
+
+Explain pattern (Romana).
+
+The same pattern occurred for simultaneous variation in phototrophic sulfur bacteria and cyanobacteria, albeit only on the trajectory of increasing oxygen diffusivity (Figure xy). On the trajectory of decreasing oxygen diffusivity, medium to high variation in both groups led to sole dominance of cyanobacteria over the entire gradient of oxygen diffusivity. 
+
+
+Owen, please add here 3 figures that match the text above: 
+(1) medium variation in only PB showing coexistence of all groups at low ox diff, 
+(2) high variation in only PB showing coexistence of all groups at low ox diff and CB never collapsing on the decreasing ox diff trajectory, 
+(3) high variation in both CB and PB. 
+
 
 
 
@@ -1074,7 +1092,10 @@ p
 
 ## High tolerance vs. high diversity in CB-SB
 
-In the SB-SB case, presence of only the high tolerance strain could cause the system to not display any alternate stable states (Figure \@ref(fig:max-tol5)).
+In the SB-CB case, presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure xy) or to absence of alternate stable states when trait values were high (Figure \@ref(fig:max-tol5)).
+
+
+Owen please add here a figure for medium trait values for the SB-CB case (only most tolerant strain), showing coexistence of all three groups at low ox diff. 
 
 (ref:max-tol5)  Stable states found when CB and SB each contain only the single most tolerant strain with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
@@ -1091,6 +1112,15 @@ max_tol_one_CBSB <- filter(maxtolonly_strains,
 
 fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
 ```
+
+
+
+## High tolerance vs. high diversity in PB
+
+
+Owen please add here two figures:
+(1) One for high trait variation in only PB showing coexistence of all three groups.
+(2) One for high tolerance in only PB (corresponding in trait values to the figure before) showing standard dynamics.
 
 
 
@@ -1426,106 +1456,4 @@ Bush, T., Diao, M., Allen, R.J., Sinnige, R., Muyzer, G. & Huisman, J. (2017). O
 
 Luther, G.W., Findlay, A., MacDonald, D., Owings, S., Hanson, T., Beinart, R., et al. (2011). Thermodynamics and kinetics of sulfide oxidation by oxygen: a look at inorganically controlled reactions and biologically mediated processes in the environment. Front. Microbiol., 2, 62.
 
-
-# ADDED BY RAINER Issue #27
-
-## 
-```{r}
-
-## PB
-only_PB_variable <- ss_9s %>%
-  filter(
-    abs(CB_var_gmax_s) < 0.0001,
-    abs(SB_var_gmax_s) < 0.0001
-  )
-only_PB_variable <- only_PB_variable[order(only_PB_variable$PB_var_gmax_s), ]
-
-## CB
-only_CB_variable <- ss_9s %>%
-  filter(
-    abs(PB_var_gmax_s) < 0.0001,
-    abs(SB_var_gmax_s) < 0.0001
-  )
-only_CB_variable <- only_CB_variable[order(only_CB_variable$CB_var_gmax_s), ]
-
-## SB
-only_SB_variable <- ss_9s %>%
-  filter(
-    abs(PB_var_gmax_s) < 0.0001,
-    abs(CB_var_gmax_s) < 0.0001
-  )
-only_SB_variable <- only_SB_variable[order(only_SB_variable$SB_var_gmax_s), ]
-
-
-## PB_CB
-only_PB_CB_variable <- ss_9s %>%
-  filter(
-    abs(SB_var_gmax_s) < 0.0001
-  )
-only_PB_CB_variable <- only_PB_CB_variable[order(only_PB_CB_variable$PB_var_gmax_s), ]
-
-## CB_SB
-only_CB_SB_variable <- ss_9s %>%
-  filter(
-    abs(PB_var_gmax_s) < 0.0001
-  )
-only_CB_SB_variable <- only_CB_SB_variable[order(only_CB_SB_variable$PB_var_gmax_s), ]
-
-## PB_SB
-only_PB_SB_variable <- ss_9s %>%
-  filter(
-    abs(CB_var_gmax_s) < 0.0001
-  )
-only_PB_SB_variable <- only_PB_SB_variable[order(only_PB_SB_variable$PB_var_gmax_s), ]
-
-
-## CB_PB_SB
-only_CB_PB_SB_variable <- ss_9s
-only_CB_PB_SB_variable <- only_CB_PB_SB_variable[order(only_CB_PB_SB_variable$PB_var_gmax_s), ]
-
-```
-
-## PB
-```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim2,])
-```
-
-## CB
-```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
-sim3 <- 19
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[sim2,])
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[sim3,])
-```
-
-## SB
-```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_SB_variable[sim2,])
-```
-
-## PB & CB
-```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(only_PB_CB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_PB_CB_variable[sim2,])
-```
-
-## CB & SB
-```{r echo = FALSE,  include=TRUE,, fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_SB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_SB_variable[sim2,])
-```
-
-## PB & SB
-```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(only_PB_SB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_PB_SB_variable[sim2,])
-```
-
-## CB & PB & SB
-```{r echo = FALSE,  include=TRUE, fig.height=10, fig.width=8, fig.align="center"}
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_PB_SB_variable[sim1,])
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_PB_SB_variable[sim2,])
-```
 
