@@ -873,12 +873,14 @@ dd %>%
 ## Effect of medium to high PB diversity
 
 
-When there was medium to high variation in only the phototrophic sulfur bacteria, the dynamics of strains and substrates deviated from the standard pattern: at low oxygen diffusivity, all three groups coexisted. On the trajectory of decreasing oxygen diffusivity, cyanobacteria reappeared after their collapse (medium variation in PB, Figure xy) or never collapsed (high variation in PB, Figure xy). On the trajectory of increasing oxygen diffusivity, cyanobacteria coexisted with the two groups of sulfur bacteria at low oxygen diffusivity, collapsed at medium levels of oxygen diffusivity, and then increased to sole dominance at the tipping point to the oxic state. 
+When there was medium to high variation in only the phototrophic sulfur bacteria (PB), the strain dynamics deviated from the standard pattern: at low oxygen diffusivity, all three functional groups coexisted. Specifically, on the trajectory of decreasing oxygen diffusivity, cyanobacteria reappeared at low oxygen diffusivity after their collapse at medium oxygen diffusivity (medium variation in PB, Figure xy) or never collapsed (high variation in PB, Figure xy). On the trajectory of increasing oxygen diffusivity, cyanobacteria coexisted with the two groups of sulfur bacteria at low oxygen diffusivity, collapsed at medium levels of oxygen diffusivity, and then increased to sole dominance at the tipping point to the oxic state. 
 
+The same pattern occurred for medium to high simultaneous variation in phototrophic sulfur bacteria and cyanobacteria, albeit only on the trajectory of increasing oxygen diffusivity (Figure xy). On the trajectory of decreasing oxygen diffusivity, cyanobacteria dominated over the entire gradient of oxygen diffusivity, such that effects of PB diversity did not play out on this trajectory. 
 
-Explain pattern (Romana).
+The reason for coexistence of all three groups at low oxygen diffusivity was that the PB strain that dominated at low oxygen diffusivity (the least tolerant strain) lowered the sulfide concentrations to such low levels that cyanobacteria were able to grow. The higher the trait variation in PB, the higher the intrinsic growth rate of the least tolerant PB strain, and the higher its consumption of sulfide. Consequently, moderate variation in PB lowered the sulfide concentration such that the tipping point from anoxic to oxic occurred earlier (as discussed in the previous section), and medium to high variation in PB lowered the sulfide concentration even further such that cyanobacteria were able to grow and coexist with the two groups of sulfur bacteria at low oxygen diffusivity. 
 
-The same pattern occurred for simultaneous variation in phototrophic sulfur bacteria and cyanobacteria, albeit only on the trajectory of increasing oxygen diffusivity (Figure xy). On the trajectory of decreasing oxygen diffusivity, medium to high variation in both groups led to sole dominance of cyanobacteria over the entire gradient of oxygen diffusivity. 
+At intermediate levels of oxygen diffusivities, the cyanobacteria were usually excluded (Figure xy). We speculate that this might be associated with the increase in sulfide prior to the collapse of the phototrophic sulfur bacteria. This increase in sulfide occurred simultaneously with turnover to PB strains with lower intrinsic growth rate and with a decline in PB density; these two processes likely resulted in less consumption of sulfide. 
+
 
 
 Owen, please add here 3 figures that match the text above: 
@@ -954,11 +956,11 @@ ggplot(expt, aes(x = richness, y = resilience_max_trait)) +
 
 ## Do the observed diversity effects operate via the sampling effect?
 
-We investigated if the diversity effects observed in our study were in line with the sampling effect, that is, driven entirely by the presence of the most tolerant strain. Specifically, we ran additional simulations where functional groups contained only the strain with greatest tolerance and lowest maximum growth rate. That is, for each of the 20 levels of trait variation, we made simulations where each functional group had only one strain, and its trait values corresponded with those of the most tolerant strain for the given level of trait variation. We also manipulated in which of the functional groups tolerance increased. For example, in a simulation to be compared with variation in only the SB group (and no variation in the CB or PB groups), the SB group contained the strain with highest tolerance, whereas CB and PB each contained the strain with mean tolerance. We then compared the tipping point positions resulting from this tolerance manipulation with the tipping point positions resulting from the diversity manipulation presented in the main text. If the observed diversity effects are caused by the sampling effect, we expect there to be no difference between the tolerance manipulation and the diversity manipulation. 
+We investigated if the diversity effects observed in our study were in line with the sampling effect, that is, driven entirely by the presence of the most tolerant strain. Specifically, we ran additional simulations where functional groups contained only the strain with greatest tolerance and lowest maximum growth rate. That is, for each of the 20 levels of trait variation, we made simulations where each functional group had only one strain, and its trait values corresponded with those of the most tolerant strain for the given level of trait variation. We also manipulated in which of the functional groups tolerance increased. For example, in a simulation to be compared with variation in only the SB group (and no variation in the CB or PB groups), the SB group contained the strain with highest tolerance, whereas CB and PB each contained the strain with mean tolerance. We then compared the tipping point positions resulting from this tolerance manipulation with the tipping point positions resulting from the diversity manipulation presented in the main text. In addition, we compared the dynamics of strains and substrates across the oxygen diffusivity gradient of the tolerance manipulation and the diversity manipulation. If the observed diversity effects are caused by the sampling effect, we expect there to be no difference between the tolerance manipulation and the diversity manipulation. 
 
 To exclude that differences between the tolerance manipulation and the diversity manipulation were driven by the difference in number of strains, we also performed simulations in which we retained nine strains in each functional group but set the tolerance of all nine strains to the maximum tolerance value. Results were the same as those presented below from simulations with one strain. 
 
-For most of the explored combinations and amounts of functional diversity/tolerance the tipping point positions did not differ between the diversity manipulation and the tolerance manipulation (Figure \@ref(fig:max-tol1)). However, in some cases there were effects, three of which are described in the follow sections.
+For most of the explored combinations and amounts of functional diversity/tolerance the tipping point positions and strain dynamics did not differ between the diversity manipulation and the tolerance manipulation (Figure \@ref(fig:max-tol1)). However, in some cases there were effects, which are described in the follow sections.
 
 
 (ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present.
@@ -1007,12 +1009,13 @@ maxtolonly_strains <- readRDS(here("data",
 #maxtolonly_strains[134,]$parameter[[1]]$strain_parameter
 ```
 
-## High tolerance vs. high diversity in only the SB
+## Increasing tolerance vs. increasing diversity in only the SB
 
-When SB contained multiple strains varying in growth rate (and tolerance) there were only two stable states (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, there three stable states: the two previously found, and another where all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple strains varying in tolerance.
+When SB contained multiple strains varying in growth rate (and tolerance) there were only two stable states (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, there were three stable states: the two previously found, and another state at low oxygen diffusivity where all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple SB strains varying in tolerance.
 
-Apparently, at low oxygen diffusivity levels, the absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. It seems that the most tolerant SB strain does not have a high enough growth rate to itself exclude the cyanobacteria. Cyanobacteria are therefore always present, regardless of the oxygen diffusivity. We do not have an explanation of why the cyanobacteria are, however, excluded at intermediate oxygen diffusivities.
+Apparently, at low oxygen diffusivity levels, the absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. The most tolerant SB strain has a low intrinsic growth rate, which leads to less production of sulfide. Presence of only the most tolerant SB strain therefore results in lower sulfide concentrations (Figure \@ref(fig:max-tol2) vs Figure \@ref(fig:max-tol3)), allowing growth of cyanobacteria at low oxygen diffusivity.
 
+However, cyanobacteria are excluded at intermediate oxygen diffusivity. We speculate that this might be associated with the increase in sulfide at intermediate oxygen diffusivity, which might be due to the decline and collapse of PB and therefore reduced consumption of sulfide.   
 (ref:max-tol2) Stable states found when there is variation among nine strains of SB and the amount of variation is high. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
 ```{r max-tol2, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol2)', fig.height=10, fig.width=8, fig.align="center"}
@@ -1090,9 +1093,9 @@ p
 
 
 
-## High tolerance vs. high diversity in CB-SB
+## Increasing tolerance vs. increasing diversity in CB-SB
 
-In the SB-CB case, presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure xy) or to absence of alternate stable states when trait values were high (Figure \@ref(fig:max-tol5)).
+In the SB-CB case, presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure xy) or to absence of alternate stable states and sole dominance of cyanobacteria when trait values were high (Figure \@ref(fig:max-tol5)). As discussed in the previous section, the low intrinsic growth rate of the most tolerant SB strain led to less production of sulfide such that SB could not exclude CB. 
 
 
 Owen please add here a figure for medium trait values for the SB-CB case (only most tolerant strain), showing coexistence of all three groups at low ox diff. 
@@ -1115,7 +1118,9 @@ fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
 
 
 
-## High tolerance vs. high diversity in PB
+## Increasing tolerance vs. increasing diversity in PB
+
+Whereas medium to high diversity in PB led to three states including one with coexistence of all three functional groups (Figure xy), presence of only the most tolerant PB strain led to only two stable states, namely the standard-pattern of either dominance of sulfur bacteria or of cyanobacteria (Figure xy). The most tolerant PB strain has a low intrinsic growth rate, leading to less consumption of sulfide and therefore to higher sulfide concentrations compared to a system that contains both slow- and fast-growing strains. Due to the higher sulfide concentrations in the system with only the most tolerant PB strain, cyanobacteria were not able to grow at low oxygen diffusivity levels. 
 
 
 Owen please add here two figures:
@@ -1125,9 +1130,9 @@ Owen please add here two figures:
 
 
 
-## High tolerance vs. high diversity in CB-SB-PB
+## Increasing tolerance vs. increasing diversity in CB-SB-PB
 
-When in each of the three functional groups only the most tolerant strain is present, the resilience of the oxic state is greater than when there is variation in strain tolerance within groups. It is not entirely clear why this effect only occurs only in this combination. 
+At high levels of diversity vs. tolerance, resilience of the oxic state is greater when in each of the three functional groups only the most tolerant strain is present rather than when there is variation in strain tolerance within groups. It is not entirely clear why this effect occurs only in this combination. 
 
 (ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
 
