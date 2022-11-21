@@ -62,7 +62,7 @@ plot_here <- plot_here %>%
          !(var_treat == "PB" & stand_var > 0.65),
          !(var_treat == "CB-SB" & stand_var > 1.00),
          !(var_treat == "CB-PB" & stand_var > 0.65),
-         !(var_treat == "SB-PB" & stand_var > 1.0),
+         !(var_treat == "SB-PB" & stand_var > 1.00),
          !(var_treat == "CB-SB-PB" & stand_var > 1.00))
 
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,

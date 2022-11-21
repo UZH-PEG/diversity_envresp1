@@ -54,7 +54,7 @@ This document is the Supplementary Report for the report *Functional diversity c
 
 # Growth and inhibition functions
 
-The rate of change in population densities is given by the growth rate - death rate ([Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x)). Growth rate is the growth rate in absence of any inhibition multiplied by the amount of inhibition. 
+The rate of change in population densities is given by the per capita growth rate - per capita death rate, multipled by population size ([Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x)). Growth rate is the growth rate in absence of any inhibition multiplied by the amount of inhibition. 
 
 Growth rate in the absence of inhibition was modeled with the Monod equation with multiplicative kinetics when two substrates determine growth rate:
 
@@ -235,7 +235,7 @@ temp_meth <- readRDS(here("data",
 
 
 
-(ref:repl-meth2) Stable states found with the **replication method**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
+(ref:repl-meth2) Stable states found with the **replication method**. The left column of panels refers to the stable state when cyanobacteria density is at first high (favouring the oxic state). The right column refers to when cyanobacteria density is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r repl-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:repl-meth2)', fig.height=10, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_alternative_repmeth(repl_meth[1,])
@@ -296,7 +296,20 @@ all_stab <- readRDS(here("data",
 sim_length <- 1e6 ## currently a problem in how sim length is parsed by the data processing step
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(simlength == sim_length)
+  filter(simlength == sim_length) %>%
+  ## remove data where there are non-standard stable states
+## this subset is identified by inspection of stable state figures
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.70),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
+
+
+  
+  
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(sim_length,
@@ -347,7 +360,16 @@ all_stab <- readRDS(here("data",
 wait_time <- 1e6
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(waittime == wait_time)
+  filter(waittime == wait_time) %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
+
+
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(wait_time,
@@ -372,6 +394,16 @@ A particularly notable difference between the two approaches is in the initial c
 The temporal approach is particularly useful when investigating the effects of strain richness. In preliminary simulations using the [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x) approach, we found the counterintuitive result that higher strain richness led to lower resilience. We then recalled that we chose to divide the initial total abundance of the cyanobacterial (CB) functional group equally among the strains (termed a substitutive design in biodiversity manipulation experiments). This meant that the most tolerant CB strain in a three-strain simulation had higher initial abundance than the same most tolerant CB strain in a nine-strain simulation. The greater abundance of the most CB tolerant strain made it possible for a three-strain system to develop to be oxic, whereas the nine-strain system developed to be anoxic, despite identical range of trait variation. We could have chosen to do otherwise, for example start with the least tolerant strains of cyanobacteria as more abundant when the system started with high cyanobacterial abundance, and the most tolerant strain as more abundant when the system starts with low cyanobacterial abundance. Using the temporal approach removed the need to specify initial abundances (except the very first one), and therefore results were not so determined by the assumptions used to determine the initial conditions.
 
 
+# Finding the separatrix
+
+In the original publication ([Bush et al 2017](<https://www.nature.com/articles/s41467-017-00912-x>)) Figure 3a shows a separatrix in the cyanobacteria abundance - oxygen diffusivity dimensions of the system. If the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance increases, and the system goes to the oxic stable state. Conversely, if the system has initial cyanobacterial abundance lower than the value at the separatrix then the cyanobacterial abundance decreases, and the system goes to the anoxic stable state.
+
+It is critical to note, however, that the position of the separatrix depends on both the parameters of the system, and the initial conditions of variables other than cyanobacterial abundance. If the system were started with higher initial concentration, then the position of the separatrix would change (as would the values of oxygen diffusivity at which the system tipped from anoxic to oxic, and from oxic to anoxic).
+
+This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
+
+We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in their own right.
+
 # Effect of simulation duration
 
 ## Diversity effects
@@ -393,7 +425,14 @@ all_stab <- readRDS(here("data",
 wait_time <- 1e6
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(waittime == wait_time)
+  filter(waittime == wait_time) %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(wait_time,
@@ -414,7 +453,14 @@ p1 + p2
 wait_time <- 1e5
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(waittime == wait_time)
+  filter(waittime == wait_time) %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(wait_time,
@@ -434,7 +480,14 @@ p1 + p2
 wait_time <- 1e4
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(waittime == wait_time)
+  filter(waittime == wait_time) %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(wait_time,
@@ -453,7 +506,14 @@ p1 + p2
 wait_time <- 1e3
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(waittime == wait_time)
+  filter(waittime == wait_time) %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(wait_time,
@@ -466,14 +526,27 @@ p2 <- fig_resilience_vs_div(plot_here,
 p1 + p2
 ```
 
-(ref:div-temp-meth5) Effects of diversity with wait time of 1e2 hours. (All else as in Figure \@ref(fig:div-repl-meth1)).
 
-```{r div-temp-meth5, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth5)', fig.height=7, fig.width=6, fig.align="center"}
+```{r div-temp-meth5, echo = FALSE, eval = FALSE, include=TRUE, fig.cap='(ref:div-temp-meth5)', fig.height=7, fig.width=6, fig.align="center"}
+
+## Owen removed these results from the report, because the tipping point finding algorithm was being misled
+## by transient dynamics, and therefore was not finding the correct position of the anoxic to oxic tipping
+## point
+
+## (ref:div-temp-meth5) Effects of diversity with wait time of 1e2 hours. (All else as in Figure \@ref(fig:div-repl-meth1)).
+
 
 wait_time <- 1e2
 num_strains <- 9
 plot_here <- all_stab %>%
-  filter(waittime == wait_time)
+  filter(waittime == wait_time) %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(wait_time,
@@ -490,7 +563,7 @@ p1 + p2
 
 ## Example of transient dynamics at 1e6 hours
 
-The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except very close to state transitions on the trajectory of recovery (i.e.: cyanobacteria: trajectory of increasing oxygen diffusivity; sulfate-reducing bacteria: trajectory of decreasing oxygen diffusivity). Very close to these transitions, even at 2'000'000 hours, the dynamics are still transient, with high tolerance strains at high density, even though they will eventually be outcompeted by low tolerance (higher growth rate) strains.
+The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except in regions of strain replacement, including at some state transitions. E.g. in the region of strain replacement in the sulfate-reducing bacteria recovery trajectory there is difference in strain abundances at 1'000'000 and 2'000'000 hours. However, the position of the tipping points (which were calculated from the total SB abundance) and the substrate concentrations did not differ between 1'000'000 and 2'000'000 hours.
 
 (ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
@@ -526,6 +599,104 @@ single_2e6 <- readRDS(here("data",
                            "single_2e6_result.RDS"))
 temp_meth[1,]$ssfind_result[[1]] <- single_2e6
 fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
+```
+
+# Effect of number of strains
+
+In the main text, we present results of simulations with nine strains per functional group. Here we also explore the effect of number of strains (2, 3, 6, 9) on the position of the two tipping points (Figure \@ref(fig:div-stab-multstrain1)). At low to moderate amounts of trait variation, the number of strains did not affect the position of the tipping points. However, at high amounts of trait variation, resilience was lower when the functional groups had only two or three strains rather than six or nine. This effect was particularly pronounced when there was high variation in only SB or in SB-CB: here, simulations with two or three strains led to dramatically lower resilience of the anoxic state than simulations with six or nine strains. We believe that this effect is due to the greater distance in trait space between strains in simulations with two or three strains than in simulations with more strains (also see Section 5). 
+
+(ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains.
+
+```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
+all_stab <- readRDS(here("data",
+                         microxanox_version_path,
+                         "temporal_method", 
+                         "event_definition_2",
+                         "processed_data", "all_stab_data.RDS"))
+which_strains <- c(2, 3, 6, 9)
+which_wait_time<- 1e6
+figure_title <- " "
+
+plot_here111 <- all_stab %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+         
+         !(num_strains == 6 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 6 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 6 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 6 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 6 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 6 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 6 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+         
+         !(num_strains == 3 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 3 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 3 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 3 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 3 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 3 & var_treat == "SB-PB" & stand_var > 1.0),
+         !(num_strains == 3 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+         
+         !(num_strains == 2 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 2 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 2 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 2 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 2 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 2 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == 2 & var_treat == "CB-SB-PB" & stand_var > 1.00))
+
+fig_div_vs_o2diff_multistrain(plot_here111, which_strains,
+                              which_wait_time, figure_title)
+```
+
+
+
+# CB diversity effects
+
+Increased CB diversity causes a slight decrease in the resilience of the anoxic state. The following two figures show the state responses to oxygen diffusivity with low Figure \@ref(fig:ss-CB-only1) and high Figure \@ref(fig:ss-CB-only2) levels of CB diversity. The difference in the position of the anoxic to oxic tipping point is small. It is, in fact the smallest it could be, as it is the smallest step size in oxygen diffusivity used in the simulations. 
+
+(ref:ss-CB-only1) Stable state of the system with **low** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
+
+```{r ss-CB-only1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only1)', fig.height=10, fig.width=8, fig.align="center"}
+wait_time <- "1e+06"
+ss_9s <- readRDS(here::here("data",
+                            microxanox_version_path, 
+                            "temporal_method",
+                            "event_definition_2",
+                            paste0("ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
+#stab_9s <- readRDS(here::here(\"data", "0_ss_finding", "temporal_method", microxanox_version_path, paste0("stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS"))
+
+
+#max <- max(ss_3s$PB_var_gmax_s)
+#f <- 0.625
+#fv <- f*max
+
+only_CB_variable <- ss_9s %>%
+  filter(
+    abs(SB_var_gmax_s) < 0.0001,
+    abs(PB_var_gmax_s) < 0.0001
+  )
+only_CB_variable <- only_CB_variable[order(only_CB_variable$CB_var_gmax_s), ]
+
+#only_CB_variable$CB_var_gmax_s
+
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[2,])
+
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+(ref:ss-CB-only2) Stable state of the system with **high** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
+
+```{r ss-CB-only2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only2)', fig.height=10, fig.width=8, fig.align="center"}
+
+fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[20,])
+
+#fig_state_vs_o2diff(only_SB_variable[13,])
 ```
 
 
@@ -818,7 +989,7 @@ Looking at the strain replacement that occurs across the oxygen diffusivity grad
 
 Substrate concentrations close to the anoxic-oxic transition in simulations with low and high PB diversity, respectively, corroborate the expected effects (Figure \@ref(fig:pbdiv-only-3)). As the transition is approached, higher PB diversity leads to higher concentration of oxygen, higher concentration of oxidised sulfur (SO), and lower concentration of reduced sulfur (SR), than a simulation with lower PB diversity. All these differences in substrate concentrations are in the direction of favouring the oxic state, resulting in the earlier transition to the oxic state.
 
-(ref:pbdiv-only-3) Concentrations of three substrates (O: oxygen; SO: oxidised sulfur; SR: reduced sulfur) in a low PB diversity simulation (x-axis) versus substrate concentration in a high PB diversity simulation (y-axis). The figures show only a small range of oxygen diffusivity on the trajectory of increasing oxygen diffusivity. The black line is the 1:1 line.
+(ref:pbdiv-only-3) Concentrations of three substrates (O: oxygen; SO: oxidised sulfur; SR: reduced sulfur) in a low PB diversity simulation (x-axis) versus substrate concentration in a moderate PB diversity simulation (y-axis). (The same levels of PB diversity as in Figures \@ref(fig:pbdiv-only-1) and \@ref(fig:pbdiv-only-2), respectively). The figures show only a small range of oxygen diffusivity on the trajectory of increasing oxygen diffusivity. The black line is the 1:1 line.
 
 
 ```{r pbdiv-only-3, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-3)', fig.height=5, fig.width=8, fig.align="center"}
@@ -865,7 +1036,7 @@ dd %>%
   facet_wrap( ~ State_variable, scales = "free") +
   geom_abline(intercept = 0, slope = 1) +
   xlab(expression(atop(log[10](concentration)~(µM), Low~PB~diversity))) +
-  ylab(expression(atop(log[10](concentration)~(µM),High~PB~diversity))) +
+  ylab(expression(atop(log[10](concentration)~(µM),Moderate~PB~diversity))) +
   labs(col=expression(paste("log"[10],"(oxygen diffusivity) (h"^{-1}, ")"))) +
   theme_bw() +
   theme(legend.position="top")
@@ -886,33 +1057,85 @@ At intermediate levels of oxygen diffusivities, the cyanobacteria were usually e
 
 
 Owen, please add here 3 figures that match the text above: 
+
+```{r echo = FALSE}
+run_sims_this_section <- TRUE
+```
+
+```{r}
+nine_strains <- readRDS(here("data",
+                         microxanox_version_path,
+                         "temporal_method", 
+                         "event_definition_2",
+                          "ss_data_9strains_waittime1e+06_event_definition_2.RDS"))
+```
+
+
 (1) medium variation in only PB showing coexistence of all groups at low ox diff, 
+
+```{r  eval = run_sims_this_section, echo = FALSE}
+
+nine_strain_one <- filter(nine_strains,
+       CB_var_gmax_s == 0,
+       SB_var_gmax_s == 0,
+       abs(PB_var_gmax_s - 0.064819946) < 0.001)
+
+parameter <- nine_strain_one$parameter[[1]]
+parameter$strain_parameter <- nine_strain_one$pars[[1]]
+#parameter$strain_parameter <- ss_result$pars[[1]]
+total_initial_abundances <- 10^5
+parameter <- set_temporal_ssfind_initial_state(parameter,
+                                               total_initial_abundances,
+                                               total_initial_abundances,
+                                               total_initial_abundances)
+parameter$log10a_series <- c(-7, -7)
+wait_time <-  1e5
+parameter$sim_duration <- wait_time * length(parameter$log10a_series)
+parameter$sim_sample_interval <- 10
+#parameter$sim_duration
+test1 <- run_simulation(parameter)
+
+```
+
+(ref:PB-dyn1) Temporal dynamics of an ecosystem with a , the same one as in Figure \@ref(fig:max-tol3) simulated with constant $log_{10}$ oxygen diffusivity of -7.
+
+```{r PB-dyn1, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-dyn1)', fig.height=10, fig.width=8, fig.align="center"}
+p <- plot_dynamics(test1)
+p[[1]] <- p[[1]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[2]] <- p[[2]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[3]] <- p[[3]] + 
+  xlab(NULL) + 
+  ylab(expression(log[10](density)~(cells~L^{-1}))) +
+  theme_bw()
+p[[4]]$data <- p[[4]]$data %>% 
+  dplyr::filter(species != "a")
+p[[4]]$data$species <- p[[4]]$data$species %>%
+  dplyr::recode(SO = "Oxidised sulfur", O = "Oxygen", SR = "Sulfide", P = "Phosphorus")
+p[[4]] <- p[[4]] + 
+  xlab("time (h)") + 
+  ylab(expression(log[10](concentration)~(µM))) + 
+  labs(colour = "substrate") +
+  theme_bw()
+  
+p
+```
+
+
 (2) high variation in only PB showing coexistence of all groups at low ox diff and CB never collapsing on the decreasing ox diff trajectory, 
+
+
+
 (3) high variation in both CB and PB. 
 
 
 
 
-
-# Effect of number of strains
-
-In the main text, we present results of simulations with nine strains per functional group. Here we also explore the effect of number of strains (2, 3, 6, 9) on the position of the two tipping points (Figure \@ref(fig:div-stab-multstrain1)). At low to moderate amounts of trait variation, the number of strains did not affect the position of the tipping points. However, at high amounts of trait variation, resilience was lower when the functional groups had only two or three strains rather than six or nine. This effect was particularly pronounced when there was high variation in only SB or in SB-CB: here, simulations with two or three strains led to dramatically lower resilience of the anoxic state than simulations with six or nine strains. We believe that this effect is due to the greater distance in trait space between strains in simulations with two or three strains than in simulations with more strains (also see Section 5). 
-
-(ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains.
-
-```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
-all_stab <- readRDS(here("data",
-                         microxanox_version_path,
-                         "temporal_method", 
-                         "event_definition_2",
-                         "processed_data", "all_stab_data.RDS"))
-which_strains <- c(2, 3, 6, 9)
-which_wait_time<- 1e6
-figure_title <- " "
-
-fig_div_vs_o2diff_multistrain(all_stab, which_strains,
-                              which_wait_time, figure_title)
-```
 
 
 # Underlying mechanisms
@@ -926,10 +1149,15 @@ Research about the relationship between biodiversity and ecosystem functioning h
 Similarly, the complementarity effect and the sampling effect are important mechanisms by which diversity affects stability (Loreau & Mazancourt 2013; Loreau et al. 2021) and resilience (Steiner et al. 2006; Hughes & Stachowicz 2011). For example, diversity can stabilize aggregate ecosystem properties (e.g. community biomass) when species differ in their responses to environmental factors and therefore respond asynchronously to environmental fluctuations (temporal complementarity effect; Loreau & Mazancourt 2013). However, the sampling effect might be of particular importance when considering ecosystem responses to directional environmental change or pulse disturbances rather than to environmental fluctuations (Steiner et al. 2006): more diverse systems might absorb a greater amount of change by having a higher chance of containing species with high environmental tolerance. In this scenario, the positive diversity effect on resilience is driven by one (or few) species. From a conservation perspective, however, one would nevertheless strive to maintain diversity and not only the most tolerant species because of the uncertainties associated with environmental change: we do not know with sufficient certainty which stressors will change in a given ecosystem and which traits will therefore be relevant in the future.
 
 
-(ref:samp-effect1) A simple phenomenological model of the effect of number of strains in an ecosystem on the resilience of that ecosystem, when the resilience of a ecosystem is linearly proportional to the maximum trait value of the strains present in that ecosystem. Each data point is a different ecosystem, with the strains in each ecosystem drawn at random from a pool of 20 strains. Each of the 20 strains was assigned a trait value drawn at random from a uniform distribution with minimum 0 and maximum 1. The blue line is the fit of a generalised additive model and the grey ribbon shows the 1 standard error confidence range.
 
 
-```{r samp-effect1, echo = FALSE,  include=TRUE, fig.cap='(ref:samp-effect1)', fig.height=5, fig.width=6, fig.align="center"}
+```{r samp-effect1, echo = FALSE, eval= FALSE, include=TRUE, fig.cap='(ref:samp-effect1)', fig.height=5, fig.width=6, fig.align="center"}
+
+## no longer included in supplement.
+
+## (ref:samp-effect1) A simple phenomenological model of the effect of number of strains in an ecosystem on the resilience of that ecosystem, when the resilience of a ecosystem is linearly proportional to the maximum trait value of the strains present in that ecosystem. Each data point is a different ecosystem, with the strains in each ecosystem drawn at random from a pool of 20 strains. Each of the 20 strains was assigned a trait value drawn at random from a uniform distribution with minimum 0 and maximum 1. The blue line is the fit of a generalised additive model and the grey ribbon shows the 1 standard error confidence range.
+
+
 if(!("tidyverse" %in% .packages()))
   library(tidyverse)
 set.seed(12345)
@@ -958,9 +1186,7 @@ ggplot(expt, aes(x = richness, y = resilience_max_trait)) +
 
 ## Investigating the mechanisms operating in our system
 
-We investigated if the diversity effects observed in our study were in line with the sampling effect, that is, driven entirely by the presence of the most tolerant strain or if the less tolerant strains played a role as well. To this end, we ran additional simulations where functional groups contained only the strain with greatest tolerance and lowest maximum growth rate. That is, rather than increasing diversity we only increased tolerance. Specifically, for each of the 20 levels of trait variation, we made simulations where each functional group had only one strain, and its trait values corresponded with those of the most tolerant strain for the given level of trait variation. We also manipulated in which of the functional groups tolerance increased. For example, in a simulation to be compared with variation in only the SB group (and no variation in the CB or PB groups), the SB group contained the strain with highest tolerance, whereas CB and PB each contained the strain with mean tolerance. We then compared the tipping point positions resulting from this tolerance manipulation with the tipping point positions resulting from the diversity manipulation presented in the main text. In addition, we compared the strain dynamics across the oxygen diffusivity gradient of the tolerance manipulation and the diversity manipulation. If the observed diversity effects are caused by the sampling effect, we expect there to be no difference between the tolerance manipulation and the diversity manipulation. 
-
-To exclude that differences between the tolerance manipulation and the diversity manipulation were driven by the difference in number of strains, we also performed simulations in which we retained nine strains in each functional group but set the tolerance of all nine strains to the maximum tolerance value. Results were the same as those presented below from simulations with one strain. 
+We investigated if the diversity effects observed in our study were in line with the sampling effect, that is, driven entirely by the presence of the most tolerant strain or if other strains played a role as well. To this end, we ran additional simulations where functional groups contained only the strain with greatest tolerance (which also necessarily had the lowest maximum growth rate). That is, rather than increasing diversity we only increased tolerance of a single strain. Specifically, for each of the 20 levels of trait variation, we made simulations where each functional group had only one strain, and its trait values corresponded with those of the most tolerant strain for the given level of trait variation. We also manipulated in which of the functional groups tolerance increased. For example, in a simulation to be compared with variation in only the SB group (and no variation in the CB or PB groups), the SB group contained the strain with highest tolerance, whereas CB and PB each contained the strain with mean tolerance. We then compared the tipping point positions resulting from this tolerance manipulation with the tipping point positions resulting from the diversity manipulation presented in the main text. In addition, we compared the strain dynamics across the oxygen diffusivity gradient of the tolerance manipulation and the diversity manipulation. If the observed diversity effects are caused by the sampling effect, we expect there to be no difference between the tolerance manipulation and the diversity manipulation. 
 
 We found no difference between the diversity and the tolerance manipulation when trait values were low (Figure \@ref(fig:max-tol1)). When trait values were medium to high, however, we did find differences between the diversity and tolerance manipulation for most combinations except for diversity/tolerance in only CB and in SB-PB (Figure \@ref(fig:max-tol1)). We describe and discuss these differences in detail in the sections below. Briefly, in these scenarios less tolerant strains did play a role because of their high intrinsic growth rates. Specifically, absence of SB strains with high growth rate led to reduced production of sulfide and therefore to coexistence with cyanobacteria at low oxygen diffusivity. In contrast, absence of PB strains with high growth rate led to reduced consumption of sulfide and therefore precluded coexistence with cyanobacteria at low oxygen diffusivity (as observed when there was high variation in PB). 
 
@@ -984,12 +1210,31 @@ which_strains <- c(-1, 9)
 which_wait_time <- 1e6
 figure_title <- " "
 
-## remove data where there are no stable states
-## this subset is identified by inspection of the figure
-#all_stab <- all_stab %>%
-#  filter(!(var_treat == "CB-SB" & stand_var > 0.84 & num_strains == -1))
 
-plot_1 <- fig_div_vs_o2diff_maxtolcomp(all_stab, which_strains,
+
+## remove data where there are non-standard stable states
+## this subset is identified by inspection of stable state figures
+plot_here11 <- all_stab %>%
+  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
+         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+         !(num_strains == -1 & var_treat == "CB" & stand_var > 1.00),
+         !(num_strains == -1 & var_treat == "SB" & stand_var > 0.60),
+         !(num_strains == -1 & var_treat == "PB" & stand_var > 1.00),
+         !(num_strains == -1 & var_treat == "CB-SB" & stand_var > 0.60),
+         !(num_strains == -1 & var_treat == "CB-PB" & stand_var > 1.00),
+         !(num_strains == -1 & var_treat == "SB-PB" & stand_var > 1.00),
+         !(num_strains == -1 & var_treat == "CB-SB-PB" & stand_var > 1.00))
+
+
+
+
+
+plot_1 <- fig_div_vs_o2diff_maxtolcomp(plot_here11, which_strains,
                               which_wait_time, figure_title)
 plot_1 +
   xlab("Standardised amount of trait variation used to create nine strains\nof which either all nine are retained, or only the most tolerant is retained.") +
@@ -1162,16 +1407,6 @@ filter(maxtolonly_strains,
 
 
 
-
-# Finding the separatrix
-
-In the original publication ([Bush et al 2017](<https://www.nature.com/articles/s41467-017-00912-x>)) Figure 3a shows a separatrix in the cyanobacteria abundance - oxygen diffusivity dimensions of the system. If the system has initial cyanobacterial abundance greater than the value at the separatrix then the cyanobacterial abundance increases, and the system goes to the oxic stable state. Conversely, if the system has initial cyanobacterial abundance lower than the value at the separatrix then the cyanobacterial abundance decreases, and the system goes to the anoxic stable state.
-
-It is critical to note, however, that the position of the separatrix depends on both the parameters of the system, and the initial conditions of variables other than cyanobacterial abundance. If the system were started with higher initial concentration, then the position of the separatrix would change (as would the values of oxygen diffusivity at which the system tipped from anoxic to oxic, and from oxic to anoxic).
-
-This issue of dependence of the position of the separatrix on the value of initial condition of multiple state variables has particular significance when there are multiple strains per functional group. Then one cannot just vary initial total cyanobacterial abundance (as was done to create the separatrix on Figure 3a in the original publication) but one must also define how the initial abundance of each of the strains varies. One might choose to make each strain have equal initial abundance, and to vary the total (as we did in our implementation of the replication method in the main article).
-
-We could, however, and arguably should, give the most tolerant strain of cyanobacteria higher initial relative abundance when total initial cyanobacterial abundance was low, and the least tolerant strain higher initial relative abundance when total cyanobacterial abundance was high. And we would need to specify the total and relative abundance of all cyanobacteria (and sulfur bactria) strains. Thus, with a system as complex as the 9 strain system, which has 31 state variables the separatrix is very high dimensional, and evaluating (and plotting) it in one dimension requires many assumptions. We chose to not attempt to find a meaningful set of assumptions in this study, though not because we think it would be unprofitable to do so, but rather because we did not want to risk distracting attention from findings we consider to be significant enough in their own right.
 
 # (Non-)additivity
 
@@ -1357,11 +1592,16 @@ When two functional groups varied in traits, the effects of trait variation were
 When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). 
 
 
-# Comparing the effects of different treatments
 
-(ref:comp-comb) Another method for comparing the effects of different diversity treatments. Some lines (treatment combinations) are over-plotted and therefore show identical effects of some combinations.
 
-```{r comp-comb, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center", fig.cap='(ref:comp-comb)'}
+
+
+```{r comp-comb, echo = FALSE, eval = FALSE, include=TRUE, fig.height=8, fig.width=8, fig.align="center", fig.cap='(ref:comp-comb)'}
+
+## This code chunck makes a figure that we used but think does not need
+## to be included in the supplement.
+## (ref:comp-comb) Another method for comparing the effects of different diversity treatments. Some lines (treatment combinations) are over-plotted and therefore show identical effects of some combinations.
+
 
 all_stab <- readRDS(here("data",
                          microxanox_version_path,
@@ -1404,53 +1644,6 @@ plot_here <- all_stab %>%
 
   p1
  
-```
-
-
-
-# CB diversity effects
-
-Increased CB diversity causes a slight decrease in the resilience of the anoxic state. The following two figures show the state responses to oxygen diffusivity with low Figure \@ref(fig:ss-CB-only1) and high Figure \@ref(fig:ss-CB-only2) levels of CB diversity.
-
-The difference in the position of the anoxic to oxic tipping point is small. It is, in fact the smallest it could be, as it is the smallest step size in oxygen diffusivity used in the simulations. Furthermore, we think the presence of higher strain diversity can increase the rate of response of the system (since there is a strain with higher growth rate than in low diversity levels) and that this difference in response rates is likely responsible for the very small difference in resilience.
-
-(ref:ss-CB-only1) Stable state of the system with **low** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
-
-```{r ss-CB-only1, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only1)', fig.height=10, fig.width=8, fig.align="center"}
-wait_time <- "1e+06"
-ss_9s <- readRDS(here::here("data",
-                            microxanox_version_path, 
-                            "temporal_method",
-                            "event_definition_2",
-                            paste0("ss_data_9strains_waittime", wait_time, "_event_definition_2.RDS")))
-#stab_9s <- readRDS(here::here(\"data", "0_ss_finding", "temporal_method", microxanox_version_path, paste0("stab_data_9strains_waittime", wait_time, "_event_definition_2.RDS"))
-
-
-#max <- max(ss_3s$PB_var_gmax_s)
-#f <- 0.625
-#fv <- f*max
-
-only_CB_variable <- ss_9s %>%
-  filter(
-    abs(SB_var_gmax_s) < 0.0001,
-    abs(PB_var_gmax_s) < 0.0001
-  )
-only_CB_variable <- only_CB_variable[order(only_CB_variable$CB_var_gmax_s), ]
-
-#only_CB_variable$CB_var_gmax_s
-
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[2,])
-
-#fig_state_vs_o2diff(only_SB_variable[13,])
-```
-
-(ref:ss-CB-only2) Stable state of the system with **high** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
-
-```{r ss-CB-only2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only2)', fig.height=10, fig.width=8, fig.align="center"}
-
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[20,])
-
-#fig_state_vs_o2diff(only_SB_variable[13,])
 ```
 
 

@@ -128,116 +128,28 @@ fig_div_vs_o2diff_1strain <- function(all_stab, which_strain, figure_title) {
   
 }
 
-fig_div_vs_o2diff_multistrain <- function(all_stab,
+fig_div_vs_o2diff_multistrain <- function(all_stab111,
                                           which_strains,
                                           which_wait_time,
                                           figure_title) {
+ 
   
-  # CB_vars <- unique(all_stab$CB_var_gmax_s)
-  # SB_vars <- unique(all_stab$SB_var_gmax_s)
-  # PB_vars <- unique(all_stab$PB_var_gmax_s)
-  # 
-  # CB_all_stab <- all_stab %>%
-  #   filter(SB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0) %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # SB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # PB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          SB_var_gmax_s == 0) %>%
-  #   ungroup()  %>%
-  #   mutate(var_treat = "PB",
-  #          var_gmax = PB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars))
-  # CBSB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(PB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(SB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # SBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB-PB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(CB_var_gmax_s == 0)
-  # 
-  # 
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBSBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # all_stab_results <- CB_all_stab %>%
-  #   bind_rows(SB_all_stab) %>%
-  #   bind_rows(PB_all_stab) %>%
-  #   bind_rows(CBSB_all_stab) %>%
-  #   bind_rows(CBPB_all_stab) %>%
-  #   bind_rows(SBPB_all_stab) %>%
-  #   bind_rows(CBSBPB_all_stab)
-  # 
-  # all_stab_results <- all_stab_results %>%
-  #   mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB",
-  #                                                                 "SB",
-  #                                                                 "PB",
-  #                                                                 "CB-SB",
-  #                                                                 "CB-PB",
-  #                                                                 "SB-PB",
-  #                                                                 "CB-SB-PB")))
-  # 
-  # all_stab_results_small <- select(all_stab_results, -7:-12)
-  # 
-  # #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
-  # 
-  
-  
-  p1 <- all_stab %>%
+  p1 <- all_stab111 %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains %in% which_strains, 
            waittime == which_wait_time) %>%
     filter(Species == "SB_tot") %>%
     ggplot(aes(x = stand_var,
                col = as.factor(num_strains))) +
-    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-    geom_line(aes(y = hyst_min_log, col = as.factor(num_strains)), lwd = 0.5, alpha = 0.8) +
-    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+    facet_wrap( ~ var_treat, nrow = 3) +
+    geom_line(aes(y = hyst_min_log, col = as.factor(num_strains)),
+              lwd = 0.5, alpha = 0.8) +
+    geom_line(aes(y = hyst_max_log, col = as.factor(num_strains)),
+              lwd = 0.5, alpha = 0.8) +
     geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log,
                     col = as.factor(num_strains),
                     fill = as.factor(num_strains)), alpha = 0.2) +
-    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    #facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
     xlab("Standardised amount of trait variation") +
     ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
