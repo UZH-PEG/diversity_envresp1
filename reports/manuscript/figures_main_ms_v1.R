@@ -50,6 +50,21 @@ wait_time <- 1e6
 num_strains <- 9
 plot_here <- all_stab %>%
   filter(waittime == wait_time)
+
+
+## CB all same
+## SB all same
+
+## filtering out some of the data for which there are non-standard ecosystem responses to the oxygen diffusivity.
+plot_here <- plot_here %>%
+  filter(!(var_treat == "CB" & stand_var > 1.00),
+         !(var_treat == "SB" & stand_var > 1.00),
+         !(var_treat == "PB" & stand_var > 0.65),
+         !(var_treat == "CB-SB" & stand_var > 1.00),
+         !(var_treat == "CB-PB" & stand_var > 0.65),
+         !(var_treat == "SB-PB" & stand_var > 1.0),
+         !(var_treat == "CB-SB-PB" & stand_var > 1.00))
+
 p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
                                      which_strain = num_strains,
                                      figure_title = NULL
