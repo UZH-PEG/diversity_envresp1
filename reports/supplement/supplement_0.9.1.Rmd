@@ -1074,7 +1074,7 @@ ss_9s <- ss_9s %>%
 ```
 
 
-(ref:PB-stabstat1) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is moderate to high. This example is when the standardised amount of trait variation is 0.74 (0 being no variation, and 1 being the maximum amount in any simulation.)
+(ref:PB-stabstat1) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is medium to high. This example is when the standardised amount of trait variation is 0.74 (0 being no variation, and 1 being the maximum amount in any simulation.)
 
 ```{r PB-stabstat1, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-stabstat1)', fig.height=10, fig.width=8, fig.align="center"}
 this_dat <- ss_9s %>%
