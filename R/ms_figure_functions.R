@@ -1146,7 +1146,8 @@ fig_state_vs_o2diff_sidebyside_alternative_nofliparrows <- function(ss_result){
           strip.text.x = element_blank(),
           strip.text.y = element_text(size=12, margin = margin(l=11, r=11)),
           plot.margin = margin(t=-1, b=-1)) +
-    facet_grid(functional_group2 ~ direction)
+    facet_grid(functional_group2 ~ direction) +
+    ylim(0,9)
   
   p2SB <- temp %>%
     dplyr::filter(functional_group == "SB")  %>%
@@ -1166,7 +1167,8 @@ fig_state_vs_o2diff_sidebyside_alternative_nofliparrows <- function(ss_result){
           strip.text.x = element_blank(),
           strip.text.y = element_text(size=12),
           plot.margin = margin(t=-1, b=-1)) +
-    facet_grid(functional_group2 ~ direction)
+    facet_grid(functional_group2 ~ direction) +
+    ylim(0,8)
   
   
   p3PB <- temp %>%
@@ -1187,7 +1189,8 @@ fig_state_vs_o2diff_sidebyside_alternative_nofliparrows <- function(ss_result){
           strip.text.x = element_blank(),
           strip.text.y = element_text(size=12),
           plot.margin = margin(t=-1, b=-1)) +
-    facet_grid(functional_group2 ~ direction)
+    facet_grid(functional_group2 ~ direction) +
+    ylim(0,8)
   
   
   
@@ -1207,7 +1210,8 @@ fig_state_vs_o2diff_sidebyside_alternative_nofliparrows <- function(ss_result){
           strip.text.x = element_blank(),
           strip.text.y = element_text(size=12),
           plot.margin = margin(t=-1, b=-1)) +
-    facet_grid(substrate2 ~ direction)
+    facet_grid(substrate2 ~ direction) +
+    ylim(0.5,3)
   
   
   
@@ -1226,7 +1230,8 @@ fig_state_vs_o2diff_sidebyside_alternative_nofliparrows <- function(ss_result){
           strip.text.x = element_blank(),
           strip.text.y = element_text(size=12),
           plot.margin = margin(t=-1, b=-1)) +
-    facet_grid(substrate2 ~ direction)
+    facet_grid(substrate2 ~ direction) +
+    ylim(1,2.5)
   
   
   

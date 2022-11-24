@@ -694,7 +694,9 @@ fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[2,])
 
 ```{r ss-CB-only2, echo = FALSE,  include=TRUE, fig.cap='(ref:ss-CB-only2)', fig.height=10, fig.width=8, fig.align="center"}
 
-fig_state_vs_o2diff_sidebyside_alternative(only_CB_variable[20,])
+fig_state_vs_o2diff_sidebyside_alternative_leftfliponly(only_CB_variable[20,])
+
+#ss_result <- only_CB_variable[20,]
 
 #fig_state_vs_o2diff(only_SB_variable[13,])
 ```
@@ -1117,7 +1119,7 @@ this_dat <- this_dat[order(this_dat$CB_var_gmax_s), ]
 which_one <- 19
 #print(paste0("Standardised level of variation = ",
 #round(this_dat$standvar_PB_gmax[this_one],2)))
-fig_state_vs_o2diff_sidebyside_alternative(this_dat[which_one,])
+fig_state_vs_o2diff_sidebyside_alternative_leftfliponly(this_dat[which_one,])
 ```
 
 
@@ -1364,7 +1366,7 @@ max_tol_one_CBSB <- filter(maxtolonly_strains,
        PB_var_gmax_s == 0)
 
 
-fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
+fig_state_vs_o2diff_sidebyside_alternative_nofliparrows(max_tol_one_CBSB)
 ```
 
 
