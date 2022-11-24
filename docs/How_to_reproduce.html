@@ -2629,9 +2629,15 @@ vertical-align: -.125em;
 
 </header>
 
-<p>TO DO: set package versions everywhere to the one used in the release (1.0.0)</p>
-<p>TO DO: delete <code>old</code> and other not needed directories (before this we should tag this)</p>
-<p>TO DO: Search for XXX for items to update.</p>
+<ol start="24" type="1">
+<li>November 2022</li>
+</ol>
+<p>To do once the paper is accepted:</p>
+<ul>
+<li>Set package versions everywhere to the one used in the release (1.0.0)</li>
+<li>Delete <code>old</code> and other not needed directories (before this we should tag this)</li>
+<li>Search for XXX for items to update.</li>
+</ul>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>Please note that we did not design and write all scripts with other users primarily in mind. Reproducing the work will require some commitment! Please get in touch via Issues on github if you need any assistance.</p>
@@ -2639,12 +2645,12 @@ vertical-align: -.125em;
 </section>
 <section id="step-1-get-acquainted-with-the-microxanox-r-package" class="level1">
 <h1>Step 1: Get acquainted with the <em>microxanox</em> R package</h1>
-<p>To reproduce the research, the package <code>microxanox</code> version <code>1.0.0</code> is needed. Familarise yourself with the <a href="https://uzh-peg.r-universe.dev/ui#package:microxanox"><em>microxanox</em> R package</a> that was created to facilitate the research. The two vignettes in that package should be useful. The package is also described in this article (link to follow XXX).</p>
-<p><a href="https://github.com/UZH-PEG/diversity_envresp1">The <code>diversity_envresp1</code> repository</a> contains a file called <code>microxanox_1.0.0.tar.gz</code> which contains the R package in the correct version.</p>
+<p>To reproduce the research, the package <code>microxanox</code> version <code>0.9.1</code> is needed. Familarise yourself with the <a href="https://uzh-peg.r-universe.dev/ui#package:microxanox"><em>microxanox</em> R package</a> that was created to facilitate the research. The two vignettes in that package should be useful. The package is also described in this article (link to follow XXX).</p>
+<p><a href="https://github.com/UZH-PEG/diversity_envresp1">The <code>diversity_envresp1</code> repository</a> contains a file called <code>microxanox_0.9.1.tar.gz</code> which contains the R package in the correct version.</p>
 <p>The R package can be installed by either installing from this file by using</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_local</span>(<span class="st">&quot;./microxanox_0.9.0.tar.gz&quot;</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_local</span>(<span class="st">&quot;./microxanox_0.9.1.tar.gz&quot;</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You can also install it from the github repository by using</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;UZH-PEG/microxanox&quot;</span>, <span class="at">ref =</span> <span class="st">&quot;v0.9.0&quot;</span>, <span class="at">build_vignettes =</span> <span class="cn">TRUE</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>( <span class="st">&quot;UZH-PEG/microxanox&quot;</span>, <span class="at">ref =</span> <span class="st">&quot;v0.9.1&quot;</span>, <span class="at">build_vignettes =</span> <span class="cn">TRUE</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The newest version csan also be installed from the <a href="https://r-universe.dev">R-Universe</a> as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;microxanox&quot;</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&#39;https://XXX.r-universe.dev&#39;</span>, <span class="st">&#39;https://cloud.r-project.org&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(Compatibility with any newer versions is not guaranteed. Of the same main release (1.x.x), compatibility is likely; with other main releases (2.x.x, 3.x.x, …) is unlikely!)</p>
@@ -2703,6 +2709,7 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="making-visualisations-and-the-supplement">Making visualisations and the supplement</h2>
 <p>To make the data-based figures of the main report (i.e. published paper): <code>reports/manuscript/figures_main_ms_v1.R</code></p>
 <p>To make the supplementary report: <code>reports/supplement/supplement_0.9.1.Rmd</code>: RMarkdown file used to generate <a href="https://uzh-peg.github.io/diversity_envresp1/reports/supplement/supplement_0.9.1.Rmd">the supplementary report (HTML page)</a> to the publication <strong>XXXTO DO: add publication ref</strong>.</p>
+<p>To make graphs of stable states against oxygen diffusivity (e.g. versions of figure 4 in the main manuscript) knit the rmd files in the <code>reports/stable_states_graphs</code> sub-folders.</p>
 <p>To make some animations use code in the <code>reports/animations</code> folder. Eventually you will be able to make this <a href="https://uzh-peg.github.io/diversity_envresp1/reports/animations/report.html"><code>report.html</code> HTML page.</a></p>
 </section>
 </section>

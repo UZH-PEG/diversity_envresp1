@@ -7,13 +7,13 @@ format:
     toc-location: left
 ---
 
+24. November 2022
 
+To do once the paper is accepted:
 
-TO DO: set package versions everywhere to the one used in the release (1.0.0)
-
-TO DO: delete `old` and other not needed directories (before this we should tag this)
-
-TO DO: Search for XXX for items to update.
+* Set package versions everywhere to the one used in the release (1.0.0)
+* Delete `old` and other not needed directories (before this we should tag this)
+* Search for XXX for items to update.
 
 
 # Introduction
@@ -25,21 +25,21 @@ Reproducing the research requires the *microxanox* R package (location given bel
 
 # Step 1: Get acquainted with the *microxanox* R package
 
-To reproduce the research, the package `microxanox` version `1.0.0` is needed.  Familarise yourself with the [*microxanox* R package](https://uzh-peg.r-universe.dev/ui#package:microxanox) that was created to facilitate the research. The two vignettes in that package should be useful. The package is also described in this article (link to follow XXX).
+To reproduce the research, the package `microxanox` version `0.9.1` is needed.  Familarise yourself with the [*microxanox* R package](https://uzh-peg.r-universe.dev/ui#package:microxanox) that was created to facilitate the research. The two vignettes in that package should be useful. The package is also described in this article (link to follow XXX).
 
-[The `diversity_envresp1` repository](https://github.com/UZH-PEG/diversity_envresp1) contains a file called `microxanox_1.0.0.tar.gz` which contains the R package in the correct version.
+[The `diversity_envresp1` repository](https://github.com/UZH-PEG/diversity_envresp1) contains a file called `microxanox_0.9.1.tar.gz` which contains the R package in the correct version.
 
 The R package can be installed by either installing from this file by using
 
 
 ```r
-remotes::install_local("./microxanox_0.9.0.tar.gz", upgrade = FALSE)
+remotes::install_local("./microxanox_0.9.1.tar.gz", upgrade = FALSE)
 ```
 
 You can also install it from the github repository by using
 
 ```r
-remotes::install_github( "UZH-PEG/microxanox", ref = "v0.9.0", build_vignettes = TRUE, upgrade = FALSE)
+remotes::install_github( "UZH-PEG/microxanox", ref = "v0.9.1", build_vignettes = TRUE, upgrade = FALSE)
 ```
 
 The newest version csan also be installed from the [R-Universe](https://r-universe.dev) as follows:
@@ -116,6 +116,8 @@ The script file `run_all.r` contains code to run all simulations, and brief desc
 To make the data-based figures of the main report (i.e. published paper): `reports/manuscript/figures_main_ms_v1.R`
 
 To make the supplementary report: `reports/supplement/supplement_0.9.1.Rmd`: RMarkdown file used to generate [the supplementary report (HTML page)](https://uzh-peg.github.io/diversity_envresp1/reports/supplement/supplement_0.9.1.Rmd) to the publication **XXXTO DO: add publication ref**.
-    
+
+To make graphs of stable states against oxygen diffusivity (e.g. versions of figure 4 in the main manuscript) knit the rmd files in the `reports/stable_states_graphs` sub-folders.
+
 To make some animations use code in the `reports/animations` folder. Eventually you will be able to make this [`report.html` HTML page.](https://uzh-peg.github.io/diversity_envresp1/reports/animations/report.html)
 

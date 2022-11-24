@@ -16,6 +16,8 @@ library(knitr)
 library(here)
 ```
 
+Microxanox version used: 0.9.1
+
 # Cyanobacteria
 
 ## No diversity
