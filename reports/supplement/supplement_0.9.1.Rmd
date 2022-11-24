@@ -1244,13 +1244,13 @@ maxtolonly_strains <- readRDS(here("data",
 
 ## Increasing tolerance vs. increasing diversity in only the SB
 
-When SB contained multiple strains varying in growth rate (and tolerance) there were two stable states at intermediate levels of oxygen diffusivity, only one stable state at low oxygen diffusivity with only sulfur bacteria, and with only one stable state at high oxygen diffusivity with high cyanobacterial density (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, the stable states change: at low oxygen diffusivity  all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple SB strains varying in tolerance.
+When SB contained multiple strains varying in growth rate (and tolerance) there were two stable states at intermediate levels of oxygen diffusivity, only one stable state at low oxygen diffusivity with only sulfur bacteria, and only one stable state at high oxygen diffusivity with high cyanobacterial density (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, the stable states change: at low oxygen diffusivity  all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple SB strains varying in tolerance.
 
 Apparently, at low oxygen diffusivity levels, the absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. The most tolerant SB strain has a low maximum growth rate, which leads to less production of sulfide. Presence of only the most tolerant SB strain therefore results in lower sulfide concentrations (Figure \@ref(fig:max-tol2) vs Figure \@ref(fig:max-tol3)), allowing growth of cyanobacteria at low oxygen diffusivity.
 
 However, cyanobacteria are excluded at intermediate oxygen diffusivity. We speculate that this might be associated with the increase in sulfide at intermediate oxygen diffusivity, which might be due to the decline and collapse of PB and therefore reduced consumption of sulfide.
 
-(ref:max-tol2) Stable states found when there is variation among nine strains of SB and the amount of variation is high. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol2) Stable states found when there is variation among nine strains of SB and the amount of variation is high. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol2, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol2)', fig.height=10, fig.width=8, fig.align="center"}
 ## max SB_var_gmax_s is 0.09473684
@@ -1262,7 +1262,7 @@ ss_result <- nine_strain_one
 fig_state_vs_o2diff_sidebyside_alternative_leftfliponly(nine_strain_one)
 ```
 
-(ref:max-tol3) Stable states found when SB contained only the most tolerant strain, with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol3) Stable states found when SB contained only the most tolerant strain, with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol3, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol3)', fig.height=10, fig.width=8, fig.align="center"}
 max_tol_one <- filter(maxtolonly_strains,
@@ -1329,9 +1329,9 @@ p
 
 ## Increasing tolerance vs. increasing diversity in CB-SB
 
-In the SB-CB case, the presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure \@ref(fig:max-tol55)) or to absence of alternate stable states and sole dominance of cyanobacteria when trait values were high (Figure \@ref(fig:max-tol5)). As discussed in the previous section, the low maximum growth rate of the most tolerant SB strain led to less production of sulfide such that SB could not exclude CB. 
+In the CB-SB case, the presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure \@ref(fig:max-tol55)) or to absence of alternate stable states and sole dominance of cyanobacteria when trait values were high (Figure \@ref(fig:max-tol5)). As discussed in the previous section, the low maximum growth rate of the most tolerant SB strain led to less production of sulfide such that SB could not exclude CB. 
 
-(ref:max-tol55)  Stable states found when CB and SB each contain only the single most tolerant strain with moderate tolerance. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol55)  Stable states found when CB and SB each contain only the single most tolerant strain with moderate tolerance. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol55, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol55)', fig.height=10, fig.width=8, fig.align="center"}
 #max_tol_one_CBSB <- filter(maxtolonly_strains,
@@ -1349,7 +1349,7 @@ fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
 
 
 
-(ref:max-tol5)  Stable states found when CB and SB each contain only the single most tolerant strain with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol5)  Stable states found when CB and SB each contain only the single most tolerant strain with high tolerance. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol5, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol5)', fig.height=10, fig.width=8, fig.align="center"}
 max_tol_one_CBSB <- filter(maxtolonly_strains,
@@ -1394,7 +1394,7 @@ ss_9s <- ss_9s %>%
 ```
 
 
-(ref:PB-stabstat4) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is moderate to high. This example is when the standardised amount of trait variation is 0.89 (0 being no variation, and 1 being the maximum amount in any simulation.)
+(ref:PB-stabstat4) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is medium to high. This example is when the standardised amount of trait variation is 0.89 (0 being no variation, and 1 being the maximum amount in any simulation.)
 
 ```{r PB-stabstat4, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-stabstat4)', fig.height=10, fig.width=8, fig.align="center"}
 this_dat <- ss_9s %>%
@@ -1432,7 +1432,7 @@ ss_tol <- ss_tol %>%
 ```
 
 
-(ref:PB-stabstat5) Dynamics when there is high tolerance in only PB, with this being the same tolerance level as the most tolerant strain in Figure \@ref(fig:PB-stabstat4) immediately above.
+(ref:PB-stabstat5) Dynamics when PB contain only the most tolerant strain, with this being the same tolerance level as the most tolerant strain in Figure \@ref(fig:PB-stabstat4) immediately above.
 
 ```{r PB-stabstat5, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-stabstat5)', fig.height=10, fig.width=8, fig.align="center"}
 this_dat <- ss_tol %>%
@@ -1454,7 +1454,7 @@ fig_state_vs_o2diff_sidebyside_alternative(this_dat[which_one,])
 
 At high levels of diversity / high levels of tolerance, resilience of the oxic state is greater in the tolerance than diversity manipulation. We have shown that low tolerance sulfur strains can be implicated in the oxic to anoxic transition (section \@ref(SB2)) 
 
-(ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol6, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol6)', fig.height=10, fig.width=8, fig.align="center"}
 filter(nine_strains,
@@ -1465,7 +1465,7 @@ filter(nine_strains,
 
 ```
 
-(ref:max-tol7) Stable states found with the single most tolerant CB strain, SB strain, and PB strain, with trait values corresponding with the diversity level in the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol7) Stable states found with the single most tolerant CB strain, SB strain, and PB strain, with trait values corresponding with the diversity level in the previous figure. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol7, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol7)', fig.height=10, fig.width=8, fig.align="center"}
 filter(maxtolonly_strains,
@@ -1657,9 +1657,7 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 
 
 
-When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at higher oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
 
-When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). 
 
 
 
