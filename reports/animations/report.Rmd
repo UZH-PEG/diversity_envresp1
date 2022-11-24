@@ -1,7 +1,7 @@
 ---
 title: "State change and diversity animations"
 author: "Owen Petchey"
-date: "6/1/2022"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::html_document2:
     toc: true
