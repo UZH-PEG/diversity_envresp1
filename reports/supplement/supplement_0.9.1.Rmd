@@ -62,9 +62,7 @@ $g_j(X, Y) = g_{max,j} (\frac{X}{K_{j,X} + X})(\frac{Y}{K_{j,Y} + Y})$
 
 $g_{max,j}$ is the maximum specific growth rate of strain $j$. $X$ is the concentration of substrate 1, and $Y$ is the concentration of substrate 2. $K_{j,X}$ and $K_{j,Y}$ are the half-saturation constants of species $j$ on substrates $X$ and $Y$.
 
-Growth of cyanobacteria depended on one substrate (phosphorus), whereas growth of sulfate-reducing bacteria (SB) and phototrophic sulfur bacteria (PB) depended on two substrates (phosphorus and oxidised sulfur for SB, and phosphorus and sulfide for PB).
-
-Inhibition of growth by a substrate was modelled with the Haldane equation:
+Inhibition of growth by a substrate was modeled with the Haldane equation:
 
 $h_j(X) = \frac{1}{1+ (X / H_{j,X})}$
 
@@ -243,7 +241,7 @@ fig_state_vs_o2diff_sidebyside_alternative_repmeth(repl_meth[1,])
 
 ### Temporal method, no diversity
 
-(ref:temp-meth2) Stable states found with the **temporal method**. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:temp-meth2) Stable states found with the **temporal method**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
 ```{r temp-meth2, echo = FALSE,  include=TRUE, fig.cap='(ref:temp-meth2)', fig.height=10, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
@@ -283,7 +281,7 @@ The replication method shows qualitatively the same effects of functional divers
 -   Introducing functional diversity in only the phototrophic sulfur bacteria reduces the resilience of the anoxic state and has no effect on the resilience of the oxic state. 
 -   Introducing functional diversity in more than one functional group reduces, reverses, or does not change the effect of diversity in individual functional groups. For example, introducing functional diversity in all three functional groups reduces the resilience of the oxic state when trait variation is low but increases the resilience of the oxic state when trait variation is high. 
 
-(ref:div-repl-meth1) **Replication method results.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience.
+(ref:div-repl-meth1) **Replication method results.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. Data is missing in panels e, and i, when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities). **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience.
 
 ```{r div-repl-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-repl-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("data", 
@@ -344,7 +342,7 @@ fig_state_vs_o2diff_sidebyside_alternative(repl_meth[94,])
 ## Effect of abundance change event
 
 
-As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours. We here show that a slightly different method produced the same results. Specifically, we tested the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. every 1,000 hours, any abundances that were lower than 1 unit were set to 1 unit. As shown in Figure \@ref(fig:div-temp-eventdef1), the results with this floor abundance are similar as when 1 was added every 1,000 hours. Note that a coarser gradient of trait variation was used, hence the saw-tooth patterns. A further difference is the large decrease in resilience of the anoxic to oxic transition above moderate levels of diversity in the SB and CB-SB treatments. This pattern can also occur with addition of 1 abundance unit (e.g., see Figure \@ref(fig:div-temp-meth3)), and is discussed in the section that concerns this below (section [SB diversity effects]).
+As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours. We here show that a slightly different method produced the same results. Specifically, we tested the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. every 1,000 hours, any abundances that were lower than 1 unit were set to 1 unit. As shown in Figure \@ref(fig:div-temp-eventdef1), the results with this floor abundance are similar as when 1 was added every 1,000 hours. 
 
 (ref:div-temp-eventdef1) **Results with an abundance floor.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
@@ -561,9 +559,9 @@ p1 + p2
 
 
 
-## Example of transient dynamics at 1e6 hours
+## 1e6 vs 2e6 hours wait time
 
-The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except in regions of strain replacement, including at some state transitions. E.g. in the region of strain replacement in the sulfate-reducing bacteria recovery trajectory there is difference in strain abundances at 1'000'000 and 2'000'000 hours. However, the position of the tipping points (which were calculated from the total SB abundance) and the substrate concentrations did not differ between 1'000'000 and 2'000'000 hours.
+The results below show the stable states as a function of oxygen diffusivity for a system with an intermediate level of diversity in all functional groups, with either 1'000'000 hours at each oxygen diffusivity level (Figure \@ref(fig:ss-temp-meth3)), or 2'000'000 hours (Figure \@ref(fig:ss-temp-meth4)). This shows that 1'000'000 hours duration of the simulations are sufficient to reach stable state, except in regions of strain replacement, including at some state transitions. E.g. in the region of strain replacement in the sulfate-reducing bacteria there is difference in strain abundances at 1'000'000 and 2'000'000 hours. However, the position of the tipping points (which were calculated from the total SB abundance) and the substrate concentrations did not differ between 1'000'000 and 2'000'000 hours.
 
 (ref:ss-temp-meth3) Stable states found with the temporal method with duration at each oxygen diffusivity value of **1e6 hours**. The left column of panels refers to the stable state when oxygen diffusivity is at first high (favouring the oxic state). The right column refers to when oxygen diffusivity is at first low (favouring the anoxic state). Points (which sometimes are so close as to appear as thick lines) show the stable state at the end of each period of constant oxygen diffusivity. Thin lines are for visualisation only, and join the points. Grey arrows show the oxygen diffusivity at which the system flips, and the direction of the flip. The length of the grey arrows is without meaning.
 
@@ -603,7 +601,7 @@ fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 
 # Effect of number of strains
 
-In the main text, we present results of simulations with nine strains per functional group. Here we also explore the effect of number of strains (2, 3, 6, 9) on the position of the two tipping points (Figure \@ref(fig:div-stab-multstrain1)). At low to moderate amounts of trait variation, the number of strains did not affect the position of the tipping points. However, at high amounts of trait variation, resilience was lower when the functional groups had only two or three strains rather than six or nine. This effect was particularly pronounced when there was high variation in only SB or in SB-CB: here, simulations with two or three strains led to dramatically lower resilience of the anoxic state than simulations with six or nine strains. We believe that this effect is due to the greater distance in trait space between strains in simulations with two or three strains than in simulations with more strains (also see Section 5). 
+In the main text, we present results of simulations with nine strains per functional group. Here we also explore the effect of number of strains (2, 3, 6, 9) on the position of the two tipping points (Figure \@ref(fig:div-stab-multstrain1)). At low to moderate amounts of trait variation, the number of strains did not affect the position of the tipping points. However, at high amounts of trait variation, resilience was lower when the functional groups had only two or three strains rather than six or nine. This effect was particularly pronounced when there was high variation in only SB or in SB-CB: here, simulations with two or three strains led to dramatically lower resilience of the anoxic state than simulations with six or nine strains. We believe that this effect is due to the greater distance in trait space between strains in simulations with two or three strains than in simulations with more strains (also see Section 9). 
 
 (ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains.
 
@@ -658,7 +656,7 @@ fig_div_vs_o2diff_multistrain(plot_here111, which_strains,
 
 # CB diversity effects
 
-Increased CB diversity causes a slight decrease in the resilience of the anoxic state. The following two figures show the state responses to oxygen diffusivity with low Figure \@ref(fig:ss-CB-only1) and high Figure \@ref(fig:ss-CB-only2) levels of CB diversity. The difference in the position of the anoxic to oxic tipping point is small. It is, in fact the smallest it could be, as it is the smallest step size in oxygen diffusivity used in the simulations. 
+Increased CB diversity causes a slight decrease in the resilience of the anoxic state. The following two figures show the state responses to oxygen diffusivity with low (Figure \@ref(fig:ss-CB-only1)) and high (Figure \@ref(fig:ss-CB-only2)) levels of CB diversity. The difference in the position of the anoxic to oxic tipping point is small. It is, in fact the smallest it could be, as it is the smallest step size in oxygen diffusivity used in the simulations. 
 
 (ref:ss-CB-only1) Stable state of the system with **low** level of diversity in only CB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
@@ -707,7 +705,7 @@ fig_state_vs_o2diff_sidebyside_alternative_leftfliponly(only_CB_variable[20,])
 
 ## SB diversity effect on the anoxic to oxic transition for short wait times (1e4)
 
-We showed above that wait times of 1e5 (Figure \@ref(fig:div-temp-meth2)) and 1e4 (Figure \@ref(fig:div-temp-meth4)) produce qualitatively and often quantitatively very similar results to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or in CB-SB with wait times of 1e4 (Figure \@ref(fig:div-temp-meth4)). Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift to the oxic state.  Suprisingly, when there is just a little more diversity in the SB, then the anoxic to oxic transition happens earlier, i.e. there is a large decrease in resilience (Figure \@ref(fig:ss-temp-meth2)).
+We showed above that wait times of 1e5 (Figure \@ref(fig:div-temp-meth2)) and 1e4 (Figure \@ref(fig:div-temp-meth3)) produce qualitatively and often quantitatively very similar results to those for wait times of 1e6 (Figure \@ref(fig:div-temp-meth1)). There is, however, a notable difference when there is variation in only SB, or in CB-SB with wait times of 1e4 (Figure \@ref(fig:div-temp-meth3)). Here, moderate increases in diversity have the same effect as with wait times of 1e6. However, larger increases in diversity suddenly cause a large reduction in resilience of the anoxic-oxic transition. Figure \@ref(fig:ss-temp-meth1) gives an example of the stable states when diversity is moderate -- increases in oxygen diffusivity cause strain replacement in the SB to the more tolerant strains, which then delay the shift to the oxic state.  Suprisingly, when there is just a little more diversity in the SB, then the anoxic to oxic transition happens earlier, i.e. there is a large decrease in resilience (Figure \@ref(fig:ss-temp-meth2)).
 
 (ref:ss-temp-meth1) Stable state of the system with **moderate** level of diversity in only SB, and no diversity in the other two groups. All other aspects are as in Figure \@ref(fig:ss-temp-meth3).
 
@@ -964,13 +962,13 @@ aO_flip_sim2 <- only_PB_stab[sim2,"hyst_max_log"]
 Increases in the diversity within the PB functional group leads to lower resilience of the anoxic state (Figure \@ref(fig:div-temp-meth1), Panel PB, blue line). For example, a small amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)` (Figure \@ref(fig:pbdiv-only-1)). Whereas a moderate amount of variation in only the PB functional group, and no variation in other functional groups, results in transition from anoxic to oxic at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)` (Figure \@ref(fig:pbdiv-only-2)).
 
 
-(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **low amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:pbdiv-only-1) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **low amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim1, 2)`. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r pbdiv-only-1, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-1)', fig.height=10, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim1,])
 ```
 
-(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **moderate amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:repl-meth2).
+(ref:pbdiv-only-2) Right-hand panels show the transition from anoxic to oxic state when oxygen diffusivity decreases. The results here are for a **moderate amount of variation in only the PB functional group**. The transition from anoxic to oxic occurs at approximately $log_{10}$(oxygen diffusivity) = `r round(aO_flip_sim2, 2)`. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3).
 
 ```{r pbdiv-only-2, echo = FALSE,  include=TRUE, fig.cap='(ref:pbdiv-only-2)', fig.height=10, fig.width=8, fig.align="center"}
 fig_state_vs_o2diff_sidebyside_alternative(only_PB_variable[sim2,])
@@ -1048,7 +1046,7 @@ dd %>%
 ## Effect of medium to high PB diversity
 
 
-When there was medium to high variation in only the phototrophic sulfur bacteria (PB), the strain dynamics deviated from the standard pattern: at low oxygen diffusivity, all three functional groups coexisted. Specifically, on the trajectory of decreasing oxygen diffusivity, cyanobacteria reappeared at low oxygen diffusivity after their collapse (Figure \@ref(fig:PB-stabstat1)) or never fully collapsed (high variation in PB, Figure \@ref(fig:PB-stabstat2)). On the trajectory of increasing oxygen diffusivity, cyanobacteria coexisted with the two groups of sulfur bacteria at low oxygen diffusivity, collapsed at medium levels of oxygen diffusivity, and then increased to sole dominance at the tipping point to the oxic state (Figure \@ref(fig:PB-stabstat1)). 
+When there was medium to high variation in only the phototrophic sulfur bacteria (PB), the strain dynamics deviated from the standard pattern: at low oxygen diffusivity, all three functional groups coexisted. Specifically, on the trajectory of decreasing oxygen diffusivity, cyanobacteria reappeared at low oxygen diffusivity after their collapse (medium variation in PB, Figure \@ref(fig:PB-stabstat1)) or never fully collapsed (high variation in PB, Figure \@ref(fig:PB-stabstat2)). On the trajectory of increasing oxygen diffusivity, cyanobacteria coexisted with the two groups of sulfur bacteria at low oxygen diffusivity, collapsed at medium levels of oxygen diffusivity, and then increased to sole dominance at the tipping point to the oxic state (Figure \@ref(fig:PB-stabstat1), Figure \@ref(fig:PB-stabstat2)). 
 
 The same pattern occurred for medium to high simultaneous variation in phototrophic sulfur bacteria and cyanobacteria, albeit only on the trajectory of increasing oxygen diffusivity (Figure \@ref(fig:CBPB-stabstat3)). On the trajectory of decreasing oxygen diffusivity, cyanobacteria dominated over the entire gradient of oxygen diffusivity, such that effects of PB diversity did not play out on this trajectory. 
 
@@ -1078,7 +1076,7 @@ ss_9s <- ss_9s %>%
 ```
 
 
-(ref:PB-stabstat1) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is moderate to high. This example is when the standardised amount of trait variation is 0.74 (0 being no variation, and 1 being the maximum amount in any simulation.)
+(ref:PB-stabstat1) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is medium to high. This example is when the standardised amount of trait variation is 0.74 (0 being no variation, and 1 being the maximum amount in any simulation.)
 
 ```{r PB-stabstat1, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-stabstat1)', fig.height=10, fig.width=8, fig.align="center"}
 this_dat <- ss_9s %>%
@@ -1248,13 +1246,13 @@ maxtolonly_strains <- readRDS(here("data",
 
 ## Increasing tolerance vs. increasing diversity in only the SB
 
-When SB contained multiple strains varying in growth rate (and tolerance) there were two stable states at intermediate levels of oxygen diffusivity, only one stable state at low oxygen diffusivity with only sulfur bacteria, and with only one stable state at high oxygen diffusivity with high cyanobacterial density (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, the stable states change: at low oxygen diffusivity  all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple SB strains varying in tolerance.
+When SB contained multiple strains varying in growth rate (and tolerance) there were two stable states at intermediate levels of oxygen diffusivity, only one stable state at low oxygen diffusivity with only sulfur bacteria, and only one stable state at high oxygen diffusivity with high cyanobacterial density (Figure \@ref(fig:max-tol2)), as was previously reported. When, however, only one SB strain with very high tolerance and low maximum growth rate was present, the stable states change: at low oxygen diffusivity  all three functional groups coexisted (Figure \@ref(fig:max-tol3)) – this never occurred when there were multiple SB strains varying in tolerance.
 
 Apparently, at low oxygen diffusivity levels, the absence of SB strains with high growth rate precludes the formation of a stable state that does not include cyanobacteria. The most tolerant SB strain has a low maximum growth rate, which leads to less production of sulfide. Presence of only the most tolerant SB strain therefore results in lower sulfide concentrations (Figure \@ref(fig:max-tol2) vs Figure \@ref(fig:max-tol3)), allowing growth of cyanobacteria at low oxygen diffusivity.
 
 However, cyanobacteria are excluded at intermediate oxygen diffusivity. We speculate that this might be associated with the increase in sulfide at intermediate oxygen diffusivity, which might be due to the decline and collapse of PB and therefore reduced consumption of sulfide.
 
-(ref:max-tol2) Stable states found when there is variation among nine strains of SB and the amount of variation is high. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol2) Stable states found when there is variation among nine strains of SB and the amount of variation is high. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol2, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol2)', fig.height=10, fig.width=8, fig.align="center"}
 ## max SB_var_gmax_s is 0.09473684
@@ -1266,7 +1264,7 @@ ss_result <- nine_strain_one
 fig_state_vs_o2diff_sidebyside_alternative_leftfliponly(nine_strain_one)
 ```
 
-(ref:max-tol3) Stable states found when SB contained only the most tolerant strain, with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol3) Stable states found when SB contained only the most tolerant strain, with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol3, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol3)', fig.height=10, fig.width=8, fig.align="center"}
 max_tol_one <- filter(maxtolonly_strains,
@@ -1333,9 +1331,9 @@ p
 
 ## Increasing tolerance vs. increasing diversity in CB-SB
 
-In the SB-CB case, the presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure \@ref(fig:max-tol55)) or to absence of alternate stable states and sole dominance of cyanobacteria when trait values were high (Figure \@ref(fig:max-tol5)). As discussed in the previous section, the low maximum growth rate of the most tolerant SB strain led to less production of sulfide such that SB could not exclude CB. 
+In the CB-SB case, the presence of only the most tolerant strain led to coexistence of all groups at low levels of oxygen diffusivity when trait values were moderately high (Figure \@ref(fig:max-tol55)) or to absence of alternate stable states and sole dominance of cyanobacteria when trait values were high (Figure \@ref(fig:max-tol5)). As discussed in the previous section, the low maximum growth rate of the most tolerant SB strain led to less production of sulfide such that SB could not exclude CB. 
 
-(ref:max-tol55)  Stable states found when CB and SB each contain only the single most tolerant strain with moderate tolerance. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol55)  Stable states found when CB and SB each contain only the single most tolerant strain with moderate tolerance. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol55, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol55)', fig.height=10, fig.width=8, fig.align="center"}
 #max_tol_one_CBSB <- filter(maxtolonly_strains,
@@ -1353,7 +1351,7 @@ fig_state_vs_o2diff_sidebyside_alternative(max_tol_one_CBSB)
 
 
 
-(ref:max-tol5)  Stable states found when CB and SB each contain only the single most tolerant strain with trait values corresponding with the diversity level of the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol5)  Stable states found when CB and SB each contain only the single most tolerant strain with high tolerance. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol5, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol5)', fig.height=10, fig.width=8, fig.align="center"}
 max_tol_one_CBSB <- filter(maxtolonly_strains,
@@ -1398,7 +1396,7 @@ ss_9s <- ss_9s %>%
 ```
 
 
-(ref:PB-stabstat4) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is moderate to high. This example is when the standardised amount of trait variation is 0.89 (0 being no variation, and 1 being the maximum amount in any simulation.)
+(ref:PB-stabstat4) Coexistence of all three groups at low oxygen diffusivities when only PB contains strain variation, and the amount of strain variation is medium to high. This example is when the standardised amount of trait variation is 0.89 (0 being no variation, and 1 being the maximum amount in any simulation.)
 
 ```{r PB-stabstat4, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-stabstat4)', fig.height=10, fig.width=8, fig.align="center"}
 this_dat <- ss_9s %>%
@@ -1436,7 +1434,7 @@ ss_tol <- ss_tol %>%
 ```
 
 
-(ref:PB-stabstat5) Dynamics when there is high tolerance in only PB, with this being the same tolerance level as the most tolerant strain in Figure \@ref(fig:PB-stabstat4) immediately above.
+(ref:PB-stabstat5) Dynamics when PB contain only the most tolerant strain, with this being the same tolerance level as the most tolerant strain in Figure \@ref(fig:PB-stabstat4) immediately above.
 
 ```{r PB-stabstat5, echo = FALSE,  include=TRUE, fig.cap='(ref:PB-stabstat5)', fig.height=10, fig.width=8, fig.align="center"}
 this_dat <- ss_tol %>%
@@ -1458,7 +1456,7 @@ fig_state_vs_o2diff_sidebyside_alternative(this_dat[which_one,])
 
 At high levels of diversity / high levels of tolerance, resilience of the oxic state is greater in the tolerance than diversity manipulation. We have shown that low tolerance sulfur strains can be implicated in the oxic to anoxic transition (section \@ref(SB2)) 
 
-(ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol6, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol6)', fig.height=10, fig.width=8, fig.align="center"}
 filter(nine_strains,
@@ -1469,7 +1467,7 @@ filter(nine_strains,
 
 ```
 
-(ref:max-tol7) Stable states found with the single most tolerant CB strain, SB strain, and PB strain, with trait values corresponding with the diversity level in the previous figure. All other aspects are the same as in Figure \@ref(fig:repl-meth2). 
+(ref:max-tol7) Stable states found with the single most tolerant CB strain, SB strain, and PB strain, with trait values corresponding with the diversity level in the previous figure. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
 ```{r max-tol7, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol7)', fig.height=10, fig.width=8, fig.align="center"}
 filter(maxtolonly_strains,
@@ -1661,9 +1659,7 @@ ylab + Reduce("+",fig5_lin) + fig5legend +
 
 
 
-When two functional groups varied in traits, the effects of trait variation were additive when one of the groups had no diversity effect on a tipping point but non-additive when both groups had diversity effects on a tipping point (Fig. \@ref(fig:fig-add-linear) a-f). High trait variation in cyanobacteria and sulfate-reducing bacteria caused the oxic-anoxic tipping point to occur at lower oxygen diffusivity than expected assuming additivity of the individual effects of diversity in these two groups (Fig. \@ref(fig:fig-add-linear)d). When the two groups of sulfur bacteria varied in traits, the anoxic-oxic tipping point occurred at higher oxygen diffusivity than expected by additivity (Fig. \@ref(fig:fig-add-linear)f). 
 
-When all three groups varied in traits, only the diversity effect in phototrophic sulfur bacteria on the oxic-anoxic tipping point was additive; all other effects were non-additive, especially at higher trait variation (Fig. \@ref(fig:fig-add-linear)g-i). 
 
 
 
