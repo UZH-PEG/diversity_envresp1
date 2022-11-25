@@ -128,116 +128,28 @@ fig_div_vs_o2diff_1strain <- function(all_stab, which_strain, figure_title) {
   
 }
 
-fig_div_vs_o2diff_multistrain <- function(all_stab,
+fig_div_vs_o2diff_multistrain <- function(all_stab111,
                                           which_strains,
                                           which_wait_time,
                                           figure_title) {
+ 
   
-  # CB_vars <- unique(all_stab$CB_var_gmax_s)
-  # SB_vars <- unique(all_stab$SB_var_gmax_s)
-  # PB_vars <- unique(all_stab$PB_var_gmax_s)
-  # 
-  # CB_all_stab <- all_stab %>%
-  #   filter(SB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0) %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # SB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # PB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          SB_var_gmax_s == 0) %>%
-  #   ungroup()  %>%
-  #   mutate(var_treat = "PB",
-  #          var_gmax = PB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars))
-  # CBSB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(PB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(SB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # SBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB-PB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(CB_var_gmax_s == 0)
-  # 
-  # 
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBSBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # all_stab_results <- CB_all_stab %>%
-  #   bind_rows(SB_all_stab) %>%
-  #   bind_rows(PB_all_stab) %>%
-  #   bind_rows(CBSB_all_stab) %>%
-  #   bind_rows(CBPB_all_stab) %>%
-  #   bind_rows(SBPB_all_stab) %>%
-  #   bind_rows(CBSBPB_all_stab)
-  # 
-  # all_stab_results <- all_stab_results %>%
-  #   mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB",
-  #                                                                 "SB",
-  #                                                                 "PB",
-  #                                                                 "CB-SB",
-  #                                                                 "CB-PB",
-  #                                                                 "SB-PB",
-  #                                                                 "CB-SB-PB")))
-  # 
-  # all_stab_results_small <- select(all_stab_results, -7:-12)
-  # 
-  # #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
-  # 
-  
-  
-  p1 <- all_stab %>%
+  p1 <- all_stab111 %>%
     #filter(var_treat == "CB") %>%
     filter(num_strains %in% which_strains, 
            waittime == which_wait_time) %>%
     filter(Species == "SB_tot") %>%
     ggplot(aes(x = stand_var,
                col = as.factor(num_strains))) +
-    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
-    geom_line(aes(y = hyst_min_log, col = as.factor(num_strains)), lwd = 0.5, alpha = 0.8) +
-    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+    facet_wrap( ~ var_treat, nrow = 3) +
+    geom_line(aes(y = hyst_min_log, col = as.factor(num_strains)),
+              lwd = 0.5, alpha = 0.8) +
+    geom_line(aes(y = hyst_max_log, col = as.factor(num_strains)),
+              lwd = 0.5, alpha = 0.8) +
     geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log,
                     col = as.factor(num_strains),
                     fill = as.factor(num_strains)), alpha = 0.2) +
-    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    #facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
     xlab("Standardised amount of trait variation") +
     ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
@@ -675,7 +587,8 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
     select(down=hyst_min_log, up=hyst_max_log) %>%
     pivot_longer(names_to = "direction", values_to = "aO_flip", 1:2) %>%
     mutate(y_start = c(2.5, 7.5),
-           y_end = c(7.5, 2.5))
+           y_end = c(7.5, 2.5)) #%>%
+    #filter(aO_flip != 0, aO_flip != -8)
   
   rm(temp1)
   
@@ -852,6 +765,473 @@ fig_state_vs_o2diff_sidebyside_alternative <- function(ss_result){
           strip.text.y = element_text(size=12),
           plot.margin = margin(t=-1, b=-1)) +
     facet_grid(substrate2 ~ direction)
+  
+  
+  
+  ylab1 <- ggplot(data.frame(x = 1, y = 4.1)) +
+    geom_text(aes(x, y),label= expression('log'[10]*"(density) (cells L"^{-1}*")"),
+              angle = 90, size=4.5) + 
+    theme_void() +
+    coord_cartesian(clip = "off") +
+    theme(plot.margin = margin(t=-1, b=-1, l=-1))
+  
+  
+  ylab2 <- ggplot(data.frame(x = 1, y = 4.1)) +
+    geom_text(aes(x, y),label= expression('log'[10]*"(concentration) ("*mu*"M)"),
+              angle = 90, size=4.5) + 
+    theme_void() +
+    coord_cartesian(clip = "off") +
+    theme(plot.margin = margin(t=-1, b=-1, l=-1))
+  
+  
+  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Decreasing oxygen diffusivity","Increasing oxygen diffusivity"))) +
+    geom_text(aes(x, y, label = direction), size=4.5) +
+    facet_wrap(~direction)+
+    theme_bw()+
+    theme(strip.background = element_blank(),
+          strip.text = element_blank(),
+          panel.grid = element_blank(),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank(),
+          plot.margin = margin(t=-2, b=-1))
+  
+  
+  patchwork <- plot_spacer() + direction.facet +
+    ylab1 + (p1CB/p2SB/p3PB) +
+    ylab2 + (p4O/p5SR) +
+    plot_layout(ncol = 2, heights = c(1,15,10), widths = c(1,30))
+  
+  return(patchwork)
+}
+
+fig_state_vs_o2diff_sidebyside_alternative_leftfliponly <- function(ss_result){
+  
+  is_repl <- "ss_by_a_N_result" %in% names(ss_result)
+  
+  if (is_repl) {
+    ss_result$ssfind_result <- ss_result$ss_res
+  }
+  
+  temp1 <- ss_result %>%
+    mutate(ssfind_result = list(get_total_bio(ssfind_result)))
+  
+  if (is_repl){
+    temp1 <- microxanox:::get_stability_measures.replication_ssfind_result(
+      temp1$ssfind_result[[1]],
+      threshold_diff_log10scale = 3
+    )
+  } else {
+    temp1 <- microxanox:::get_stability_measures.temporal_ssfind_result(
+      temp1$ssfind_result[[1]],
+      threshold_diff_log10scale = 3
+    )
+  }
+  
+  stab_measures <- temp1 %>% 
+    filter(Species == "SB_tot") %>%
+    select(down=hyst_min_log, up=hyst_max_log) %>%
+    pivot_longer(names_to = "direction", values_to = "aO_flip", 1:2) %>%
+    mutate(y_start = c(2.5, 7.5),
+           y_end = c(7.5, 2.5)) %>%
+    filter(aO_flip != 0, aO_flip != -8)
+  
+  rm(temp1)
+  
+  if (is_repl) {
+    gathcols <- 1:(31)
+    ss_result$ssfind_result[[1]] <- ss_result$ssfind_result[[1]] %>%
+      mutate(a_O = log10(a_O),
+             direction = ifelse(initial_N_CB == 1, "up", "down"))
+  } else {
+    gathcols <- 2:(ncol(ss_result$ssfind_result[[1]]) - 2)
+  }
+  
+  temp <- ss_result$ssfind_result[[1]] %>%
+    mutate(a = 10^a_O) %>%
+    gather(species, quantity, gathcols) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"),
+      log10_quantity = log10(quantity + 1),
+      species = factor(species, levels = unique(species)),
+      functional_group2 = case_when(
+        functional_group == "CB" ~ "Cyanobacteria",
+        functional_group == "SB" ~ "Sulfate-reducing\nbacteria",
+        functional_group == "PB" ~ "Phototrophic\nsulfur bacteria"),
+      substrate2 = case_when(
+        var_type == "Substrate" & species == "SR" ~ "Sulfide\nconcentration",
+        var_type == "Substrate" & species == "O" ~ "Oxygen\nconcentration")
+    )
+  
+  num_strains <- temp %>%
+    group_by(functional_group) %>%
+    summarise(num = length(unique(species))) %>%
+    na.omit()
+  
+  num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+  num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+  num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+  
+  
+  line_width <- 0.2
+  point_size <- 0.6
+  arrow_lwd <- 1
+  
+  p1CB <-
+    temp %>%
+    dplyr::filter(functional_group == "CB")  %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = y_start, yend = y_end),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    labs(tag="a")+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12, margin = margin(l=11, r=11)),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(functional_group2 ~ direction)
+  
+  p2SB <- temp %>%
+    dplyr::filter(functional_group == "SB")  %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(7.5), yend = c(2)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    labs(tag="b")+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(functional_group2 ~ direction)
+  
+  
+  p3PB <- temp %>%
+    dplyr::filter(functional_group == "PB")  %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(7), yend = c(2)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    labs(tag="c") +
+    theme_bw() +
+    theme(legend.position="none",
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(functional_group2 ~ direction)
+  
+  
+  
+  p4O <- temp %>%
+    dplyr::filter(var_type == "Substrate", species == "O") %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(0.5), yend = c(2)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    labs(tag="d")+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(substrate2 ~ direction)
+  
+  
+  
+  p5SR <- temp %>%
+    dplyr::filter(var_type == "Substrate", species == "SR") %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_segment(data = stab_measures,
+                 aes(x = aO_flip, xend = aO_flip,
+                     y = c(2.5), yend = c(1.5)),
+                 col = "#bbbbbbff", lwd = arrow_lwd,
+                 arrow = arrow(length=unit(0.30,"cm"),
+                               ends="first", type = "closed")) +
+    geom_path(lwd = line_width, col=6) +
+    geom_point(size = point_size, col=6) +
+    labs(tag="e", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title.y = element_blank(),
+          axis.title.x = element_text(size=13),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(substrate2 ~ direction)
+  
+  
+  
+  ylab1 <- ggplot(data.frame(x = 1, y = 4.1)) +
+    geom_text(aes(x, y),label= expression('log'[10]*"(density) (cells L"^{-1}*")"),
+              angle = 90, size=4.5) + 
+    theme_void() +
+    coord_cartesian(clip = "off") +
+    theme(plot.margin = margin(t=-1, b=-1, l=-1))
+  
+  
+  ylab2 <- ggplot(data.frame(x = 1, y = 4.1)) +
+    geom_text(aes(x, y),label= expression('log'[10]*"(concentration) ("*mu*"M)"),
+              angle = 90, size=4.5) + 
+    theme_void() +
+    coord_cartesian(clip = "off") +
+    theme(plot.margin = margin(t=-1, b=-1, l=-1))
+  
+  
+  direction.facet <- ggplot(data.frame(x = 1, y = 1,direction = c("Decreasing oxygen diffusivity","Increasing oxygen diffusivity"))) +
+    geom_text(aes(x, y, label = direction), size=4.5) +
+    facet_wrap(~direction)+
+    theme_bw()+
+    theme(strip.background = element_blank(),
+          strip.text = element_blank(),
+          panel.grid = element_blank(),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank(),
+          plot.margin = margin(t=-2, b=-1))
+  
+  
+  patchwork <- plot_spacer() + direction.facet +
+    ylab1 + (p1CB/p2SB/p3PB) +
+    ylab2 + (p4O/p5SR) +
+    plot_layout(ncol = 2, heights = c(1,15,10), widths = c(1,30))
+  
+  return(patchwork)
+}
+
+fig_state_vs_o2diff_sidebyside_alternative_nofliparrows <- function(ss_result){
+  
+  is_repl <- "ss_by_a_N_result" %in% names(ss_result)
+  
+  if (is_repl) {
+    ss_result$ssfind_result <- ss_result$ss_res
+  }
+  
+  temp1 <- ss_result %>%
+    mutate(ssfind_result = list(get_total_bio(ssfind_result)))
+  
+  if (is_repl){
+    temp1 <- microxanox:::get_stability_measures.replication_ssfind_result(
+      temp1$ssfind_result[[1]],
+      threshold_diff_log10scale = 3
+    )
+  } else {
+    temp1 <- microxanox:::get_stability_measures.temporal_ssfind_result(
+      temp1$ssfind_result[[1]],
+      threshold_diff_log10scale = 3
+    )
+  }
+  
+  stab_measures <- temp1 %>% 
+    filter(Species == "SB_tot") %>%
+    select(down=hyst_min_log, up=hyst_max_log) %>%
+    pivot_longer(names_to = "direction", values_to = "aO_flip", 1:2) %>%
+    mutate(y_start = c(2.5, 7.5),
+           y_end = c(7.5, 2.5)) #%>%
+  #filter(aO_flip != 0, aO_flip != -8)
+  
+  rm(temp1)
+  
+  if (is_repl) {
+    gathcols <- 1:(31)
+    ss_result$ssfind_result[[1]] <- ss_result$ssfind_result[[1]] %>%
+      mutate(a_O = log10(a_O),
+             direction = ifelse(initial_N_CB == 1, "up", "down"))
+  } else {
+    gathcols <- 2:(ncol(ss_result$ssfind_result[[1]]) - 2)
+  }
+  
+  temp <- ss_result$ssfind_result[[1]] %>%
+    mutate(a = 10^a_O) %>%
+    gather(species, quantity, gathcols) %>%
+    mutate(
+      var_type = ifelse(grepl("B_", species), "Organism", "Substrate"),
+      functional_group = case_when(
+        str_detect(species, "CB_") ~ "CB",
+        str_detect(species, "SB_") ~ "SB",
+        str_detect(species, "PB_") ~ "PB"),
+      log10_quantity = log10(quantity + 1),
+      species = factor(species, levels = unique(species)),
+      functional_group2 = case_when(
+        functional_group == "CB" ~ "Cyanobacteria",
+        functional_group == "SB" ~ "Sulfate-reducing\nbacteria",
+        functional_group == "PB" ~ "Phototrophic\nsulfur bacteria"),
+      substrate2 = case_when(
+        var_type == "Substrate" & species == "SR" ~ "Sulfide\nconcentration",
+        var_type == "Substrate" & species == "O" ~ "Oxygen\nconcentration")
+    )
+  
+  num_strains <- temp %>%
+    group_by(functional_group) %>%
+    summarise(num = length(unique(species))) %>%
+    na.omit()
+  
+  num_CB_strains <- num_strains$num[num_strains$functional_group == "CB"]
+  num_SB_strains <- num_strains$num[num_strains$functional_group == "SB"]
+  num_PB_strains <- num_strains$num[num_strains$functional_group == "PB"]
+  
+  
+  line_width <- 0.2
+  point_size <- 0.6
+  arrow_lwd <- 1
+  
+  p1CB <-
+    temp %>%
+    dplyr::filter(functional_group == "CB")  %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    scale_colour_manual(values = colfunc_CB(num_CB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    labs(tag="a")+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12, margin = margin(l=11, r=11)),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(functional_group2 ~ direction) +
+    ylim(0,9)
+  
+  p2SB <- temp %>%
+    dplyr::filter(functional_group == "SB")  %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    scale_colour_manual(values = colfunc_SB(num_SB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    labs(tag="b")+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(functional_group2 ~ direction) +
+    ylim(0,8)
+  
+  
+  p3PB <- temp %>%
+    dplyr::filter(functional_group == "PB")  %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    scale_colour_manual(values = colfunc_PB(num_PB_strains)) +
+    guides(colour = guide_legend(ncol = 3)) +
+    labs(tag="c") +
+    theme_bw() +
+    theme(legend.position="none",
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(functional_group2 ~ direction) +
+    ylim(0,8)
+  
+  
+  
+  p4O <- temp %>%
+    dplyr::filter(var_type == "Substrate", species == "O") %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width) +
+    geom_point(size = point_size) +
+    labs(tag="d")+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(substrate2 ~ direction) +
+    ylim(0.5,3)
+  
+  
+  
+  p5SR <- temp %>%
+    dplyr::filter(var_type == "Substrate", species == "SR") %>%
+    ggplot(aes(x = log10(a), y = log10_quantity, col = species)) +
+    geom_path(lwd = line_width, col=6) +
+    geom_point(size = point_size, col=6) +
+    labs(tag="e", x=expression('log'[10]*"(oxygen diffusivity) (h"^{-1}*")"))+
+    theme_bw() +
+    theme(legend.position="none",
+          axis.title.y = element_blank(),
+          axis.title.x = element_text(size=13),
+          strip.background = element_rect(fill = "white"),
+          strip.background.x = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_text(size=12),
+          plot.margin = margin(t=-1, b=-1)) +
+    facet_grid(substrate2 ~ direction) +
+    ylim(1,2.5)
   
   
   
@@ -1458,4 +1838,48 @@ combine_fct <- function(Method="arithmetic"){
                             # agg_stab_strain9_CB_SB_PB,
                             agg_stab_strain9_CB_SBPB, agg_stab_strain9_CBSB_PB, agg_stab_strain9_CBPB_SB)
   return(agg_stab_strain9)
+}
+
+
+fig_div_vs_o2diff_maxtolcomp <- function(all_stab,
+                                          which_strains,
+                                          which_wait_time,
+                                          figure_title) {
+  
+  all_stab <- all_stab %>%
+    mutate(Treatment = ifelse(num_strains == -1,
+                              "Only most tolerant strain",
+                              "All strains"))
+  
+  p1 <- all_stab %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains %in% which_strains, 
+           waittime == which_wait_time) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var,
+               col = Treatment)) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    geom_line(aes(y = hyst_min_log, col = Treatment), lwd = 0.5, alpha = 0.8) +
+    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8) +
+    geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log,
+                    col = Treatment,
+                    fill = Treatment), alpha = 0.2) +
+    facet_wrap( ~ var_treat, nrow = 3) +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    guides(col = guide_legend(title="Strains present"),
+           fill = guide_none()) +
+    theme_bw() +
+    theme(
+      legend.position="top",
+      panel.background = element_blank(),
+      #strip.text.x = element_blank()
+    ) +
+    geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    ggtitle(figure_title)
+  
+  p1
+  
 }

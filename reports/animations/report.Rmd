@@ -1,0 +1,117 @@
+---
+title: "State change and diversity animations"
+author: "Owen Petchey"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(here)
+```
+
+Microxanox version used: 0.9.1
+
+# Cyanobacteria
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/CB_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/CB_medium_div.mp4"))
+```
+
+# Sulfate reducing bacteria
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/SB_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/SB_medium_div.mp4"))
+```
+
+# Phototrophic sulfur bacteria
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/PB_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/PB_medium_div.mp4"))
+```
+
+# Oxygen concentration
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/O_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/O_medium_div.mp4"))
+```
+
+# Reduced sulfur concentration
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/SR_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/SR_medium_div.mp4"))
+```
+
+# Sulfate concentration
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/SO_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/SO_medium_div.mp4"))
+```
+
+# Phospate concentration
+
+## No diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/P_no_div.mp4"))
+```
+
+## Some diversity
+
+```{r}
+include_graphics(here("reports/animations/mp4s/P_medium_div.mp4"))
+```

@@ -1,0 +1,192 @@
+---
+title: All stable state plots, with strain variation, 6 strains
+author: "Owen L Petchey, Uriah Daugaard, Anubhav Gupta, Rainer M. Krug, Kimberley D. Lemmen, Sofia J. van Moorsel, Marcel Suleiman, Debra Zuppinger-Dingley, Romana Limberger"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: hide
+---
+
+```{r include = FALSE, echo = FALSE}
+knitr::opts_chunk$set(include = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      cache = FALSE)
+```
+
+```{r echo = FALSE}
+rm(list = ls())
+library(tidyverse)
+library(microxanox)
+library(patchwork)
+library(here)
+source(here("r", "various_useful_functions.R"))
+# source(here("experiments", "1_figures_main_ms", "ms_figure_functions.R"))
+source(here("R/ms_figure_functions.R"))
+
+#print(fig_div_vs_o2diff_1strain_7row)
+
+colfunc_CB <- colorRampPalette(c("#024F17", "#B5FFC9"))
+colfunc_SB <- colorRampPalette(c("#7D1402", "#FCBEB3"))
+colfunc_PB <- colorRampPalette(c("#6E0172", "#F9AEFC"))
+zero <- 0
+unity <- 1
+```
+
+```{r}
+microxanox_version_here <- "0.9.1"
+microxanox_version_path <- paste0("microxanox_v", microxanox_version_here)
+if (packageVersion("microxanox") < package_version(microxanox_version_here)) {
+  stop(paste0("microxanox version needs to be at least ", microxanox_version_here))
+}
+print(paste0("Version of microxanox: ", microxanox_version_here))
+```
+
+
+```{r}
+wait_time <- "1e+06"
+ss_9s <- readRDS(here::here("data",
+                            microxanox_version_path, 
+                            "temporal_method",
+                            "event_definition_2",
+                            paste0("ss_data_6strains_waittime", wait_time, "_event_definition_2.RDS")))
+
+
+
+max_CB_var_gmax <- max(ss_9s$CB_var_gmax_s)
+max_SB_var_gmax <- max(ss_9s$SB_var_gmax_s)
+max_PB_var_gmax <- max(ss_9s$PB_var_gmax_s)
+
+ss_9s <- ss_9s %>%
+  mutate(standvar_CB_gmax = CB_var_gmax_s / max_CB_var_gmax,
+         standvar_SB_gmax = SB_var_gmax_s / max_SB_var_gmax,
+         standvar_PB_gmax = PB_var_gmax_s / max_PB_var_gmax)
+
+```
+
+
+# CB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    SB_var_gmax_s == 0,
+    PB_var_gmax_s == 0
+  )
+this_dat <- this_dat[order(this_dat$CB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_CB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+  
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+# SB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    CB_var_gmax_s == 0,
+    PB_var_gmax_s == 0
+  )
+this_dat <- this_dat[order(this_dat$SB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_SB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+# PB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    CB_var_gmax_s == 0,
+    SB_var_gmax_s == 0
+  )
+this_dat <- this_dat[order(this_dat$PB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_PB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+# CB-SB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    PB_var_gmax_s == 0,
+    abs(standvar_CB_gmax - standvar_SB_gmax) < 0.00001
+  )
+this_dat <- this_dat[order(this_dat$CB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_CB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+# CB-PB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    SB_var_gmax_s == 0,
+    abs(standvar_CB_gmax - standvar_PB_gmax) < 0.00001
+  )
+this_dat <- this_dat[order(this_dat$CB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_CB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+# SB-PB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    CB_var_gmax_s == 0,
+    abs(standvar_SB_gmax - standvar_PB_gmax) < 0.00001
+  )
+this_dat <- this_dat[order(this_dat$SB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_SB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+
+
+# CB-SB-PB
+
+```{r}
+this_dat <- ss_9s %>%
+  filter(
+    abs(standvar_CB_gmax - standvar_SB_gmax) < 0.00001,
+    abs(standvar_SB_gmax - standvar_PB_gmax) < 0.00001
+  )
+this_dat <- this_dat[order(this_dat$SB_var_gmax_s), ]
+
+for(i in 1:20) {
+  print(paste0("Standardised level of variation = ", round(this_dat$standvar_CB_gmax[i],2)))
+  print(fig_state_vs_o2diff_sidebyside_alternative(this_dat[i,]))
+}
+#fig_state_vs_o2diff(only_SB_variable[13,])
+```
+

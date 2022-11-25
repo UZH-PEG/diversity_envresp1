@@ -1,0 +1,178 @@
+---
+title: "Testing temporal method"
+author: "Owen Petchey"
+date: "11/24/2021"
+output: html_document
+---
+
+
+# Setup
+
+
+```{r}
+rm(list = ls())
+library(here)
+source(here("R/various_useful_functions.r"))
+
+num_CB_strains <- 9
+num_SB_strains <- 9
+num_PB_strains <- 9
+
+source(here("R/setup_experiment.R"))
+```
+
+## Version of `microxanox` package used: `r packageVersion("microxanox") `
+
+
+
+## Display diversity
+
+```{r}
+display_diversity(
+  400,
+  var_expt = var_expt,
+  num_CB_strains = num_CB_strains,
+  num_SB_strains = num_SB_strains,
+  num_PB_strains = num_PB_strains
+)
+```
+
+
+
+
+
+## Test runs
+
+```{r eval = FALSE}
+## Here a test of one run
+no_diverity_varexp_row <- 1
+parameter$strain_parameter <- var_expt$pars[[no_diverity_varexp_row]]
+parameter <- set_temporal_ssfind_initial_state(parameter,
+                                               10^5,
+                                               10^5,
+                                               10^5)
+no_div_res <- run_temporal_ssfind_method(parameter)
+no_div_res
+```
+
+
+```{r eval = FALSE}
+## here a test of an expt run
+var_expt <- var_expt[1:2,]
+expt_res <- run_temporal_ssfind_experiment(parameter,
+                                           var_expt,
+                                           total_initial_abundances = 10^5)
+```
+
+## Test plotting
+
+```{r}
+## test the plotting functions
+plot_ss_result3(expt_res, 1)
+plot_ss_result3(expt_res, 2)
+plot_ss_result4(expt_res, 1, 2)
+
+```
+
+## Test get stability
+
+
+```{r}
+ss_object <- expt_res$ssfind_result[[1]]
+
+get_stability_measures(expt_res$ssfind_result[[1]])
+
+stab_data <-  expt_res %>%
+  mutate(stability_measures = list(get_stability_measures(ssfind_result))) %>%
+  unnest(cols = c(stability_measures)) 
+
+
+
+
+```
+
+## Test plot stability
+
+Set up
+
+```{r eval = plot_ss_results}
+CB_vars <- unique(stab_data$CB_var_gmax_s)
+SB_vars <- unique(stab_data$SB_var_gmax_s)
+
+CB_stab_data <- stab_data %>%
+  filter(SB_var_gmax_s == 0) %>%
+  mutate(var_treat = "CB",
+         var_gmax = CB_var_gmax_s)
+
+SBPB_stab_data <- stab_data %>%
+  filter(CB_var_gmax_s == 0) %>%
+  mutate(var_treat = "SB-PB",
+         var_gmax = SB_var_gmax_s)
+
+for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
+                     SB_var_gmax_s = sort(SB_vars))
+CBSBPB_stab_data <- stab_data %>%
+  right_join(for_join) %>%
+  mutate(var_treat = "CB-SB-PB",
+         var_gmax = CB_var_gmax_s)
+
+all_stab_results <- CB_stab_data %>%
+  bind_rows(SBPB_stab_data) %>%
+#  bind_rows(results3) %>%
+ # bind_rows(results4) %>%
+  bind_rows(CBSBPB_stab_data)
+
+all_stab_results <- all_stab_results %>%
+    mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB", "SB-PB", "CB-SB-PB")))
+
+```
+
+
+
+### Log transformed
+
+```{r eval = plot_ss_results}
+
+all_stab_results %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax, y = hyst_range_log, col=var_treat)) +
+  geom_point() +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Extent of bistability region\n[log10 oxygen diffusivity]") +
+  labs(col = "Variation in\nonly these\nfunctional groups")
+##ggsave("manuscript/figures/extent_of_bistab1.pdf", height = 4)
+
+all_stab_results %>%
+  #filter(var_treat == "CB") %>%
+  filter(Species == "O") %>%
+  ggplot(aes(x = var_gmax,
+             ymin = hyst_min_log,
+             ymax = hyst_max_log,
+             fill=var_treat)) +
+  geom_ribbon(alpha = 0.5) +
+  facet_wrap( ~ var_treat, nrow = 3) +
+  xlab("Amount of trait variation\n[see text for units]") +
+  ylab("Oxygen diffusivity\n[log10 uM per hour]") +
+  labs(fill = "Variation in\nonly these\nfunctional groups") +
+  coord_flip() +
+  theme(
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+# ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
+# stab_data %>%
+#   filter(Species == "O",
+#          sim_length == 1e6) %>%
+#   ggplot(aes(x = CB_var_gmax_s, y = SB_var_gmax_s, fill = hyst_range_log, col = hyst_range_log)) +
+#   geom_point(size = 3)
+# 
+# 
+# ##ggsave("manuscript/figures/extent_of_bistab2.pdf", height = 4)
+# 
+# stab_data %>%
+#   filter(Species == "O",
+#          sim_length == 1e6) %>%
+#   ggplot(aes(x = CB_var_gmax_s, y = hyst_range_log, col = as.factor(SB_var_gmax_s))) +
+#   geom_line(size = 2)
+```

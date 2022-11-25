@@ -42,7 +42,7 @@ setup_R <- function() {
   library(tidyverse)
   library(patchwork)
   library(here)
-  source(here("R/various_useful_functions.r"))
+  source(here("R/various_useful_functions.R"))
   zero <- 0 ## don't change
   unity <- 1 ## don't change!!!
   options(mc.cores = 7)
