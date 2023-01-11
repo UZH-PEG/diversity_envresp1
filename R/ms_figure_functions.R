@@ -169,6 +169,54 @@ fig_div_vs_o2diff_multistrain <- function(all_stab111,
   
 }
 
+
+
+fig_div_vs_o2diff_multistrain_stable_state_type <- function(all_stab111,
+                                          which_strains,
+                                          which_wait_time,
+                                          figure_title) {
+  
+  
+  p1 <- all_stab111 %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains %in% which_strains, 
+           waittime == which_wait_time) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var,
+               col = as.factor(num_strains),
+               linetype = stab_states_type)) +
+    facet_wrap( ~ var_treat, nrow = 3) +
+    geom_line(aes(y = hyst_min_log, col = as.factor(num_strains)),
+              lwd = 0.5, alpha = 0.8) +
+    geom_line(aes(y = hyst_max_log, col = as.factor(num_strains)),
+              lwd = 0.5, alpha = 0.8) +
+    geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log,
+                    col = as.factor(num_strains),
+                    fill = as.factor(num_strains)), alpha = 0.2) +
+    #facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    guides(col = guide_legend(title="Number of strains"),
+           fill = guide_none(),
+           linetype = guide_none()) +
+    theme_bw() +
+    theme(
+      legend.position="top",
+      panel.background = element_blank(),
+      #strip.text.x = element_blank()
+    ) +
+    geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    ggtitle(figure_title) +
+    scale_linetype_manual(values=c("dashed", "solid"))
+  
+  p1
+  
+}
+
+
+
 fig_state_vs_o2diff <- function(ss_result){
   temp <- ss_result$ssfind_result[[1]] %>%
     mutate(a = 10^a_O) %>%
@@ -1524,7 +1572,7 @@ fig_state_vs_o2diff_sidebyside_alternative_repmeth <- function(ss_result){
 
 
 fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
-
+  
   resilience <- all_stab %>%
     arrange(stand_var)%>%
     filter(num_strains == which_strain) %>%
@@ -1539,7 +1587,7 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
                                         T ~ rel_trans_pos_ao),
            rel_trans_pos_oa = case_when(hyst_min_log==-8 & rel_trans_pos_oa_diff==0 ~ NA_real_,
                                         T ~ rel_trans_pos_oa),
-           ) %>%
+    ) %>%
     select(-hyst_max_log,-hyst_min_log,-rel_trans_pos_ao_diff,-rel_trans_pos_oa_diff) %>%
     pivot_longer(names_to = "which_transition",
                  values_to = "rel_log_trans_pos",
@@ -1553,8 +1601,6 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
   resilience$label[resilience$var_treat == "CB-PB"] <- "k"
   resilience$label[resilience$var_treat == "SB-PB"] <- "m"
   resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
-
-  ## plot ----
   
   p1 <- resilience %>%
     ggplot(aes(x = stand_var, y = rel_log_trans_pos, col = which_transition)) +
@@ -1562,109 +1608,78 @@ fig_resilience_vs_div <- function(all_stab, which_strain, figure_title) {
     facet_grid(var_treat ~ ., scales = "fixed") +
     theme_bw() +
     theme(legend.position="top",
-      panel.background = element_blank(),
-      ) +
+          panel.background = element_blank(),
+    ) +
     ylab(expression(atop(Effect~size~of~trait~variation~on~resilience, (log[10](oxygen~diffusivity)~(h^{-1}))))) +
     xlab("Standardised amount of trait variation") +
     geom_text(aes(x = 0, y = 2.9, label = label), colour = "black") +
     scale_color_manual(values = c("#38ACC4", "#C43926")) 
-    # ylim(-1.7, 4)
+  # ylim(-1.7, 4)
   
   p1
   
 }
 
+
+
+
+fig_resilience_vs_div_stable_state_type <- function(all_stab, which_strain, figure_title) {
+  
+  resilience <- all_stab %>%
+    arrange(stand_var)%>%
+    filter(num_strains == which_strain) %>%
+    filter(Species == "SB_tot") %>%
+    select(1:7, 16, 17, 20:25) %>%
+    group_by(var_treat) %>%
+    mutate(rel_trans_pos_ao = hyst_max_log-hyst_max_log[stand_var==0],
+           rel_trans_pos_oa = -hyst_min_log+hyst_min_log[stand_var==0],
+           rel_trans_pos_ao_diff = rel_trans_pos_ao - lag(rel_trans_pos_ao),
+           rel_trans_pos_oa_diff = rel_trans_pos_oa - lag(rel_trans_pos_oa),
+           rel_trans_pos_ao = case_when(hyst_max_log==0 & rel_trans_pos_ao_diff==0 ~ NA_real_,
+                                        T ~ rel_trans_pos_ao),
+           rel_trans_pos_oa = case_when(hyst_min_log==-8 & rel_trans_pos_oa_diff==0 ~ NA_real_,
+                                        T ~ rel_trans_pos_oa),
+    ) %>%
+    select(-hyst_max_log,-hyst_min_log,-rel_trans_pos_ao_diff,-rel_trans_pos_oa_diff) %>%
+    pivot_longer(names_to = "which_transition",
+                 values_to = "rel_log_trans_pos",
+                 14:15)
+  
+  resilience$label <- NA
+  resilience$label[resilience$var_treat == "CB"] <- "b"
+  resilience$label[resilience$var_treat == "SB"] <- "d"
+  resilience$label[resilience$var_treat == "PB"] <- "f"
+  resilience$label[resilience$var_treat == "CB-SB"] <- "h"
+  resilience$label[resilience$var_treat == "CB-PB"] <- "k"
+  resilience$label[resilience$var_treat == "SB-PB"] <- "m"
+  resilience$label[resilience$var_treat == "CB-SB-PB"] <- "o"
+  
+  p1 <- resilience %>%
+    ggplot(aes(x = stand_var, y = rel_log_trans_pos, col = which_transition,
+               linetype = stab_states_type)) +
+    geom_line(show.legend = FALSE) +
+    facet_grid(var_treat ~ ., scales = "fixed") +
+    theme_bw() +
+    theme(legend.position="top",
+          panel.background = element_blank(),
+    ) +
+    ylab(expression(atop(Effect~size~of~trait~variation~on~resilience, (log[10](oxygen~diffusivity)~(h^{-1}))))) +
+    xlab("Standardised amount of trait variation") +
+    geom_text(aes(x = 0, y = 2.9, label = label), colour = "black") +
+    scale_color_manual(values = c("#38ACC4", "#C43926")) +
+    scale_linetype_manual(values=c("dotted", "solid")) 
+  # ylim(-1.7, 4)
+  
+  p1
+  
+}
+
+
+
+
+
+
 fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title) {
-  
-  # CB_vars <- unique(all_stab$CB_var_gmax_s)
-  # SB_vars <- unique(all_stab$SB_var_gmax_s)
-  # PB_vars <- unique(all_stab$PB_var_gmax_s)
-  # 
-  # CB_all_stab <- all_stab %>%
-  #   filter(SB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0) %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # SB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          PB_var_gmax_s == 0)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # PB_all_stab <- all_stab %>%
-  #   filter(CB_var_gmax_s == 0,
-  #          SB_var_gmax_s == 0) %>%
-  #   ungroup()  %>%
-  #   mutate(var_treat = "PB",
-  #          var_gmax = PB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars))
-  # CBSB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(PB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(SB_var_gmax_s == 0)
-  # 
-  # for_join <- tibble(SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # SBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "SB-PB",
-  #          var_gmax = SB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax)) %>%
-  #   filter(CB_var_gmax_s == 0)
-  # 
-  # 
-  # 
-  # for_join <- tibble(CB_var_gmax_s = sort(CB_vars),
-  #                    SB_var_gmax_s = sort(SB_vars),
-  #                    PB_var_gmax_s = sort(PB_vars))
-  # CBSBPB_all_stab <- all_stab %>%
-  #   right_join(for_join)  %>%
-  #   ungroup() %>%
-  #   mutate(var_treat = "CB-SB-PB",
-  #          var_gmax = CB_var_gmax_s,
-  #          stand_var = var_gmax / max(var_gmax))
-  # 
-  # all_stab_results <- CB_all_stab %>%
-  #   bind_rows(SB_all_stab) %>%
-  #   bind_rows(PB_all_stab) %>%
-  #   bind_rows(CBSB_all_stab) %>%
-  #   bind_rows(CBPB_all_stab) %>%
-  #   bind_rows(SBPB_all_stab) %>%
-  #   bind_rows(CBSBPB_all_stab)
-  # 
-  # all_stab_results <- all_stab_results %>%
-  #   mutate(var_treat = forcats::fct_relevel(var_treat, levels = c("CB",
-  #                                                                 "SB",
-  #                                                                 "PB",
-  #                                                                 "CB-SB",
-  #                                                                 "CB-PB",
-  #                                                                 "SB-PB",
-  #                                                                 "CB-SB-PB")))
-  # 
-  # all_stab_results_small <- select(all_stab_results, -7:-12)
-  # 
-  #saveRDS(all_stab_results_small, here("experiments/0_ss_finding/temporal_method/data/all_stab_results_small.RDS"))
-  
   
   all_stab$label <- NA
   all_stab$label[all_stab$var_treat == "CB"] <- "a"
@@ -1678,9 +1693,10 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
     #filter(var_treat == "CB") %>%
     filter(num_strains == which_strain) %>%
     filter(Species == "SB_tot") %>%
-    ggplot(aes(x = stand_var
-               #col = as.factor(num_strains))
-    )) +
+    ggplot(aes(x = stand_var#,
+               #col = as.factor(num_strains)),
+               #linetype = stab_states_type
+               )) +
     geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8, col="#C43926") +
     geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8, col="#38ACC4") +
     geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log),
@@ -1705,6 +1721,99 @@ fig_div_vs_o2diff_1strain_7row <- function(all_stab, which_strain, figure_title)
   p1
   
 }
+
+
+fig_div_vs_o2diff_1strain_7row_stable_state_type <- function(all_stab, which_strain, figure_title) {
+  
+  all_stab$label <- NA
+  all_stab$label[all_stab$var_treat == "CB"] <- "a"
+  all_stab$label[all_stab$var_treat == "SB"] <- "c"
+  all_stab$label[all_stab$var_treat == "PB"] <- "e"
+  all_stab$label[all_stab$var_treat == "CB-SB"] <- "g"
+  all_stab$label[all_stab$var_treat == "CB-PB"] <- "i"
+  all_stab$label[all_stab$var_treat == "SB-PB"] <- "l"
+  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "n"
+  p1 <- all_stab %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains == which_strain) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var,
+               #col = as.factor(num_strains)),
+               linetype = stab_states_type,
+               fill = stab_states_type
+    )) +
+    geom_line(aes(y = hyst_min_log), lwd = 0.5, alpha = 0.8, col="#C43926") +
+    geom_line(aes(y = hyst_max_log), lwd = 0.5, alpha = 0.8, col="#38ACC4") +
+    geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log), alpha = 0.1) +
+    facet_grid(var_treat ~ ., scales = "fixed") +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    guides(#col = guide_legend(title="Number of strains"),
+           fill = guide_none(),
+           linetype = guide_none()) +
+    theme_bw() +
+    theme(
+      #legend.position="top",
+      panel.background = element_blank()
+      #strip.text.x = element_blank()
+    ) +
+    geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    geom_text(aes(x = 0.95, y = -8.1, label = label), colour = "black") +
+    ggtitle(figure_title) +
+    scale_linetype_manual(values=c("dotted", "solid")) +
+    scale_fill_manual(values = c("orange", "green")) 
+  
+  p1
+  
+}
+
+
+
+fig_div_vs_o2diff_1strain_7row_nonlog <- function(all_stab, which_strain, figure_title) {
+  
+  all_stab$label <- NA
+  all_stab$label[all_stab$var_treat == "CB"] <- "a"
+  all_stab$label[all_stab$var_treat == "SB"] <- "c"
+  all_stab$label[all_stab$var_treat == "PB"] <- "e"
+  all_stab$label[all_stab$var_treat == "CB-SB"] <- "g"
+  all_stab$label[all_stab$var_treat == "CB-PB"] <- "i"
+  all_stab$label[all_stab$var_treat == "SB-PB"] <- "l"
+  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "n"
+  p1 <- all_stab %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains == which_strain) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var
+               #col = as.factor(num_strains))
+    )) +
+    geom_line(aes(y = 10^hyst_min_log), lwd = 0.5, alpha = 0.8, col="#C43926") +
+    geom_line(aes(y = 10^hyst_max_log), lwd = 0.5, alpha = 0.8, col="#38ACC4") +
+    geom_ribbon(aes(ymin = 10^hyst_min_log, ymax = 10^hyst_max_log),
+                fill = "green", alpha = 0.1) +
+    facet_grid(var_treat ~ ., scales = "fixed") +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    #guides(col = guide_legend(title="Number of strains"),
+    #       fill = guide_none()) +
+    theme_bw() +
+    theme(
+      legend.position="top",
+      panel.background = element_blank(),
+      #strip.text.x = element_blank()
+    ) +
+    #geom_hline(yintercept = c(10^(-8), 10^0), col = "grey", lwd = 3) +
+    geom_text(aes(x = 0.95, y = 10^(-8.1), label = label), colour = "black") +
+    ggtitle(figure_title)
+  
+  p1
+  
+}
+
+
 
 calculation_fct <- function(x,y,z=NULL, Method="arithmetic"){
   if(Method=="arithmetic") {
@@ -1883,3 +1992,56 @@ fig_div_vs_o2diff_maxtolcomp <- function(all_stab,
   p1
   
 }
+
+
+
+
+fig_div_vs_o2diff_maxtolcomp_stable_state_type <- function(all_stab,
+                                         which_strains,
+                                         which_wait_time,
+                                         figure_title) {
+  
+  all_stab <- all_stab %>%
+    mutate(Treatment = ifelse(num_strains == -1,
+                              "Only most tolerant strain",
+                              "All strains"))
+  
+  p1 <- all_stab %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains %in% which_strains, 
+           waittime == which_wait_time) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var,
+               col = Treatment,
+               linetype = stab_states_type)) +
+    facet_wrap( ~ var_treat, scales = "free_y", nrow = 3) +
+    geom_line(aes(y = hyst_min_log, col = Treatment, size = stab_states_type), alpha = 0.5) +
+    geom_line(aes(y = hyst_max_log, size = stab_states_type), alpha = 0.5) +
+    #geom_ribbon(aes(ymin = hyst_min_log, ymax = hyst_max_log,
+    #                col = Treatment,
+    #                fill = Treatment), alpha = 0.2) +
+    facet_wrap( ~ var_treat, nrow = 3) +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(log[10](oxygen~diffusivity)~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    guides(col = guide_legend(title="Strains present"),
+           fill = guide_none(),
+           linetype = guide_none(),
+           size = guide_none()) +
+    theme_bw() +
+    theme(
+      legend.position="top",
+      panel.background = element_blank(),
+      #strip.text.x = element_blank()
+    ) +
+    geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    ggtitle(figure_title) +
+    scale_linetype_manual(values=c("dashed", "solid")) +
+    scale_size_manual(values=c(1, 0.5))
+  #scale_colour_manual(values=c("black", "red"))
+  
+  p1
+  
+}
+
