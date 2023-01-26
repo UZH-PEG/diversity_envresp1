@@ -1751,8 +1751,8 @@ fig_div_vs_o2diff_1strain_7row_stable_state_type <- function(all_stab, which_str
     #labs(fill = "Variation in\nonly these\nfunctional groups") +
     coord_flip() +
     guides(#col = guide_legend(title="Number of strains"),
-           fill = guide_none(),
-           linetype = guide_none()) +
+      fill = guide_none(),
+      linetype = guide_none()) +
     theme_bw() +
     theme(
       #legend.position="top",
@@ -1761,6 +1761,51 @@ fig_div_vs_o2diff_1strain_7row_stable_state_type <- function(all_stab, which_str
     ) +
     geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
     geom_text(aes(x = 0.95, y = -8.1, label = label), colour = "black") +
+    ggtitle(figure_title) +
+    scale_linetype_manual(values=c("dotted", "solid")) +
+    scale_fill_manual(values = c("orange", "green")) 
+  
+  p1
+  
+}
+fig_div_vs_o2diff_1strain_7row_stable_state_type_nonlog <- function(all_stab, which_strain, figure_title) {
+  
+  all_stab$label <- NA
+  all_stab$label[all_stab$var_treat == "CB"] <- "b"
+  all_stab$label[all_stab$var_treat == "SB"] <- "d"
+  all_stab$label[all_stab$var_treat == "PB"] <- "f"
+  all_stab$label[all_stab$var_treat == "CB-SB"] <- "h"
+  all_stab$label[all_stab$var_treat == "CB-PB"] <- "j"
+  all_stab$label[all_stab$var_treat == "SB-PB"] <- "m"
+  all_stab$label[all_stab$var_treat == "CB-SB-PB"] <- "o"
+  p1 <- all_stab %>%
+    #filter(var_treat == "CB") %>%
+    filter(num_strains == which_strain) %>%
+    filter(Species == "SB_tot") %>%
+    ggplot(aes(x = stand_var,
+               #col = as.factor(num_strains)),
+               linetype = stab_states_type,
+               fill = stab_states_type
+    )) +
+    geom_line(aes(y = 10^hyst_min_log), lwd = 0.5, alpha = 0.8, col="#C43926") +
+    geom_line(aes(y = 10^hyst_max_log), lwd = 0.5, alpha = 0.8, col="#38ACC4") +
+    geom_ribbon(aes(ymin = 10^hyst_min_log, ymax = 10^hyst_max_log), alpha = 0.1) +
+    facet_grid(var_treat ~ ., scales = "fixed") +
+    xlab("Standardised amount of trait variation") +
+    ylab(expression(Oxygen~diffusivity~(h^{-1}))) +
+    #labs(fill = "Variation in\nonly these\nfunctional groups") +
+    coord_flip() +
+    guides(#col = guide_legend(title="Number of strains"),
+      fill = guide_none(),
+      linetype = guide_none()) +
+    theme_bw() +
+    theme(
+      #legend.position="top",
+      panel.background = element_blank()
+      #strip.text.x = element_blank()
+    ) +
+    #geom_hline(yintercept = c(-8, 0), col = "grey", lwd = 3) +
+    geom_text(aes(x = 0.95, y = 10^-8.1, label = label), colour = "black") +
     ggtitle(figure_title) +
     scale_linetype_manual(values=c("dotted", "solid")) +
     scale_fill_manual(values = c("orange", "green")) 

@@ -44,6 +44,7 @@ if (packageVersion("microxanox") < package_version(microxanox_version_here)) {
   stop(paste0("microxanox version needs to be at least ", microxanox_version_here))
 }
 print(paste0("Version of microxanox: ", microxanox_version_here))
+
 ```
 
 
@@ -1256,7 +1257,7 @@ ggplot(expt, aes(x = richness, y = resilience_max_trait)) +
 
 ```
 
-## Investigating the mechanisms operating in our system
+## Investigating the mechanisms operating
 
 We investigated if the diversity effects observed in our study were in line with the sampling effect, that is, driven entirely by the presence of the most tolerant strain or if other strains played a role as well. To this end, we ran additional simulations where functional groups contained only the strain with greatest tolerance (which due to the tradeoff also had the lowest maximum growth rate). That is, rather than increasing diversity we only increased tolerance of a single strain. Specifically, for each of the 20 levels of trait variation, we made simulations where each functional group had only one strain, and its trait values corresponded with those of the most tolerant strain for the given level of trait variation. We also manipulated in which of the functional groups tolerance increased. For example, in a simulation to be compared with variation in only the SB group (and no variation in the CB or PB groups), the SB group contained the strain with highest tolerance, whereas CB and PB each contained the strain with mean tolerance. We then compared the tipping point positions resulting from this tolerance manipulation with the tipping point positions resulting from the diversity manipulation presented in the main text. In addition, we compared the strain dynamics across the oxygen diffusivity gradient of the tolerance manipulation and the diversity manipulation. If the observed diversity effects are caused by the sampling effect, we expect there to be no difference between the tolerance manipulation and the diversity manipulation. 
 
@@ -1303,7 +1304,14 @@ plot_here11 <- all_stab %>%
           (num_strains == -1 & var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
          ),
          stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
-  )
+  ) %>%
+  mutate(hyst_min_log = ifelse(var_treat == "CB-SB" &
+                                 stab_states_type == "non-standard" &
+                                 Species == "SB_tot" &
+                                 stand_var > 0.85,
+                               -8,
+                               hyst_min_log
+                                 ))
    
 plot_1 <- fig_div_vs_o2diff_maxtolcomp_stable_state_type(plot_here11, which_strains,
                               which_wait_time, figure_title)
@@ -1805,6 +1813,62 @@ plot_here <- all_stab %>%
  
 ```
 
+# Log and non-log oxygen diffusivity results
+
+
+(ref:fig-log-nonlog) The effect of trait diversity (y-axis) viewed with a log axis (left panels) or arithmetic axis for the oxygen diffusivity gradient (x-axis). The positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red) and the extent of the region of bistability (green or orange shaded region) are shown. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. In the left panels the thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. In panels e, f, i, and j the orange region shows when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities). In the right-hand panels (arithmetic x-axis scale) the blue anoxic to oxic tipping point line often has steps. This is becase the simulated oxygen diffusivity levels were evenly distributed on the log-oxygen diffusivity scale, and so are relatively far apart at high oxygen diffusivities on the arithmetic scale. 
+
+```{r fig-log-nonlog, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center", fig.cap='(ref:fig-log-nonlog)'}
+all_stab <- readRDS(here("data",
+                         microxanox_version_path,
+                         "temporal_method",
+                         "event_definition_2",
+                         "processed_data",
+                         "all_stab_data.RDS"))
+
+wait_time <- 1e6
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+
+plot_here <- plot_here %>%
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+           (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+           (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+           (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+
+
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
+                                                       which_strain = num_strains,
+                                                       figure_title = NULL
+                                                       # figure_title = paste0(wait_time,
+                                                       #                       " wait time,\n",
+                                                       #                       num_strains,
+                                                       #                       " strains")
+)
+
+
+p2 <- fig_div_vs_o2diff_1strain_7row_stable_state_type_nonlog(plot_here,
+                                                       which_strain = num_strains,
+                                                       figure_title = NULL
+                                                       # figure_title = paste0(wait_time,
+                                                       #                       " wait time,\n",
+                                                       #                       num_strains,
+                                                       #                       " strains")
+)
+
+p1 + p2
+
+
+```
 
 
 # References
