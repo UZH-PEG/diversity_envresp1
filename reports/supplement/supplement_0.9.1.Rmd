@@ -1311,6 +1311,13 @@ plot_here11 <- all_stab %>%
                                  stand_var > 0.85,
                                -8,
                                hyst_min_log
+                                 ),
+         hyst_max_log = ifelse(var_treat == "CB-SB" &
+                                 stab_states_type == "non-standard" &
+                                 Species == "SB_tot" &
+                                 stand_var > 0.85,
+                               -8,
+                               hyst_max_log
                                  ))
    
 plot_1 <- fig_div_vs_o2diff_maxtolcomp_stable_state_type(plot_here11, which_strains,
