@@ -1,4 +1,4 @@
 In terminal, navigate to the gif folder, then run the following:
 
-for i in *.gif; do ffmpeg -f gif -i "$i" -vf scale=1000:-1 "../mp4s/${i%.*}.mp4"; done
+for i in *.gif; do ffmpeg -f gif -i "$i" -vf scale=1000:-1 -vcodec libx264 -pix_fmt yuv420p ../mp4s/${i%.*}.mp4"; done
 
