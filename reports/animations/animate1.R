@@ -32,7 +32,7 @@ ss_9s <- readRDS(here("data",
 
 ## set animation render parameters
 nframes <- 500#100
-fps <- 30
+fps <- 25
 height <- 2
 width <- 5
 units <- "in"
