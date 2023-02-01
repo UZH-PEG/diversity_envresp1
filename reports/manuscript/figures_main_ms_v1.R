@@ -55,31 +55,133 @@ plot_here <- all_stab %>%
 ## CB all same
 ## SB all same
 
+### Version 1 -- Don't use ----
 ## filtering out some of the data for which there are non-standard ecosystem responses to the oxygen diffusivity.
-plot_here <- plot_here %>%
-  filter(!(var_treat == "CB" & stand_var > 1.00),
-         !(var_treat == "SB" & stand_var > 1.00),
-         !(var_treat == "PB" & stand_var > 0.65),
-         !(var_treat == "CB-SB" & stand_var > 1.00),
-         !(var_treat == "CB-PB" & stand_var > 0.65),
-         !(var_treat == "SB-PB" & stand_var > 1.00),
-         !(var_treat == "CB-SB-PB" & stand_var > 1.00))
+# plot_here_sub <- plot_here %>%
+#   filter(!(var_treat == "CB" & stand_var > 1.00),
+#          !(var_treat == "SB" & stand_var > 1.00),
+#          !(var_treat == "PB" & stand_var > 0.65),
+#          !(var_treat == "CB-SB" & stand_var > 1.00),
+#          !(var_treat == "CB-PB" & stand_var > 0.65),
+#          !(var_treat == "SB-PB" & stand_var > 1.00),
+#          !(var_treat == "CB-SB-PB" & stand_var > 1.00))
+# 
+# p1 <- fig_div_vs_o2diff_1strain_7row(plot_here_sub,
+#                                      which_strain = num_strains,
+#                                      figure_title = NULL
+#                                      # figure_title = paste0(wait_time,
+#                                      #                       " wait time,\n",
+#                                      #                       num_strains,
+#                                      #                       " strains")
+# )
+# p2 <- fig_resilience_vs_div(plot_here,
+#                             which_strain = num_strains,
+#                             figure_title = NULL
+# ) 
+# p1 + p2
+# ggsave(here("reports/manuscript/figure_3.pdf"),
+#        width = 6, height = 9)
 
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+
+### Version 2 -- Use this ----
+## make a different line style for when the stable states are non-standard
+plot_here <- plot_here %>%
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+         
+         
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
                                      figure_title = NULL
                                      # figure_title = paste0(wait_time,
                                      #                       " wait time,\n",
                                      #                       num_strains,
                                      #                       " strains")
-                                     )
-p2 <- fig_resilience_vs_div(plot_here,
+)
+p2 <- fig_resilience_vs_div_stable_state_type(plot_here,
                             which_strain = num_strains,
                             figure_title = NULL
-                            ) 
+) 
 p1 + p2
 ggsave(here("reports/manuscript/figure_3.pdf"),
        width = 6, height = 9)
+
+
+
+
+
+
+
+
+
+### Version 3 -- Don't use this ----
+## non log version
+# all_stab <- plot_here
+# which_strain <- num_strains
+# figure_title <- NULL
+# p1 <- fig_div_vs_o2diff_1strain_7row_nonlog(plot_here,
+#                                      which_strain = num_strains,
+#                                      figure_title = NULL
+#                                      # figure_title = paste0(wait_time,
+#                                      #                       " wait time,\n",
+#                                      #                       num_strains,
+#                                      #                       " strains")
+# )
+
+
+
+### Version 2 -- Use this ----
+## make a different line style for when the stable states are non-standard
+plot_here <- plot_here %>%
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+           (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+           (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+           (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+
+
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
+                                                       which_strain = num_strains,
+                                                       figure_title = NULL
+                                                       # figure_title = paste0(wait_time,
+                                                       #                       " wait time,\n",
+                                                       #                       num_strains,
+                                                       #                       " strains")
+)
+
+
+p2 <- fig_div_vs_o2diff_1strain_7row_stable_state_type_nonlog(plot_here,
+                                                       which_strain = num_strains,
+                                                       figure_title = NULL
+                                                       # figure_title = paste0(wait_time,
+                                                       #                       " wait time,\n",
+                                                       #                       num_strains,
+                                                       #                       " strains")
+)
+
+p1 + p2
+
+
+
+
+
 
 
 

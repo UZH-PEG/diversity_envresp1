@@ -44,6 +44,7 @@ if (packageVersion("microxanox") < package_version(microxanox_version_here)) {
   stop(paste0("microxanox version needs to be at least ", microxanox_version_here))
 }
 print(paste0("Version of microxanox: ", microxanox_version_here))
+
 ```
 
 
@@ -54,7 +55,7 @@ This document is the Supplementary Report for the report *Functional diversity c
 
 # Growth and inhibition functions
 
-The rate of change in population densities is given by the per capita growth rate - per capita death rate, multipled by population size ([Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x)). Growth rate is the growth rate in absence of any inhibition multiplied by the amount of inhibition. 
+The rate of change in population densities is given by the per capita growth rate - per capita death rate, multiplied by population size ([Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x)). Growth rate is the growth rate in absence of any inhibition multiplied by the amount of inhibition. 
 
 Growth rate in the absence of inhibition was modeled with the Monod equation with multiplicative kinetics when two substrates determine growth rate:
 
@@ -66,13 +67,13 @@ Inhibition of growth by a substrate was modeled with the Haldane equation:
 
 $h_j(X) = \frac{1}{1+ (X / H_{j,X})}$
 
-$H_{j,X}$ can be thought of as a half-inhibition constant: the concentration of $X$ at which the growth rate of species $j$ is reduced by 50%.
+$H_{j,X}$ can be thought of as a half-inhibition constant: the concentration of $X$ at which the growth rate of species $j$ is reduced by 50%. A higher half-inhibition constant therefore means higher tolerance of species $j$ to substrate $X$.
 
 For further information on the functions used to model the system, please see the original publication by [Bush et al 2017](https://www.nature.com/articles/s41467-017-00912-x).
 
 # Creating among strain diversity
 
-Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant text in the main report.  We generated variation in maximum growth rate $G_{max}$ and tolerance to reduced sulfur $h_{SR}$ or oxygen $h_{O}$ by varying the range of trait values around a reference trait value. To manipulate the amount of variation in a given trait and functional group, we introduced the meta-parameter $Div$ subscripted by the trait and the functional group. Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $G_{max,CB}$ and a reference tolerance parameter $h_{SR,CB}$. The amount of among strain variation in the cyanobacteria is controlled by the two meta-parameters $Div_{G_{max,CB}}$ and $Div_{h_{SR,CB}}$. To create a trade-off, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{G_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{G_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $G_{max,CB} = 0.05$, among strain variation of $Div_{G_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $G_{max,i} = D_i * G_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{G_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
+Here we provide additional description of the method used to create strain variation within functional groups. The following should be read only after the relevant text in the main report.  We generated variation in maximum growth rate $g_{max}$ and in tolerance to reduced sulfur or oxygen (i.e. in the half-inhibition constants $H_{SR}$ or $H_{O}$) by varying the range of trait values around a reference trait value. To manipulate the amount of variation in a given trait and functional group, we introduced the meta-parameter $Div$ subscripted by the trait and the functional group. Take for example the cyanobacteria functional group, a reference maximum growth rate parameter $g_{max,CB}$ and a reference tolerance parameter $H_{SR,CB}$. The amount of among strain variation in the cyanobacteria is controlled by the two meta-parameters $Div_{g_{max,CB}}$ and $Div_{H_{SR,CB}}$. To create a trade-off, the two meta-parameters were always of different sign. The among strain variation was calculated such that the growth rate of strain $i = 1$ was a factor $1/({2Div_{g_{max,CB}}})$ of the reference growth rate, and the growth rate of the $i = n$ strain was a factor $2Div_{g_{max,CB}}$ of the reference growth rate. The growth rate of the $i = {2,...n-1}$ other strains was the reference growth rate multiplied by a factor that was equally distributed between the factor of the $i = 1$ and $i = n$ strain. This implementation of the variation and trade-off has the assumption of a linear trade-off of log-log transformed among-strain variation. Hence, for example, with the reference growth rate $g_{max,CB} = 0.05$, among strain variation of $Div_{g_{max,CB}} = 1$, and nine strains ($n = 9$), the growth rates of the nine strains are 0.025, 0.03, 0.035, 0.042, 0.05, 0.059, 0.071, 0.084, 0.1. Put another way, the growth rate parameter of the $i$-th of the $n$ strains in a functional group was calculated as $g_{max,i} = D_i * g_{max}$ where $D_i$ is the $i$-th element of the set $D = {2f(x)Div_{g_{max}} |x ∈ N, x ≤ n}$, where $f(x) = (x − (n + 1)/2)/((n − 1)/2)$.
 
 This procedure ensures that the range of trait values is independent of the number of strains. When there were only two strains, the two strains took the minimum and maximum traits values, as defined by the $Div$ variable for that trait. When there were three strains, one had the minimum trait value, one the maximum, and one the mean. With nine strains, one had the minimum trait value, one the maximum, one the mean, and three were equally spaced (on log scale) between the minimum and the mean, and the remaining three between the maximum and the mean.
 
@@ -92,7 +93,7 @@ PB_h_div <- -0.323  * SBPB_var_multiplier
 num_div_treatment_levels <- 2
 ```
 
-All three examples have the following amounts of trait variation: $Div_{G_{max,CB}}$ = `r round(CB_gmax_div, 3)`, $Div_{h_{SR,CB}}$ = `r round(CB_h_div, 3)`, $Div_{G_{max,SB}}$ = `r round(SB_gmax_div, 3)`, $Div_{h_{O,SB}}$ = `r round(SB_h_div, 3)`, $Div_{G_{max,PB}}$ = `r round(PB_gmax_div, 3)`, $Div_{h_{O,PB}}$ = `r round(PB_h_div, 3)`. These are also the maximum amounts of trait variation explored in the simulations.
+All three examples have the following amounts of trait variation: $Div_{g_{max,CB}}$ = `r round(CB_gmax_div, 3)`, $Div_{H_{SR,CB}}$ = `r round(CB_h_div, 3)`, $Div_{g_{max,SB}}$ = `r round(SB_gmax_div, 3)`, $Div_{H_{O,SB}}$ = `r round(SB_h_div, 3)`, $Div_{g_{max,PB}}$ = `r round(PB_gmax_div, 3)`, $Div_{H_{O,PB}}$ = `r round(PB_h_div, 3)`. These are also the maximum amounts of trait variation explored in the simulations.
 
 (ref:nine-strain-div) Trait variation with nine strains in each of the functional groups. In all panels colour indicates the functional group, darker shades show more tolerant-lower growth rate strains, lighter shades show less tolerant-higher growth rate strains. Tolerance is given as the concentration of the inhibiting substrate where the growth rate of the strain is reduced by 50%. 
 
@@ -205,6 +206,9 @@ display_diversity(4,
 ```
 
 
+We have confirmed that when there is no within functional group strain variation, the dynamics of the model are not affected by the number of strains in each of the functional groups. This is a necessary condition for such a model ([Moisset de Espanés et al. 2021](https://onlinelibrary.wiley.com/doi/10.1111/ele.13775)), and gives confidence that our methods and their implementation are correct and robust.
+
+
 # Method for finding stable states
 
 ## General method
@@ -281,7 +285,7 @@ The replication method shows qualitatively the same effects of functional divers
 -   Introducing functional diversity in only the phototrophic sulfur bacteria reduces the resilience of the anoxic state and has no effect on the resilience of the oxic state. 
 -   Introducing functional diversity in more than one functional group reduces, reverses, or does not change the effect of diversity in individual functional groups. For example, introducing functional diversity in all three functional groups reduces the resilience of the oxic state when trait variation is low but increases the resilience of the oxic state when trait variation is high. 
 
-(ref:div-repl-meth1) **Replication method results.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. Data is missing in panels e, and i, when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities). **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience.
+(ref:div-repl-meth1) **Replication method results.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. In panels e, and i, the orange region shows when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities). **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience.
 
 ```{r div-repl-meth1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-repl-meth1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("data", 
@@ -293,22 +297,24 @@ all_stab <- readRDS(here("data",
 
 sim_length <- 1e6 ## currently a problem in how sim length is parsed by the data processing step
 num_strains <- 9
+
 plot_here <- all_stab %>%
-  filter(simlength == sim_length) %>%
-  ## remove data where there are non-standard stable states
-## this subset is identified by inspection of stable state figures
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.70),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-
-
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.69) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
   
   
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
                                      figure_title = paste0(sim_length,
                                                            " simulation length,\n",
@@ -344,7 +350,7 @@ fig_state_vs_o2diff_sidebyside_alternative(repl_meth[94,])
 
 As mentioned in the main report, to avoid very low strain densities, we added 1 unit of density to every biological state variable every 1,000 hours. We here show that a slightly different method produced the same results. Specifically, we tested the effect of making an abundance floor of 1 unit that was implemented every 1,000 hours. I.e. every 1,000 hours, any abundances that were lower than 1 unit were set to 1 unit. As shown in Figure \@ref(fig:div-temp-eventdef1), the results with this floor abundance are similar as when 1 was added every 1,000 hours. 
 
-(ref:div-temp-eventdef1) **Results with an abundance floor.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
+(ref:div-temp-eventdef1) **Results with an abundance floor.** **Left column of panels**: the effect of trait diversity (y-axis) on the positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red), which determine the extent of the region of bistability (green shaded region) in the oxygen diffusivity gradient. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. The thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. In panels e, and i, the orange region shows when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities). **Right column of panels**: The effect size of trait variation on resilience, with positive values on the y-axis indicating that diversity has increased resilience, i.e. delayed the shift to the other state.
 
 
 ```{r div-temp-eventdef1, eval = TRUE, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-eventdef1)', fig.height=8, fig.width=8, fig.align="center"}
@@ -357,27 +363,38 @@ all_stab <- readRDS(here("data",
 
 wait_time <- 1e6
 num_strains <- 9
+
 plot_here <- all_stab %>%
-  filter(waittime == wait_time) %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-
-
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+  
+  
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
                             which_strain = num_strains,
                             figure_title = " ")
 p1 + p2
+
+
+
+
+
 
 ```
 
@@ -422,19 +439,29 @@ all_stab <- readRDS(here("data",
 
 wait_time <- 1e6
 num_strains <- 9
+
+
 plot_here <- all_stab %>%
   filter(waittime == wait_time) %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+  
+  
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
@@ -450,25 +477,36 @@ p1 + p2
 
 wait_time <- 1e5
 num_strains <- 9
+
+
 plot_here <- all_stab %>%
   filter(waittime == wait_time) %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+  
+  
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
                             which_strain = num_strains,
                             figure_title = " ")
 p1 + p2
+
 ```
 
 (ref:div-temp-meth3) Effects of diversity with wait time of 1e4 hours. (All else as in (Figure \@ref(fig:div-repl-meth1)).
@@ -477,25 +515,36 @@ p1 + p2
 
 wait_time <- 1e4
 num_strains <- 9
+
+
 plot_here <- all_stab %>%
   filter(waittime == wait_time) %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+  
+  
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
                             which_strain = num_strains,
                             figure_title = " ")
 p1 + p2
+
 ```
 
 (ref:div-temp-meth4) Effects of diversity with wait time of 1e3 hours. (All else as in Figure \@ref(fig:div-repl-meth1)).
@@ -503,25 +552,36 @@ p1 + p2
 ```{r div-temp-meth4, echo = FALSE,  include=TRUE, fig.cap='(ref:div-temp-meth4)', fig.height=7, fig.width=6, fig.align="center"}
 wait_time <- 1e3
 num_strains <- 9
+
+
 plot_here <- all_stab %>%
   filter(waittime == wait_time) %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+  
+  
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
                             which_strain = num_strains,
                             figure_title = " ")
 p1 + p2
+
 ```
 
 
@@ -536,25 +596,36 @@ p1 + p2
 
 wait_time <- 1e2
 num_strains <- 9
+
+
 plot_here <- all_stab %>%
   filter(waittime == wait_time) %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-p1 <- fig_div_vs_o2diff_1strain_7row(plot_here,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+  
+  
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
                                      which_strain = num_strains,
-                                     figure_title = paste0(wait_time,
-                                                           " wait time,\n",
+                                     figure_title = paste0(sim_length,
+                                                           " simulation length,\n",
                                                            num_strains,
                                                            " strains"))
 p2 <- fig_resilience_vs_div(plot_here,
                             which_strain = num_strains,
                             figure_title = " ")
 p1 + p2
+
 ```
 
 
@@ -603,7 +674,7 @@ fig_state_vs_o2diff_sidebyside_alternative(temp_meth[1,])
 
 In the main text, we present results of simulations with nine strains per functional group. Here we also explore the effect of number of strains (2, 3, 6, 9) on the position of the two tipping points (Figure \@ref(fig:div-stab-multstrain1)). At low to moderate amounts of trait variation, the number of strains did not affect the position of the tipping points. However, at high amounts of trait variation, resilience was lower when the functional groups had only two or three strains rather than six or nine. This effect was particularly pronounced when there was high variation in only SB or in SB-CB: here, simulations with two or three strains led to dramatically lower resilience of the anoxic state than simulations with six or nine strains. We believe that this effect is due to the greater distance in trait space between strains in simulations with two or three strains than in simulations with more strains (also see Section 9). 
 
-(ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains.
+(ref:div-stab-multstrain1)  Effects of number of strains and of diversity among strains. In panels PB and CB-PB the region with dashed lines shows when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities).
 
 ```{r div-stab-multstrain1, echo = FALSE,  include=TRUE, fig.cap='(ref:div-stab-multstrain1)', fig.height=8, fig.width=8, fig.align="center"}
 all_stab <- readRDS(here("data",
@@ -615,40 +686,56 @@ which_strains <- c(2, 3, 6, 9)
 which_wait_time<- 1e6
 figure_title <- " "
 
-plot_here111 <- all_stab %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00),
-         
-         !(num_strains == 6 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 6 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 6 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 6 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 6 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 6 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 6 & var_treat == "CB-SB-PB" & stand_var > 1.00),
-         
-         !(num_strains == 3 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 3 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 3 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 3 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 3 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 3 & var_treat == "SB-PB" & stand_var > 1.0),
-         !(num_strains == 3 & var_treat == "CB-SB-PB" & stand_var > 1.00),
-         
-         !(num_strains == 2 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 2 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 2 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 2 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 2 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 2 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == 2 & var_treat == "CB-SB-PB" & stand_var > 1.00))
 
-fig_div_vs_o2diff_multistrain(plot_here111, which_strains,
+plot_here111 <- all_stab %>%
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+       
+
+# plot_here111 <- all_stab %>%
+#   filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
+#          !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
+#          !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
+#          !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
+#          !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
+#          !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
+#          !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+#          
+#          !(num_strains == 6 & var_treat == "CB" & stand_var > 1.00),
+#          !(num_strains == 6 & var_treat == "SB" & stand_var > 1.00),
+#          !(num_strains == 6 & var_treat == "PB" & stand_var > 0.65),
+#          !(num_strains == 6 & var_treat == "CB-SB" & stand_var > 1.00),
+#          !(num_strains == 6 & var_treat == "CB-PB" & stand_var > 0.65),
+#          !(num_strains == 6 & var_treat == "SB-PB" & stand_var > 1.00),
+#          !(num_strains == 6 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+#          
+#          !(num_strains == 3 & var_treat == "CB" & stand_var > 1.00),
+#          !(num_strains == 3 & var_treat == "SB" & stand_var > 1.00),
+#          !(num_strains == 3 & var_treat == "PB" & stand_var > 0.65),
+#          !(num_strains == 3 & var_treat == "CB-SB" & stand_var > 1.00),
+#          !(num_strains == 3 & var_treat == "CB-PB" & stand_var > 0.65),
+#          !(num_strains == 3 & var_treat == "SB-PB" & stand_var > 1.0),
+#          !(num_strains == 3 & var_treat == "CB-SB-PB" & stand_var > 1.00),
+#          
+#          !(num_strains == 2 & var_treat == "CB" & stand_var > 1.00),
+#          !(num_strains == 2 & var_treat == "SB" & stand_var > 1.00),
+#          !(num_strains == 2 & var_treat == "PB" & stand_var > 0.65),
+#          !(num_strains == 2 & var_treat == "CB-SB" & stand_var > 1.00),
+#          !(num_strains == 2 & var_treat == "CB-PB" & stand_var > 0.65),
+#          !(num_strains == 2 & var_treat == "SB-PB" & stand_var > 1.00),
+#          !(num_strains == 2 & var_treat == "CB-SB-PB" & stand_var > 1.00))
+
+fig_div_vs_o2diff_multistrain_stable_state_type(plot_here111, which_strains,
                               which_wait_time, figure_title)
 ```
 
@@ -753,7 +840,7 @@ This phenomenon is dependent on having static trait values for the strains. If s
 
 ## SB diversity effect on the oxic to anoxic transition {#SB2}
 
-We show in the main text that diversity in the sulfate-reducing bacteria results in earlier recovery of the anoxic state (Figure 3 c). However, there is only limited evidence of strain replacement on the trajectory of decreasing oxygen diffusivity: the most tolerant strain does increase in density prior to the tipping point but never reaches dominance – it is the strain with lowest tolerance that dominates immediately after the shift to the anoxic state. We here analyze temporal dynamics rather than the final state and show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for the system starting oxic, and with a value of oxygen diffusivity $log_{10}$(oxygen diffusivity) = -4.8. When there is no diversity within functional groups (i.e. two strains that are identical) the system remains oxic (Figure \@ref(fig:sb-div-effect3)). When there is diversity in the two groups of sulfur bacteria (i.e. the two strains differ) the system switches to the anoxic state (Figure \@ref(fig:sb-div-effect4)). The more tolerant strain of sulfate-reducing bacteria increases in density in the early phase of the simulation, reduces the concentration of oxygen by inhibiting cyanobacteria, and thus generates an environment in which the less tolerant strain is able to grow. Then, the more tolerant strain is outcompeted by the less tolerant strain as the concentration of the inhibiting substrate (oxygen) declines. 
+We show in the main text that diversity in the sulfate-reducing bacteria results in earlier recovery of the anoxic state (Figure 3 c). However, there is only limited evidence of strain replacement on the trajectory of decreasing oxygen diffusivity: the most tolerant strain does increase in density prior to the tipping point but never reaches dominance – it is the strain with lowest tolerance that dominates immediately after the shift to the anoxic state. We here analyze temporal dynamics rather than the final state and show that the more tolerant strains do play a role, but only a transient one. The following dynamics are for oxic starting conditions and with a value of oxygen diffusivity $log_{10}$(oxygen diffusivity) = -4.8. When there is no diversity within functional groups (i.e. two strains that are identical) the system remains oxic (Figure \@ref(fig:sb-div-effect3)). When there is diversity in the two groups of sulfur bacteria the system switches to the anoxic state (Figure \@ref(fig:sb-div-effect4)). (Note that the average trait value [on a log scale] of the two different strains is the same as the trait value of both strains in Figure \@ref(fig:sb-div-effect3).) The more tolerant strain of sulfate-reducing bacteria increases in density in the early phase of the simulation, reduces the concentration of oxygen by inhibiting cyanobacteria, and thus generates an environment in which the less tolerant strain is able to grow. Then, the more tolerant strain is outcompeted by the less tolerant strain as the concentration of the inhibiting substrate (oxygen) declines. 
 
 ```{r echo = FALSE}
 run_sims_this_section <- TRUE
@@ -1170,16 +1257,16 @@ ggplot(expt, aes(x = richness, y = resilience_max_trait)) +
 
 ```
 
-## Investigating the mechanisms operating in our system
+## Investigating the mechanisms operating
 
 We investigated if the diversity effects observed in our study were in line with the sampling effect, that is, driven entirely by the presence of the most tolerant strain or if other strains played a role as well. To this end, we ran additional simulations where functional groups contained only the strain with greatest tolerance (which due to the tradeoff also had the lowest maximum growth rate). That is, rather than increasing diversity we only increased tolerance of a single strain. Specifically, for each of the 20 levels of trait variation, we made simulations where each functional group had only one strain, and its trait values corresponded with those of the most tolerant strain for the given level of trait variation. We also manipulated in which of the functional groups tolerance increased. For example, in a simulation to be compared with variation in only the SB group (and no variation in the CB or PB groups), the SB group contained the strain with highest tolerance, whereas CB and PB each contained the strain with mean tolerance. We then compared the tipping point positions resulting from this tolerance manipulation with the tipping point positions resulting from the diversity manipulation presented in the main text. In addition, we compared the strain dynamics across the oxygen diffusivity gradient of the tolerance manipulation and the diversity manipulation. If the observed diversity effects are caused by the sampling effect, we expect there to be no difference between the tolerance manipulation and the diversity manipulation. 
 
-We found no difference between the diversity and the tolerance manipulation when trait values were low (Figure \@ref(fig:max-tol1)). When trait values were medium to high, however, we did find differences between the diversity and tolerance manipulation for most combinations except for diversity/tolerance in only CB and in SB-PB (Figure \@ref(fig:max-tol1)). We describe and discuss these differences in detail in the sections below. Briefly, in these scenarios less tolerant strains did play a role because of their high maximum growth rates. Specifically, absence of SB strains with high growth rate led to reduced production of sulfide and therefore to coexistence with cyanobacteria at low oxygen diffusivity. In contrast, absence of PB strains with high growth rate led to reduced consumption of sulfide and therefore precluded coexistence with cyanobacteria at low oxygen diffusivity (as observed when there was high variation in PB). 
+We found no difference between the diversity and the tolerance manipulation when trait values were low (Figure \@ref(fig:max-tol1)). When trait values were medium to high, however, we did find differences between the diversity and tolerance manipulation for most combinations except for diversity/tolerance in only CB and in SB-PB (Figure \@ref(fig:max-tol1)). Specifically, the diversity and tolerance manipulation differed either in tipping point positions (CB-SB and CB-SB-PB) or in whether coexistence patterns were atypical (SB, PB, CB-PB, CB-SB). We describe and discuss these differences in detail in the sections below. Briefly, in these scenarios less tolerant strains did play a role because of their high maximum growth rates. For example, absence of SB strains with high growth rate led to reduced production of sulfide and therefore to coexistence with cyanobacteria at low oxygen diffusivity or to increased resilience of the oxic state. In contrast, absence of PB strains with high growth rate led to reduced consumption of sulfide and therefore precluded coexistence with cyanobacteria at low oxygen diffusivity (as observed when there was high variation in PB). 
 
-Taken together, at low amounts of trait variation the diversity effects were driven entirely by the most tolerant strain, in line with a sampling effect. At medium to high trait variation, however, both tolerant and less tolerant strains affected the results in most combinations. The reason was that in the two groups of sulfur bacteria the trade-off between tolerance and growth rate had ecosystem-level effects, i.e. effects on the sulfide concentration and therefore on the cyanobacteria. 
+Taken together, at low amounts of trait variation the diversity effects were driven entirely by the most tolerant strain, in line with a sampling effect. At medium to high trait variation, however, in most combinations both tolerant and less tolerant strains contributed to the diversity effects on tipping point positions or coexistence patterns. The reason was that in the two groups of sulfur bacteria the trade-off between tolerance and growth rate had ecosystem-level effects, i.e. effects on the sulfide concentration and therefore on the cyanobacteria. 
 
 
-(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present.
+(ref:max-tol1) Effects of strain variation on position of tipping points compared between simulations with all (nine) strains present and simulations where only the most tolerant strain is present. When tipping points are shown with dashed lines then patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities).
 
 ```{r max-tol1, echo = FALSE,  include=TRUE, fig.cap='(ref:max-tol1)', fig.height=8, fig.width=8, fig.align="center"}
 #all_stab <- readRDS(here("data", "0_ss_finding", "temporal_method", "processed_data", "stab_data_temporal_method_ELErevision1.2.RDS"))
@@ -1197,34 +1284,51 @@ which_wait_time <- 1e6
 figure_title <- " "
 
 
-
-## remove data where there are non-standard stable states
-## this subset is identified by inspection of stable state figures
 plot_here11 <- all_stab %>%
-  filter(!(num_strains == 9 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00),
-         !(num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65),
-         !(num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.0),
-         !(num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00),
-         !(num_strains == -1 & var_treat == "CB" & stand_var > 1.00),
-         !(num_strains == -1 & var_treat == "SB" & stand_var > 0.60),
-         !(num_strains == -1 & var_treat == "PB" & stand_var > 1.00),
-         !(num_strains == -1 & var_treat == "CB-SB" & stand_var > 0.60),
-         !(num_strains == -1 & var_treat == "CB-PB" & stand_var > 1.00),
-         !(num_strains == -1 & var_treat == "SB-PB" & stand_var > 1.00),
-         !(num_strains == -1 & var_treat == "CB-SB-PB" & stand_var > 1.00))
-
-
-
-
-
-plot_1 <- fig_div_vs_o2diff_maxtolcomp(plot_here11, which_strains,
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+          (num_strains == 9 & var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == 9 & var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == 9 & var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+          (num_strains == 9 & var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == 9 & var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+          (num_strains == 9 & var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == 9 & var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard",
+          
+          (num_strains == -1 & var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == -1 & var_treat == "SB" & stand_var > 0.60) ~ "non-standard",
+          (num_strains == -1 & var_treat == "PB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == -1 & var_treat == "CB-SB" & stand_var > 0.60) ~ "non-standard",
+          (num_strains == -1 & var_treat == "CB-PB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == -1 & var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+          (num_strains == -1 & var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  ) %>%
+  mutate(hyst_min_log = ifelse(var_treat == "CB-SB" &
+                                 stab_states_type == "non-standard" &
+                                 Species == "SB_tot" &
+                                 stand_var > 0.85,
+                               -8,
+                               hyst_min_log
+                                 ),
+         hyst_max_log = ifelse(var_treat == "CB-SB" &
+                                 stab_states_type == "non-standard" &
+                                 Species == "SB_tot" &
+                                 stand_var > 0.85,
+                               -8,
+                               hyst_max_log
+                                 ))
+   
+plot_1 <- fig_div_vs_o2diff_maxtolcomp_stable_state_type(plot_here11, which_strains,
                               which_wait_time, figure_title)
 plot_1 +
   xlab("Standardised amount of trait variation used to create nine strains\nof which either all nine are retained, or only the most tolerant is retained.") +
   guides(col=guide_legend(title="Which strains are retained", title.position = "top"))
+
+
+
+
 ```
 
 
@@ -1454,7 +1558,7 @@ fig_state_vs_o2diff_sidebyside_alternative(this_dat[which_one,])
 
 ## Increasing tolerance vs. increasing diversity in CB-SB-PB
 
-At high levels of diversity / high levels of tolerance, resilience of the oxic state is greater in the tolerance than diversity manipulation. We have shown that low tolerance sulfur strains can be implicated in the oxic to anoxic transition (section \@ref(SB2)) 
+At high levels of diversity / high levels of tolerance, resilience of the oxic state is greater in the tolerance than diversity manipulation. We speculate that this is because the most tolerant SB strain has reduced ability to suppress the cyanobacteria, as we have also observed in the scenarios of tolerance in only SB and in SB-CB (described above). 
 
 (ref:max-tol6) Stable states found with nine strains of CB-SB-PB and high diversity. All other aspects are the same as in Figure \@ref(fig:ss-temp-meth3). 
 
@@ -1716,6 +1820,66 @@ plot_here <- all_stab %>%
  
 ```
 
+# Log and non-log oxygen diffusivity
+
+For comparability with the [Bush et al publication (2017)](https://www.nature.com/articles/s41467-017-00912-x), we use a log-scale of the oxygen diffusivity gradient when displaying the effect of trait variation on tipping point positions. In our work, we only make comparisons where the outcome is the same when a log- or an arithmetic-scale of oxygen diffusivity was used. For example, we compare the direction of the diversity effects of the three functional groups on the resilience of the ecosystem state that they dominate (CB: oxic state, i.e. oxic-anoxic tipping point; SB and PB: anoxic state, i.e. anoxic-oxic tipping point). The direction of the effects does not depend on the log/arithmetic scale decision.
+
+In contrast, we avoid comparisons where the outcome would differ when a log- or an arithmetic-scale of oxygen diffusivity was used. An example of a comparison that we avoid is of the magnitude of the diversity effect between the oxic-anoxic transition and the anoxic-oxic transition. We avoid this comparison of magnitudes because with a log scale the diversity effect is larger for the oxic-anoxic transition (Figure \@ref(fig:fig-log-nonlog)n), while on an arithmetic scale the diversity effect is larger for the anoxic-oxic transition (Figure \@ref(fig:fig-log-nonlog)o). 
+
+
+(ref:fig-log-nonlog) The effect of trait diversity (y-axis) viewed with a log axis (left panels) or arithmetic axis (right panels) for the oxygen diffusivity gradient (x-axis). The positions of the tipping points (anoxic to oxic in blue, oxic to anoxic in red) and the extent of the region of bistability (green or orange shaded region) are shown. The left-most region is anoxic only, the middle is oxic or anoxic depending on historical conditions, and the right-most is oxic only. In the left panels the thick grey vertical lines at -8 and 0 on the x-axis show the extent of the oxygen diffusivity gradient investigated in the simulations. In panels e, f, i, and j the orange region shows when patterns of coexistence were atypical of the classical pattern shown in Figure 1a of the main text (e.g. when cyanobacteria coexisted with sulfur bacteria at low oxygen diffusivities). In the right-hand panels (arithmetic x-axis scale) the blue anoxic to oxic tipping point line often has steps. This is because the simulated oxygen diffusivity levels were evenly distributed on the log-oxygen diffusivity scale, and so are relatively far apart at high oxygen diffusivities on the arithmetic scale. 
+
+```{r fig-log-nonlog, echo = FALSE,  include=TRUE, fig.height=8, fig.width=8, fig.align="center", fig.cap='(ref:fig-log-nonlog)'}
+all_stab <- readRDS(here("data",
+                         microxanox_version_path,
+                         "temporal_method",
+                         "event_definition_2",
+                         "processed_data",
+                         "all_stab_data.RDS"))
+
+wait_time <- 1e6
+num_strains <- 9
+plot_here <- all_stab %>%
+  filter(waittime == wait_time)
+
+plot_here <- plot_here %>%
+  mutate(stab_states_type = "standard",
+         stab_states_type = case_when(
+           (var_treat == "CB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "SB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "PB" & stand_var > 0.65) ~ "non-standard",
+           (var_treat == "CB-SB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "CB-PB" & stand_var > 0.65) ~ "non-standard",
+           (var_treat == "SB-PB" & stand_var > 1.00) ~ "non-standard",
+           (var_treat == "CB-SB-PB" & stand_var > 1.00) ~ "non-standard"
+         ),
+         stab_states_type = ifelse(is.na(stab_states_type), "standard", "non-standard")
+  )
+
+
+p1 <- fig_div_vs_o2diff_1strain_7row_stable_state_type(plot_here,
+                                                       which_strain = num_strains,
+                                                       figure_title = NULL
+                                                       # figure_title = paste0(wait_time,
+                                                       #                       " wait time,\n",
+                                                       #                       num_strains,
+                                                       #                       " strains")
+)
+
+
+p2 <- fig_div_vs_o2diff_1strain_7row_stable_state_type_nonlog(plot_here,
+                                                       which_strain = num_strains,
+                                                       figure_title = NULL
+                                                       # figure_title = paste0(wait_time,
+                                                       #                       " wait time,\n",
+                                                       #                       num_strains,
+                                                       #                       " strains")
+)
+
+p1 + p2
+
+
+```
 
 
 # References
@@ -1739,6 +1903,8 @@ Loreau, M. & Hector, A. (2001). Partitioning selection and complementarity in bi
 Loreau, M. & Mazancourt, C. de. (2013). Biodiversity and ecosystem stability: a synthesis of underlying mechanisms. Ecol. Lett., 16, 106–115.
 
 Luther, G.W., Findlay, A., MacDonald, D., Owings, S., Hanson, T., Beinart, R., et al. (2011). Thermodynamics and kinetics of sulfide oxidation by oxygen: a look at inorganically controlled reactions and biologically mediated processes in the environment. Front. Microbiol., 2, 62.
+
+Moisset de Espanés, P., Ramos-Jiliberto, R. & Soto, J.A. (2021). Avoiding artifacts when varying the number of species in ecological models. Ecol. Lett., 24, 1976–1987.
 
 Steiner, C.F., Long, Z.T., Krumins, J.A. & Morin, P.J. (2006). Population and Community Resilience in Multitrophic Communities. Ecology, 87, 996–1007.
 
