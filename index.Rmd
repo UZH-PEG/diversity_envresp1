@@ -6,7 +6,7 @@ output: html_document
 
 This is a guide to a repository containing various resources associated with the publication **Functional diversity can facilitate the collapse of an undesirable ecosystem state**.
 
-[The repository on github, current version 0.9.2.](https://github.com/UZH-PEG/diversity_envresp1/releases/tag/v0.9.2)
+[The repository on github, current version 1.0.0.](https://github.com/UZH-PEG/diversity_envresp1/releases/tag/v1.0.0)
 
 [The respository on Zenodo with the versioned DOI 10.5281/zenodo.7594024
 ](https://zenodo.org/record/7594024#.Y9pZaC8w0Q8)
