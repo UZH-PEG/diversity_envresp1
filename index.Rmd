@@ -8,8 +8,8 @@ This is a guide to a repository containing various resources associated with the
 
 [The repository on github, current version 1.0.0.](https://github.com/UZH-PEG/diversity_envresp1/releases/tag/v1.0.0)
 
-[The respository on Zenodo with the versioned DOI 10.5281/zenodo.7594024
-](https://zenodo.org/record/7594024#.Y9pZaC8w0Q8)
+[The respository on Zenodo with the versioned DOI 10.5281/zenodo.7744094
+](https://zenodo.org/record/7744094) - UPDATED
 
 [The Supplementary Report (HTML page)](./reports/supplement/supplement_0.9.1.html)
 
